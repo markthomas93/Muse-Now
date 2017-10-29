@@ -1,0 +1,62 @@
+//  Location.swift
+
+import WatchKit
+
+class Location: NSObject, CLLocationManagerDelegate {
+    
+    static let shared = Location()
+    
+    let locationMgr = CLLocationManager()
+    var locationNow: CLLocation?
+    
+    override init() {
+        super.init()
+        locationMgr.delegate = self
+    }
+    
+    // MARK: - CLLocationManagerDelegate -------------------------
+    
+     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.first {
+            locationNow = location
+            printLog("📍 update: \(location)")
+        }
+    }
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        printLog("📍 error: \(error)")
+    }
+    func requestLocation(_ completion: @escaping () -> ()) {
+        
+        switch  CLLocationManager.authorizationStatus() {
+        case .notDetermined:        locationMgr.requestWhenInUseAuthorization()
+        case .authorizedWhenInUse:  locationMgr.requestLocation()
+        case .denied: return
+        default: return
+        }
+        completion()
+    }
+    private func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        
+        DispatchQueue.main.async() {
+            switch status {
+            case .authorizedWhenInUse:  self.locationMgr.requestLocation()
+            case .denied:               return
+            default:                    return
+            }
+        }
+    }
+    func stopLocation() {
+        locationMgr.stopUpdatingLocation()
+    }
+    
+    func getLocation() -> CLLocationCoordinate2D {
+     
+        stopLocation()
+    
+        let coord = locationNow != nil
+            ? locationNow!.coordinate
+            : CLLocationCoordinate2DMake(0, 0)
+        return coord
+    }
+
+}

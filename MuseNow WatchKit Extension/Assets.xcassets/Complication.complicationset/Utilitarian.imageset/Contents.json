@@ -1,0 +1,20 @@
+{
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "images" : [
+    {
+      "filename" : "utility38mm@2x.png",
+      "idiom" : "watch",
+      "screen-width" : "<=145",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "utility42mm@2x.png",
+      "idiom" : "watch",
+      "screen-width" : ">145",
+      "scale" : "2x"
+    }
+  ]
+}
