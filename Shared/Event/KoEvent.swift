@@ -5,7 +5,7 @@ import UIKit
 
 public enum KoType: String { case
     unknown     = "unknown",
-    klio        = "klio", // special Klio calendar in EKEvents
+    routine     = "routine", // special Klio calendar in EKEvents
     ekevent     = "ekevent",
     ekreminder  = "ekreminder",
     note        = "note",
@@ -29,11 +29,11 @@ open class KoEvent: NSObject, NSCoding {
     var sttApple = "" // apple speech to text
     var sttSwm   = "" // speak with me stt
     var type     = KoType.unknown
-    var bgnTime  = TimeInterval(0)
-    var endTime  = TimeInterval(0)
+    var bgnTime  = TimeInterval(0) // begin time
+    var endTime  = TimeInterval(0) // endTime
     var rgb      = UInt32(0)
     var alarm    = false
-    var mark     = false // only used by klio, not part of EventKit
+    var mark     = false // only used by MuseNow, not part of EventKit
     var coord    = CLLocationCoordinate2DMake(0,0)
     // var recurs  = false
 

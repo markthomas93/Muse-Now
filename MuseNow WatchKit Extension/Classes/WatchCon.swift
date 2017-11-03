@@ -35,9 +35,9 @@ class WatchCon: WKInterfaceController {
         let nextMinute = KoDate.relativeMinute(1)
         WKExtension.shared().scheduleBackgroundRefresh(withPreferredDate: nextMinute, userInfo:nil, scheduledCompletion: {_ in})
     }
-
+    
     override func willActivate() { printLog("⟳ \(#function)")
-
+        
         active.startActive()
         crown.crown.focus()
     }

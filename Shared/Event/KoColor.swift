@@ -51,7 +51,7 @@ class KoColor {
     }
     
     class func colorFrom(event: EKEvent, _ type: KoType = .ekevent) -> UInt32 {
-        if type == .klio {
+        if type == .routine {
             if let notes = event.notes {
                 let colorNames = notes.regex("#color:[ ]*([A-Za-z]+)")
                 if colorNames.count > 0,

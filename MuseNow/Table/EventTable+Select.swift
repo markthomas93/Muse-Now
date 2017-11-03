@@ -13,7 +13,7 @@ extension EventTableVC {
         if let cell = tableView.cellForRow(at: indexPath) as? KoCell {
             if cell != prevCell {
                 
-                if let event = cell.event, event.type == .memo {
+                if let event = cell.event, event.type == .memo, event.title == "Memo" {
                     print("✏ stt:\(event.sttApple) ✏ swm:\(event.sttSwm)")
                 }
                 nextKoCell(cell)

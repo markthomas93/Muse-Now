@@ -61,11 +61,11 @@ class SayCache {
         sayQueue.removeAll()
     }
     
-    func popNext() -> SayItem! {
+    func popNext(wiggleRoom:TimeInterval) -> SayItem! {
         if let tp = sayQueue.first {
             let timeNow =  Date().timeIntervalSince1970
             let deltaTime = tp.delay - timeNow
-            if deltaTime <= 0 {
+            if deltaTime <= wiggleRoom {
                 sayQueue.remove(at: 0)
                 return tp
             }

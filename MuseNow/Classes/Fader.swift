@@ -55,7 +55,7 @@ class Fader: TouchForce {
         Actions.shared.fadeColor(value, isSender: true)
         
         let phrase = String(format:"%.2f",value)
-        Say.shared.updateDialog(nil, type:.status, spoken:phrase, title:phrase)
+        Say.shared.updateDialog(nil, type:.saySlider, spoken:phrase, title:phrase)
     }
     
     // override Touching
@@ -71,7 +71,7 @@ class Fader: TouchForce {
         tableView?.isScrollEnabled = false
         PagesVC.shared.scrollView?.isScrollEnabled = false
         
-        Say.shared.updateDialog(nil, type:.status, spoken:"fader", title:"fader")
+        Say.shared.updateDialog(nil, type:.saySlider, spoken:"fader", title:"fader")
         setHighlight(on:true)
         updatePos(pos)
      }

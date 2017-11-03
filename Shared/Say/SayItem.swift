@@ -4,7 +4,7 @@ import AVFoundation
 class SayItem: NSObject {
     
     var event: KoEvent!
-    var type = SayType.blank
+    var type = SayType.sayBlank
     var delay = TimeInterval(0)
     var decay = TimeInterval(0)
     var spoken  = ""
@@ -22,6 +22,7 @@ class SayItem: NSObject {
         spoken = spoken_
         title  = title_
     }
+
     static func == (lhs: SayItem, rhs: SayItem) -> Bool {
         return (lhs.delay == rhs.delay && lhs.spoken == rhs.spoken)
     }
@@ -31,7 +32,8 @@ class SayItem: NSObject {
     }
     
     func relative(_ t:TimeInterval) -> String {
-        return String(format:"%7.3f ",t-Active.lifeTime)
+        let delta = t-Active.lifeTime
+        return String(format:"%7.3f ", min(88888888,delta))
     }
     
     
@@ -47,7 +49,7 @@ class SayItem: NSObject {
         }
        
 //        let leftStr = str.padding(toLength: 26, withPad: " ", startingAt: 0)
-//        print("🗣 \(relative(Date().timeIntervalSince1970)) \(leftStr) \(dump())")
+//        printLog("🗣 \(relative(Date().timeIntervalSince1970)) \(leftStr) \(dump())")
     }
     
 }

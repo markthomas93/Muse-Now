@@ -16,15 +16,21 @@ class KoEvents {
     var timeEvent: KoEvent!
     var timeEventIndex : Int = -1   // index of timeEvent in koEvents
 
+    let eventStore = EKEventStore()
+
     /// Main entry for updating events
     /// - via: Actions.doRefresh
 
     func updateEvents(_ completion: @escaping () -> Void) {
         //updateFakeEvents(completion)
         updateRealEvents(completion)
-
+        NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.addObserver(self, selector: #selector(EkNotification(notification:)), name: Notification.Name.EKEventStoreChanged, object: eventStore)
     }
-
+    
+    @objc private func EkNotification(notification: NSNotification) {
+        printLog("📅 notification:\(notification.name.rawValue)")
+    }
 
     func getRealEvents(_ completion: @escaping (
         _ ekEvents      : [KoEvent],
@@ -106,19 +112,19 @@ class KoEvents {
             
             let ekCals = Cals.shared.ekCals
             let idCal = Cals.shared.idCal
-            var klioCals = [EKCalendar]() //  = ekVals.filter {  $0.title.hasPrefix("Klio") }
-            var otherCals = [EKCalendar]() // = ekVals.filter { !$0.title.hasPrefix("Klio") }
+            var routineCals = [EKCalendar]() //  = ekVals.filter {  $0.title.hasPrefix("Routine") }
+            var otherCals = [EKCalendar]() // = ekVals.filter { !$0.title.hasPrefix("Routine") }
             for ekCal in ekCals {
                 if let cali = idCal[ekCal.calendarIdentifier], cali.isOn {
-                    if ekCal.title.hasPrefix("Klio") { klioCals.append(ekCal) }
-                    else                             { otherCals.append(ekCal ) }
+                    if ekCal.title.hasPrefix("Routine") { routineCals.append(ekCal) }
+                    else                                { otherCals.append(ekCal ) }
                 }
             }
             
-            if klioCals.count > 0 {
-                let pred = store.predicateForEvents(withStart: bgnTime!, end: endTime!, calendars:klioCals)
+            if routineCals.count > 0 {
+                let pred = store.predicateForEvents(withStart: bgnTime!, end: endTime!, calendars:routineCals)
                 for klioEvent in store.events(matching: pred) {
-                    events.append(KoEvent(klioEvent,.klio))
+                    events.append(KoEvent(klioEvent,.routine))
                 }
             }
             if otherCals.count > 0 {
@@ -203,7 +209,7 @@ class KoEvents {
         getRealEvents() { ekEvents, ekReminds in
             
             self.events.removeAll()
-            self.events = ekEvents + ekReminds + self.memos.items + self.getNearbyEvents() //???
+            self.events = ekEvents + ekReminds + self.memos.items //+ self.getNearbyEvents() //???
             self.sortTimeEventsStart()
             self.applyMarks()
             self.marks.synchronize()

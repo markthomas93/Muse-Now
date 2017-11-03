@@ -4,23 +4,19 @@
  
  /// type of phrase, will interrupt similar phrases
  enum SayType: Int { case
-    blank = 0,
-    direction,  // direction facing: future or past
-    timeDow,    // day of week, while navigating dial
-    timeEvent,  // time of current event while navigating
-    timeMark,   // time for marked event during scann
-    timeNow,    // time now
-    timeDot,    // time of selected dot
-    titleNow,   // title of current event
-    titleEvent, // title of selected event while navigating
-    titleMark,  // title of marked event during scan
-    status,     // status of user action
-    note,       // additional notes, reserved
-    memo       // recorded audio memo
+    sayBlank = 0,
+    sayDirection,  // direction facing: future or past
+    sayDayOfWeek,    // day of week, while navigating dial
+    sayEventTime,  // time of current event while navigating
+    sayTimeNow,    // time now
+    sayDotTime,    // time of selected dot
+    sayEventTitle, // title of selected event while navigating
+    saySlider,     // status of user action on slider
+    sayMemo       // recorded audio memo
  }
  
  
- class Say : NSObject, AVSpeechSynthesizerDelegate, AVAudioPlayerDelegate {
+ class Say : NSObject, AVSpeechSynthesizerDelegate {
     
     static let shared = Say()
     
@@ -39,14 +35,12 @@
     var title = ""
     
     // settings
-    var isSayOn = true
+    var isSayOn = false
     var isSayTimeNow = true
-    var isSayTimeMark = true
     var isSayTimeElapsed = true
-    var isSayTimeDow = true
+    var isSayDayOfWeek = true
     var isSayTimeHour = true
-    var isSayTimeEvent = true
-    var isSaying  = false // status of utterance
+    var isSayEventTime = true
 
     var sayVolume = Float(0.5)
 
@@ -56,40 +50,13 @@
     
     var sayCache = SayCache()
     var sayItem: SayItem?
+    var sayItemBlank = SayItem()
     
     override init() {
         super.init()
         synth.delegate = self
      }
-    
-    func startPlaybackSession() { printLog("🗣 \(#function)")
-        do {
-            // AVAudioSessionCategoryPlayAndRecord will play back only small ear speaker
-            //try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord, with: [.allowBluetoothA2DP,.interruptSpokenAudioAndMixWithOthers] )
-            try audioSession.setCategory(AVAudioSessionCategoryPlayback, with: [.interruptSpokenAudioAndMixWithOthers] )
-            sayTimer?.invalidate() //?? new
-        }
-        catch {  print("\(#function) Error:\(error)") }
-
-    }
-    func finishPlaybackSession() { printLog("🗣 \(#function)")
-        if let audioPlayer = audioPlayer,
-            audioPlayer.isPlaying {
-                audioPlayer.stop()
-        }
-        do { try self.audioSession.setActive(false, with: .notifyOthersOnDeactivation) }
-        catch { print("🗣\(#function) Error:\(error)")}
-        actions.doSetTitle("")
-    }
-    
-    func stopSay() {
-        if synth.isSpeaking {
-            cancelSpeech()
-        }
-        actions.doSetTitle("")
-        sayCache.clearAll()
-    }
-    
+        
     // speech to text volume
     public func doSpeakAction(_ act: DoAction) {
         switch act {
@@ -104,12 +71,8 @@
 
   
     func clearAll() {  printLog("🗣 \(#function)")
+        cancelSpeech()
         sayCache.clearAll()
-        if isSayOn {
-            synth.stopSpeaking(at: .immediate)
-        }
-        actions.doSetTitle("")
-        finishPlaybackSession()
     }
     
     func clearTypes(_ types: [SayType]) {
@@ -121,41 +84,38 @@
                 if sayingNow.type == type {
                     clearTimers()
                     if isSayOn { synth.stopSpeaking(at: .immediate) }
-                    else         { actions.doSetTitle("") }
+                    else       { actions.doSetTitle("") }
                     return
                 }
             }
         }
     }
     func clearTimers() {
-        
-        sayItem = nil
+
         sayTimer?.invalidate() ; sayTimer = nil
         txtTimer?.invalidate() ; txtTimer = nil
     }
-    
-    func cancelSpeech() {  printLog("🗣 \(#function)")
-        
+
+     func cancelSpeech() {  printLog("🗣 \(#function)")
         clearTimers()
         actions.doSetTitle("")
         synth.stopSpeaking(at: .immediate)
-        isSaying = false
+        Audio.shared.finishPlaybackSession()
         sayItem = nil
-        finishPlaybackSession()
     }
     
     
     /**
      Update dialog based on new position on dial
      */
-    func updateDialog(_ event: KoEvent!, type:SayType, spoken:String, title:String) -> Void {
+    func updateDialog(_ event: KoEvent!, type:SayType, spoken:String, title:String) -> Void { printLog("🗣 \(#function) \(event?.title ?? "") .\(type)")
 
         func newItem(_ delay: TimeInterval,_ decay: TimeInterval,_ clear:[SayType], immediate:Bool = false) {
 
             if immediate {
                 actions.doSetTitle(title)
             }
-            if type == .blank {
+            if type == .sayBlank {
                 clearAll()
             }
             else if clear.count > 0 {
@@ -165,70 +125,119 @@
             sayCache.updateCache(item)
             updateSpeech()
         }
-        let never = Double.greatestFiniteMagnitude
+
+        let never = Double.greatestFiniteMagnitude // sleep on it
 
         switch type {
-        case .blank:      newItem(0.00, 0.05, [], immediate: true)
-        case .memo:       newItem(0.04, 0.5, [.timeDot,    .timeEvent, .timeMark, .timeNow])
-        case .timeDow:    newItem(0.01, never, []) // sleep on it
-        case .timeNow:    newItem(0.02, 4.0, [.timeDot,    .timeEvent, .timeMark])
-        case .timeEvent:  newItem(1.00, 4.0, [.timeDot,    .timeMark,  .timeNow])
-        case .timeMark:   newItem(0.03, 4.0, [.timeDot,    .timeEvent, .timeNow])
-        case .timeDot:    newItem(2.01, 4.0, [.timeNow,    .timeEvent])
-            
-        case .titleEvent: newItem(0.50, 1.0, [.titleNow,   .titleMark])
-        case .titleMark:  newItem(0.01, 1.0, [.titleNow,   .titleMark])
-        case .titleNow:   newItem(0.01, 8.0, [.titleEvent, .titleMark])
-            
-        case .direction:  newItem(0.05, never,[])
-        case .status:     newItem(0.01, 8.0, [])
-        case .note:       newItem(4.01, 8.0, [])
+        case .sayBlank:      newItem(0.00,  0.05, [], immediate: true)
+        case .sayMemo:       newItem(0.04,  0.50, [.sayEventTitle, .sayEventTime, .sayDotTime, .sayTimeNow])
+        case .sayDayOfWeek:  newItem(0.01, never, [.sayDirection])
+        case .sayTimeNow:    newItem(0.02,  4.00, [.sayDotTime,    .sayEventTime,   .sayDirection])
+        case .sayEventTime:  newItem(1.00,  4.00, [.sayEventTime,  .sayDotTime,     .sayTimeNow])
+        case .sayEventTitle: newItem(0.03,  2.00, [.sayEventTitle, .sayEventTime])
+        case .sayDotTime:    newItem(2.01,  4.00, [.sayDotTime,    .sayTimeNow,     .sayEventTime])
+        case .sayDirection:  newItem(0.05, never, [])
+        case .saySlider:     newItem(0.01,  8.00, [])
         }
     }
     
     func updateSpeech() {
-        
+
         if sayItem != nil {
+             printLog("🗣 \(#function) sayItem != nil ")
             return
         }
-        else if let item = sayCache.popNext() {
-            sayPhrase(item)
+        else if let item = sayCache.popNext(wiggleRoom: 0.0) {
+
+            doItem(item)
+        }
+        else if let item = sayCache.getNext() {
+            printLog("🗣 \(#function) getNext event:\(item.event?.title ?? "nil") type:\(item.type)")
+            let timeNow = Date().timeIntervalSince1970
+            let deltaTime = max(0.01, item.delay - timeNow)
+            sayItem = sayItemBlank
+            if deltaTime > 0.2 {
+                do  { try audioSession.setActive(false, with: .notifyOthersOnDeactivation) } catch {}
+            }
+            // item.log("say timer > \(String(format:"%.2f",deltaTime)) ")
+            sayTimer = Timer.scheduledTimer(withTimeInterval: deltaTime, repeats: false, block: {_ in
+                self.clearTimers()
+                self.sayItem = nil
+                self.updateSpeech()
+            })
         }
         else {
-            isSaying = false
-            do {
-                if let item = sayCache.getNext() {
-                    
-                    let timeNow = Date().timeIntervalSince1970
-                    let deltaTime = max(0.01, item.delay - timeNow)
-                    if deltaTime < 0.2 {
-                        isSaying = true
-                       
-                    }
-                    else {
-                        try audioSession.setActive(false, with: .notifyOthersOnDeactivation)
-                    }
-                    // item.log("say timer > \(String(format:"%.2f",deltaTime)) ")
-                    sayTimer = Timer.scheduledTimer(withTimeInterval: deltaTime, repeats: false, block: {_ in
-                        self.clearTimers()
-                        self.updateSpeech()
-                    })
-                }
-                else {
-                    actions.doSetTitle("")
-                }
-            }
-            catch {
-                
-            }
+             printLog("🗣 \(#function) continue")
         }
     }
 
-    func playRecording(_ item:SayItem) {
 
-        let url = FileManager.documentUrlFile(item.spoken)
+    func playMemo(_ item: SayItem) -> Bool {
+
+        func memoLocal() {
+            self.synth.stopSpeaking(at: .immediate) //?? remove?
+            let url = FileManager.documentUrlFile(item.spoken)
+            if !Audio.shared.playUrl(url: url) {
+                self.sayItem = nil
+            }
+        }
+        func memoRemote() {
+        }
+
+        transcribe(item) // transcribe item if
+
+        if Hear.shared.play(memoLocal,memoRemote) {
+            return true
+        }
+        return false
+    }
+    func playSay(_ item: SayItem) -> Bool {
+
+        func sayLocal() { printLog("🗣 \(#function) sayItem:\(item.title)" )
+            self.clearTimers()
+            synth.speak(UtterItem(item, sayVolume))
+        }
+
+        func sayRemote() {
+            sayTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false, block: {_ in
+                printLog("🗣 \(#function) timeout !!!")
+                self.cancelSpeech()
+                self.updateSpeech()
+            })
+        }
+
+        if item.spoken != "" && Hear.shared.play(sayLocal, sayRemote) {
+            return true
+        }
+        return false
+    }
+
+    func doItem(_ item: SayItem) { printLog("🗣 \(#function) sayItem:\(item.title)" )
+
+        clearTimers()
+        actions.doSetTitle(item.title)
+        sayItem = item
+
+        func txtLocal() {
+            txtTimer?.invalidate()
+            txtTimer = Timer.scheduledTimer(withTimeInterval: itemDuration, repeats: false, block: {_ in
+                 printLog("🗣 \(#function) timeout")
+                self.clearTimers()
+                self.sayItem = nil
+                self.actions.doSetTitle("")
+                self.updateSpeech()
+            })
+        }
+
+        if item.type == .sayMemo && playMemo(item) {}
+        else if isSayOn && playSay(item) {}
+        else { txtLocal() }
+    }
+
+    func transcribe(_ item:SayItem) {
         #if os(iOS)
             if item.title == "Memo" {
+                 let url = FileManager.documentUrlFile(item.spoken)
                 Transcribe.shared.appleSttUrl(url) { found in
                     if let str = found.str,
                         str != "",
@@ -240,87 +249,27 @@
                 }
             }
         #endif
-        playSound(url: url, item.title)
     }
-    
-    func sayPhrase(_ item: SayItem) {
-        
-        // item.log("say phrase >>>")
-        
-        clearTimers()
-        sayItem = item
-        isSaying = true
-        actions.doSetTitle(item.title)
-        
-        if item.type == .memo {
-            playRecording(item)
-        }
-        else if item.spoken != "" {
 
-            if isSayOn {
-                func playLocal() { synth.speak(UtterItem(item, sayVolume))}
-                func playRemote() { }
-                Hear.shared.hearVia.play(playLocal, playRemote)
-            }
-            else { // for non-speech mode, clear out title after a scene
-                txtTimer = Timer.scheduledTimer(withTimeInterval: 2 , repeats: false, block: {_ in
-                    //self.actions.doSetTitle("")
-                    self.clearTimers()
-                    self.updateSpeech()
-                })
-            }
-        }
-    }
-    
     // AVSpeechSynthesizerDelegate ---------------------------------
     
     // When finished, clear title, and setup next in line
-    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
-        
-        let utter = utterance as! UtterItem
-        utter.item?.log( "<<< finish")
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) { printLog("🗣 speechSynthesizer didFinish ")
+
+        //let utter = utterance as! UtterItem ; utter.item?.log( "<<< finish")
+
         actions.doSetTitle("")
         clearTimers()
-        updateSpeech()
+        sayItem = nil
+        self.updateSpeech()
+
     }
     
     // When finished, clear title, and setup next in line
-    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) {
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) { printLog("🗣 speechSynthesizer <<< cancel >>>")
         
-        let utter = utterance as! UtterItem
-        utter.item?.log( "<<< cancel")
+        // let utter = utterance as! UtterItem ; utter.item?.log( "<<< cancel")
         actions.doSetTitle("")
-        clearTimers()
-        updateSpeech()
     }
     
-    // AVAudioPlayerDelegate --------------------------------------------
-    
-    func playSound(url: URL, _ title: String) {
-
-        func playLocal() {
-
-            isSaying = true
-            startPlaybackSession()
-
-            do {
-                audioPlayer = try AVAudioPlayer(contentsOf: url)
-                audioPlayer.setVolume(1.0, fadeDuration: 0.1)
-                audioPlayer.delegate = self
-                audioPlayer.play()
-            }
-            catch {
-                printLog("\(#function) error")
-                isSaying = false
-            }
-        }
-
-        func playRemote() {
-        }
-
-        clearTimers()
-        actions.doSetTitle(title)
-        synth.stopSpeaking(at: .immediate)
-        Hear.shared.hearVia.play(playLocal,playRemote)
-      }
  }

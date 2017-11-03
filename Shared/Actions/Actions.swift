@@ -219,7 +219,15 @@ class Actions {
         strAct["set volume low"] = .speakLow
         strAct["set volume medium"] = .speakMedium
         strAct["set volume hi"] = .speakHigh
-        
+
+        strAct["hear earbuds"] = .hearEarbuds
+        strAct["hear speaker"] = .hearSpeaker
+        strAct["hear remote"] = .hearRemote
+        strAct["hear remote"] = .hearRemote
+        strAct["mute speaker"] = .muteSpeaker
+        strAct["mute earbuds"] = .muteEarbuds
+        strAct["mute remote"] = .muteRemote
+
         // chimes
         // addAction(.chimeOff,     "set chime off")
         // addAction(.chimeLow,     "set chime low")
@@ -239,7 +247,7 @@ class Actions {
         menuAct.append(Say.shared.isSayOn
             ? StrAct("set speech off",.speakOff)
             : StrAct("set speech on",.speakOn))
-
+        menuAct.append(contentsOf:Hear.shared.getMenus())
         menuAct.append(StrAct("clear all marks",.markClearAll))
         menuAct.append(StrAct("refresh",.refresh))
     }
@@ -269,7 +277,7 @@ class Actions {
         case  .hearEarbuds, .hearSpeaker, .hearRemote, .hearAll,
               .muteEarbuds, .muteSpeaker, .muteRemote, .muteAll:
 
-            Hear.shared.hearVia.doHearAction(act)
+            Hear.shared.doHearAction(act)
 
         // mark a dot
         case .markAdd, .markRemove, .markClearAll, .noteRemove, .noteAdd:

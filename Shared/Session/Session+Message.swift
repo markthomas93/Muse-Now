@@ -53,17 +53,14 @@ extension Session {
 
         let hear = Hear.shared
 
-        if let route = msg["route"] as? String {
+        if let _ = msg["getRoute"] {
 
-            if route == "get" {
+            Session.shared.sendMsg( ["class" : "hear",
+                                     "putRoute" : hear.route])
+        }
+        if let route = msg["putRoute"] as? HearSet {
 
-                let sendRoute = hear.getRoute()
-                Session.shared.sendMsg( ["class" : "hear",
-                                         "route" : sendRoute.rawValue])
-            }
-            else {
-                hear.updateFromRemote(route)
-            }
+            hear.updateFromSession(route)
         }
     }
 

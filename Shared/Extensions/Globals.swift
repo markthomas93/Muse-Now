@@ -22,19 +22,18 @@ func printLog(_ str: String) {
     //case NSLog(str)
 
     case
-    
-    "⟳", // life cycle
-    "✺", // complication
-
-    "👆", // tap action
-    "🎧", // headphones
-    "🗣", // Say
+    "📅", // EkNotification
+    "🔈", // Audio
+    "🗣", // Say TTS
+    "🎧", // Hear Via
     "∿": // audio recorder
 
         print(KoDate.getHourMinSecMsec() + ": " + str)
         
     case
-
+      "⟳", // life cycle
+     "✺", // complication
+    "👆", // tap action
     "⊛", // crown
     "✓", // actions
     "⎚", // scene animation

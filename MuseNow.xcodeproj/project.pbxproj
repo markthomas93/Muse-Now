@@ -131,8 +131,6 @@
 		8004F7A81FA3EE2400F7ED94 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F73A1FA3EE2400F7ED94 /* Settings.swift */; };
 		8004F7A91FA3EE2400F7ED94 /* Hear.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F73D1FA3EE2400F7ED94 /* Hear.swift */; };
 		8004F7AA1FA3EE2400F7ED94 /* Hear.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F73D1FA3EE2400F7ED94 /* Hear.swift */; };
-		8004F7AB1FA3EE2400F7ED94 /* HearVia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F73E1FA3EE2400F7ED94 /* HearVia.swift */; };
-		8004F7AC1FA3EE2400F7ED94 /* HearVia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F73E1FA3EE2400F7ED94 /* HearVia.swift */; };
 		8004F7AD1FA3EE2400F7ED94 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7401FA3EE2400F7ED94 /* Location.swift */; };
 		8004F7AE1FA3EE2400F7ED94 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7401FA3EE2400F7ED94 /* Location.swift */; };
 		8004F7AF1FA3EE2400F7ED94 /* Main.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8004F7411FA3EE2400F7ED94 /* Main.xcassets */; };
@@ -212,6 +210,8 @@
 		804D5A2C1FA3FCAA0025B724 /* TimeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A1B1FA3FCAA0025B724 /* TimeCell.swift */; };
 		804D5A2D1FA3FCAA0025B724 /* ToggleDot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A1C1FA3FCAA0025B724 /* ToggleDot.swift */; };
 		80920B451FA4F6E4004E4D8B /* ComplicationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80920B441FA4F6E4004E4D8B /* ComplicationProvider.swift */; };
+		80C173E61FA778570085CC8C /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C173E51FA778570085CC8C /* Audio.swift */; };
+		80C173E71FA778570085CC8C /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C173E51FA778570085CC8C /* Audio.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -326,7 +326,6 @@
 		8004F7391FA3EE2400F7ED94 /* Memos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Memos.swift; sourceTree = "<group>"; };
 		8004F73A1FA3EE2400F7ED94 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		8004F73D1FA3EE2400F7ED94 /* Hear.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hear.swift; sourceTree = "<group>"; };
-		8004F73E1FA3EE2400F7ED94 /* HearVia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HearVia.swift; sourceTree = "<group>"; };
 		8004F7401FA3EE2400F7ED94 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		8004F7411FA3EE2400F7ED94 /* Main.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Main.xcassets; sourceTree = "<group>"; };
 		8004F7421FA3EE2400F7ED94 /* Record.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
@@ -391,6 +390,7 @@
 		804D5A1B1FA3FCAA0025B724 /* TimeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeCell.swift; sourceTree = "<group>"; };
 		804D5A1C1FA3FCAA0025B724 /* ToggleDot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleDot.swift; sourceTree = "<group>"; };
 		80920B441FA4F6E4004E4D8B /* ComplicationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationProvider.swift; sourceTree = "<group>"; };
+		80C173E51FA778570085CC8C /* Audio.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Audio.swift; sourceTree = "<group>"; };
 		80CE545E1FA3E0C7005C4D96 /* MuseNow WatchKit App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "MuseNow WatchKit App.entitlements"; sourceTree = "<group>"; };
 		80CE545F1FA3E0CE005C4D96 /* MuseNow WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "MuseNow WatchKit Extension.entitlements"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -490,13 +490,13 @@
 			isa = PBXGroup;
 			children = (
 				8004F70D1FA3EE2400F7ED94 /* Actions */,
-				8004F7141FA3EE2400F7ED94 /* Active.swift */,
 				8004F7151FA3EE2400F7ED94 /* Anim */,
+				80C173E41FA778570085CC8C /* Audio */,
+				8004F7141FA3EE2400F7ED94 /* Active.swift */,
 				8004F71A1FA3EE2400F7ED94 /* Dot */,
 				8004F7201FA3EE2400F7ED94 /* Event */,
 				8004F7281FA3EE2400F7ED94 /* Extensions */,
 				8004F7321FA3EE2400F7ED94 /* Files */,
-				8004F73B1FA3EE2400F7ED94 /* Headphone */,
 				8004F73C1FA3EE2400F7ED94 /* Hear */,
 				8004F73F1FA3EE2400F7ED94 /* Location */,
 				8004F7411FA3EE2400F7ED94 /* Main.xcassets */,
@@ -591,18 +591,10 @@
 			path = Files;
 			sourceTree = "<group>";
 		};
-		8004F73B1FA3EE2400F7ED94 /* Headphone */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Headphone;
-			sourceTree = "<group>";
-		};
 		8004F73C1FA3EE2400F7ED94 /* Hear */ = {
 			isa = PBXGroup;
 			children = (
 				8004F73D1FA3EE2400F7ED94 /* Hear.swift */,
-				8004F73E1FA3EE2400F7ED94 /* HearVia.swift */,
 			);
 			path = Hear;
 			sourceTree = "<group>";
@@ -771,6 +763,14 @@
 				804D5A1C1FA3FCAA0025B724 /* ToggleDot.swift */,
 			);
 			path = Table;
+			sourceTree = "<group>";
+		};
+		80C173E41FA778570085CC8C /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				80C173E51FA778570085CC8C /* Audio.swift */,
+			);
+			path = Audio;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1013,6 +1013,7 @@
 				8004F77F1FA3EE2400F7ED94 /* KoEvent.swift in Sources */,
 				8004F75D1FA3EE2400F7ED94 /* Motion.swift in Sources */,
 				8004F7CB1FA3EE2400F7ED94 /* Session+Message.swift in Sources */,
+				80C173E61FA778570085CC8C /* Audio.swift in Sources */,
 				804D5A281FA3FCAA0025B724 /* EventTable+TimeCell.swift in Sources */,
 				8004F7931FA3EE2400F7ED94 /* String+regex.swift in Sources */,
 				8004F7B71FA3EE2400F7ED94 /* SayCache.swift in Sources */,
@@ -1034,7 +1035,6 @@
 				8004F6DE1FA3ED5E00F7ED94 /* Repetitions.swift in Sources */,
 				804D5A291FA3FCAA0025B724 /* EventTable+Update.swift in Sources */,
 				8004F79D1FA3EE2400F7ED94 /* FileMsg.swift in Sources */,
-				8004F7AB1FA3EE2400F7ED94 /* HearVia.swift in Sources */,
 				804D5A081FA3FC8B0025B724 /* TouchDialForce.swift in Sources */,
 				804D5A221FA3FCAA0025B724 /* EventTable+EditRow.swift in Sources */,
 				8004F6FC1FA3ED5E00F7ED94 /* NodeAnys.swift in Sources */,
@@ -1098,6 +1098,7 @@
 				8004F7601FA3EE2400F7ED94 /* Taps.swift in Sources */,
 				8004F7961FA3EE2400F7ED94 /* UIImage+Circle.swift in Sources */,
 				8004F70B1FA3ED5E00F7ED94 /* ParWords.swift in Sources */,
+				80C173E71FA778570085CC8C /* Audio.swift in Sources */,
 				8004F7941FA3EE2400F7ED94 /* String+regex.swift in Sources */,
 				8004F6EF1FA3ED5E00F7ED94 /* KlioFound.swift in Sources */,
 				8004F7071FA3ED5E00F7ED94 /* ParStr+Compare.swift in Sources */,
@@ -1112,7 +1113,6 @@
 				8004F7DE1FA3F01600F7ED94 /* Complication.swift in Sources */,
 				8004F75C1FA3EE2400F7ED94 /* Haptic.swift in Sources */,
 				8004F7C61FA3EE2400F7ED94 /* Scene+Sprite.swift in Sources */,
-				8004F7AC1FA3EE2400F7ED94 /* HearVia.swift in Sources */,
 				8004F7E41FA3F01600F7ED94 /* WatchMenu.swift in Sources */,
 				8004F76C1FA3EE2400F7ED94 /* Anim+Scene.swift in Sources */,
 				8004F78C1FA3EE2400F7ED94 /* Collection+Search.swift in Sources */,

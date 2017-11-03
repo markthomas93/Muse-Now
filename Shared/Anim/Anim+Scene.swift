@@ -83,11 +83,10 @@ extension Anim {
                 dayHour.setIndex(0)
                 dots.dotNow = 0
             }
-                
             else if // if crossing the rubicon, then clear out title
                 abs(lastFrame) > spokeFan {
                 
-                say.updateDialog(nil, type: .blank, spoken: "", title: "") //???
+                say.updateDialog(nil, type: .sayBlank, spoken: "", title: "") //???
             }
         }
             // finish animation
@@ -112,10 +111,7 @@ extension Anim {
      */
     func marking() {
         
-        if say.isSaying {
-            
-        }
-        else {
+        if say.sayItem == nil {
             let index = getDotIndex()
             if let event = dots.sayNextMark(index, dots.isClockwise) {
                 table?.scrollSceneEvent(event) // only on phone, not watch
