@@ -78,7 +78,7 @@ class Record: NSObject, CLLocationManagerDelegate {
             let timeStr = dateFormatter.string(from: date)
             recName = "Memo_" + timeStr + ".m4a"
             recTime = Date().timeIntervalSince1970
-            groupURL = FileManager.klioGroupURL().appendingPathComponent(recName)
+            groupURL = FileManager.museGroupURL().appendingPathComponent(recName)
             try? audioRecorder = AVAudioRecorder(url: groupURL!, settings: recordSettings)
             audioRecorder?.prepareToRecord()
             done()
@@ -194,7 +194,7 @@ class Record: NSObject, CLLocationManagerDelegate {
     func recordAudioFinish() {
 
         let coord = Location.shared.getLocation()
-        let event = KoEvent(.memo, "Memo", recTime, recName, coord, .white)
+        let event = MuEvent(.memo, "Memo", recTime, recName, coord, .white)
 
         Actions.shared.doAddEvent(event, isSender:true)
         Memos.doTranscribe(event, recName, isSender:true)

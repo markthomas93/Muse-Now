@@ -1,7 +1,4 @@
- //
 //  Transcribe+Apple.swift
-//  Klio
-//
 //  Created by warren on 9/6/17.
 //  Copyright © 2017 Muse. All rights reserved.
 
@@ -46,16 +43,16 @@ extension Transcribe {
         recognitionTask = recognizer.recognitionTask(with: request) { result, error in
 
             if let result = result {
-                // matches a klio template
-                let klioFound = self.matchKlioFound(result)
-                if klioFound.str != nil {
-                    Session.shared.sendMsg( ["class"  : "transcribe",
-                                             "result" : klioFound.str])
-                     print("✏ klio: \(klioFound.str)")
+                // matches a muse template
+                let museFound = self.matchMuseFound(result)
+                if museFound.str != nil {
+                    Session.shared.sendMsg( ["class"  : "Transcribe",
+                                             "result" : museFound.str])
+                     print("✏ muse: \(museFound.str)")
                 }
-                    // does not match a klio template, so send unmatched result
+                    // does not match a muse template, so send unmatched result
                 else {
-                    Session.shared.sendMsg( ["class"  : "transcribe",
+                    Session.shared.sendMsg( ["class"  : "Transcribe",
                                              "result" : result.bestTranscription])
                     print("✏ stt: \(result.bestTranscription)")
                 }
@@ -67,21 +64,21 @@ extension Transcribe {
     }
 
 
-    func matchKlioFound(_ result: SFSpeechRecognitionResult) -> KlioFound {
+    func matchMuseFound(_ result: SFSpeechRecognitionResult) -> MuseFound {
 
         var log = "✏\n"
 
-        var nearestFound = KlioFound(result.bestTranscription.formattedString,nil,Int.max)
+        var nearestFound = MuseFound(result.bestTranscription.formattedString,nil,Int.max)
 
         for trans in result.transcriptions {
 
             let txt = trans.formattedString.lowercased()
             log += "   \"\(txt)\" "
-            let found = Klio.shared.findMatch(txt)
-            log += Klio.shared.resultStr(found) + "\n"
+            let found = Muse.shared.findMatch(txt)
+            log += Muse.shared.resultStr(found) + "\n"
 
             if  nearestFound.hops > found.hops, found.hops > -1 {
-                nearestFound = KlioFound(found)
+                nearestFound = MuseFound(found)
             }
 
             for seg in trans.segments {
@@ -94,36 +91,36 @@ extension Transcribe {
         return nearestFound
     }
 
-    func appleSttUrl(_ url: URL, _ completion: @escaping (_ found: KlioFound) -> Void) {
+    func appleSttUrl(_ url: URL, _ completion: @escaping (_ found: MuseFound) -> Void) {
 
-        var klioFound = KlioFound("Memo",nil,Int.max)
+        var museFound = MuseFound("Memo",nil,Int.max)
 
         if !recognizer.isAvailable {
             print("✏ \(#function) recognizer is NOT available")
-            completion(klioFound)
+            completion(museFound)
             return
         }
         else {
 
             let request = SFSpeechURLRecognitionRequest(url: url)
             request.shouldReportPartialResults = false
-            request.contextualStrings = Klio.shared.contexualStrings
+            request.contextualStrings = Muse.shared.contexualStrings
             request.taskHint = .search
 
             recognizer.recognitionTask(with: request) { result, error in
 
                 if let result = result {
-                    klioFound = self.matchKlioFound(result)
+                    museFound = self.matchMuseFound(result)
                 }
                 else if let error = error {
                     print(error)
                 }
-                completion(klioFound)
+                completion(museFound)
             }
         }
     }
 
-    func appleSttFile(_ recName: String, _ event:KoEvent! = nil)  {
+    func appleSttFile(_ recName: String, _ event:MuEvent! = nil)  {
 
         let docURL = FileManager.documentUrlFile(recName)
         //print ("✏ \(#function) url:\(docURL)")
@@ -133,7 +130,7 @@ extension Transcribe {
                     event.title = matchFound.str
                     event.sttApple = matchFound.str
                 }
-                Klio.shared.execFound(matchFound, event)
+                Muse.shared.execFound(matchFound, event)
                 Actions.shared.doUpdateEvent(event, isSender:true)
             }
         }

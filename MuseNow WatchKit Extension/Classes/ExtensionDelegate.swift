@@ -1,6 +1,6 @@
 //
 //  ExtensionDelegate.swift
-//  Klio WatchKit Extension
+//  Muse WatchKit Extension
 //
 //  Created by warren on 11/9/16.
 //  Copyright © 2016 Muse. All rights reserved.
@@ -17,13 +17,13 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
         })
     }
 
-    func applicationWillEnterForeground()  { printLog("⟳⌚︎ \(#function)")
+    func applicationWillEnterForeground()  {  printLog("⟳⌚︎ \(#function)")
     }
 
     func applicationDidEnterBackground()  { printLog("⟳⌚︎ \(#function)")
     }
 
-    func applicationDidBecomeActive() { printLog("⟳⌚︎ \(#function)")
+    func applicationDidBecomeActive() {  printLog("⟳⌚︎ \(#function)")
         // both becomming active and unactive, bug?
     }
 
@@ -37,7 +37,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
 
             switch task {
 
-            case let _ as WKApplicationRefreshBackgroundTask:
+            case let task as WKApplicationRefreshBackgroundTask:
 
                 printLog("⟳✺ \(#function) type:\(task.classForCoder)")
                 Complicated.shared.extendTimelines()

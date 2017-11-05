@@ -1,11 +1,11 @@
-//  KoCell.swift
+//  MuCell.swift
 
 
 import UIKit
 
-class KoCell: UITableViewCell {
+class MuCell: UITableViewCell {
     
-    var event : KoEvent!
+    var event : MuEvent!
     var isHighlight = false
     var tableView : UITableView!
 

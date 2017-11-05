@@ -7,12 +7,12 @@ let footerHeight  = CGFloat(18)
 
 class RowItem {
 
-    var event: KoEvent!
+    var event: MuEvent!
     var title: String!
     var rowTime = TimeInterval(0)
     var posY = CGFloat(0)
 
-    init(_ event_:KoEvent!,_ posY_:CGFloat) {
+    init(_ event_:MuEvent!,_ posY_:CGFloat) {
 
         event = event_
         rowTime = event.bgnTime
@@ -69,7 +69,7 @@ class EventTableVC: UITableViewController, KoTableDelegate {
     
     var scene: Scene!
    
-    var dateEvents    = [Date:[KoEvent]]()  // edit select update
+    var dateEvents    = [Date:[MuEvent]]()  // edit select update
     var sectionDate   = [Date]()            // edit select update
     var sectionTitles = [String]()          // update
    
@@ -82,14 +82,14 @@ class EventTableVC: UITableViewController, KoTableDelegate {
 
     let cal = Calendar.current as NSCalendar
     
-    var prevCell: KoCell!                   // Select + PhoneCrown + EditRow + KoEvent
-    var prevIndexPath: IndexPath!           // Select + PhoneCrown + EditRow + KoEvent
+    var prevCell: MuCell!                   // Select + PhoneCrown + EditRow + MuEvent
+    var prevIndexPath: IndexPath!           // Select + PhoneCrown + EditRow + MuEvent
     var timeIndexPath: IndexPath!
 
     var prevOffsetY = CGFloat(0)            // Scroll
     var isDragging = false                  // user is Scrolling manually
     
-    var scrollingEvent: KoEvent!            // EventTable+KoEvent: prevent duplicate scrollDialEvent
+    var scrollingEvent: MuEvent!            // EventTable+MuEvent: prevent duplicate scrollDialEvent
     var updating = false
     
     
@@ -109,7 +109,7 @@ class EventTableVC: UITableViewController, KoTableDelegate {
         return 0
     }
     
-    func eventFromIndexPath(_ indexPath: IndexPath) -> KoEvent? {
+    func eventFromIndexPath(_ indexPath: IndexPath) -> MuEvent? {
         
         let date = sectionDate[indexPath.section]
         let events = dateEvents[date]

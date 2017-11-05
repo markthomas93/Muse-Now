@@ -5,7 +5,7 @@ import Foundation
 class Memos: FileSync {
     
     static let shared = Memos()
-    var items = [KoEvent]()
+    var items = [MuEvent]()
     
     override init() {
         super.init()
@@ -18,7 +18,7 @@ class Memos: FileSync {
         unarchiveArray() { array in
             
             self.items.removeAll()
-            let dataItems = array as! [KoEvent]
+            let dataItems = array as! [MuEvent]
             
             let weekSecs: TimeInterval = (7*24+1)*60*60 // 168+1 hours as seconds
             let lastWeekSecs = Date().timeIntervalSince1970 - weekSecs
@@ -43,7 +43,7 @@ class Memos: FileSync {
         
         if memoryTime < fileTime {
             memoryTime = fileTime
-            let recvItems = NSKeyedUnarchiver.unarchiveObject(with:data as Data) as! [KoEvent]
+            let recvItems = NSKeyedUnarchiver.unarchiveObject(with:data as Data) as! [MuEvent]
             archiveArray(recvItems,memoryTime)
             items.removeAll()
             items = recvItems
@@ -59,11 +59,11 @@ class Memos: FileSync {
         removeAllDocPrefix("Memo_")
     }
     
-    func purgeStale(_ staleItems:[KoEvent]) {
+    func purgeStale(_ staleItems:[MuEvent]) {
         //TODO remove items that are older than 1 week
     }
 
-    func addEvent(_ event:KoEvent) {
+    func addEvent(_ event:MuEvent) {
         printLog ("⧉ Memos::addEvent:\(event.eventId)")
         items.append(event)
         memoryTime = Date().timeIntervalSince1970
@@ -75,9 +75,9 @@ class Memos: FileSync {
     }
 
     /// convert audio to text
-    /// - parameter event: KoEvent captures result
+    /// - parameter event: MuEvent captures result
     /// - parameter recName: name to concatenate to documents URL
-    class func doTranscribe(_ event:KoEvent,_ recName:String, isSender:Bool) {
+    class func doTranscribe(_ event:MuEvent,_ recName:String, isSender:Bool) {
 
         #if os(iOS)
             FileManager.waitFile(recName, /*timeOut*/ 8) { fileFound in
@@ -89,7 +89,7 @@ class Memos: FileSync {
         #elseif os(watchOS)
             if isSender {
                 Session.shared.sendMsg(
-                    [ "class"   : "transcribe",
+                    [ "class"   : "Transcribe",
                       "event"   : NSKeyedArchiver.archivedData(withRootObject:event),
                       "recName" : recName])
             }

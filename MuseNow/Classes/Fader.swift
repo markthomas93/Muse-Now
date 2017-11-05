@@ -41,7 +41,7 @@ class Fader: TouchForce {
     }
     
      func initFromSettings() {
-        value = Settings.shared.getValueForKey("fadeColor") as! Float
+        value = Settings.shared.getValueForKey("dialColor") as! Float
         thumb.center.x = thumbR + 2*borderWidth + runway * CGFloat(value)
     }
     
@@ -52,7 +52,7 @@ class Fader: TouchForce {
         value = Float(max(0.0, min(1.0, norm)))
         thumb.center.x = thumbR + 2*borderWidth + runway * CGFloat(value)
         
-        Actions.shared.fadeColor(value, isSender: true)
+        Actions.shared.dialColor(value, isSender: true)
         
         let phrase = String(format:"%.2f",value)
         Say.shared.updateDialog(nil, type:.saySlider, spoken:phrase, title:phrase)

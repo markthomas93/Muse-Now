@@ -1,6 +1,6 @@
 //
 //  WatchMenu.swift
-//  Klio WatchKit Extension
+//  Muse WatchKit Extension
 //
 //  Created by warren on 10/23/17.
 //  Copyright © 2017 Muse. All rights reserved.

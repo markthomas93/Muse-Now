@@ -10,7 +10,7 @@ extension EventTableVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //print("\(#function)")
         
-        if let cell = tableView.cellForRow(at: indexPath) as? KoCell {
+        if let cell = tableView.cellForRow(at: indexPath) as? MuCell {
             if cell != prevCell {
                 
                 if let event = cell.event, event.type == .memo, event.title == "Memo" {
@@ -26,7 +26,7 @@ extension EventTableVC {
     
     
     /// - via: PhoneCrown.singleTap
-    func toggleCurrentCell() -> (KoEvent?, Bool) {
+    func toggleCurrentCell() -> (MuEvent?, Bool) {
         if prevCell != nil {
             if prevCell is EventCell {
                 let cell = prevCell as! EventCell
@@ -42,7 +42,7 @@ extension EventTableVC {
     /// - via: EventTable+PhoneCrown.selectMiddleRow
     /// - via: tableView(_,didSelectRowAt)
     
-    func nextKoCell(_ cell: KoCell) {
+    func nextKoCell(_ cell: MuCell) {
         
         clearPrevCell()
         cell.setHighlight(true)
@@ -52,8 +52,8 @@ extension EventTableVC {
     }
     
     
-    /// - via:  EventTable+KoEvent.scroll(Dial|Scene)Event
-    func nextDialCell(_ cell: KoCell) {
+    /// - via:  EventTable+MuEvent.scroll(Dial|Scene)Event
+    func nextDialCell(_ cell: MuCell) {
         
         if prevCell != cell {
             clearPrevCell()

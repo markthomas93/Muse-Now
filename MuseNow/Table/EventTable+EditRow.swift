@@ -18,12 +18,12 @@ extension EventTableVC {
         let events = dateEvents[date]
         let event = events?[indexPath.row]
         if let cell = tableView.cellForRow(at: indexPath) {
-            let klioCell = cell as! EventCell
+            let museCell = cell as! EventCell
             if (event?.mark)! {
                 let rowAction = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "⊗" , handler: { (action:UITableViewRowAction, indexPath:IndexPath) -> Void in
                     
                     event?.mark = false
-                    klioCell.mark?.setMark(false)
+                    museCell.mark?.setMark(false)
                     tableView.setEditing(false, animated: true)
                     
                 })
@@ -34,7 +34,7 @@ extension EventTableVC {
                 let rowAction = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "⊕" , handler: { (action:UITableViewRowAction, indexPath:IndexPath) -> Void in
                     
                     event?.mark = true
-                    klioCell.mark?.setMark(true)
+                    museCell.mark?.setMark(true)
                     tableView.setEditing(false, animated: true)
                     
                 })

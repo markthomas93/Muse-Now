@@ -1,6 +1,4 @@
 //  Hear.swift
-//  Klio
-//
 //  Created by warren on 10/20/17.
 //  Copyright © 2017 Muse. All rights reserved.
 
@@ -30,7 +28,6 @@ class Hear {
     var remote  = HearSet([.mute])     // other device's harware route
 
     // allowed output via
-
 
     var port    = "unknown port"     // audio port
     var reason  = "unknown reason"   // reason for change
@@ -68,7 +65,7 @@ class Hear {
         
         switch reasonUint {
         case .oldDeviceUnavailable:     reason = "Unavailable "
-        case .newDeviceAvailable:       reason = "new Device "
+        case .newDeviceAvailable:       reason = "New Device "
         case .routeConfigurationChange: reason = "Route change "
         case .categoryChange:           reason = "Category change "
         default:                        reason = "\(reasonUint)"
@@ -135,9 +132,9 @@ class Hear {
      */
     func updateRemote() {
 
-        Session.shared.sendMsg( ["class" : "hear",
-                                 "putRoute" : route,
-                                 "getRoute" : "yo"])
+        Session.shared.sendMsg( ["class"       : "HearVia",
+                                 "putRouteNow" : route,
+                                 "getRouteNow" : "yo"])
     }
 
 
@@ -176,18 +173,19 @@ class Hear {
 
         switch act {
 
-        case .hearRemote:   options.insert(.remote)    ; route = .remote
-        case .hearSpeaker:  options.insert(.speaker)   ; route = .speaker
-        case .hearEarbuds:  options.insert(.earbuds)   ; route = .earbuds
-        case .hearAll:      options = [.remote, .speaker, .earbuds] ; route = local
+        case .hearRemote:   options.insert(.remote)
+        case .hearSpeaker:  options.insert(.speaker)
+        case .hearEarbuds:  options.insert(.earbuds)
+        case .hearAll:      options = [.remote, .speaker, .earbuds]
 
-        case .muteRemote:   options.remove(.remote)    ; route = options.contains(local) ? local : .mute
-        case .muteSpeaker:  options.remove(.speaker)   ; route = options.contains(local) ? local : .mute
-        case .muteEarbuds:  options.remove(.earbuds)   ; route = options.contains(local) ? local : .mute
-        case .muteAll:      options = [.mute]          ; route = .mute
+        case .muteRemote:   options.remove(.remote)
+        case .muteSpeaker:  options.remove(.speaker)
+        case .muteEarbuds:  options.remove(.earbuds)
+        case .muteAll:      options = [.mute]
 
         default: break
         }
+        updateRoute()
     }
 
  }

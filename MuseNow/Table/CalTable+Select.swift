@@ -11,7 +11,7 @@ extension CalTableVC {
 
      /// - via: EventTable+PhoneCrown.selectMiddleRow
      /// - via: tableView(_,didSelectRowAt)
-    func nextKoCell(_ cell: KoCell) {
+    func nextKoCell(_ cell: MuCell) {
         
         clearPrevCell()
         cell.setHighlight(true)
@@ -20,9 +20,9 @@ extension CalTableVC {
     }
     
 
-     /// - via:  EventTable+KoEvent.scroll(Dial|Scene)Event
+     /// - via:  EventTable+MuEvent.scroll(Dial|Scene)Event
 
-    func nextDialCell(_ cell: KoCell) {
+    func nextDialCell(_ cell: MuCell) {
         
         if prevCell != cell {
             clearPrevCell()

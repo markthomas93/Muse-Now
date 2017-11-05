@@ -49,11 +49,8 @@ class PhoneCrown: TouchForce {
         let centerY = crownSize.height / 2 + crownOffset.y
         let divOfs = deltaY / maxOffset
         let offsetY = (divOfs - floor(divOfs)) * maxOffset
-        if dimmed {
-            UIColor.darkGray.set()
-        } else {
-            UIColor.white.set()
-        }
+        if dimmed   { UIColor.darkGray.set() }
+        else        { UIColor.white.set() }
         
         //printLog (String(format:"deltaY: %.1f mod %.1f -> divOfs: %.1f", deltaY, maxOffset, divOfs))
         for groove in 0 ..< grooves {
@@ -94,7 +91,7 @@ class PhoneCrown: TouchForce {
             }
             //printLog ("\(#function) deltaY:\(deltaY) deltaYY:\(deltaYY) row:\(prevDeltaRow) -> \(nextDeltaRow)")
             
-            eventTable.deltaTableRow(isRight ? -deltaCell : deltaCell)
+            eventTable.deltaTableRow(deltaCell)
             Haptic.play(.click)
         }
         prevDeltaRow = nextDeltaRow
@@ -132,7 +129,7 @@ class PhoneCrown: TouchForce {
             updating = true
             twin?.movedSlave()
             updateTableRow(delta)
-            twin?.deltaY = -deltaY
+            twin?.deltaY = deltaY
             movedSlave()
             updating = false
         }

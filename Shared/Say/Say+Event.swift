@@ -1,10 +1,6 @@
-//
 //  Say+Event.swift
-//  Klio
-//
 //  Created by warren on 4/24/17.
 //  Copyright © 2017 Muse. All rights reserved.
-//
 
 import Foundation
 
@@ -24,7 +20,7 @@ extension Say {
      - Scene.touchDialPan ⟶ Dots+Action.updateViaPan
      - Scene+action.crownAction ⟶ Dots+Action.crownNextEventOrHour
      */
-    func sayDotEvent(_ event: KoEvent!, isTouching:Bool) {
+    func sayDotEvent(_ event: MuEvent!, isTouching:Bool) {
         
         switch event.type {
         case .time: sayCurrentTime(event, isTouching) // announce time
@@ -39,7 +35,7 @@ extension Say {
      Announce current time
      - via: sayDotEvent
      */
-    func sayCurrentTime(_ event:KoEvent!, _ isTouching:Bool) {
+    func sayCurrentTime(_ event:MuEvent!, _ isTouching:Bool) {
         
         let dateFormatter = DateFormatter()
 
@@ -62,7 +58,7 @@ extension Say {
      play audio recording, optionally play its time
      - via: Say+Event.sayDotEvent
      */
-    func sayRecording(_ event: KoEvent!) {
+    func sayRecording(_ event: MuEvent!) {
         
         updateDialog(event, type:.sayMemo, spoken:event.eventId, title:event.title)
         
@@ -71,7 +67,7 @@ extension Say {
             let timeNow = Date().timeIntervalSince1970
             let prefix = timeNow < event.bgnTime ? "in " : ""
             let suffix = timeNow < event.bgnTime ? "" : " ago"
-            let elapse = prefix + KoDate.elapseTime(event.bgnTime) + suffix
+            let elapse = prefix + MuDate.elapseTime(event.bgnTime) + suffix
 
             updateDialog(event, type:.sayEventTime, spoken:elapse, title:elapse)
 
@@ -82,7 +78,7 @@ extension Say {
      announce elapsed time to or from event's begin time
      - via: Scene.update.scanning
      */
-    func sayElapseTime(_ event:KoEvent!) {
+    func sayElapseTime(_ event:MuEvent!) {
         
         updateDialog(event, type:.sayEventTitle, spoken:event.title, title:event.title)
 
@@ -91,7 +87,7 @@ extension Say {
             let timeNow = Date().timeIntervalSince1970
             let prefix = timeNow < event.bgnTime ? "in " : ""
             let suffix = timeNow < event.bgnTime ? "" : " ago"
-            let elapse = prefix + KoDate.elapseTime(event.bgnTime) + suffix
+            let elapse = prefix + MuDate.elapseTime(event.bgnTime) + suffix
         
             updateDialog(event, type:.sayEventTime, spoken:elapse, title:elapse)
         }
@@ -101,7 +97,7 @@ extension Say {
      Announce a marked dot's first occurring event
      - via: Scene.update.scanning
      */
-    func sayBeginTime(_ event: KoEvent!) {
+    func sayBeginTime(_ event: MuEvent!) {
         
         updateDialog(event, type:.sayEventTitle, spoken:event.title, title:event.title)
         
@@ -122,7 +118,7 @@ extension Say {
      announce an unmarked dot's time
      - via: Scene.update.scanning
      */
-    func sayDotTime(_ event: KoEvent!) {
+    func sayDotTime(_ event: MuEvent!) {
         
         if isSayDayOfWeek {
             let txt  = dayHour.getDowSpeak()

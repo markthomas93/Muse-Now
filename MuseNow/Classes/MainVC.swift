@@ -9,7 +9,6 @@ class MainVC: UIViewController {
     
     let session  = Session.shared
     let active   = Active.shared
-    let koEvents = KoEvents.shared
     let memos    = Memos.shared
     let marks    = Marks.shared
     let anim     = Anim.shared
@@ -33,14 +32,14 @@ class MainVC: UIViewController {
     override func viewDidLoad() {
         
         super.viewDidLoad()
-
-        Klio.shared.testScript()
+        view.accessibilityIgnoresInvertColors = true
+        Muse.shared.testScript()
 
         let viewW = self.view.frame.size.width
         let viewH = self.view.frame.size.height
         let dialW = dialSize.width
         let dialH = dialSize.height
-        let margin = CGFloat(4)
+        let margin = CGFloat(20)
         let panelY = viewH - dialH - margin // start of touch panel
         let crownW = (viewW - dialW)/2
 
@@ -107,9 +106,11 @@ class MainVC: UIViewController {
     override func viewWillDisappear(_ animated: Bool) { printLog("⟳ \(#function)")
         active.stopActive()
     }
-    
-    override var prefersStatusBarHidden : Bool {
+    override func prefersHomeIndicatorAutoHidden() -> Bool {
         return true
+    }
+    override var prefersStatusBarHidden : Bool {
+        return false
     }
         
   }

@@ -3,7 +3,7 @@ import UIKit
 class Dot {
     
     static let rgbDefault = UInt32(0x777777)
-    var events  = [KoEvent]()
+    var events  = [MuEvent]()
     var eventi  = Int(-1)       // index into currently viewed/heard event
     var rgb     = rgbDefault    // selectFade
     var elapse0 = TimeInterval(Double.greatestFiniteMagnitude)   // starting elapse time for events[0]
@@ -19,7 +19,7 @@ class Dot {
      get event closest to top of hour, with pref to events starting this hour
      via makeRgb, to choose the most relevant color for the dot
      */
-    func mostRecentEvent() -> KoEvent! {
+    func mostRecentEvent() -> MuEvent! {
         
         // no events so return nil
         if events.isEmpty {
@@ -32,8 +32,8 @@ class Dot {
         
         // find nearest future event to top of hour or past event with least elapsed time
         
-        var recentFuture: KoEvent!
-        var recentPast: KoEvent!
+        var recentFuture: MuEvent!
+        var recentPast: MuEvent!
         let yearSecs = TimeInterval(365*24*60*60)
         var elapseFuture =  yearSecs
         var elapsePast   = -yearSecs
@@ -71,7 +71,7 @@ class Dot {
         }
     }
     @discardableResult
-    func gotoEvent(_ findEvent:KoEvent) -> Bool {
+    func gotoEvent(_ findEvent:MuEvent) -> Bool {
         dotIndex = -1
         if events.count > 0 {
             for event in events {
@@ -84,10 +84,10 @@ class Dot {
         return false
     }
     
-    func gotoNearestTime(_ dotTime:TimeInterval) -> KoEvent! {
+    func gotoNearestTime(_ dotTime:TimeInterval) -> MuEvent! {
         // setup capture of nearest event
         var nearestDelta = Double.greatestFiniteMagnitude
-        var nearestEvent: KoEvent! 
+        var nearestEvent: MuEvent! 
         var nearestIndex = 0
         
         if events.count > 0 {
@@ -127,7 +127,7 @@ class Dot {
         return false
     }
 
-    func getFirstMark(_ isClockwise: Bool) -> KoEvent! {
+    func getFirstMark(_ isClockwise: Bool) -> MuEvent! {
         
         if events.count > 0 {
             // at current hour, search for a special time event and start from there
@@ -172,7 +172,7 @@ class Dot {
         return false
     }
     // get next mark that starts on this hour
-    func getNextMark(_ isClockwise: Bool) -> KoEvent! {
+    func getNextMark(_ isClockwise: Bool) -> MuEvent! {
         
         if events.count > 0 {
             if isClockwise {
@@ -202,7 +202,7 @@ class Dot {
     }
     // crown events
 
-    func startsThisHour(_ event: KoEvent) -> Bool {
+    func startsThisHour(_ event: MuEvent) -> Bool {
         let eventElapse = (event.bgnTime - timeHour) / 60
         return eventElapse >= 0 && eventElapse < 60
     }
@@ -214,11 +214,11 @@ class Dot {
 
     // ----------- for this hour ------------------------------
 
-    func getEventInRangeForHour0(_ range:StrideThrough<Int>, _ inFuture:Bool) -> KoEvent! {
+    func getEventInRangeForHour0(_ range:StrideThrough<Int>, _ inFuture:Bool) -> MuEvent! {
 
         let timeNow = Date().timeIntervalSince1970
         var nearestDelta = Double.greatestFiniteMagnitude
-        var nearestEvent: KoEvent! = nil
+        var nearestEvent: MuEvent! = nil
         var nearestIndex = -1
 
         for ii in range {
@@ -252,7 +252,7 @@ class Dot {
         return nearestEvent
     }
 
-    func gotoTimeEventForHour0() -> KoEvent! {
+    func gotoTimeEventForHour0() -> MuEvent! {
         eventi = -1
         for event in events {
             eventi += 1
@@ -266,14 +266,14 @@ class Dot {
     }
 
     /// get first event that starts on this hour, does not need mark
-    func getFirstEventForThisHour(_ isClockwise: Bool, _ inFuture:Bool, _ dotPrev: Float) -> KoEvent! {
+    func getFirstEventForThisHour(_ isClockwise: Bool, _ inFuture:Bool, _ dotPrev: Float) -> MuEvent! {
 
         eventi = -1
         return getNextEventForThisHour(isClockwise, inFuture, dotPrev)
     }
     
     /// get next event that starts on this hour, does not need mark
-    func getNextEventForThisHour(_ isClockwise: Bool, _ inFuture:Bool, _ dotPrev: Float) -> KoEvent! {
+    func getNextEventForThisHour(_ isClockwise: Bool, _ inFuture:Bool, _ dotPrev: Float) -> MuEvent! {
         
         if events.count > 0 {
 
@@ -322,7 +322,7 @@ class Dot {
     }
 
 
-    func getCurrentEvent() -> KoEvent! {
+    func getCurrentEvent() -> MuEvent! {
         if events.count==0 {
             return nil
         }
@@ -337,7 +337,7 @@ class Dot {
     /// events are presorted by bgnTime before insertion.
     /// so, can simply insert at index 0
     /// reset say index
-    func insertEvent(_ event: KoEvent, _ elapse: TimeInterval) {
+    func insertEvent(_ event: MuEvent, _ elapse: TimeInterval) {
         
         if elapse0 > elapse {
             elapse0 = elapse
@@ -354,7 +354,7 @@ class Dot {
     
     /// move event's position within same dot, such as a timeCell.event that changes every minute
     /// - via: Dots.updateTime(event:)
-    func moveEvent(_ event: KoEvent) {
+    func moveEvent(_ event: MuEvent) {
         for i in 0 ..< events.count {
             if events[i].eventId == event.eventId {
                 events.remove(at: i)
@@ -365,7 +365,7 @@ class Dot {
         }
     }
     
-    func removeEvent(_ event: KoEvent) {
+    func removeEvent(_ event: MuEvent) {
         for i in 0 ..< events.count {
             if events[i].eventId == event.eventId {
                 events.remove(at: i)
@@ -376,7 +376,7 @@ class Dot {
         }
     }
     
-    func addEvent(_ event: KoEvent) {
+    func addEvent(_ event: MuEvent) {
         for i in 0 ..< events.count {
             if events[i].bgnTime >= event.bgnTime {
                 events.insert(event, at: i)
@@ -402,7 +402,7 @@ class Dot {
      /// - via: Scene.markAction
      */
     @discardableResult
-    func setMark(_ mark: Bool, _ markEvent:KoEvent!) -> KoEvent! {
+    func setMark(_ mark: Bool, _ markEvent:MuEvent!) -> MuEvent! {
         
         if events.count > 0 {
             eventi = min(max(0, eventi), events.count-1)
@@ -430,7 +430,7 @@ class Dot {
         }
             // user requested adding a mark on an empty dot
         else if mark {
-            let event = KoEvent(.mark,"+")
+            let event = MuEvent(.mark,"+")
             return addNote(event)
         }
         return nil
@@ -453,7 +453,7 @@ class Dot {
         // has a pseudo mark event
         if hasTypeEvent {
             elapse0 = TimeInterval(Double.greatestFiniteMagnitude)
-            var newEvents = [KoEvent]()
+            var newEvents = [MuEvent]()
             for event in events {
                 if event.type != hideType {
                     newEvents.append(event)
@@ -469,7 +469,7 @@ class Dot {
      /// - via: Scene.markAction-> dots.clearAllMarks()
      /// - via: self.setMark
 
-    func addNote(_ event: KoEvent) -> KoEvent! {
+    func addNote(_ event: MuEvent) -> MuEvent! {
         
         let timeNow = Date().timeIntervalSince1970
         let timeElapse = (timeNow - timeHour) / 60

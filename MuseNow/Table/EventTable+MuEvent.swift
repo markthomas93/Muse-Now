@@ -1,5 +1,5 @@
 //
-//  EventTable+KoEvent.swift
+//  EventTable+MuEvent.swift
 
 import UIKit
 
@@ -8,15 +8,15 @@ extension EventTableVC {
     /// update indexPath for cell
     /// - via: self.scroll(View|Select)event
     @discardableResult
-    func setPathForEvent(_ event: KoEvent) -> UITableViewCell! {
+    func setPathForEvent(_ event: MuEvent) -> UITableViewCell! {
         
         for cell in tableView.visibleCells {
             
-            let klioCell = cell as! KoCell
-            if klioCell.event.eventId == event.eventId {
+            let museCell = cell as! MuCell
+            if museCell.event.eventId == event.eventId {
                 
-                prevIndexPath = tableView.indexPath(for: klioCell)!
-                //print("📅 \(#function): \(klioCell.event.title)")
+                prevIndexPath = tableView.indexPath(for: museCell)!
+                //print("📅 \(#function): \(museCell.event.title)")
                 return cell
             }
         }
@@ -27,7 +27,7 @@ extension EventTableVC {
     
     /// reposition table with event in center and highlight cell
     /// - via: Scene.update.(scanning marking)
-    func scrollSceneEvent(_ event: KoEvent) {
+    func scrollSceneEvent(_ event: MuEvent) {
         
         // if duplicate event is still on screeen
         if scrollingEventIsVisible(event) { return }
@@ -46,14 +46,14 @@ extension EventTableVC {
             },
                            completion: { _ in
                             if let cell = self.setPathForEvent(event) {
-                                self.nextDialCell(cell as! KoCell)
+                                self.nextDialCell(cell as! MuCell)
                             }
             })
         }
     }
 
 
-    func scrollingEventIsVisible(_ event: KoEvent) -> Bool {
+    func scrollingEventIsVisible(_ event: MuEvent) -> Bool {
         // if duplicate event is still on screeen
         if let scrollingEvent = scrollingEvent,
             scrollingEvent.eventId == event.eventId,
@@ -68,7 +68,7 @@ extension EventTableVC {
     /// reposition table with event in center
     /// - via: Anim.touchDialPan
     
-    func scrollDialEvent(_ event: KoEvent,_ delta: Int) {
+    func scrollDialEvent(_ event: MuEvent,_ delta: Int) {
         
         if scrollingEventIsVisible(event) { return }
         if prevCell != nil && prevCell.event.eventId == event.eventId {
@@ -93,7 +93,7 @@ extension EventTableVC {
                            completion: { finished in
                             if finished {
                                 if let cell = self.setPathForEvent(event) {
-                                    self.nextDialCell(cell as! KoCell)
+                                    self.nextDialCell(cell as! MuCell)
                                 }
                             }
             })

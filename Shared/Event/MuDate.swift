@@ -2,7 +2,7 @@
 import Foundation
 
 
-open class KoDate {
+open class MuDate {
 
     /// date as hh:mm:ss
     class func getHourMinSec (_ date: Date = Date()) -> String  {

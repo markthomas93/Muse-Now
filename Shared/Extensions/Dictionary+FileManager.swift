@@ -1,10 +1,6 @@
-//
 //  Dictionary+.swift
-//  Klio
-//
 //  Created by warren on 7/3/17.
 //  Copyright © 2017 Muse. All rights reserved.
-//
 
 import Foundation
 

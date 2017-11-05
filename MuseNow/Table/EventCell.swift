@@ -2,7 +2,7 @@
 
 import UIKit
 
-class EventCell: KoCell {
+class EventCell: MuCell {
 
     let rowHeight = CGFloat(36)         // timeHeight * (1 + 1/phi2)
 
@@ -12,14 +12,14 @@ class EventCell: KoCell {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var mark:  ToggleDot!
     
-    func setCellEvent(_ event_: KoEvent!, _ tableView: UITableView!) {
+    func setCellEvent(_ event_: MuEvent!, _ tableView: UITableView!) {
         
         event = event_
         mark.setMark(event.mark)
         contentView.backgroundColor = cellColor
         
         // color dot
-        color.image = UIImage.circle(diameter: 10, color:KoColor.getUIColor(event.rgb))
+        color.image = UIImage.circle(diameter: 10, color:MuColor.getUIColor(event.rgb))
         
         // hour:Min
         let bgnDate = Date(timeIntervalSince1970:event.bgnTime)

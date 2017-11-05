@@ -38,7 +38,7 @@ class DayHour {
     func getIndexForTime(_ time: TimeInterval) -> Int {
          return Int((time - time0)/3600.0)
     }
-    func setIndexForEvent(_ event:KoEvent) {
+    func setIndexForEvent(_ event:MuEvent) {
         let relativeHour =  getIndexForTime(event.bgnTime)
         setIndex(relativeHour)
     }
@@ -65,7 +65,7 @@ class DayHour {
      */
     func updateTime() -> Bool {
         let prevTime0 = time0
-        time0    = KoDate.relativeHour(0).timeIntervalSince1970
+        time0    = MuDate.relativeHour(0).timeIntervalSince1970
         hour0    = Calendar.current.component(.hour,    from: Date())
         weekday0 = Calendar.current.component(.weekday, from: Date())
         return time0 != prevTime0

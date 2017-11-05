@@ -1,20 +1,20 @@
 import EventKit
 import UIKit
 
-/// KoEvents are are view upon EventKit calendar events and reminders
+/// MuEvents are are view upon EventKit calendar events and reminders
 /// including a special timeEvent that changes every minute
-class KoEvents {
+class MuEvents {
     
-    static let shared = KoEvents()
+    static let shared = MuEvents()
     static var eventsChangedTime = TimeInterval(0)
     let session = Session.shared
     let memos = Memos.shared
     let marks = Marks.shared
 
     var calendars = [EKCalendar]()
-    var events = [KoEvent]()
-    var timeEvent: KoEvent!
-    var timeEventIndex : Int = -1   // index of timeEvent in koEvents
+    var events = [MuEvent]()
+    var timeEvent: MuEvent!
+    var timeEventIndex : Int = -1   // index of timeEvent in muEvents
 
     let eventStore = EKEventStore()
 
@@ -33,14 +33,14 @@ class KoEvents {
     }
 
     func getRealEvents(_ completion: @escaping (
-        _ ekEvents      : [KoEvent],
-        _ ekReminders   : [KoEvent]) -> Void) -> Void  {
+        _ ekEvents      : [MuEvent],
+        _ ekReminders   : [MuEvent]) -> Void) -> Void  {
         
         let queue = DispatchQueue(label: "com.muse.getRealEvents", attributes: .concurrent, target: .main)
         let group = DispatchGroup()
         
-        var ekEvents    : [KoEvent] = []
-        var ekReminders : [KoEvent] = []
+        var ekEvents    : [MuEvent] = []
+        var ekReminders : [MuEvent] = []
 
         // ekevents
         group.enter()
@@ -80,7 +80,7 @@ class KoEvents {
     
     ///  Get EventKit events after getting permission
 
-    func getEkEvents(completion: @escaping (_ result:[KoEvent]) -> Void) {
+    func getEkEvents(completion: @escaping (_ result:[MuEvent]) -> Void) {
         
         let store = EKEventStore()
         
@@ -101,14 +101,14 @@ class KoEvents {
         }
     }
 
-    func readEkEvents(_ store: EKEventStore, _ completion: @escaping (_ result:[KoEvent]) -> Void) {
+    func readEkEvents(_ store: EKEventStore, _ completion: @escaping (_ result:[MuEvent]) -> Void) {
         
         let store = EKEventStore()
         
         Cals.shared.unarchiveCals(store) {
             
-            let (bgnTime,endTime) = KoDate.prevNextWeek() // previous and next week date range
-            var events: [KoEvent] = [] // events
+            let (bgnTime,endTime) = MuDate.prevNextWeek() // previous and next week date range
+            var events: [MuEvent] = [] // events
             
             let ekCals = Cals.shared.ekCals
             let idCal = Cals.shared.idCal
@@ -123,8 +123,8 @@ class KoEvents {
             
             if routineCals.count > 0 {
                 let pred = store.predicateForEvents(withStart: bgnTime!, end: endTime!, calendars:routineCals)
-                for klioEvent in store.events(matching: pred) {
-                    events.append(KoEvent(klioEvent,.routine))
+                for event in store.events(matching: pred) {
+                    events.append(MuEvent(event,.routine))
                 }
             }
             if otherCals.count > 0 {
@@ -132,7 +132,7 @@ class KoEvents {
                 let ekEvents = store.events(matching: pred)
                 
                 for ekEvent in ekEvents {
-                    events.append(KoEvent(ekEvent))
+                    events.append(MuEvent(ekEvent))
                 }
             }
             events.sort { $0.bgnTime < $1.endTime }
@@ -141,7 +141,7 @@ class KoEvents {
     }
 
     /// Get EventKit reminder after getting permission
-    func getEkReminders(completion: @escaping (_ result:[KoEvent]) ->Void) -> Void {
+    func getEkReminders(completion: @escaping (_ result:[MuEvent]) ->Void) -> Void {
         
         let store = EKEventStore()
         
@@ -153,14 +153,14 @@ class KoEvents {
                     print("there was an errror \(error.localizedDescription)")
                 }
                 if accessGranted {
-                    var events: [KoEvent] = []
-                    let (bgnTime,endTime) = KoDate.prevNextWeek()
+                    var events: [MuEvent] = []
+                    let (bgnTime,endTime) = MuDate.prevNextWeek()
                     let pred = store.predicateForIncompleteReminders(withDueDateStarting: bgnTime!, ending:endTime!, calendars: nil)
                     
                     store.fetchReminders(matching: pred, completion: { (reminders:[EKReminder]?) in
                         
                         for rem in reminders! {
-                            let mkRem = KoEvent(reminder: rem)
+                            let mkRem = MuEvent(reminder: rem)
                             events.append(mkRem)
                         }
                         completion(events)
@@ -174,7 +174,7 @@ class KoEvents {
     }
     
     
-      func addEvent(_ event:KoEvent) {
+      func addEvent(_ event:MuEvent) {
         events.append(event)
         if event.type == .memo {
             memos.addEvent(event)
@@ -184,7 +184,7 @@ class KoEvents {
         }
     }
     
-    func updateEvent(_ updateEvent:KoEvent) {
+    func updateEvent(_ updateEvent:MuEvent) {
         
         var index = events.binarySearch({$0.bgnTime < updateEvent.bgnTime})
 
@@ -238,7 +238,7 @@ class KoEvents {
     /// add a timer event, sort, and start timeEventTimer
     func sortTimeEventsStart() {
         if timeEvent == nil {
-            timeEvent = KoEvent(.time, "Time")
+            timeEvent = MuEvent(.time, "Time")
         }
         events.append(timeEvent)
         events.sort { lhs, rhs in
@@ -256,9 +256,9 @@ class KoEvents {
 
     /// attempt to get next mark, if non then next event
     ///  previous marked event, or previus event of none were marked
-    func getLastNextEvents() -> (KoEvent?, KoEvent?) {
-        var lastEvent: KoEvent!
-        var nextEvent: KoEvent!
+    func getLastNextEvents() -> (MuEvent?, MuEvent?) {
+        var lastEvent: MuEvent!
+        var nextEvent: MuEvent!
 
         let timeNow = Date().timeIntervalSince1970
         for event in events {

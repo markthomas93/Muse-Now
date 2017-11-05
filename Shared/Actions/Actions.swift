@@ -6,7 +6,7 @@ import EventKit
 public enum DoAction : Int { case
     unknown, gotoEvent,
 
-    speakOn, speakOff, speakLow, speakMedium, speakHigh, fadeColor,
+    speakOn, speakOff, speakLow, speakMedium, speakHigh, dialColor,
     memoOn, memoOff,
 
     hearEarbuds, hearSpeaker, hearRemote, hearAll,
@@ -47,21 +47,19 @@ class Actions {
     }
     
 
-    func fadeColor(_ fade:Float, isSender: Bool) {
+    func dialColor(_ fade:Float, isSender: Bool)  {
         
         scene?.uFade?.floatValue = Float(fade)
         
         if isSender {
             
-            Session.shared.sendMsg( ["class"     : "Actions",
-                                     "fadeColor" : fade])
+            Session.shared.sendMsg( ["class" : "Actions", "dialColor" : fade])
             
-            Settings.shared.updateAct(.fadeColor, fade)
+            Settings.shared.updateAct(.dialColor, fade)
         }
     }
     //-----------------------------------------
-    
-    
+
     func doSetTitle(_ title_: String) {
         #if os(watchOS) //????
             let root = WKExtension.shared().rootInterfaceController!
@@ -69,37 +67,41 @@ class Actions {
         #endif
     }
     
-    /// every minute, check to see if current time changes its relative position
-    /// - via: active.doMinuteTimerTick
+    /**
+     Every minute, check to see if current time changes its relative position
+     - via: active.doMinuteTimerTick
+     */
 
     func doMinuteTimerTick() {
-        if KoEvents.shared.timeEvent != nil {
-            KoEvents.shared.minuteTimerTick()
-            Dots.shared.updateTime(event: KoEvents.shared.timeEvent)
+        if MuEvents.shared.timeEvent != nil {
+            MuEvents.shared.minuteTimerTick()
+            Dots.shared.updateTime(event: MuEvents.shared.timeEvent)
             if let table = tableDelegate {
                 table.updateTimeEvent()
             }
         }
     }
     
-    /// - via: doAction
-    /// - via: Active.minuteTimerTick
-    /// - via: Cals.parseMsg
-    /// - via: FileMsg.parseMsg
-
+    /**
+     Rebuild UI
+     - via: doAction
+     - via: Active.minuteTimerTick
+     - via: Cals.parseMsg
+     - via: FileMsg.parseMsg
+     */
     func doRefresh(_ isSender:Bool) {
         
         scene?.pauseScene()
         
-        KoEvents.shared.updateEvents() {
+        MuEvents.shared.updateEvents() {
             
             self.scene?.updateSceneFinish()
-            Dots.shared.updateTime(event: KoEvents.shared.timeEvent)
+            Dots.shared.updateTime(event: MuEvents.shared.timeEvent)
             if let table = self.tableDelegate {
 
-                table.updateTable(KoEvents.shared.events)
+                table.updateTable(MuEvents.shared.events)
                 table.updateTimeEvent()
-                if let timeEvent = KoEvents.shared.timeEvent {
+                if let timeEvent = MuEvents.shared.timeEvent {
                     table.scrollSceneEvent(timeEvent)
                 }
             }
@@ -110,6 +112,7 @@ class Actions {
                 Settings.shared.synchronize()
             }
         }
+        
         if isSender {
             
             Session.shared.sendMsg(
@@ -118,36 +121,36 @@ class Actions {
         }
     }
 
-    func doAddEvent(_ event:KoEvent, isSender:Bool) {
+    func doAddEvent(_ event:MuEvent, isSender:Bool) {
         
         scene.pauseScene()
-        KoEvents.shared.addEvent(event)
+        MuEvents.shared.addEvent(event)
         if let table = tableDelegate {
-            table.updateTable(KoEvents.shared.events)
+            table.updateTable(MuEvents.shared.events)
         }
         scene.updateSceneFinish()
         
         if isSender {
             let data = NSKeyedArchiver.archivedData(withRootObject:event)
             Session.shared.sendMsg(
-                ["class" : "KoEvent",
+                ["class" : "MuEvent",
                  "addEvent" : data])
         }
     }
     
       
-    func doUpdateEvent(_ event:KoEvent, isSender: Bool) {
+    func doUpdateEvent(_ event:MuEvent, isSender: Bool) {
         
         scene.pauseScene()
-        KoEvents.shared.updateEvent(event)
-        tableDelegate?.updateTable(KoEvents.shared.events)
+        MuEvents.shared.updateEvent(event)
+        tableDelegate?.updateTable(MuEvents.shared.events)
         scene.updateSceneFinish()
         if event.type == .memo {
             Memos.shared.archive()
         }
         if isSender {
             let data = NSKeyedArchiver.archivedData(withRootObject:event)
-            Session.shared.sendMsg(["class"       : "KoEvent",
+            Session.shared.sendMsg(["class"       : "MuEvent",
                                     "updateEvent" : data])
         }
         else {
@@ -263,7 +266,7 @@ class Actions {
 
 
      /// - via: doToggleMark, parseMsg,
-    func doAction(_ act: DoAction, _ event:KoEvent! = nil, _ index:Int = 0, isSender:Bool = false) {
+    func doAction(_ act: DoAction, _ event:MuEvent! = nil, _ index:Int = 0, isSender:Bool = false) {
         
         printLog("⌘ \(#function):\(act) event:\(event?.title ?? "nil")")
         
@@ -303,7 +306,7 @@ class Actions {
     }
 
     /// via WatchCon.Record.recordMenuFinish
-    func parseString(_ str: String, _ event: KoEvent!,_ index: Int, isSender:Bool) {
+    func parseString(_ str: String, _ event: MuEvent!,_ index: Int, isSender:Bool) {
         
         printLog("⌘ \(#function):\(str)")
         
@@ -324,7 +327,7 @@ class Actions {
      - via: EventTable+Select.(toggleCurrentCell actionTap)
      - via: WatchCon.menu(Mark Clear)Action
      */
-    func markAction(_ act:DoAction, _ event:KoEvent!, _ index: Int, _ isSender:Bool) {
+    func markAction(_ act:DoAction, _ event:MuEvent!, _ index: Int, _ isSender:Bool) {
         
         printLog("✓ \(#function) \(act) \(event != nil ? event.title : "nil") isSender:\(isSender)")
         
@@ -365,7 +368,7 @@ class Actions {
         }
     }
 
-    func sendAction(_ act:DoAction, _ event:KoEvent!, _ time: TimeInterval) {
+    func sendAction(_ act:DoAction, _ event:MuEvent!, _ time: TimeInterval) {
         
         var msg : [String:Any] = [
             "class"   : "Actions",

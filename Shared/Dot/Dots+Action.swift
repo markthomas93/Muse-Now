@@ -17,7 +17,7 @@ extension Dots {
      User twiddling face of screen dial, slowly
      - via:: Scene.touchDialPan
      */
-    func updateFeedback(_ event: KoEvent!, _ isClockwise_:Bool,_ isFuture:Bool,_ isSlow: Bool,_ isNewDay: Bool,_ flipFuture: Bool) {
+    func updateFeedback(_ event: MuEvent!, _ isClockwise_:Bool,_ isFuture:Bool,_ isSlow: Bool,_ isNewDay: Bool,_ flipFuture: Bool) {
 
         feedbackTimer.invalidate()
 

@@ -1,5 +1,5 @@
 //  Complication.swift
-//  Klio WatchKit Complication
+//  Muse WatchKit Complication
 //
 //  Created by warren on 11/9/16.
 //  Copyright © 2016 Muse. All rights reserved.
@@ -24,7 +24,7 @@ class Complicated {
                 server.reloadTimeline(for:complication)
             }
         }
-        let date = KoDate.relativeMinute(2) //.relativeHour(1)
+        let date = MuDate.relativeMinute(2) //.relativeHour(1)
         self.scheduleNextUpdate(date)
     }
 
@@ -37,7 +37,7 @@ class Complicated {
                 server.extendTimeline(for:complication)
             }
         }
-        let date = KoDate.relativeHour(1) //.relativeMinute(2) //
+        let date = MuDate.relativeHour(1) //.relativeMinute(2) //
         self.scheduleNextUpdate(date)
     }
 
@@ -49,7 +49,7 @@ class Complicated {
         complicationTimer = Timer(fire: date, interval: 0, repeats: false, block:{_ in
             self.extendTimelines()
             printLog("✺⟳ \(#function) fired: \(date)")
-            //let date = KoDate.relativeMinute(2)
+            //let date = MuDate.relativeMinute(2)
         })
 
         // otherwise in background
@@ -91,7 +91,7 @@ class Complication: NSObject, CLKComplicationDataSource {
     func getImageProvider(_ hourDelta:Int) -> CLKImageProvider? {
 
         let rgb = Dots.shared.future[hourDelta].rgb
-        let tint = KoColor.getUIColor(rgb)
+        let tint = MuColor.getUIColor(rgb)
 
         // get next hour
         if hourDelta == 1 {
@@ -125,7 +125,7 @@ class Complication: NSObject, CLKComplicationDataSource {
     }
 
     func getTemplate(for complication: CLKComplication, hour: Int) -> CLKComplicationTemplate! {
-        let (lastEvent, nextEvent) = KoEvents.shared.getLastNextEvents()
+        let (lastEvent, nextEvent) = MuEvents.shared.getLastNextEvents()
         var title  = ""
         var bgnTime = TimeInterval(0)
         var endTime = TimeInterval(0)
@@ -147,8 +147,8 @@ class Complication: NSObject, CLKComplicationDataSource {
             bgnTime = Date().timeIntervalSince1970
             endTime = bgnTime
         }
-        bgnDate = KoDate.dateToString(bgnTime , "EEEE h:mm")
-        endDate = KoDate.dateToString(endTime , "EEEE h:mm")
+        bgnDate = MuDate.dateToString(bgnTime , "EEEE h:mm")
+        endDate = MuDate.dateToString(endTime , "EEEE h:mm")
 
         printLog("✺ \(#function) family:\(complication.family.rawValue)")
 
@@ -215,7 +215,7 @@ class Complication: NSObject, CLKComplicationDataSource {
 
     func getCurrentTimelineEntry(for complication: CLKComplication, withHandler handler: @escaping (CLKComplicationTimelineEntry?) -> Void) {
 
-        let hour0 = KoDate.relativeHour(0)
+        let hour0 = MuDate.relativeHour(0)
         printLog("✺ getCurrentTimelineEntry date:\(hour0)")
 
         var entry: CLKComplicationTimelineEntry!
@@ -224,7 +224,7 @@ class Complication: NSObject, CLKComplicationDataSource {
 
             entry = CLKComplicationTimelineEntry(date:hour0, complicationTemplate: template)
         }
-        let date = KoDate.relativeHour(1)//relativeMinute(2)
+        let date = MuDate.relativeHour(1)//relativeMinute(2)
         Complicated.shared.scheduleNextUpdate(date)
         handler(entry)
     }
@@ -241,7 +241,7 @@ class Complication: NSObject, CLKComplicationDataSource {
     func getTimelineEntries(for complication: CLKComplication, after date: Date, limit: Int, withHandler handler: @escaping ([CLKComplicationTimelineEntry]?) -> Void) {
         var entries = [CLKComplicationTimelineEntry]()
         for hour in 0...1 {
-            let nextDate = KoDate.relativeHour(hour)
+            let nextDate = MuDate.relativeHour(hour)
             if nextDate.timeIntervalSince(date) > 0,
                 let template = getTemplate(for: complication, hour: hour)  {
 
@@ -250,7 +250,7 @@ class Complication: NSObject, CLKComplicationDataSource {
                 entries.append(CLKComplicationTimelineEntry.init(date: nextDate, complicationTemplate: template))
             }
         }
-        let date = KoDate.relativeHour(1) //.relativeMinute(2) //
+        let date = MuDate.relativeHour(1) //.relativeMinute(2) //
         Complicated.shared.scheduleNextUpdate(date)
         handler(entries)
     }

@@ -4,7 +4,7 @@ import EventKit
 
 public enum TypeColor: UInt { case red,orange,yellow,green,blue,purple,violet,gray,white,clear}
 
-class KoColor {
+class MuColor {
     
     class func makeColor32(_ red:CGFloat, _ green:CGFloat, _ blue:CGFloat) -> UInt32 {
         
@@ -59,16 +59,16 @@ class KoColor {
                     if names.count > 1 {
                         let name = names[1]
                         switch name {
-                        case "red"      : return KoColor.makeTypeColor(.red)
-                        case "orange"   : return KoColor.makeTypeColor(.orange)
-                        case "yellow"   : return KoColor.makeTypeColor(.yellow)
-                        case "green"    : return KoColor.makeTypeColor(.green)
-                        case "blue"     : return KoColor.makeTypeColor(.blue)
-                        case "purple"   : return KoColor.makeTypeColor(.purple)
-                        case "violet"   : return KoColor.makeTypeColor(.violet)
-                        case "gray"     : return KoColor.makeTypeColor(.gray)
-                        case "white"    : return KoColor.makeTypeColor(.white)
-                        default         : return KoColor.makeTypeColor(.gray)
+                        case "red"      : return MuColor.makeTypeColor(.red)
+                        case "orange"   : return MuColor.makeTypeColor(.orange)
+                        case "yellow"   : return MuColor.makeTypeColor(.yellow)
+                        case "green"    : return MuColor.makeTypeColor(.green)
+                        case "blue"     : return MuColor.makeTypeColor(.blue)
+                        case "purple"   : return MuColor.makeTypeColor(.purple)
+                        case "violet"   : return MuColor.makeTypeColor(.violet)
+                        case "gray"     : return MuColor.makeTypeColor(.gray)
+                        case "white"    : return MuColor.makeTypeColor(.white)
+                        default         : return MuColor.makeTypeColor(.gray)
                         }
                     }
                 }

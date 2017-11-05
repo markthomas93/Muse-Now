@@ -8,7 +8,7 @@ extension EventTableVC {
     /// - via: actions.doAddEvent
     /// - via: actions.doUpdateEvent
 
-    func updateTable(_ events: [KoEvent]) {
+    func updateTable(_ events: [MuEvent]) {
 
         updating  = true // don't allow user interaction while updating table
         

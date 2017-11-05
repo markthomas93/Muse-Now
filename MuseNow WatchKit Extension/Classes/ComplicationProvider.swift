@@ -24,7 +24,7 @@ class ComplicationProvider {
 
         let dot = Dots.shared.future[hourDelta]
         let rgb = dot.rgb
-        tint = KoColor.getUIColor(rgb)
+        tint = MuColor.getUIColor(rgb)
 
         if  let watchCon = WKExtension.shared().rootInterfaceController as? WatchCon,
             let skScene = watchCon.skInterface,
@@ -65,7 +65,7 @@ class ComplicationProvider {
         if radians != testRadians { return true }
 
         let rgb = Dots.shared.future[hourDelta].rgb
-        let testTint = KoColor.getUIColor(rgb)
+        let testTint = MuColor.getUIColor(rgb)
         if tint != testTint { return true }
         return false
     }

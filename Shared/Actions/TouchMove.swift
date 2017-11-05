@@ -70,9 +70,9 @@ class TouchMove {
     }
 
     func doBegin(_ pos: CGPoint, _ timeStamp: TimeInterval) {
-         Actions.shared.fadeColor(Float(pos.x/size.width), isSender:true)
+         Actions.shared.dialColor(Float(pos.x/size.width), isSender:true)
     }
     func doMove(_ pos: CGPoint, _ timestamp: TimeInterval) {
-         Actions.shared.fadeColor(Float(pos.x/size.width), isSender:true)
+         Actions.shared.dialColor(Float(pos.x/size.width), isSender:true)
     }
 }

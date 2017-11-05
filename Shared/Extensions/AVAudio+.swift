@@ -1,10 +1,6 @@
-//
 //  AVAudio+.swift
-//  Klio
-//
 //  Created by warren on 9/6/17.
 //  Copyright © 2017 Muse. All rights reserved.
-//
 
 import Foundation
 import AVFoundation

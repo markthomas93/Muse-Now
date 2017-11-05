@@ -8,8 +8,8 @@ extension CalTableVC {
     func updateCellMarks() {
         for cell in tableView.visibleCells {
             if cell is CalCell {
-                let klioCell = cell as! CalCell
-                klioCell.mark.setMark(klioCell.isShowCal)
+                let museCell = cell as! CalCell
+                museCell.mark.setMark(museCell.isShowCal)
             }
         }
     }

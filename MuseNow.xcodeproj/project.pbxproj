@@ -18,12 +18,6 @@
 		8004F6E31FA3ED5E00F7ED94 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F6C61FA3ED5E00F7ED94 /* Types.swift */; };
 		8004F6E41FA3ED5E00F7ED94 /* Visitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F6C71FA3ED5E00F7ED94 /* Visitor.swift */; };
 		8004F6E51FA3ED5E00F7ED94 /* Visitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F6C71FA3ED5E00F7ED94 /* Visitor.swift */; };
-		8004F6E61FA3ED5E00F7ED94 /* Klio+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F6C91FA3ED5E00F7ED94 /* Klio+Test.swift */; };
-		8004F6E81FA3ED5E00F7ED94 /* Klio.par in Resources */ = {isa = PBXBuildFile; fileRef = 8004F6CA1FA3ED5E00F7ED94 /* Klio.par */; };
-		8004F6E91FA3ED5E00F7ED94 /* Klio.par in Resources */ = {isa = PBXBuildFile; fileRef = 8004F6CA1FA3ED5E00F7ED94 /* Klio.par */; };
-		8004F6EC1FA3ED5E00F7ED94 /* Klio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F6CC1FA3ED5E00F7ED94 /* Klio.swift */; };
-		8004F6EE1FA3ED5E00F7ED94 /* KlioFound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F6CD1FA3ED5E00F7ED94 /* KlioFound.swift */; };
-		8004F6EF1FA3ED5E00F7ED94 /* KlioFound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F6CD1FA3ED5E00F7ED94 /* KlioFound.swift */; };
 		8004F6F01FA3ED5E00F7ED94 /* Edge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F6CF1FA3ED5E00F7ED94 /* Edge.swift */; };
 		8004F6F11FA3ED5E00F7ED94 /* Edge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F6CF1FA3ED5E00F7ED94 /* Edge.swift */; };
 		8004F6F21FA3ED5E00F7ED94 /* Node+connect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F6D01FA3ED5E00F7ED94 /* Node+connect.swift */; };
@@ -82,20 +76,20 @@
 		8004F7761FA3EE2400F7ED94 /* Dots+Say.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F71E1FA3EE2400F7ED94 /* Dots+Say.swift */; };
 		8004F7771FA3EE2400F7ED94 /* Dots.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F71F1FA3EE2400F7ED94 /* Dots.swift */; };
 		8004F7781FA3EE2400F7ED94 /* Dots.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F71F1FA3EE2400F7ED94 /* Dots.swift */; };
-		8004F7791FA3EE2400F7ED94 /* KoColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7211FA3EE2400F7ED94 /* KoColor.swift */; };
-		8004F77A1FA3EE2400F7ED94 /* KoColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7211FA3EE2400F7ED94 /* KoColor.swift */; };
-		8004F77B1FA3EE2400F7ED94 /* KoDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7221FA3EE2400F7ED94 /* KoDate.swift */; };
-		8004F77C1FA3EE2400F7ED94 /* KoDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7221FA3EE2400F7ED94 /* KoDate.swift */; };
-		8004F77D1FA3EE2400F7ED94 /* KoEvent+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7231FA3EE2400F7ED94 /* KoEvent+Auth.swift */; };
-		8004F77E1FA3EE2400F7ED94 /* KoEvent+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7231FA3EE2400F7ED94 /* KoEvent+Auth.swift */; };
-		8004F77F1FA3EE2400F7ED94 /* KoEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7241FA3EE2400F7ED94 /* KoEvent.swift */; };
-		8004F7801FA3EE2400F7ED94 /* KoEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7241FA3EE2400F7ED94 /* KoEvent.swift */; };
-		8004F7811FA3EE2400F7ED94 /* KoEvents+Fake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7251FA3EE2400F7ED94 /* KoEvents+Fake.swift */; };
-		8004F7821FA3EE2400F7ED94 /* KoEvents+Fake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7251FA3EE2400F7ED94 /* KoEvents+Fake.swift */; };
-		8004F7831FA3EE2400F7ED94 /* KoEvents+Marks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7261FA3EE2400F7ED94 /* KoEvents+Marks.swift */; };
-		8004F7841FA3EE2400F7ED94 /* KoEvents+Marks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7261FA3EE2400F7ED94 /* KoEvents+Marks.swift */; };
-		8004F7851FA3EE2400F7ED94 /* KoEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7271FA3EE2400F7ED94 /* KoEvents.swift */; };
-		8004F7861FA3EE2400F7ED94 /* KoEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7271FA3EE2400F7ED94 /* KoEvents.swift */; };
+		8004F7791FA3EE2400F7ED94 /* MuColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7211FA3EE2400F7ED94 /* MuColor.swift */; };
+		8004F77A1FA3EE2400F7ED94 /* MuColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7211FA3EE2400F7ED94 /* MuColor.swift */; };
+		8004F77B1FA3EE2400F7ED94 /* MuDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7221FA3EE2400F7ED94 /* MuDate.swift */; };
+		8004F77C1FA3EE2400F7ED94 /* MuDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7221FA3EE2400F7ED94 /* MuDate.swift */; };
+		8004F77D1FA3EE2400F7ED94 /* MuEvent+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7231FA3EE2400F7ED94 /* MuEvent+Auth.swift */; };
+		8004F77E1FA3EE2400F7ED94 /* MuEvent+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7231FA3EE2400F7ED94 /* MuEvent+Auth.swift */; };
+		8004F77F1FA3EE2400F7ED94 /* MuEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7241FA3EE2400F7ED94 /* MuEvent.swift */; };
+		8004F7801FA3EE2400F7ED94 /* MuEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7241FA3EE2400F7ED94 /* MuEvent.swift */; };
+		8004F7811FA3EE2400F7ED94 /* MuEvents+Fake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7251FA3EE2400F7ED94 /* MuEvents+Fake.swift */; };
+		8004F7821FA3EE2400F7ED94 /* MuEvents+Fake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7251FA3EE2400F7ED94 /* MuEvents+Fake.swift */; };
+		8004F7831FA3EE2400F7ED94 /* MuEvents+Marks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7261FA3EE2400F7ED94 /* MuEvents+Marks.swift */; };
+		8004F7841FA3EE2400F7ED94 /* MuEvents+Marks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7261FA3EE2400F7ED94 /* MuEvents+Marks.swift */; };
+		8004F7851FA3EE2400F7ED94 /* MuEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7271FA3EE2400F7ED94 /* MuEvents.swift */; };
+		8004F7861FA3EE2400F7ED94 /* MuEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7271FA3EE2400F7ED94 /* MuEvents.swift */; };
 		8004F7871FA3EE2400F7ED94 /* Array+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7291FA3EE2400F7ED94 /* Array+.swift */; };
 		8004F7881FA3EE2400F7ED94 /* Array+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7291FA3EE2400F7ED94 /* Array+.swift */; };
 		8004F7891FA3EE2400F7ED94 /* AVAudio+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F72A1FA3EE2400F7ED94 /* AVAudio+.swift */; };
@@ -104,8 +98,8 @@
 		8004F78C1FA3EE2400F7ED94 /* Collection+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F72B1FA3EE2400F7ED94 /* Collection+Search.swift */; };
 		8004F78D1FA3EE2400F7ED94 /* Dictionary+FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F72C1FA3EE2400F7ED94 /* Dictionary+FileManager.swift */; };
 		8004F78E1FA3EE2400F7ED94 /* Dictionary+FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F72C1FA3EE2400F7ED94 /* Dictionary+FileManager.swift */; };
-		8004F78F1FA3EE2400F7ED94 /* FileManager+Klio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F72D1FA3EE2400F7ED94 /* FileManager+Klio.swift */; };
-		8004F7901FA3EE2400F7ED94 /* FileManager+Klio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F72D1FA3EE2400F7ED94 /* FileManager+Klio.swift */; };
+		8004F78F1FA3EE2400F7ED94 /* FileManager+MuseNow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F72D1FA3EE2400F7ED94 /* FileManager+MuseNow.swift */; };
+		8004F7901FA3EE2400F7ED94 /* FileManager+MuseNow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F72D1FA3EE2400F7ED94 /* FileManager+MuseNow.swift */; };
 		8004F7911FA3EE2400F7ED94 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F72E1FA3EE2400F7ED94 /* Globals.swift */; };
 		8004F7921FA3EE2400F7ED94 /* Globals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F72E1FA3EE2400F7ED94 /* Globals.swift */; };
 		8004F7931FA3EE2400F7ED94 /* String+regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F72F1FA3EE2400F7ED94 /* String+regex.swift */; };
@@ -199,16 +193,24 @@
 		804D5A211FA3FCAA0025B724 /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A101FA3FCAA0025B724 /* EventCell.swift */; };
 		804D5A221FA3FCAA0025B724 /* EventTable+EditRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A111FA3FCAA0025B724 /* EventTable+EditRow.swift */; };
 		804D5A231FA3FCAA0025B724 /* EventTable+EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A121FA3FCAA0025B724 /* EventTable+EventCell.swift */; };
-		804D5A241FA3FCAA0025B724 /* EventTable+KoEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A131FA3FCAA0025B724 /* EventTable+KoEvent.swift */; };
+		804D5A241FA3FCAA0025B724 /* EventTable+MuEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A131FA3FCAA0025B724 /* EventTable+MuEvent.swift */; };
 		804D5A251FA3FCAA0025B724 /* EventTable+PhoneCrown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A141FA3FCAA0025B724 /* EventTable+PhoneCrown.swift */; };
 		804D5A261FA3FCAA0025B724 /* EventTable+Scroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A151FA3FCAA0025B724 /* EventTable+Scroll.swift */; };
 		804D5A271FA3FCAA0025B724 /* EventTable+Select.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A161FA3FCAA0025B724 /* EventTable+Select.swift */; };
 		804D5A281FA3FCAA0025B724 /* EventTable+TimeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A171FA3FCAA0025B724 /* EventTable+TimeCell.swift */; };
 		804D5A291FA3FCAA0025B724 /* EventTable+Update.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A181FA3FCAA0025B724 /* EventTable+Update.swift */; };
 		804D5A2A1FA3FCAA0025B724 /* EventTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A191FA3FCAA0025B724 /* EventTableVC.swift */; };
-		804D5A2B1FA3FCAA0025B724 /* KoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A1A1FA3FCAA0025B724 /* KoCell.swift */; };
+		804D5A2B1FA3FCAA0025B724 /* MuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A1A1FA3FCAA0025B724 /* MuCell.swift */; };
 		804D5A2C1FA3FCAA0025B724 /* TimeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A1B1FA3FCAA0025B724 /* TimeCell.swift */; };
 		804D5A2D1FA3FCAA0025B724 /* ToggleDot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A1C1FA3FCAA0025B724 /* ToggleDot.swift */; };
+		807643501FACBE55001733C6 /* Muse+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076434B1FACBE55001733C6 /* Muse+Test.swift */; };
+		807643561FACBE55001733C6 /* Muse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076434E1FACBE55001733C6 /* Muse.swift */; };
+		807643581FACBE55001733C6 /* MuseFound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076434F1FACBE55001733C6 /* MuseFound.swift */; };
+		8076435A1FACBEA8001733C6 /* Muse.par in Resources */ = {isa = PBXBuildFile; fileRef = 8076434C1FACBE55001733C6 /* Muse.par */; };
+		8076435B1FACBEB8001733C6 /* Muse.par in Resources */ = {isa = PBXBuildFile; fileRef = 8076434C1FACBE55001733C6 /* Muse.par */; };
+		8076435E1FACDB63001733C6 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076435D1FACDB63001733C6 /* SettingsCell.swift */; };
+		807643601FACDBE6001733C6 /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076435F1FACDBE6001733C6 /* Setting.swift */; };
+		807643611FACDBF7001733C6 /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076435F1FACDBE6001733C6 /* Setting.swift */; };
 		80920B451FA4F6E4004E4D8B /* ComplicationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80920B441FA4F6E4004E4D8B /* ComplicationProvider.swift */; };
 		80C173E61FA778570085CC8C /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C173E51FA778570085CC8C /* Audio.swift */; };
 		80C173E71FA778570085CC8C /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C173E51FA778570085CC8C /* Audio.swift */; };
@@ -266,11 +268,6 @@
 		8004F6C51FA3ED5E00F7ED94 /* String+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		8004F6C61FA3ED5E00F7ED94 /* Types.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
 		8004F6C71FA3ED5E00F7ED94 /* Visitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Visitor.swift; sourceTree = "<group>"; };
-		8004F6C91FA3ED5E00F7ED94 /* Klio+Test.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Klio+Test.swift"; sourceTree = "<group>"; };
-		8004F6CA1FA3ED5E00F7ED94 /* Klio.par */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Klio.par; sourceTree = "<group>"; };
-		8004F6CB1FA3ED5E00F7ED94 /* Klio.par2 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Klio.par2; sourceTree = "<group>"; };
-		8004F6CC1FA3ED5E00F7ED94 /* Klio.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Klio.swift; sourceTree = "<group>"; };
-		8004F6CD1FA3ED5E00F7ED94 /* KlioFound.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KlioFound.swift; sourceTree = "<group>"; };
 		8004F6CF1FA3ED5E00F7ED94 /* Edge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Edge.swift; sourceTree = "<group>"; };
 		8004F6D01FA3ED5E00F7ED94 /* Node+connect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Node+connect.swift"; sourceTree = "<group>"; };
 		8004F6D11FA3ED5E00F7ED94 /* Node+find.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Node+find.swift"; sourceTree = "<group>"; };
@@ -301,18 +298,18 @@
 		8004F71D1FA3EE2400F7ED94 /* Dots+Crown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dots+Crown.swift"; sourceTree = "<group>"; };
 		8004F71E1FA3EE2400F7ED94 /* Dots+Say.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dots+Say.swift"; sourceTree = "<group>"; };
 		8004F71F1FA3EE2400F7ED94 /* Dots.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dots.swift; sourceTree = "<group>"; };
-		8004F7211FA3EE2400F7ED94 /* KoColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KoColor.swift; sourceTree = "<group>"; };
-		8004F7221FA3EE2400F7ED94 /* KoDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KoDate.swift; sourceTree = "<group>"; };
-		8004F7231FA3EE2400F7ED94 /* KoEvent+Auth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KoEvent+Auth.swift"; sourceTree = "<group>"; };
-		8004F7241FA3EE2400F7ED94 /* KoEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KoEvent.swift; sourceTree = "<group>"; };
-		8004F7251FA3EE2400F7ED94 /* KoEvents+Fake.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KoEvents+Fake.swift"; sourceTree = "<group>"; };
-		8004F7261FA3EE2400F7ED94 /* KoEvents+Marks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KoEvents+Marks.swift"; sourceTree = "<group>"; };
-		8004F7271FA3EE2400F7ED94 /* KoEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KoEvents.swift; sourceTree = "<group>"; };
+		8004F7211FA3EE2400F7ED94 /* MuColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuColor.swift; sourceTree = "<group>"; };
+		8004F7221FA3EE2400F7ED94 /* MuDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuDate.swift; sourceTree = "<group>"; };
+		8004F7231FA3EE2400F7ED94 /* MuEvent+Auth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MuEvent+Auth.swift"; sourceTree = "<group>"; };
+		8004F7241FA3EE2400F7ED94 /* MuEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuEvent.swift; sourceTree = "<group>"; };
+		8004F7251FA3EE2400F7ED94 /* MuEvents+Fake.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MuEvents+Fake.swift"; sourceTree = "<group>"; };
+		8004F7261FA3EE2400F7ED94 /* MuEvents+Marks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MuEvents+Marks.swift"; sourceTree = "<group>"; };
+		8004F7271FA3EE2400F7ED94 /* MuEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuEvents.swift; sourceTree = "<group>"; };
 		8004F7291FA3EE2400F7ED94 /* Array+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+.swift"; sourceTree = "<group>"; };
 		8004F72A1FA3EE2400F7ED94 /* AVAudio+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AVAudio+.swift"; sourceTree = "<group>"; };
 		8004F72B1FA3EE2400F7ED94 /* Collection+Search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Collection+Search.swift"; sourceTree = "<group>"; };
 		8004F72C1FA3EE2400F7ED94 /* Dictionary+FileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+FileManager.swift"; sourceTree = "<group>"; };
-		8004F72D1FA3EE2400F7ED94 /* FileManager+Klio.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FileManager+Klio.swift"; sourceTree = "<group>"; };
+		8004F72D1FA3EE2400F7ED94 /* FileManager+MuseNow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FileManager+MuseNow.swift"; sourceTree = "<group>"; };
 		8004F72E1FA3EE2400F7ED94 /* Globals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
 		8004F72F1FA3EE2400F7ED94 /* String+regex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+regex.swift"; sourceTree = "<group>"; };
 		8004F7301FA3EE2400F7ED94 /* UIImage+Circle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Circle.swift"; sourceTree = "<group>"; };
@@ -379,16 +376,23 @@
 		804D5A101FA3FCAA0025B724 /* EventCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventCell.swift; sourceTree = "<group>"; };
 		804D5A111FA3FCAA0025B724 /* EventTable+EditRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EventTable+EditRow.swift"; sourceTree = "<group>"; };
 		804D5A121FA3FCAA0025B724 /* EventTable+EventCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EventTable+EventCell.swift"; sourceTree = "<group>"; };
-		804D5A131FA3FCAA0025B724 /* EventTable+KoEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EventTable+KoEvent.swift"; sourceTree = "<group>"; };
+		804D5A131FA3FCAA0025B724 /* EventTable+MuEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EventTable+MuEvent.swift"; sourceTree = "<group>"; };
 		804D5A141FA3FCAA0025B724 /* EventTable+PhoneCrown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EventTable+PhoneCrown.swift"; sourceTree = "<group>"; };
 		804D5A151FA3FCAA0025B724 /* EventTable+Scroll.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EventTable+Scroll.swift"; sourceTree = "<group>"; };
 		804D5A161FA3FCAA0025B724 /* EventTable+Select.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EventTable+Select.swift"; sourceTree = "<group>"; };
 		804D5A171FA3FCAA0025B724 /* EventTable+TimeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EventTable+TimeCell.swift"; sourceTree = "<group>"; };
 		804D5A181FA3FCAA0025B724 /* EventTable+Update.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EventTable+Update.swift"; sourceTree = "<group>"; };
 		804D5A191FA3FCAA0025B724 /* EventTableVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventTableVC.swift; sourceTree = "<group>"; };
-		804D5A1A1FA3FCAA0025B724 /* KoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KoCell.swift; sourceTree = "<group>"; };
+		804D5A1A1FA3FCAA0025B724 /* MuCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuCell.swift; sourceTree = "<group>"; };
 		804D5A1B1FA3FCAA0025B724 /* TimeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeCell.swift; sourceTree = "<group>"; };
 		804D5A1C1FA3FCAA0025B724 /* ToggleDot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleDot.swift; sourceTree = "<group>"; };
+		8076434B1FACBE55001733C6 /* Muse+Test.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Muse+Test.swift"; sourceTree = "<group>"; };
+		8076434C1FACBE55001733C6 /* Muse.par */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; path = Muse.par; sourceTree = "<group>"; };
+		8076434D1FACBE55001733C6 /* Muse.par2 */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; path = Muse.par2; sourceTree = "<group>"; };
+		8076434E1FACBE55001733C6 /* Muse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Muse.swift; sourceTree = "<group>"; };
+		8076434F1FACBE55001733C6 /* MuseFound.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuseFound.swift; sourceTree = "<group>"; };
+		8076435D1FACDB63001733C6 /* SettingsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
+		8076435F1FACDBE6001733C6 /* Setting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Setting.swift; path = Shared/Files/Setting.swift; sourceTree = SOURCE_ROOT; };
 		80920B441FA4F6E4004E4D8B /* ComplicationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationProvider.swift; sourceTree = "<group>"; };
 		80C173E51FA778570085CC8C /* Audio.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Audio.swift; sourceTree = "<group>"; };
 		80CE545E1FA3E0C7005C4D96 /* MuseNow WatchKit App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "MuseNow WatchKit App.entitlements"; sourceTree = "<group>"; };
@@ -427,7 +431,7 @@
 			isa = PBXGroup;
 			children = (
 				8004F6C31FA3ED5E00F7ED94 /* Etc */,
-				8004F6C81FA3ED5E00F7ED94 /* Klio */,
+				8076434A1FACBE55001733C6 /* Muse */,
 				8004F6CE1FA3ED5E00F7ED94 /* Node */,
 				8004F6D61FA3ED5E00F7ED94 /* Par */,
 			);
@@ -444,18 +448,6 @@
 				8004F6C71FA3ED5E00F7ED94 /* Visitor.swift */,
 			);
 			path = Etc;
-			sourceTree = "<group>";
-		};
-		8004F6C81FA3ED5E00F7ED94 /* Klio */ = {
-			isa = PBXGroup;
-			children = (
-				8004F6C91FA3ED5E00F7ED94 /* Klio+Test.swift */,
-				8004F6CA1FA3ED5E00F7ED94 /* Klio.par */,
-				8004F6CB1FA3ED5E00F7ED94 /* Klio.par2 */,
-				8004F6CC1FA3ED5E00F7ED94 /* Klio.swift */,
-				8004F6CD1FA3ED5E00F7ED94 /* KlioFound.swift */,
-			);
-			path = Klio;
 			sourceTree = "<group>";
 		};
 		8004F6CE1FA3ED5E00F7ED94 /* Node */ = {
@@ -549,13 +541,13 @@
 		8004F7201FA3EE2400F7ED94 /* Event */ = {
 			isa = PBXGroup;
 			children = (
-				8004F7211FA3EE2400F7ED94 /* KoColor.swift */,
-				8004F7221FA3EE2400F7ED94 /* KoDate.swift */,
-				8004F7231FA3EE2400F7ED94 /* KoEvent+Auth.swift */,
-				8004F7241FA3EE2400F7ED94 /* KoEvent.swift */,
-				8004F7251FA3EE2400F7ED94 /* KoEvents+Fake.swift */,
-				8004F7261FA3EE2400F7ED94 /* KoEvents+Marks.swift */,
-				8004F7271FA3EE2400F7ED94 /* KoEvents.swift */,
+				8004F7211FA3EE2400F7ED94 /* MuColor.swift */,
+				8004F7221FA3EE2400F7ED94 /* MuDate.swift */,
+				8004F7231FA3EE2400F7ED94 /* MuEvent+Auth.swift */,
+				8004F7241FA3EE2400F7ED94 /* MuEvent.swift */,
+				8004F7251FA3EE2400F7ED94 /* MuEvents+Fake.swift */,
+				8004F7261FA3EE2400F7ED94 /* MuEvents+Marks.swift */,
+				8004F7271FA3EE2400F7ED94 /* MuEvents.swift */,
 			);
 			path = Event;
 			sourceTree = "<group>";
@@ -567,7 +559,7 @@
 				8004F72A1FA3EE2400F7ED94 /* AVAudio+.swift */,
 				8004F72B1FA3EE2400F7ED94 /* Collection+Search.swift */,
 				8004F72C1FA3EE2400F7ED94 /* Dictionary+FileManager.swift */,
-				8004F72D1FA3EE2400F7ED94 /* FileManager+Klio.swift */,
+				8004F72D1FA3EE2400F7ED94 /* FileManager+MuseNow.swift */,
 				8004F72E1FA3EE2400F7ED94 /* Globals.swift */,
 				8004F72F1FA3EE2400F7ED94 /* String+regex.swift */,
 				8004F7301FA3EE2400F7ED94 /* UIImage+Circle.swift */,
@@ -587,6 +579,7 @@
 				8004F7381FA3EE2400F7ED94 /* Marks.swift */,
 				8004F7391FA3EE2400F7ED94 /* Memos.swift */,
 				8004F73A1FA3EE2400F7ED94 /* Settings.swift */,
+				8076435F1FACDBE6001733C6 /* Setting.swift */,
 			);
 			path = Files;
 			sourceTree = "<group>";
@@ -744,6 +737,7 @@
 		804D5A0B1FA3FCAA0025B724 /* Table */ = {
 			isa = PBXGroup;
 			children = (
+				8076435D1FACDB63001733C6 /* SettingsCell.swift */,
 				804D5A0C1FA3FCAA0025B724 /* CalCell.swift */,
 				804D5A0D1FA3FCAA0025B724 /* CalTable+CalCell.swift */,
 				804D5A0E1FA3FCAA0025B724 /* CalTable+Select.swift */,
@@ -751,18 +745,30 @@
 				804D5A101FA3FCAA0025B724 /* EventCell.swift */,
 				804D5A111FA3FCAA0025B724 /* EventTable+EditRow.swift */,
 				804D5A121FA3FCAA0025B724 /* EventTable+EventCell.swift */,
-				804D5A131FA3FCAA0025B724 /* EventTable+KoEvent.swift */,
+				804D5A131FA3FCAA0025B724 /* EventTable+MuEvent.swift */,
 				804D5A141FA3FCAA0025B724 /* EventTable+PhoneCrown.swift */,
 				804D5A151FA3FCAA0025B724 /* EventTable+Scroll.swift */,
 				804D5A161FA3FCAA0025B724 /* EventTable+Select.swift */,
 				804D5A171FA3FCAA0025B724 /* EventTable+TimeCell.swift */,
 				804D5A181FA3FCAA0025B724 /* EventTable+Update.swift */,
 				804D5A191FA3FCAA0025B724 /* EventTableVC.swift */,
-				804D5A1A1FA3FCAA0025B724 /* KoCell.swift */,
+				804D5A1A1FA3FCAA0025B724 /* MuCell.swift */,
 				804D5A1B1FA3FCAA0025B724 /* TimeCell.swift */,
 				804D5A1C1FA3FCAA0025B724 /* ToggleDot.swift */,
 			);
 			path = Table;
+			sourceTree = "<group>";
+		};
+		8076434A1FACBE55001733C6 /* Muse */ = {
+			isa = PBXGroup;
+			children = (
+				8076434B1FACBE55001733C6 /* Muse+Test.swift */,
+				8076434C1FACBE55001733C6 /* Muse.par */,
+				8076434D1FACBE55001733C6 /* Muse.par2 */,
+				8076434E1FACBE55001733C6 /* Muse.swift */,
+				8076434F1FACBE55001733C6 /* MuseFound.swift */,
+			);
+			path = Muse;
 			sourceTree = "<group>";
 		};
 		80C173E41FA778570085CC8C /* Audio */ = {
@@ -899,8 +905,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8076435A1FACBEA8001733C6 /* Muse.par in Resources */,
 				8004F7BB1FA3EE2400F7ED94 /* Blank.fsh in Resources */,
-				8004F6E81FA3ED5E00F7ED94 /* Klio.par in Resources */,
 				8004F6191FA3EB0100F7ED94 /* Main.storyboard in Resources */,
 				8004F6181FA3EB0100F7ED94 /* LaunchScreen.storyboard in Resources */,
 				8004F7AF1FA3EE2400F7ED94 /* Main.xcassets in Resources */,
@@ -922,7 +928,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8004F6E91FA3ED5E00F7ED94 /* Klio.par in Resources */,
+				8076435B1FACBEB8001733C6 /* Muse.par in Resources */,
 				8004F7B01FA3EE2400F7ED94 /* Main.xcassets in Resources */,
 				803C5F7A1FA3DFBE002A1C11 /* Assets.xcassets in Resources */,
 				8004F7BC1FA3EE2400F7ED94 /* Blank.fsh in Resources */,
@@ -952,6 +958,7 @@
 				8004F7B11FA3EE2400F7ED94 /* Record.swift in Sources */,
 				8004F7D11FA3EE2400F7ED94 /* Transcribe+SWM.swift in Sources */,
 				8004F7731FA3EE2400F7ED94 /* Dots+Crown.swift in Sources */,
+				807643501FACBE55001733C6 /* Muse+Test.swift in Sources */,
 				804D5A051FA3FC8B0025B724 /* MainVC.swift in Sources */,
 				8004F7BD1FA3EE2400F7ED94 /* DayHour.swift in Sources */,
 				804D5A261FA3FCAA0025B724 /* EventTable+Scroll.swift in Sources */,
@@ -959,27 +966,28 @@
 				8004F78B1FA3EE2400F7ED94 /* Collection+Search.swift in Sources */,
 				8004F7C51FA3EE2400F7ED94 /* Scene+Sprite.swift in Sources */,
 				8004F75B1FA3EE2400F7ED94 /* Haptic.swift in Sources */,
-				8004F7831FA3EE2400F7ED94 /* KoEvents+Marks.swift in Sources */,
+				8004F7831FA3EE2400F7ED94 /* MuEvents+Marks.swift in Sources */,
 				8004F79B1FA3EE2400F7ED94 /* Cals.swift in Sources */,
-				8004F7791FA3EE2400F7ED94 /* KoColor.swift in Sources */,
+				8004F7791FA3EE2400F7ED94 /* MuColor.swift in Sources */,
 				8004F6E21FA3ED5E00F7ED94 /* Types.swift in Sources */,
 				8004F7AD1FA3EE2400F7ED94 /* Location.swift in Sources */,
 				8004F7D31FA3EE2400F7ED94 /* Transcribe.swift in Sources */,
 				8004F6F81FA3ED5E00F7ED94 /* Node.swift in Sources */,
 				8004F7A11FA3EE2400F7ED94 /* Mark.swift in Sources */,
 				8004F79F1FA3EE2400F7ED94 /* FileSync.swift in Sources */,
+				807643581FACBE55001733C6 /* MuseFound.swift in Sources */,
 				804D5A091FA3FC8B0025B724 /* TouchForce.swift in Sources */,
 				8004F7B91FA3EE2400F7ED94 /* SayItem.swift in Sources */,
-				804D5A2B1FA3FCAA0025B724 /* KoCell.swift in Sources */,
+				804D5A2B1FA3FCAA0025B724 /* MuCell.swift in Sources */,
 				804D5A201FA3FCAA0025B724 /* CalTableVC.swift in Sources */,
 				8004F7A31FA3EE2400F7ED94 /* Marks.swift in Sources */,
 				8004F7591FA3EE2400F7ED94 /* Actions.swift in Sources */,
 				804D5A0A1FA3FC8B0025B724 /* UITouch+Force.swift in Sources */,
 				8004F7891FA3EE2400F7ED94 /* AVAudio+.swift in Sources */,
-				8004F77B1FA3EE2400F7ED94 /* KoDate.swift in Sources */,
+				8004F77B1FA3EE2400F7ED94 /* MuDate.swift in Sources */,
 				8004F7971FA3EE2400F7ED94 /* View+roundCorners.swift in Sources */,
 				8004F7611FA3EE2400F7ED94 /* TouchDial.swift in Sources */,
-				804D5A241FA3FCAA0025B724 /* EventTable+KoEvent.swift in Sources */,
+				804D5A241FA3FCAA0025B724 /* EventTable+MuEvent.swift in Sources */,
 				804D5A2D1FA3FCAA0025B724 /* ToggleDot.swift in Sources */,
 				8004F7711FA3EE2400F7ED94 /* Dots+Action.swift in Sources */,
 				804D5A271FA3FCAA0025B724 /* EventTable+Select.swift in Sources */,
@@ -991,26 +999,25 @@
 				8004F6E01FA3ED5E00F7ED94 /* String+.swift in Sources */,
 				8004F7C71FA3EE2400F7ED94 /* Scene.swift in Sources */,
 				8004F7771FA3EE2400F7ED94 /* Dots.swift in Sources */,
-				8004F78F1FA3EE2400F7ED94 /* FileManager+Klio.swift in Sources */,
+				8004F78F1FA3EE2400F7ED94 /* FileManager+MuseNow.swift in Sources */,
 				804D5A1E1FA3FCAA0025B724 /* CalTable+CalCell.swift in Sources */,
 				8004F7691FA3EE2400F7ED94 /* Anim+Closure.swift in Sources */,
-				8004F6E61FA3ED5E00F7ED94 /* Klio+Test.swift in Sources */,
 				8004F7021FA3ED5E00F7ED94 /* ParLem.swift in Sources */,
 				804D5A031FA3FC8B0025B724 /* Fader.swift in Sources */,
 				8004F6FA1FA3ED5E00F7ED94 /* NodeAny.swift in Sources */,
 				8004F7651FA3EE2400F7ED94 /* Active.swift in Sources */,
 				8004F7631FA3EE2400F7ED94 /* TouchMove.swift in Sources */,
 				804D5A021FA3FC8B0025B724 /* ColorCell.swift in Sources */,
+				8076435E1FACDB63001733C6 /* SettingsCell.swift in Sources */,
 				8004F75F1FA3EE2400F7ED94 /* Taps.swift in Sources */,
 				804D5A211FA3FCAA0025B724 /* EventCell.swift in Sources */,
 				8004F70A1FA3ED5E00F7ED94 /* ParWords.swift in Sources */,
 				8004F7951FA3EE2400F7ED94 /* UIImage+Circle.swift in Sources */,
-				8004F7851FA3EE2400F7ED94 /* KoEvents.swift in Sources */,
+				8004F7851FA3EE2400F7ED94 /* MuEvents.swift in Sources */,
 				8004F7A91FA3EE2400F7ED94 /* Hear.swift in Sources */,
 				8004F76B1FA3EE2400F7ED94 /* Anim+Scene.swift in Sources */,
-				8004F6EC1FA3ED5E00F7ED94 /* Klio.swift in Sources */,
 				8004F7CF1FA3EE2400F7ED94 /* Transcribe+Apple.swift in Sources */,
-				8004F77F1FA3EE2400F7ED94 /* KoEvent.swift in Sources */,
+				8004F77F1FA3EE2400F7ED94 /* MuEvent.swift in Sources */,
 				8004F75D1FA3EE2400F7ED94 /* Motion.swift in Sources */,
 				8004F7CB1FA3EE2400F7ED94 /* Session+Message.swift in Sources */,
 				80C173E61FA778570085CC8C /* Audio.swift in Sources */,
@@ -1018,7 +1025,6 @@
 				8004F7931FA3EE2400F7ED94 /* String+regex.swift in Sources */,
 				8004F7B71FA3EE2400F7ED94 /* SayCache.swift in Sources */,
 				804D5A2C1FA3FCAA0025B724 /* TimeCell.swift in Sources */,
-				8004F6EE1FA3ED5E00F7ED94 /* KlioFound.swift in Sources */,
 				804D5A1D1FA3FCAA0025B724 /* CalCell.swift in Sources */,
 				8004F7751FA3EE2400F7ED94 /* Dots+Say.swift in Sources */,
 				8004F7061FA3ED5E00F7ED94 /* ParStr+Compare.swift in Sources */,
@@ -1027,13 +1033,15 @@
 				8004F7911FA3EE2400F7ED94 /* Globals.swift in Sources */,
 				8004F7671FA3EE2400F7ED94 /* Anim+Action.swift in Sources */,
 				8004F7A51FA3EE2400F7ED94 /* Memos.swift in Sources */,
-				8004F7811FA3EE2400F7ED94 /* KoEvents+Fake.swift in Sources */,
+				8004F7811FA3EE2400F7ED94 /* MuEvents+Fake.swift in Sources */,
 				8004F7081FA3ED5E00F7ED94 /* ParStr.swift in Sources */,
 				8004F6F21FA3ED5E00F7ED94 /* Node+connect.swift in Sources */,
 				8004F7A71FA3EE2400F7ED94 /* Settings.swift in Sources */,
+				807643561FACBE55001733C6 /* Muse.swift in Sources */,
 				8004F7CD1FA3EE2400F7ED94 /* Session.swift in Sources */,
 				8004F6DE1FA3ED5E00F7ED94 /* Repetitions.swift in Sources */,
 				804D5A291FA3FCAA0025B724 /* EventTable+Update.swift in Sources */,
+				807643601FACDBE6001733C6 /* Setting.swift in Sources */,
 				8004F79D1FA3EE2400F7ED94 /* FileMsg.swift in Sources */,
 				804D5A081FA3FC8B0025B724 /* TouchDialForce.swift in Sources */,
 				804D5A221FA3FCAA0025B724 /* EventTable+EditRow.swift in Sources */,
@@ -1042,7 +1050,7 @@
 				804D5A041FA3FC8B0025B724 /* Main+Text.swift in Sources */,
 				8004F6F61FA3ED5E00F7ED94 /* Node+print.swift in Sources */,
 				804D5A2A1FA3FCAA0025B724 /* EventTableVC.swift in Sources */,
-				8004F77D1FA3EE2400F7ED94 /* KoEvent+Auth.swift in Sources */,
+				8004F77D1FA3EE2400F7ED94 /* MuEvent+Auth.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1055,7 +1063,7 @@
 				8004F7011FA3ED5E00F7ED94 /* Par.swift in Sources */,
 				8004F7051FA3ED5E00F7ED94 /* ParObj.swift in Sources */,
 				8004F76A1FA3EE2400F7ED94 /* Anim+Closure.swift in Sources */,
-				8004F77C1FA3EE2400F7ED94 /* KoDate.swift in Sources */,
+				8004F77C1FA3EE2400F7ED94 /* MuDate.swift in Sources */,
 				8004F7C21FA3EE2400F7ED94 /* Image+context.swift in Sources */,
 				8004F7781FA3EE2400F7ED94 /* Dots.swift in Sources */,
 				8004F78A1FA3EE2400F7ED94 /* AVAudio+.swift in Sources */,
@@ -1067,7 +1075,7 @@
 				8004F7AA1FA3EE2400F7ED94 /* Hear.swift in Sources */,
 				8004F7E11FA3F01600F7ED94 /* NotificationController.swift in Sources */,
 				8004F79E1FA3EE2400F7ED94 /* FileMsg.swift in Sources */,
-				8004F7821FA3EE2400F7ED94 /* KoEvents+Fake.swift in Sources */,
+				8004F7821FA3EE2400F7ED94 /* MuEvents+Fake.swift in Sources */,
 				8004F7761FA3EE2400F7ED94 /* Dots+Say.swift in Sources */,
 				8004F7BA1FA3EE2400F7ED94 /* SayItem.swift in Sources */,
 				8004F7B41FA3EE2400F7ED94 /* Say+Event.swift in Sources */,
@@ -1078,7 +1086,7 @@
 				8004F7B61FA3EE2400F7ED94 /* Say.swift in Sources */,
 				8004F7AE1FA3EE2400F7ED94 /* Location.swift in Sources */,
 				8004F6F11FA3ED5E00F7ED94 /* Edge.swift in Sources */,
-				8004F77E1FA3EE2400F7ED94 /* KoEvent+Auth.swift in Sources */,
+				8004F77E1FA3EE2400F7ED94 /* MuEvent+Auth.swift in Sources */,
 				8004F7CA1FA3EE2400F7ED94 /* Texture.swift in Sources */,
 				8004F7881FA3EE2400F7ED94 /* Array+.swift in Sources */,
 				8004F7CE1FA3EE2400F7ED94 /* Session.swift in Sources */,
@@ -1086,13 +1094,13 @@
 				8004F6E11FA3ED5E00F7ED94 /* String+.swift in Sources */,
 				80920B451FA4F6E4004E4D8B /* ComplicationProvider.swift in Sources */,
 				8004F7A21FA3EE2400F7ED94 /* Mark.swift in Sources */,
-				8004F7801FA3EE2400F7ED94 /* KoEvent.swift in Sources */,
+				8004F7801FA3EE2400F7ED94 /* MuEvent.swift in Sources */,
 				8004F7D41FA3EE2400F7ED94 /* Transcribe.swift in Sources */,
 				8004F7031FA3ED5E00F7ED94 /* ParLem.swift in Sources */,
 				8004F79A1FA3EE2400F7ED94 /* Cal.swift in Sources */,
 				8004F7B81FA3EE2400F7ED94 /* SayCache.swift in Sources */,
 				8004F6FB1FA3ED5E00F7ED94 /* NodeAny.swift in Sources */,
-				8004F7901FA3EE2400F7ED94 /* FileManager+Klio.swift in Sources */,
+				8004F7901FA3EE2400F7ED94 /* FileManager+MuseNow.swift in Sources */,
 				8004F78E1FA3EE2400F7ED94 /* Dictionary+FileManager.swift in Sources */,
 				8004F7661FA3EE2400F7ED94 /* Active.swift in Sources */,
 				8004F7601FA3EE2400F7ED94 /* Taps.swift in Sources */,
@@ -1100,10 +1108,10 @@
 				8004F70B1FA3ED5E00F7ED94 /* ParWords.swift in Sources */,
 				80C173E71FA778570085CC8C /* Audio.swift in Sources */,
 				8004F7941FA3EE2400F7ED94 /* String+regex.swift in Sources */,
-				8004F6EF1FA3ED5E00F7ED94 /* KlioFound.swift in Sources */,
 				8004F7071FA3ED5E00F7ED94 /* ParStr+Compare.swift in Sources */,
 				8004F79C1FA3EE2400F7ED94 /* Cals.swift in Sources */,
 				8004F7091FA3ED5E00F7ED94 /* ParStr.swift in Sources */,
+				807643611FACDBF7001733C6 /* Setting.swift in Sources */,
 				8004F7A61FA3EE2400F7ED94 /* Memos.swift in Sources */,
 				8004F7A41FA3EE2400F7ED94 /* Marks.swift in Sources */,
 				8004F7621FA3EE2400F7ED94 /* TouchDial.swift in Sources */,
@@ -1120,12 +1128,12 @@
 				8004F7C41FA3EE2400F7ED94 /* Polar.swift in Sources */,
 				8004F7701FA3EE2400F7ED94 /* Dot.swift in Sources */,
 				8004F7B21FA3EE2400F7ED94 /* Record.swift in Sources */,
-				8004F7861FA3EE2400F7ED94 /* KoEvents.swift in Sources */,
-				8004F7841FA3EE2400F7ED94 /* KoEvents+Marks.swift in Sources */,
+				8004F7861FA3EE2400F7ED94 /* MuEvents.swift in Sources */,
+				8004F7841FA3EE2400F7ED94 /* MuEvents+Marks.swift in Sources */,
 				8004F7E01FA3F01600F7ED94 /* ExtensionDelegate.swift in Sources */,
 				8004F7741FA3EE2400F7ED94 /* Dots+Crown.swift in Sources */,
 				8004F7641FA3EE2400F7ED94 /* TouchMove.swift in Sources */,
-				8004F77A1FA3EE2400F7ED94 /* KoColor.swift in Sources */,
+				8004F77A1FA3EE2400F7ED94 /* MuColor.swift in Sources */,
 				8004F7681FA3EE2400F7ED94 /* Anim+Action.swift in Sources */,
 				8004F6FD1FA3ED5E00F7ED94 /* NodeAnys.swift in Sources */,
 				8004F7E21FA3F01600F7ED94 /* WatchCon+TestSession.swift in Sources */,

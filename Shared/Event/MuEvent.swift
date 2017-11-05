@@ -5,7 +5,7 @@ import UIKit
 
 public enum KoType: String { case
     unknown     = "unknown",
-    routine     = "routine", // special Klio calendar in EKEvents
+    routine     = "routine", // special MuseNow calendar in EKEvents
     ekevent     = "ekevent",
     ekreminder  = "ekreminder",
     note        = "note",
@@ -14,8 +14,8 @@ public enum KoType: String { case
     time        = "time"
 }
 
-@objc(KoEvent) // data compatible between iPhone and appleWatch
-open class KoEvent: NSObject, NSCoding {
+@objc(MuEvent) // data compatible between iPhone and appleWatch
+open class MuEvent: NSObject, NSCoding {
 
     static var tempID = 1000 // temporary id for event
     class func makeTempId() -> String {
@@ -93,7 +93,7 @@ open class KoEvent: NSObject, NSCoding {
         title    = reminder.title
         bgnTime  = ((reminder.startDateComponents as NSDateComponents?)?.date)!.timeIntervalSince1970
         endTime  = ((reminder.dueDateComponents as NSDateComponents?)?.date)!.timeIntervalSince1970
-        rgb      = KoColor.colorFrom(cgColor:reminder.calendar.cgColor)
+        rgb      = MuColor.colorFrom(cgColor:reminder.calendar.cgColor)
         eventId  = reminder.calendarItemIdentifier // makeEventId()
     }
     
@@ -106,7 +106,7 @@ open class KoEvent: NSObject, NSCoding {
         bgnTime = event.startDate.timeIntervalSince1970
         endTime = event.isAllDay ? bgnTime : event.endDate.timeIntervalSince1970
         notes   = event.notes ?? ""
-        rgb     = KoColor.colorFrom(event: event, type)
+        rgb     = MuColor.colorFrom(event: event, type)
         eventId = makeEventId(event)
 
         // recurs   = evnt.recurrenceRules!.count > 0 ? true : false
@@ -131,14 +131,14 @@ open class KoEvent: NSObject, NSCoding {
         
         self.init(type_, title_)
 
-        rgb =  KoColor.makeTypeColor(color)
+        rgb =  MuColor.makeTypeColor(color)
     }
 
     convenience init( _ type_: KoType, _ title_:String, _ coord_:CLLocationCoordinate2D, _ color: TypeColor) {
 
         self.init(type_, title_)
 
-        rgb   = KoColor.makeTypeColor(color)
+        rgb   = MuColor.makeTypeColor(color)
         coord = coord_
     }
     
@@ -160,7 +160,7 @@ open class KoEvent: NSObject, NSCoding {
         title   = title_
         bgnTime = startTime + (deltaMin * 60.0)
         endTime = bgnTime
-        rgb     = KoColor.makeTypeColor(.white)
+        rgb     = MuColor.makeTypeColor(.white)
         mark    = true
         eventId = makeEventId() // always last
     }
@@ -172,7 +172,7 @@ open class KoEvent: NSObject, NSCoding {
         title   = "Mark"
         bgnTime = mark_.bgnTime
         endTime = bgnTime
-        rgb     = KoColor.makeTypeColor(.white)
+        rgb     = MuColor.makeTypeColor(.white)
         mark    = mark_.isOn
         eventId = makeEventId() // always last
     }
@@ -189,7 +189,7 @@ open class KoEvent: NSObject, NSCoding {
         let endDate = cal.date(bySettingHour: eHour, minute: eMin, second: 0, of:endDay!, options: NSCalendar.Options.matchNextTime)
         bgnTime     = (bgnDate?.timeIntervalSince1970)!
         endTime     = (endDate?.timeIntervalSince1970)!
-        rgb         = KoColor.makeTypeColor(color_)
+        rgb         = MuColor.makeTypeColor(color_)
         eventId     = makeEventId() // always last
     }
     
@@ -198,14 +198,14 @@ open class KoEvent: NSObject, NSCoding {
         self.init()
         type        = type_
         title       = title_
-        eventId     = KoEvent.makeTempId()
+        eventId     = MuEvent.makeTempId()
         let cal     = Calendar.current as NSCalendar
         let bgnDay  = cal.date(byAdding: [.day], value: day, to: Date(), options: NSCalendar.Options.matchNextTime)
         let bgnDate = cal.date(bySettingHour: bHour, minute: bMin, second: 0, of:bgnDay!, options: NSCalendar.Options.matchNextTime)
         let endDate = cal.date(byAdding: [.minute], value: 10, to: bgnDate!, options: NSCalendar.Options.matchNextTime)
         bgnTime     = (bgnDate?.timeIntervalSince1970)!
         endTime     = (endDate?.timeIntervalSince1970)!
-        rgb         = KoColor.makeTypeColor(color)
+        rgb         = MuColor.makeTypeColor(color)
         eventId     = makeEventId() // always last
     }
     
@@ -216,7 +216,7 @@ open class KoEvent: NSObject, NSCoding {
         title   = title_
         bgnTime = time
         endTime = time
-        rgb     = KoColor.makeTypeColor(.white)
+        rgb     = MuColor.makeTypeColor(.white)
         eventId = makeEventId() // always last
     }
 }

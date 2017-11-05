@@ -1,10 +1,6 @@
-//
 //  Transcribe+SWM.swift
-//  Klio
-//
 //  Created by warren on 9/6/17.
 //  Copyright © 2017 Muse. All rights reserved.
-//
 
 import Foundation
 
@@ -60,17 +56,17 @@ extension Transcribe {
         task.resume()
     }
 
-    //    class func transcribeSWM(_ recName: String, _ event:KoEvent)  {
+    //    class func transcribeSWM(_ recName: String, _ event:MuEvent)  {
     //
     //        let docURL = FileManager.documentUrlFile(recName)
     //        print ("✏ \(#function) url:\(docURL)")
     //        transcribeSWM(recName) { txt in
     //            if !txt.isEmpty {
-    //                let found = Klio.shared.findMatch(txt)
+    //                let found = Muse.shared.findMatch(txt)
     //                if let str = found.str {
     //                    event.title = str
     //                    event.sttSwm = str
-    //                    Klio.shared.execFound(found, event)
+    //                    Muse.shared.execFound(found, event)
     //
     //                }
     //            }

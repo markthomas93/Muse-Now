@@ -26,7 +26,7 @@ class FileMsg:  NSObject {
             
             switch postFile {
             case memos.fileName: memos.receiveFile(data, fileTime) { anim.addClosure(title:"postFile memos") { Actions.shared.doRefresh(false) } }
-            case marks.fileName: marks.receiveFile(data, fileTime) { anim.addClosure(title:"postFile marks") { KoEvents.shared.applyMarks(); Actions.shared.doRefresh(false) } }
+            case marks.fileName: marks.receiveFile(data, fileTime) { anim.addClosure(title:"postFile marks") { MuEvents.shared.applyMarks(); Actions.shared.doRefresh(false) } }
             case cals.fileName:  cals.receiveFile(data,  fileTime) { anim.addClosure(title:"postFile cals") { Actions.shared.doRefresh(false) } }
             case setn.fileName:  setn.receiveFile(data,  fileTime) { anim.addClosure(title:"postFile setn") { Actions.shared.doRefresh(false) } }
             default: break

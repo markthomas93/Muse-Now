@@ -20,9 +20,15 @@ class Settings: FileSync {
             self.dict.removeAll()
             self.dict = dict
             let fileTime = self.getFileTime()
+            if dict.count == 0 {
+                self.initSettings()
+                self.archiveDict(dict, 0)
+            }
+            else {
+                self.updateSettings()
+                self.memoryTime = fileTime
+            }
             printLog ("⧉ Settings::\(#function) count:\(self.dict.count) fileTime:\(fileTime) -> memoryTime:\(self.memoryTime)")
-            self.memoryTime = fileTime
-            self.updateSettings()
             completion()
         }
     }
@@ -62,21 +68,47 @@ class Settings: FileSync {
         
         printLog ("⧉ Settings::\(#function):\(act) act:\(act) value:\(value)")
         switch act {
-        case .fadeColor: dict["fadeColor"] = value
+        case .dialColor:   dict["dialColor"] = value
+        case .hearRemote:  dict["hearRemote"] = true
+        case .muteRemote:  dict["hearRemote"] = false
+        case .hearSpeaker: dict["hearSpeaker"] = true
+        case .muteSpeaker: dict["hearSpeaker"] = false
+        case .hearEarbuds: dict["hearEarbuds"] = true
+        case .muteEarbuds: dict["hearEarbuds"] = false
         default: return
         }
         archiveDict(dict,Date().timeIntervalSince1970)
     }
     
+    func initSettings() {
+
+        let hearOptions = Hear.shared.options
+        dict["hearRemote"]  = hearOptions.contains(.remote)
+        dict["hearSpeaker"] = hearOptions.contains(.speaker)
+        dict["hearEarbuds"] = hearOptions.contains(.earbuds)
+        dict["dialColor"] = Actions.shared.scene?.uFade?.floatValue ?? 0
+    }
+
+    func getAct(index:Int) -> DoAction {
+        switch index {
+        case 0: return dict["hearSpeaker"] as! Bool == true ? .hearSpeaker :.muteSpeaker
+        case 1: return dict["hearEarbuds"] as! Bool == true ? .hearEarbuds :.muteEarbuds
+        case 2: return dict["hearRemote"]  as! Bool == true ? .hearRemote  :.muteRemote
+        default: return .unknown
+        }
+    }
+
     func updateSettings() {
-        
         for (key,value) in dict {
             switch key {
-            case "fadeColor": Actions.shared.fadeColor(value as! Float, isSender:false)
+            case "dialColor":  Actions.shared.dialColor(value as! Float, isSender:false)
+            case "hearRemote":  Hear.shared.doHearAction(value as! Bool == true ? .hearRemote  : .muteRemote)
+            case "hearSpeaker": Hear.shared.doHearAction(value as! Bool == true ? .hearSpeaker : .muteSpeaker)
+            case "hearEarbuds": Hear.shared.doHearAction(value as! Bool == true ? .hearEarbuds : .muteEarbuds)
             default: break
             }
         }
     }
-    
+
 }
 

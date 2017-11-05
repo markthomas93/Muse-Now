@@ -23,10 +23,10 @@ extension EventTableVC {
                 // get middle path
                 let indexPath = paths[paths.count/2]
                 if let cell = tableView.cellForRow(at: indexPath) {
-                    if cell is KoCell {
-                        let klioCell = (cell as! KoCell)
-                        //print("??D \(#function) indexPath:\(indexPath) event:\(klioCell.event.title)")
-                        nextKoCell(klioCell)
+                    if cell is MuCell {
+                        let museCell = (cell as! MuCell)
+                        //print("??D \(#function) indexPath:\(indexPath) event:\(museCell.event.title)")
+                        nextKoCell(museCell)
                     }
                      prevIndexPath = indexPath
                     return
@@ -39,14 +39,14 @@ extension EventTableVC {
             
             for pathi in paths {
                 if let cell = tableView.cellForRow(at: pathi) {
-                    let event = (cell as! KoCell).event
+                    let event = (cell as! MuCell).event
                     
                     if  let event = event,
                         let posY = rowItemId[event.eventId]?.posY,
                         posY <= centerY,
                         posY + rowHeight >= centerY {
 
-                        nextKoCell(cell as! KoCell)
+                        nextKoCell(cell as! MuCell)
                         prevIndexPath = pathi
                         return
                     }
@@ -99,7 +99,7 @@ extension EventTableVC {
             if let cell = tableView.cellForRow(at: nextIndexPath) {
                 // printLog("⿳ \(#function) centerY:\(nextOffset)")
                 prevIndexPath = tableView.indexPath(for: cell)!
-                nextKoCell(cell as! KoCell)
+                nextKoCell(cell as! MuCell)
 
                 UIView.animate(withDuration: 0.5,
                                animations: {

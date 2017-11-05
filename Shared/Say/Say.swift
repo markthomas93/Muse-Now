@@ -44,7 +44,6 @@
 
     var sayVolume = Float(0.5)
 
-
     weak var sayTimer : Timer?
     weak var txtTimer : Timer?
     
@@ -108,7 +107,7 @@
     /**
      Update dialog based on new position on dial
      */
-    func updateDialog(_ event: KoEvent!, type:SayType, spoken:String, title:String) -> Void { printLog("🗣 \(#function) \(event?.title ?? "") .\(type)")
+    func updateDialog(_ event: MuEvent!, type:SayType, spoken:String, title:String) -> Void { printLog("🗣 \(#function) \(event?.title ?? "") .\(type)")
 
         func newItem(_ delay: TimeInterval,_ decay: TimeInterval,_ clear:[SayType], immediate:Bool = false) {
 

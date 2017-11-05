@@ -2,13 +2,13 @@
 
 import UIKit
 
-class EventTimeCell: KoCell {
+class EventTimeCell: MuCell {
     
     var time: UILabel!
     let rowHeight = CGFloat(44)
     let sectionHeight = CGFloat(36)
     
-    func setCellEvent(_ event_: KoEvent!, _ size: CGSize) {
+    func setCellEvent(_ event_: MuEvent!, _ size: CGSize) {
     
         selectionStyle = UITableViewCellSelectionStyle.none
         event = event_ // not really needed

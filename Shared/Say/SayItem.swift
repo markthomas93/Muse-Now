@@ -3,14 +3,14 @@ import AVFoundation
 
 class SayItem: NSObject {
     
-    var event: KoEvent!
+    var event: MuEvent!
     var type = SayType.sayBlank
     var delay = TimeInterval(0)
     var decay = TimeInterval(0)
     var spoken  = ""
     var title   = ""
     
-    convenience init (_ event_: KoEvent!, _ type_: SayType, _ delay_:TimeInterval, _ decay_:TimeInterval, _ spoken_:String, _ title_:String) {
+    convenience init (_ event_: MuEvent!, _ type_: SayType, _ delay_:TimeInterval, _ decay_:TimeInterval, _ spoken_:String, _ title_:String) {
         self.init()
         event  = event_
         type   = type_

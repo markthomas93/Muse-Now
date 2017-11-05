@@ -7,19 +7,19 @@ import AVFoundation
 
 public protocol KoTableDelegate : NSObjectProtocol {
     
-    func scrollSceneEvent(_ event: KoEvent) // scroll table and select event
-    func scrollDialEvent(_ event: KoEvent,_ delta:Int) // scroll table and center event, but dont select
-    func updateTable(_ events: [KoEvent])
+    func scrollSceneEvent(_ event: MuEvent) // scroll table and select event
+    func scrollDialEvent(_ event: MuEvent,_ delta:Int) // scroll table and center event, but dont select
+    func updateTable(_ events: [MuEvent])
     func updateTimeEvent()
     func updateCellMarks()
-    func toggleCurrentCell() -> (KoEvent?, Bool)
+    func toggleCurrentCell() -> (MuEvent?, Bool)
 }
 
 class Scene: SKScene  {
 
     let actions  = Actions.shared
     let dayHour  = DayHour.shared
-    let koEvents = KoEvents.shared
+    let muEvents = MuEvents.shared
     let session  = Session.shared
     let audioPlayer = AVAudioPlayer()
     
@@ -80,7 +80,7 @@ class Scene: SKScene  {
     func updateSceneFinish() { printLog("⎚ \(#function)")
         
         dayHour.updateTime() // set reference for current hour and day
-        dots.updateDotEvents(koEvents.events)  //??? attempted
+        dots.updateDotEvents(muEvents.events)  //??? attempted
         dots.makeSelectFade()
         updateTextures()
         sprite.zRotation = CGFloat(Double(36-dayHour.hour0) / 24.0 * (2*Double.pi))

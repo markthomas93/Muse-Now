@@ -1,10 +1,6 @@
-//
 //  Dots+Crown.swift
-//  Klio
-//
 //  Created by warren on 9/28/17.
 //  Copyright © 2017 Muse. All rights reserved.
-//
 
 import Foundation
 

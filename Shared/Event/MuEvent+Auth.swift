@@ -4,7 +4,7 @@ import Foundation
 import EventKit
 import UIKit
 
-extension KoEvent { // calendar, reminder
+extension MuEvent { // calendar, reminder
     
     func loadEvents(type:EKEntityType) {
         

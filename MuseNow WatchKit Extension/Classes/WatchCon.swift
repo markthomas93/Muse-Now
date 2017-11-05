@@ -4,7 +4,6 @@ class WatchCon: WKInterfaceController {
     
     let actions  = Actions.shared
     let active   = Active.shared
-    let koEvents = KoEvents.shared
     let memos    = Memos.shared
     let marks    = Marks.shared
     let anim     = Anim.shared
@@ -25,14 +24,14 @@ class WatchCon: WKInterfaceController {
     // life cycle  -------------------------------------
 
     override func awake(withContext context: Any?) { printLog("⟳ \(#function) context:\(context ?? "nil")")
-        //Klio.shared.testScript()
+        //Muse.shared.testScript()
         let ext = WKExtension.shared()
         ext.isAutorotating = true
         ext.isFrontmostTimeoutExtended = true
 
         initScene()
         crown.updateCrown()
-        let nextMinute = KoDate.relativeMinute(1)
+        let nextMinute = MuDate.relativeMinute(1)
         WKExtension.shared().scheduleBackgroundRefresh(withPreferredDate: nextMinute, userInfo:nil, scheduledCompletion: {_ in})
     }
     

@@ -4,7 +4,7 @@
 import UIKit
 import EventKit
 
-class CalCell: KoCell {
+class CalCell: MuCell {
     
     var cal: Cal!
     var isShowCal = true

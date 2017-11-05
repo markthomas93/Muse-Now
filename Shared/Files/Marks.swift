@@ -52,7 +52,7 @@ class Marks: FileSync {
     
  
     
-    func updateAct(_ act: DoAction, _ event: KoEvent!) {
+    func updateAct(_ act: DoAction, _ event: MuEvent!) {
         
         printLog ("✓ Marks::\(#function):\(act) event:\(event.eventId)")
         

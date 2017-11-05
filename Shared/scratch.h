@@ -1,7 +1,7 @@
 
 act : ask ~ (show | hide | setting | clear) {
     
-    ask  : "klio" ~ "please"?
+    ask  : "muse" ~ "please"?
     show : ("show" | "reveal") type
     hide : ("hide" | "remove") type
     all  : "all"
@@ -82,31 +82,31 @@ sentence : ignore ~ (movie | music | search | change) {
 
 ✏ Clear clear all marks
 Clear clear all marks
-{0,11} t:0.76 d:0.90 c:0.51 "Clear clear","Klio clear","Cleo clear","Khleo clear","Kaleo clear","Clio clear"
+{0,11} t:0.76 d:0.90 c:0.51 "Clear clear","Muse clear","Cleo clear","Khleo clear","Kaleo clear","Clio clear"
 {12,15} t:1.66 d:0.18 c:0.90 "all"
 {16,21} t:1.84 d:0.68 c:0.57 "marks","Marx"
-Klio clear all marks
-{0,10} t:0.76 d:0.90 c:0.51 "Klio clear","Clear clear","Cleo clear","Khleo clear","Kaleo clear","Clio clear"
+Muse clear all marks
+{0,10} t:0.76 d:0.90 c:0.51 "Muse clear","Clear clear","Cleo clear","Khleo clear","Kaleo clear","Clio clear"
 {11,14} t:1.66 d:0.18 c:0.90 "all"
 {15,20} t:1.84 d:0.68 c:0.57 "marks","Marx"
 Cleo clear all marks
-{0,10} t:0.76 d:0.90 c:0.51 "Cleo clear","Clear clear","Klio clear","Khleo clear","Kaleo clear","Clio clear"
+{0,10} t:0.76 d:0.90 c:0.51 "Cleo clear","Clear clear","Muse clear","Khleo clear","Kaleo clear","Clio clear"
 {11,14} t:1.66 d:0.18 c:0.90 "all"
 {15,20} t:1.84 d:0.68 c:0.57 "marks","Marx"
 Khleo clear all marks
-{0,11} t:0.76 d:0.90 c:0.51 "Khleo clear","Clear clear","Klio clear","Cleo clear","Kaleo clear","Clio clear"
+{0,11} t:0.76 d:0.90 c:0.51 "Khleo clear","Clear clear","Muse clear","Cleo clear","Kaleo clear","Clio clear"
 {12,15} t:1.66 d:0.18 c:0.90 "all"
 {16,21} t:1.84 d:0.68 c:0.57 "marks","Marx"
 Kaleo clear all marks
-{0,11} t:0.76 d:0.90 c:0.51 "Kaleo clear","Clear clear","Klio clear","Cleo clear","Khleo clear","Clio clear"
+{0,11} t:0.76 d:0.90 c:0.51 "Kaleo clear","Clear clear","Muse clear","Cleo clear","Khleo clear","Clio clear"
 {12,15} t:1.66 d:0.18 c:0.90 "all"
 {16,21} t:1.84 d:0.68 c:0.57 "marks","Marx"
 Clio clear all marks
-{0,10} t:0.76 d:0.90 c:0.51 "Clio clear","Clear clear","Klio clear","Cleo clear","Khleo clear","Kaleo clear"
+{0,10} t:0.76 d:0.90 c:0.51 "Clio clear","Clear clear","Muse clear","Cleo clear","Khleo clear","Kaleo clear"
 {11,14} t:1.66 d:0.18 c:0.90 "all"
 {15,20} t:1.84 d:0.68 c:0.57 "marks","Marx"
 Clear clear all Marx
-{0,11} t:0.76 d:0.90 c:0.51 "Clear clear","Klio clear","Cleo clear","Khleo clear","Kaleo clear","Clio clear"
+{0,11} t:0.76 d:0.90 c:0.51 "Clear clear","Muse clear","Cleo clear","Khleo clear","Kaleo clear","Clio clear"
 {12,15} t:1.66 d:0.18 c:0.90 "all"
 {16,20} t:1.84 d:0.68 c:0.57 "Marx","marks"
 

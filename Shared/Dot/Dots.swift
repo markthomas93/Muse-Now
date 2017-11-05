@@ -16,7 +16,7 @@ class Dots {
 
     var findDot: Dot!
     var sayDot = Dot()
-    var sayEvent: KoEvent!
+    var sayEvent: MuEvent!
 
     var feedbackTimer = Timer()
     
@@ -41,7 +41,7 @@ class Dots {
         
         for i in 1-maxDots ..< maxDots {
         
-            let timeHour = KoDate.relativeHour(i).timeIntervalSince1970
+            let timeHour = MuDate.relativeHour(i).timeIntervalSince1970
             getDot(i).setDotIndex(i, timeHour)
         }
         ///??? discard redundant past[0]
@@ -53,7 +53,7 @@ class Dots {
      - via: EventVC::EventTable+TimeCell::minuteTimerTick
      - via: WatchCon::minuteTimerTick
      */
-    func updateTime(event:KoEvent) {
+    func updateTime(event:MuEvent) {
         
         let newTime = trunc(Date().timeIntervalSince1970)
         let oldTime = event.bgnTime
@@ -86,7 +86,7 @@ class Dots {
         return index >= 0 ? future[ii] : past[ii]
     }
     
-    func findEvent(_ eventId:String, _ bgnTime:TimeInterval) -> (KoEvent?, Int) {
+    func findEvent(_ eventId:String, _ bgnTime:TimeInterval) -> (MuEvent?, Int) {
         
         if let event = gotoTime(bgnTime),
             event.eventId == eventId,
@@ -129,7 +129,7 @@ class Dots {
     
     // Events ------------------------------------------------
     
-    func getBgnEndElapsed(_ event: KoEvent) -> (Int,Int,TimeInterval) {
+    func getBgnEndElapsed(_ event: MuEvent) -> (Int,Int,TimeInterval) {
         
         let minHour = 1-dayHour.maxIndex
         let maxHour = dayHour.maxIndex-1
@@ -156,7 +156,7 @@ class Dots {
     }
 
     /// scene.updateSceneFinish()
-    func updateDotEvents(_ events: [KoEvent] ) {  //printLog("⚇ \(#function)")
+    func updateDotEvents(_ events: [MuEvent] ) {  //printLog("⚇ \(#function)")
         
         initPastFuture()
         
@@ -179,9 +179,9 @@ class Dots {
      - via: gotoEvent
      */
     @discardableResult
-    func gotoTime(_ dotTime: TimeInterval) -> KoEvent! {
+    func gotoTime(_ dotTime: TimeInterval) -> MuEvent! {
         
-        let thisHour = KoDate.relativeHour(0).timeIntervalSince1970
+        let thisHour = MuDate.relativeHour(0).timeIntervalSince1970
         dotNow = Float((dotTime - thisHour)/3600)
         let dot = getDot(Int(dotNow))
         return dot.gotoNearestTime(dotTime)
@@ -192,7 +192,7 @@ class Dots {
      (Watch Phone).sessionDotTime
      */
     @discardableResult
-    func gotoEvent(_ event: KoEvent) -> Int  {
+    func gotoEvent(_ event: MuEvent) -> Int  {
         gotoTime(event.bgnTime)
         let doti = Int(dotNow)
         let dot = getDot(doti)
@@ -204,14 +204,14 @@ class Dots {
      get nearest event starting to dot
      - via: Dots+Action.updateViaPan
      */
-    func getNearestEvent(_ remainSec:TimeInterval) -> (KoEvent?,Int) {
+    func getNearestEvent(_ remainSec:TimeInterval) -> (MuEvent?,Int) {
         
         let dotNowi = Int(dotNow)
-        let nearTime = KoDate.relativeHour(dotNowi).timeIntervalSince1970 + remainSec
+        let nearTime = MuDate.relativeHour(dotNowi).timeIntervalSince1970 + remainSec
         
         // setup capture of nearest event
         var nearestDelta = Double.greatestFiniteMagnitude
-        var nearestEvent: KoEvent!
+        var nearestEvent: MuEvent!
         
         func foundNearest(_ scan: Int) -> Bool {
             let dot = getDot(scan)

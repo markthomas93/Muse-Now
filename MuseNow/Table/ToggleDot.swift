@@ -4,7 +4,7 @@ class ToggleDot: UIView {
     
     var dot = UIView(frame: CGRect(x:11, y:11, width:14, height:14))
     var isOn = false
-    var event : KoEvent!
+    var event : MuEvent!
     
     override init(frame:CGRect) {
         super.init(frame:frame)
@@ -43,7 +43,7 @@ class ToggleDot: UIView {
 class ToggleCheck: UIView {
     
     var check : UIImageView!
-    var event : KoEvent!
+    var event : MuEvent!
     
     override init(frame:CGRect) {
         super.init(frame:frame)

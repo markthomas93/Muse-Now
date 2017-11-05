@@ -1,6 +1,6 @@
 //
 //  NotificationController.swift
-//  Klio WatchKit Extension
+//  Muse WatchKit Extension
 //
 //  Created by warren on 11/9/16.
 //  Copyright © 2016 Muse. All rights reserved.

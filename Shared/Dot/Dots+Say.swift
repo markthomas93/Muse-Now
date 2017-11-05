@@ -7,7 +7,7 @@ extension Dots {
     /// while scanning, announce a dot's first marked event
     /// - via: Scene.update.scanning
     
-    func sayFirstMark(_ index: Int, _ clockwise: Bool) -> KoEvent! {
+    func sayFirstMark(_ index: Int, _ clockwise: Bool) -> MuEvent! {
         
         if let event = getDot(index).getFirstMark(clockwise) {
             
@@ -21,7 +21,7 @@ extension Dots {
     /// after first event, announce a dot's next marked occurring event
     /// - via: Scene.update.marking
     
-    func sayNextMark(_ index: Int, _ clockwise: Bool) -> KoEvent! {
+    func sayNextMark(_ index: Int, _ clockwise: Bool) -> MuEvent! {
         
         if index != LONG_MAX {
             

@@ -22,27 +22,28 @@ func printLog(_ str: String) {
     //case NSLog(str)
 
     case
+    "←", // session receiving
+    "↔︎", // session activation state
+    "→", // session sending
+
+    "⧉", // sync files
     "📅", // EkNotification
     "🔈", // Audio
-    "🗣", // Say TTS
+
     "🎧", // Hear Via
     "∿": // audio recorder
 
-        print(KoDate.getHourMinSecMsec() + ": " + str)
+        print(MuDate.getHourMinSecMsec() + ": " + str)
         
     case
-      "⟳", // life cycle
+    "🗣", // Say TTS
+    "⟳", // life cycle
      "✺", // complication
     "👆", // tap action
     "⊛", // crown
     "✓", // actions
     "⎚", // scene animation
     "⚆", // wheel spoke animation
-    "↔︎", // session activation state
-    "←", // session receiving
-    "→", // session sending
-
-    "⧉", // sync files
 
     "⊕", // motion
     "𐆄", // execute closure during animation pause

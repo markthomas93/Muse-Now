@@ -1,9 +1,9 @@
-//  KoEvent+Marks.swift
+//  MuEvent+Marks.swift
 
 import Foundation
 import WatchKit
 
-extension KoEvents {
+extension MuEvents {
     
     func applyMark(_ mark: Mark) {
         let index = events.binarySearch({$0.eventId < mark.eventId})
@@ -14,7 +14,7 @@ extension KoEvents {
     }
     
     /// refresh all event's marks, after reading Marks.plist
-     /// - via: KoEvents::updateRealEvents,
+     /// - via: MuEvents::updateRealEvents,
      /// - via: Session::parseMsg(Msg["addFile":"Marks.plist",...])
     func applyMarks() { printLog ("✓ \(#function)")
         

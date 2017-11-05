@@ -5,18 +5,20 @@ import Foundation
 
 extension Session {
     
-    /// send message to phone
-    /// - via: Record.(recordMenu).setAction
-
+    /**
+     Send message to other device
+     - via: Record.(recordMenu).setAction
+     */
     func sendMsg(_ msg: [String : Any]) { printLog("→ \(#function) " + dumpDict(msg))
         let _ = sendMessage( msg, errorHandler: { error in
             printLog("→ \(#function) error:\(error.localizedDescription)")
         })
     }
     
-    /// parse and act upon message sent from another device
-    /// - via: Session.didReceive(ApplicationContext Message)
-
+    /**
+     Parse and act upon message sent from another device
+     - via: Session.didReceive(ApplicationContext Message)
+     */
     func parseTranscribe(_ msg: [String:Any]) {
 
         #if os(iOS)
@@ -43,7 +45,7 @@ extension Session {
         if // request from watch to transcribe event
             let eventData = msg["event"] as? Data,
             let recName   = msg["recName"] as? String,
-            let event = NSKeyedUnarchiver.unarchiveObject(with:eventData) as? KoEvent  {
+            let event = NSKeyedUnarchiver.unarchiveObject(with:eventData) as? MuEvent  {
 
             Memos.doTranscribe(event, recName, isSender: false)
         }
@@ -53,29 +55,38 @@ extension Session {
 
         let hear = Hear.shared
 
-        if let _ = msg["getRoute"] {
+        if let _ = msg["getRouteNow"] {
 
-            Session.shared.sendMsg( ["class" : "hear",
-                                     "putRoute" : hear.route])
+            Session.shared.sendMsg( ["class" : "HearVia",
+                                     "putRouteNow" : hear.route])
         }
-        if let route = msg["putRoute"] as? HearSet {
+        if let _ = msg["getOptions"] {
+
+            Session.shared.sendMsg( ["class" : "HearVia",
+                                     "putOptions" : hear.options])
+        }
+        if let route = msg["putRouteNow"] as? HearSet {
 
             hear.updateFromSession(route)
         }
+        if let actInt = msg["doAction"] as? Int {
+            let act = DoAction(rawValue:actInt)
+            hear.doHearAction(act!)
+        }
     }
 
-    func parseKoEvent(_ msg: [String : Any]) {
+    func parseMuEvent(_ msg: [String : Any]) {
 
         if // event was modified
             let updateEvent = msg["updateEvent"] as? Data,
-            let event = NSKeyedUnarchiver.unarchiveObject(with:updateEvent) as? KoEvent {
+            let event = NSKeyedUnarchiver.unarchiveObject(with:updateEvent) as? MuEvent {
 
             Actions.shared.doUpdateEvent(event, isSender: false)
         }
 
         else if // a new event has been added, such as a "Memo"
             let addEvent = msg["addEvent"]  as? Data,
-            let event = NSKeyedUnarchiver.unarchiveObject(with:addEvent) as? KoEvent {
+            let event = NSKeyedUnarchiver.unarchiveObject(with:addEvent) as? MuEvent {
 
             Actions.shared.doAddEvent(event, isSender: false)
         }
@@ -95,9 +106,9 @@ extension Session {
         if let clss = msg["class"] as? String {
 
             switch clss {
-            case "hear":        parseHear(msg)
-            case "transcribe":  parseTranscribe(msg)
-            case "KoEvent":     parseKoEvent(msg)
+            case "HearVia":     parseHear(msg)
+            case "Transcribe":  parseTranscribe(msg)
+            case "MuEvent":     parseMuEvent(msg)
             case "Cals":        parseCals(msg)
             case "Actions":     parseActionsMsg(msg)
             case "FileMsg":     FileMsg.parseMsg(msg)
@@ -106,7 +117,10 @@ extension Session {
         }
     }
 
-    /// - via: Session.parseMsg
+    /**
+     Parse action messages from other devices
+     - via: Session.parseMsg
+     */
     func parseActionsMsg(_ msg: [String : Any]) {
 
         func parseAction(_ action:String) -> DoAction {
@@ -143,9 +157,9 @@ extension Session {
             Dots.shared.gotoTime(dotTime)
         }
         else if // color slider has changed
-            let fade = msg["fadeColor"] as? Float {
+            let fade = msg["dialColor"] as? Float {
 
-             Actions.shared.fadeColor(fade, isSender: false)
+             Actions.shared.dialColor(fade, isSender: false)
         }
     }
 

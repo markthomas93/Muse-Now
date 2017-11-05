@@ -21,8 +21,8 @@ import Foundation
         }
     }
     
-    // shared container for klio apps
-    static func klioGroupURL() -> URL! {
+    // shared container for muse apps
+    static func museGroupURL() -> URL! {
         let groupName = "group.com.muse.MuseNow"
         let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier:groupName)
         return url

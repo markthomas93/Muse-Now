@@ -31,7 +31,7 @@ public class Mark: NSObject, NSCoding {
         isOn = isOn_
     }
 
-    init (_ event: KoEvent) {
+    init (_ event: MuEvent) {
         bgnTime = event.bgnTime
         eventId = event.eventId
         isOn = true

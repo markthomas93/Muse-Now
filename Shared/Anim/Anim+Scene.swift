@@ -382,7 +382,7 @@ extension Anim {
             finishTimer.invalidate()
             dots.selectTime(Date().timeIntervalSince1970)
             if let table = table,
-                let timeEvent = KoEvents.shared.timeEvent {
+                let timeEvent = MuEvents.shared.timeEvent {
                 table.scrollSceneEvent(timeEvent)
             }
             dots.dotNow = 0.0 ///??? 0.1
