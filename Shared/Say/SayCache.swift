@@ -1,29 +1,29 @@
 import UIKit
 
 /**
- Cache speech + title items based on type, delay, and decay
+ Cache speech + title items based on phrase, delay, and decay
  */
 class SayCache {
     
-    var sayType  : [SayType:SayItem] = [:]
+    var sayPhrase  : [SayPhrase:SayItem] = [:]
     var sayQueue : [SayItem] = []
     
     /**
      Sequence phrases and title based an delay and decay.
-     - decay < now: replace items of same type w new phrase
+     - decay < now: replace items of same phrase w new phrase
      - decay > now: Ok to repeat the same phrase
      */
     func updateCache(_ newItem:SayItem) {
 
-        /// first remove item of same type in que if differnt
+        /// first remove item of same phrase in que if differnt
         func removeItemsOfSameTypeFromQueue() -> Bool {
-            if let item = sayType[newItem.type] { // there is an item of same type in cache
+            if let item = sayPhrase[newItem.phrase] { // there is an item of same phrase in cache
                 let timeNow = Date().timeIntervalSince1970
                 if timeNow > item.decay { sayQueue.removeObject(item) } // prev expired past decay time
                 else if newItem.spoken == item.spoken { return false }  // prev has same phrase so ignore
                 else {  sayQueue.removeObject(item) } // different phrase, remove old version in sequence list
             }
-            return true // still continue, even if no items of same type found
+            return true // still continue, even if no items of same phrase found
         }
 
         /// next add new item to queue, sometimes before slower feedback items
@@ -40,15 +40,15 @@ class SayCache {
         }
 
         if removeItemsOfSameTypeFromQueue() {
-            sayType[newItem.type] = newItem
+            sayPhrase[newItem.phrase] = newItem
             addNewItemToQueue()
         }
     }
     
-    func clearTypes(_ types: [SayType]) {
-        for type in types {
+    func clearPhrases(_ phrases: [SayPhrase]) {
+        for phrase in phrases {
             for item in sayQueue {
-                if item.type == type {
+                if item.phrase == phrase {
                     sayQueue.removeObject(item)
                     break
                 }
@@ -57,15 +57,15 @@ class SayCache {
     }
 
     func clearAll() {
-        sayType.removeAll()
+        sayPhrase.removeAll()
         sayQueue.removeAll()
     }
     
-    func popNext(wiggleRoom:TimeInterval) -> SayItem! {
+    func popNext() -> SayItem! {
         if let tp = sayQueue.first {
             let timeNow =  Date().timeIntervalSince1970
             let deltaTime = tp.delay - timeNow
-            if deltaTime <= wiggleRoom {
+            if deltaTime <= 0 {
                 sayQueue.remove(at: 0)
                 return tp
             }

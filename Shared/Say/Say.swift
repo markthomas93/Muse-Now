@@ -3,16 +3,16 @@
  import Foundation
  
  /// type of phrase, will interrupt similar phrases
- enum SayType: Int { case
-    sayBlank = 0,
-    sayDirection,  // direction facing: future or past
-    sayDayOfWeek,  // day of week, while navigating dial
-    sayEventTime,  // time of current event while navigating
-    sayTimeNow,    // time now
-    sayDotTime,    // time of selected dot
-    sayEventTitle, // title of selected event while navigating
-    saySlider,     // status of user action on slider
-    sayMemo        // recorded audio memo
+ enum SayPhrase: Int { case
+    phraseBlank = 0,
+    phraseDirection,  // direction facing: future or past
+    phraseDayOfWeek,  // day of week, while navigating dial
+    phraseEventTime,  // time of current event while navigating
+    phraseTimeNow,    // time now
+    phraseDotTime,    // time of selected dot
+    phraseEventTitle, // title of selected event while navigating
+    phraseSlider,     // status of user action on slider
+    phraseMemo        // recorded audio memo
  }
  
  struct SaySet: OptionSet {
@@ -65,29 +65,6 @@
         super.init()
         synth.delegate = self
         synth.outputChannels = []
-
-//        let audioSession = AVAudioSession.sharedInstance()
-//        do {
-//
-//            try! audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
-//            try audioSession.setMode(AVAudioSessionModeSpokenAudio)
-//            try audioSession.setActive(true, with: .notifyOthersOnDeactivation)
-//
-//            let currentRoute = AVAudioSession.sharedInstance().currentRoute
-//            for description in currentRoute.outputs {
-//                if description.portType == AVAudioSessionPortHeadphones {
-//                    try audioSession.overrideOutputAudioPort(AVAudioSessionPortOverride.none)
-//                    print("headphone plugged in")
-//                } else {
-//                    print("headphone pulled out")
-//                    try audioSession.overrideOutputAudioPort(AVAudioSessionPortOverride.speaker)
-//                }
-//            }
-//
-//        } catch {
-//            print("audioSession properties weren't set because of an error.")
-//        }
-
      }
 
     // speech to text volume
@@ -110,13 +87,13 @@
         sayCache.clearAll()
     }
     
-    func clearTypes(_ types: [SayType]) {
+    func clearPhrases(_ phrases: [SayPhrase]) {
         
-        sayCache.clearTypes(types)
+        sayCache.clearPhrases(phrases)
         
         if let sayingNow = sayItem {
-            for type in types {
-                if sayingNow.type == type {
+            for phrase in phrases {
+                if sayingNow.phrase == phrase {
                     clearTimers()
                     if saySet.contains(.saySpeech) { synth.stopSpeaking(at: .immediate) }
                     else       { actions.doSetTitle("") }
@@ -125,6 +102,7 @@
             }
         }
     }
+
     func clearTimers() {
 
         sayTimer?.invalidate() ; sayTimer = nil
@@ -143,69 +121,61 @@
     /**
      Update dialog based on new position on dial
      */
-    func updateDialog(_ event: MuEvent!, type:SayType, spoken:String, title:String) -> Void { printLog("🗣 \(#function) \(event?.title ?? "") .\(type)")
+    func updateDialog(_ event: MuEvent!,_ phrase:SayPhrase, spoken:String, title:String) -> Void { printLog("🗣 \(#function) \(event?.title ?? "") .\(phrase)")
 
-        func newItem(_ delay: TimeInterval,_ decay: TimeInterval,_ clear:[SayType], immediate:Bool = false) {
+        func newItem(_ delay: TimeInterval,_ decay: TimeInterval,_ clear:[SayPhrase], immediate:Bool = false) {
 
-            if immediate {
-                actions.doSetTitle(title)
-            }
-            if type == .sayBlank {
-                clearAll()
-            }
-            else if clear.count > 0 {
-                clearTypes(clear)
-            }
-            let item = SayItem(event, type, delay, decay, spoken, title)
+            if immediate                { actions.doSetTitle(title) }
+
+            if phrase == .phraseBlank   { clearAll() }
+            else if clear.count > 0     { clearPhrases(clear) }
+
+            let item = SayItem(event, phrase, delay, decay, spoken, title)
             sayCache.updateCache(item)
             updateSpeech()
         }
 
         let never = Double.greatestFiniteMagnitude // sleep on it
 
-        switch type {
-        case .sayBlank:      newItem(0.00,  0.05, [], immediate: true)
-        case .sayMemo:       newItem(0.04,  0.50, [.sayEventTitle, .sayEventTime, .sayDotTime, .sayTimeNow])
-        case .sayDayOfWeek:  newItem(0.01, never, [.sayDirection])
-        case .sayTimeNow:    newItem(0.02,  4.00, [.sayDotTime,    .sayEventTime,   .sayDirection])
-        case .sayEventTime:  newItem(1.00,  4.00, [.sayEventTime,  .sayDotTime,     .sayTimeNow])
-        case .sayEventTitle: newItem(0.03,  2.00, [.sayEventTitle, .sayEventTime])
-        case .sayDotTime:    newItem(2.01,  4.00, [.sayDotTime,    .sayTimeNow,     .sayEventTime])
-        case .sayDirection:  newItem(0.05, never, [])
-        case .saySlider:     newItem(0.01,  8.00, [])
+        switch phrase {
+        case .phraseBlank:      newItem(0.00,  0.05, [], immediate: true)
+        case .phraseMemo:       newItem(0.04,  0.50, [.phraseEventTitle, .phraseEventTime, .phraseDotTime, .phraseTimeNow])
+        case .phraseDayOfWeek:  newItem(0.01, never, [.phraseDirection])
+        case .phraseTimeNow:    newItem(0.02,  4.00, [.phraseDotTime,    .phraseEventTime,   .phraseDirection])
+        case .phraseEventTime:  newItem(1.00,  4.00, [.phraseEventTime,  .phraseDotTime,     .phraseTimeNow])
+        case .phraseEventTitle: newItem(0.03,  2.00, [.phraseEventTitle, .phraseEventTime])
+        case .phraseDotTime:    newItem(2.01,  4.00, [.phraseDotTime,    .phraseTimeNow,     .phraseEventTime])
+        case .phraseDirection:  newItem(0.05, never, [])
+        case .phraseSlider:     newItem(0.01,  8.00, [])
         }
     }
-    
+
+    /**
+     Set timer to execute item based on its delay time
+     */
+    func nextItem(_ item:SayItem) {
+
+        printLog("🗣 \(#function) getNext event:\(item.event?.title ?? "nil") phrase:\(item.phrase)")
+        let timeNow = Date().timeIntervalSince1970
+        let deltaTime = max(0.01, item.delay - timeNow)
+        sayItem = sayItemBlank
+        if deltaTime > 0.2 {
+            do  { try audioSession.setActive(false, with: .notifyOthersOnDeactivation) } catch {}
+        }
+        // item.log("say timer > \(String(format:"%.2f",deltaTime)) ")
+        sayTimer = Timer.scheduledTimer(withTimeInterval: deltaTime, repeats: false, block: {_ in
+            self.clearTimers()
+            self.sayItem = nil
+            self.updateSpeech()
+        })
+    }
+
     func updateSpeech() {
-
-        if sayItem != nil {
-             printLog("🗣 \(#function) sayItem != nil ")
-            return
-        }
-        else if let item = sayCache.popNext(wiggleRoom: 0.0) {
-
-            doItem(item)
-        }
-        else if let item = sayCache.getNext() {
-            printLog("🗣 \(#function) getNext event:\(item.event?.title ?? "nil") type:\(item.type)")
-            let timeNow = Date().timeIntervalSince1970
-            let deltaTime = max(0.01, item.delay - timeNow)
-            sayItem = sayItemBlank
-            if deltaTime > 0.2 {
-                do  { try audioSession.setActive(false, with: .notifyOthersOnDeactivation) } catch {}
-            }
-            // item.log("say timer > \(String(format:"%.2f",deltaTime)) ")
-            sayTimer = Timer.scheduledTimer(withTimeInterval: deltaTime, repeats: false, block: {_ in
-                self.clearTimers()
-                self.sayItem = nil
-                self.updateSpeech()
-            })
-        }
-        else {
-             printLog("🗣 \(#function) continue")
-        }
+        if sayItem != nil { return  printLog("🗣 \(#function) sayItem != nil ") }
+        else if let item = sayCache.popNext() { doItem(item) }
+        else if let item = sayCache.getNext() { nextItem(item) }
+        else { printLog("🗣 \(#function) continue") }
     }
-
 
     func playMemo(_ item: SayItem) -> Bool {
 
@@ -249,7 +219,7 @@
             })
         }
 
-        if item.type == .sayMemo && playMemo(item) {}
+        if item.phrase == .phraseMemo && playMemo(item) {}
         else if saySet.contains(.saySpeech) && playSay(item) {}
         else { txtLocal() }
     }

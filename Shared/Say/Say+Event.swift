@@ -11,7 +11,7 @@ extension Say {
     */
     func sayFuturePast(_ isFuture: Bool) {
         let title = isFuture ? "future" : "past"
-        updateDialog(nil, type:.sayDirection, spoken:title, title:title)
+        updateDialog(nil, .phraseDirection, spoken:title, title:title)
     }
         
     /**
@@ -44,14 +44,14 @@ extension Say {
 
             dateFormatter.dateFormat = "EEEE"
             let txt = dateFormatter.string(from:Date())
-            updateDialog(event, type:.sayDayOfWeek, spoken:txt, title:txt)
+            updateDialog(event, .phraseDayOfWeek, spoken:txt, title:txt)
         }
         
         // announce curren time
         dateFormatter.dateFormat = "h:mm a"
         let spoken = "Now " + dateFormatter.string(from:Date())
         let title = isTouching ? "" : "Muse Now"
-        updateDialog(event, type:.sayTimeNow, spoken:spoken, title:title)
+        updateDialog(event, .phraseTimeNow, spoken:spoken, title:title)
     }
     
     /**
@@ -60,7 +60,7 @@ extension Say {
      */
     func sayRecording(_ event: MuEvent!) {
         
-        updateDialog(event, type:.sayMemo, spoken:event.eventId, title:event.title)
+        updateDialog(event, .phraseMemo, spoken:event.eventId, title:event.title)
         
         if saySet.contains(.sayTimeUntil) {
             
@@ -69,7 +69,7 @@ extension Say {
             let suffix = timeNow < event.bgnTime ? "" : " ago"
             let elapse = prefix + MuDate.elapseTime(event.bgnTime) + suffix
 
-            updateDialog(event, type:.sayEventTime, spoken:elapse, title:elapse)
+            updateDialog(event, .phraseEventTime, spoken:elapse, title:elapse)
 
         }
     }
@@ -80,7 +80,7 @@ extension Say {
      */
     func sayElapseTime(_ event:MuEvent!) {
         
-        updateDialog(event, type:.sayEventTitle, spoken:event.title, title:event.title)
+        updateDialog(event, .phraseEventTitle, spoken:event.title, title:event.title)
 
        if saySet.contains(.sayEventTime) {
         
@@ -89,7 +89,7 @@ extension Say {
             let suffix = timeNow < event.bgnTime ? "" : " ago"
             let elapse = prefix + MuDate.elapseTime(event.bgnTime) + suffix
         
-            updateDialog(event, type:.sayEventTime, spoken:elapse, title:elapse)
+            updateDialog(event, .phraseEventTime, spoken:elapse, title:elapse)
         }
     }
     
@@ -99,7 +99,7 @@ extension Say {
      */
     func sayBeginTime(_ event: MuEvent!) {
         
-        updateDialog(event, type:.sayEventTitle, spoken:event.title, title:event.title)
+        updateDialog(event, .phraseEventTitle, spoken:event.title, title:event.title)
         
         if saySet.contains(.sayEventTime) {
             
@@ -110,7 +110,7 @@ extension Say {
             let date = Date(timeIntervalSince1970:event.bgnTime)
             let title = dateFormatter.string(from:date)
             let spoken = prefix + title
-            updateDialog(event, type:.sayEventTime,  spoken:spoken,   title:title)
+            updateDialog(event, .phraseEventTime,  spoken:spoken,   title:title)
         }
     }
     
@@ -122,12 +122,12 @@ extension Say {
         
         if saySet.contains(.sayDayOfWeek) {
             let txt  = dayHour.getDowSpeak()
-            updateDialog(event, type:.sayDayOfWeek, spoken:txt, title:txt)
+            updateDialog(event, .phraseDayOfWeek, spoken:txt, title:txt)
         }
         if saySet.contains(.sayTimeHour) {
             
             let txt = dayHour.getHourSpeak()
-            updateDialog(event, type:.sayDotTime, spoken:txt, title:txt)
+            updateDialog(event, .phraseDotTime, spoken:txt, title:txt)
         }
     }
 

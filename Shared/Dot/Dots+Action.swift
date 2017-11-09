@@ -42,8 +42,8 @@ extension Dots {
             }
         }
         if isNewDay {
-            let sayDayOfWeek  = dayHour.getDowSpeak()
-            say.updateDialog(event, type:.sayDayOfWeek, spoken:sayDayOfWeek, title:sayDayOfWeek)
+            let txt  = dayHour.getDowSpeak()
+            say.updateDialog(event, .phraseDayOfWeek, spoken:txt, title:txt)
         }
         else if flipFuture {
             say.sayFuturePast(isFuture)

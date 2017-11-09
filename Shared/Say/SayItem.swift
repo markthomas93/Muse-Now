@@ -4,16 +4,16 @@ import AVFoundation
 class SayItem: NSObject {
     
     var event: MuEvent!
-    var type = SayType.sayBlank
+    var phrase = SayPhrase.phraseBlank
     var delay = TimeInterval(0)
     var decay = TimeInterval(0)
     var spoken  = ""
     var title   = ""
     
-    convenience init (_ event_: MuEvent!, _ type_: SayType, _ delay_:TimeInterval, _ decay_:TimeInterval, _ spoken_:String, _ title_:String) {
+    convenience init (_ event_: MuEvent!, _ phrase_: SayPhrase, _ delay_:TimeInterval, _ decay_:TimeInterval, _ spoken_:String, _ title_:String) {
         self.init()
         event  = event_
-        type   = type_
+        phrase = phrase_
 
         let timeNow = Date().timeIntervalSince1970
         delay  = timeNow + delay_      // equatable
@@ -43,8 +43,8 @@ class SayItem: NSObject {
             
             let rDelay = "\(relative(delay)) "
             let rDecay = "\(relative(decay)) "
-            let typeStr = "\(type)".padding(toLength: 11, withPad: " ", startingAt: 0)
-            let output = typeStr + rDelay + rDecay + spoken + " | " + title
+            let phraseStr = "\(phrase)".padding(toLength: 11, withPad: " ", startingAt: 0)
+            let output = phraseStr + rDelay + rDecay + spoken + " | " + title
             return output
         }
        

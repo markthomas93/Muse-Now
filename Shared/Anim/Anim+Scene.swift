@@ -86,7 +86,7 @@ extension Anim {
             else if // if crossing the rubicon, then clear out title
                 abs(lastFrame) > spokeFan {
                 
-                say.updateDialog(nil, type: .sayBlank, spoken: "", title: "") //???
+                say.updateDialog(nil, .phraseBlank, spoken: "", title: "") //???
             }
         }
             // finish animation
