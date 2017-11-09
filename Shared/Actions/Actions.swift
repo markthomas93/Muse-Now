@@ -9,8 +9,8 @@ public enum DoAction : Int { case
     speakOn, speakOff, speakLow, speakMedium, speakHigh, dialColor,
     memoOn, memoOff,
 
-    hearEarbuds, hearSpeaker, hearRemote, hearAll,
-    muteEarbuds, muteSpeaker, muteRemote, muteAll,
+    hearEarbuds, hearSpeaker,
+    muteEarbuds, muteSpeaker,
 
     showEvents, showAlarms, showMarks,showTime,
     markAdd, markRemove, markClearAll,
@@ -54,8 +54,8 @@ class Actions {
         if isSender {
             
             Session.shared.sendMsg( ["class" : "Actions", "dialColor" : fade])
-            
-            Settings.shared.updateAct(.dialColor, fade)
+
+            Settings.shared.updateColor(fade)
         }
     }
     //-----------------------------------------
@@ -216,6 +216,8 @@ class Actions {
         // text to speech
         strAct["set speech on"] = .speakOn
         strAct["set speech off"] = .speakOff
+        strAct["set memos on"] = .memoOn
+        strAct["set memos off"] = .memoOff
         strAct["set speak on"] = .speakOn
         strAct["set speak off"] = .speakOff
         strAct["set volume off"] = .speakOff
@@ -225,11 +227,8 @@ class Actions {
 
         strAct["hear earbuds"] = .hearEarbuds
         strAct["hear speaker"] = .hearSpeaker
-        strAct["hear remote"] = .hearRemote
-        strAct["hear remote"] = .hearRemote
         strAct["mute speaker"] = .muteSpeaker
         strAct["mute earbuds"] = .muteEarbuds
-        strAct["mute remote"] = .muteRemote
 
         // chimes
         // addAction(.chimeOff,     "set chime off")
@@ -247,10 +246,16 @@ class Actions {
 
         menuAct.removeAll()
 
-        menuAct.append(Say.shared.isSayOn
+        menuAct.append(contentsOf:Hear.shared.getMenus())
+
+        menuAct.append(Say.shared.saySet.contains(.saySpeech)
             ? StrAct("set speech off",.speakOff)
             : StrAct("set speech on",.speakOn))
-        menuAct.append(contentsOf:Hear.shared.getMenus())
+
+        menuAct.append(Say.shared.saySet.contains(.sayMemo)
+            ? StrAct("set memos off",.memoOff)
+            : StrAct("set memos on",.memoOn))
+
         menuAct.append(StrAct("clear all marks",.markClearAll))
         menuAct.append(StrAct("refresh",.refresh))
     }
@@ -277,10 +282,10 @@ class Actions {
 
             Say.shared.doSpeakAction(act)
 
-        case  .hearEarbuds, .hearSpeaker, .hearRemote, .hearAll,
-              .muteEarbuds, .muteSpeaker, .muteRemote, .muteAll:
+        case  .hearEarbuds, .hearSpeaker,
+              .muteEarbuds, .muteSpeaker:
 
-            Hear.shared.doHearAction(act)
+            Hear.shared.doHearAction(act, isSender:true)
 
         // mark a dot
         case .markAdd, .markRemove, .markClearAll, .noteRemove, .noteAdd:

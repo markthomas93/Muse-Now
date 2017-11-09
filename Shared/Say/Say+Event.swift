@@ -40,7 +40,7 @@ extension Say {
         let dateFormatter = DateFormatter()
 
         // announce day of week for position in dial (ignored if duplicate)
-        if isSayTimeNow {
+        if saySet.contains(.sayTimeNow) {
 
             dateFormatter.dateFormat = "EEEE"
             let txt = dateFormatter.string(from:Date())
@@ -62,7 +62,7 @@ extension Say {
         
         updateDialog(event, type:.sayMemo, spoken:event.eventId, title:event.title)
         
-        if isSayTimeElapsed {
+        if saySet.contains(.sayTimeUntil) {
             
             let timeNow = Date().timeIntervalSince1970
             let prefix = timeNow < event.bgnTime ? "in " : ""
@@ -82,7 +82,7 @@ extension Say {
         
         updateDialog(event, type:.sayEventTitle, spoken:event.title, title:event.title)
 
-       if isSayEventTime {
+       if saySet.contains(.sayEventTime) {
         
             let timeNow = Date().timeIntervalSince1970
             let prefix = timeNow < event.bgnTime ? "in " : ""
@@ -101,7 +101,7 @@ extension Say {
         
         updateDialog(event, type:.sayEventTitle, spoken:event.title, title:event.title)
         
-        if isSayEventTime {
+        if saySet.contains(.sayEventTime) {
             
             let timeNow = Date().timeIntervalSince1970
             let prefix = timeNow < event.bgnTime ? "begins " : "began "
@@ -120,11 +120,11 @@ extension Say {
      */
     func sayDotTime(_ event: MuEvent!) {
         
-        if isSayDayOfWeek {
+        if saySet.contains(.sayDayOfWeek) {
             let txt  = dayHour.getDowSpeak()
             updateDialog(event, type:.sayDayOfWeek, spoken:txt, title:txt)
         }
-        if isSayTimeHour {
+        if saySet.contains(.sayTimeHour) {
             
             let txt = dayHour.getHourSpeak()
             updateDialog(event, type:.sayDotTime, spoken:txt, title:txt)

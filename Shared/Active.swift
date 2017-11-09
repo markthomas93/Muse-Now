@@ -34,6 +34,7 @@ class Active {
 
         throttleTimer.invalidate()
         Motion.shared.startMotion()
+        Hear.shared.updateRemoteDevice() // get status of other device
 
 //        if !Record.shared.isRecording {
 //            activateAudioTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: {_ in

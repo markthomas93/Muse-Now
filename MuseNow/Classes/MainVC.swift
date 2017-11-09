@@ -34,12 +34,12 @@ class MainVC: UIViewController {
         super.viewDidLoad()
         view.accessibilityIgnoresInvertColors = true
         Muse.shared.testScript()
-
+        let viewY = CGFloat(8)
         let viewW = self.view.frame.size.width
-        let viewH = self.view.frame.size.height
+        let viewH = self.view.frame.size.height - viewY
         let dialW = dialSize.width
         let dialH = dialSize.height
-        let margin = CGFloat(20)
+        let margin = CGFloat(16)
         let panelY = viewH - dialH - margin // start of touch panel
         let crownW = (viewW - dialW)/2
 
@@ -85,7 +85,7 @@ class MainVC: UIViewController {
         crownRight.eventTable = pagesVC.eventTable
         
         // view hierarcy
-
+        view.frame.origin.y = viewY
         view.addSubview(panel)
         panel.addSubview(skView)
         panel.addSubview(crownLeft)

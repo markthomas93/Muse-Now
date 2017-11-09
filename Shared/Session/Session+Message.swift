@@ -51,29 +51,41 @@ extension Session {
         }
     }
 
+
+    func parseSay(_ msg: [String : Any])  {
+
+        if let putInt = msg["putSet"] as? Int {
+            let putSet = SaySet(rawValue:putInt)
+            Say.shared.updateSaySetFromSession(putSet)
+        }
+    }
     func parseHear(_ msg: [String : Any])  {
 
         let hear = Hear.shared
+        // update remote device's route before changing options
+        if let routeInt = msg["putRouteNow"] as? Int {
+            let routeSet = HearSet(rawValue: routeInt)
+            hear.updateRemoteFromSession(routeSet)
+        }
+        // news options may 
+        if let optionInt = msg["putOptions"] as? Int {
+            let optionSet = HearSet(rawValue:optionInt)
+            hear.updateOptionsFromSession(optionSet)
+        }
 
         if let _ = msg["getRouteNow"] {
 
-            Session.shared.sendMsg( ["class" : "HearVia",
-                                     "putRouteNow" : hear.route])
+            Session.shared.sendMsg(
+                ["class" : "HearVia",
+                 "putRouteNow" : hear.route.rawValue])
         }
         if let _ = msg["getOptions"] {
 
-            Session.shared.sendMsg( ["class" : "HearVia",
-                                     "putOptions" : hear.options])
+            Session.shared.sendMsg(
+                ["class" : "HearVia",
+                 "putOptions" : hear.options.rawValue])
         }
-        if let route = msg["putRouteNow"] as? HearSet {
-
-            hear.updateFromSession(route)
-        }
-        if let actInt = msg["doAction"] as? Int {
-            let act = DoAction(rawValue:actInt)
-            hear.doHearAction(act!)
-        }
-    }
+}
 
     func parseMuEvent(_ msg: [String : Any]) {
 
@@ -106,6 +118,7 @@ extension Session {
         if let clss = msg["class"] as? String {
 
             switch clss {
+            case "SaySet":      parseSay(msg)
             case "HearVia":     parseHear(msg)
             case "Transcribe":  parseTranscribe(msg)
             case "MuEvent":     parseMuEvent(msg)

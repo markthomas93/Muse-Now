@@ -19,10 +19,11 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
         
         super.viewDidLoad()
         let optionsDict = [UIPageViewControllerOptionInterPageSpacingKey : 20]
-        
+        let marginY = CGFloat(36)
+
         pageVC = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: optionsDict)
         pageVC.dataSource = self
-        pageVC.view!.frame = CGRect(x:0, y:0, width: view.frame.size.width, height: panelY)
+        pageVC.view!.frame = CGRect(x:0, y:marginY, width: view.frame.size.width, height: panelY-marginY)
         
         for view in pageVC.view.subviews {
             if view is UIScrollView {

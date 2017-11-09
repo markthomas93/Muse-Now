@@ -41,8 +41,9 @@ class Fader: TouchForce {
     }
     
      func initFromSettings() {
-        value = Settings.shared.getValueForKey("dialColor") as! Float
-        thumb.center.x = thumbR + 2*borderWidth + runway * CGFloat(value)
+        if let value = Settings.shared.root["dialColor"]  {
+            thumb.center.x = thumbR + 2*borderWidth + runway * CGFloat(value as! Float)
+        }
     }
     
     func updatePos(_ pos:CGPoint) {

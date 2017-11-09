@@ -6,16 +6,30 @@
  enum SayType: Int { case
     sayBlank = 0,
     sayDirection,  // direction facing: future or past
-    sayDayOfWeek,    // day of week, while navigating dial
+    sayDayOfWeek,  // day of week, while navigating dial
     sayEventTime,  // time of current event while navigating
     sayTimeNow,    // time now
     sayDotTime,    // time of selected dot
     sayEventTitle, // title of selected event while navigating
     saySlider,     // status of user action on slider
-    sayMemo       // recorded audio memo
+    sayMemo        // recorded audio memo
  }
  
- 
+ struct SaySet: OptionSet {
+    let rawValue: Int
+    static let sayMemo          = SaySet(rawValue: 1 << 0)
+    static let saySpeech        = SaySet(rawValue: 1 << 1)
+
+    static let sayTimeNow       = SaySet(rawValue: 1 << 2)
+    static let sayTimeUntil     = SaySet(rawValue: 1 << 3)
+    static let sayDayOfWeek     = SaySet(rawValue: 1 << 4)
+    static let sayTimeHour      = SaySet(rawValue: 1 << 5)
+    static let sayEventTime     = SaySet(rawValue: 1 << 6)
+
+    static let size             = 7
+
+ }
+
  class Say : NSObject, AVSpeechSynthesizerDelegate {
     
     static let shared = Say()
@@ -29,18 +43,14 @@
     var actions = Actions.shared
     var dayHour = DayHour.shared
     
-    var synth = AVSpeechSynthesizer.init()
+    var synth = AVSpeechSynthesizer()
     var audioPlayer: AVAudioPlayer!
     var audioSession = AVAudioSession.sharedInstance()
     var title = ""
-    
-    // settings
-    var isSayOn = false
-    var isSayTimeNow = true
-    var isSayTimeElapsed = true
-    var isSayDayOfWeek = true
-    var isSayTimeHour = true
-    var isSayEventTime = true
+
+    var saySet = SaySet([.sayMemo,          .sayTimeNow,
+                         .sayTimeUntil,   .sayDayOfWeek,
+                         .sayTimeHour,      .sayEventTime])
 
     var sayVolume = Float(0.5)
 
@@ -54,21 +64,47 @@
     override init() {
         super.init()
         synth.delegate = self
+        synth.outputChannels = []
+
+//        let audioSession = AVAudioSession.sharedInstance()
+//        do {
+//
+//            try! audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
+//            try audioSession.setMode(AVAudioSessionModeSpokenAudio)
+//            try audioSession.setActive(true, with: .notifyOthersOnDeactivation)
+//
+//            let currentRoute = AVAudioSession.sharedInstance().currentRoute
+//            for description in currentRoute.outputs {
+//                if description.portType == AVAudioSessionPortHeadphones {
+//                    try audioSession.overrideOutputAudioPort(AVAudioSessionPortOverride.none)
+//                    print("headphone plugged in")
+//                } else {
+//                    print("headphone pulled out")
+//                    try audioSession.overrideOutputAudioPort(AVAudioSessionPortOverride.speaker)
+//                }
+//            }
+//
+//        } catch {
+//            print("audioSession properties weren't set because of an error.")
+//        }
+
      }
-        
+
     // speech to text volume
     public func doSpeakAction(_ act: DoAction) {
         switch act {
-        case .speakOn:          isSayOn = true
-        case .speakOff:         isSayOn = false
-        case .speakLow:         isSayOn = true; sayVolume = 0.1
-        case .speakMedium:      isSayOn = true; sayVolume = 0.5
-        case .speakHigh:        isSayOn = true; sayVolume = 1.0
+        case .speakOn:          saySet.insert(.saySpeech)
+        case .speakOff:         saySet.remove(.saySpeech)
+        case .speakLow:         saySet.insert(.saySpeech) ; sayVolume = 0.1
+        case .speakMedium:      saySet.insert(.saySpeech) ; sayVolume = 0.5
+        case .speakHigh:        saySet.insert(.saySpeech) ; sayVolume = 1.0
         default: break
         }
     }
 
-  
+    func updateSaySetFromSession(_ saySet_:SaySet) {
+        saySet = saySet_
+    }
     func clearAll() {  printLog("🗣 \(#function)")
         cancelSpeech()
         sayCache.clearAll()
@@ -82,7 +118,7 @@
             for type in types {
                 if sayingNow.type == type {
                     clearTimers()
-                    if isSayOn { synth.stopSpeaking(at: .immediate) }
+                    if saySet.contains(.saySpeech) { synth.stopSpeaking(at: .immediate) }
                     else       { actions.doSetTitle("") }
                     return
                 }
@@ -173,39 +209,24 @@
 
     func playMemo(_ item: SayItem) -> Bool {
 
-        func memoLocal() {
+        transcribe(item) // transcribe item if
+
+        if Say.shared.saySet.contains(.sayMemo) && Hear.shared.canPlay() {
             self.synth.stopSpeaking(at: .immediate) //?? remove?
             let url = FileManager.documentUrlFile(item.spoken)
             if !Audio.shared.playUrl(url: url) {
                 self.sayItem = nil
             }
-        }
-        func memoRemote() {
-        }
-
-        transcribe(item) // transcribe item if
-
-        if Hear.shared.play(memoLocal,memoRemote) {
             return true
         }
         return false
     }
     func playSay(_ item: SayItem) -> Bool {
 
-        func sayLocal() { printLog("🗣 \(#function) sayItem:\(item.title)" )
+        if item.spoken != "" && Hear.shared.canPlay() {
+             printLog("🗣 \(#function) sayItem:\(item.title)" )
             self.clearTimers()
             synth.speak(UtterItem(item, sayVolume))
-        }
-
-        func sayRemote() {
-            sayTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: false, block: {_ in
-                printLog("🗣 \(#function) timeout !!!")
-                self.cancelSpeech()
-                self.updateSpeech()
-            })
-        }
-
-        if item.spoken != "" && Hear.shared.play(sayLocal, sayRemote) {
             return true
         }
         return false
@@ -229,7 +250,7 @@
         }
 
         if item.type == .sayMemo && playMemo(item) {}
-        else if isSayOn && playSay(item) {}
+        else if saySet.contains(.saySpeech) && playSay(item) {}
         else { txtLocal() }
     }
 
