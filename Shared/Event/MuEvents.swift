@@ -1,8 +1,10 @@
 import EventKit
 import UIKit
 
-/// MuEvents are are view upon EventKit calendar events and reminders
-/// including a special timeEvent that changes every minute
+/**
+ MuEvents are are view upon EventKit calendar events and reminders
+ including a special timeEvent that changes every minute
+ */
 class MuEvents {
     
     static let shared = MuEvents()
@@ -18,13 +20,25 @@ class MuEvents {
 
     let eventStore = EKEventStore()
 
-    /// Main entry for updating events
-    /// - via: Actions.doRefresh
-
+    /**
+     Main entry for updating events
+        - via: Actions.doRefresh
+     */
     func updateEvents(_ completion: @escaping () -> Void) {
-        //updateFakeEvents(completion)
-        updateRealEvents(completion)
-        NotificationCenter.default.removeObserver(self)
+
+        // real events used for production
+        getRealEvents() { ekEvents, ekReminds, memos, routine in
+
+            self.events.removeAll()
+            self.events = ekEvents + ekReminds + memos + routine //+ self.getNearbyEvents() //???
+            self.sortTimeEventsStart()
+            self.applyMarks()
+            self.marks.synchronize()
+            self.memos.synchronize()
+            Cals.shared.synchronize()
+            completion()
+        }
+       NotificationCenter.default.removeObserver(self)
         NotificationCenter.default.addObserver(self, selector: #selector(EkNotification(notification:)), name: Notification.Name.EKEventStoreChanged, object: eventStore)
     }
     
@@ -32,39 +46,65 @@ class MuEvents {
         printLog("📅 notification:\(notification.name.rawValue)")
     }
 
+    /**
+    Get events from several data sources, each on its own thread
+    */
     func getRealEvents(_ completion: @escaping (
         _ ekEvents      : [MuEvent],
-        _ ekReminders   : [MuEvent]) -> Void) -> Void  {
+        _ ekReminders   : [MuEvent],
+        _ memos         : [MuEvent],
+        _ routine       : [MuEvent]
+        ) -> Void) -> Void  {
         
         let queue = DispatchQueue(label: "com.muse.getRealEvents", attributes: .concurrent, target: .main)
         let group = DispatchGroup()
         
-        var ekEvents    : [MuEvent] = []
-        var ekReminders : [MuEvent] = []
+        var ekEvents    = [MuEvent]()
+        var ekReminders = [MuEvent]()
+        var memos       = [MuEvent]()
+        var routine     = [MuEvent]()
 
         // ekevents
-        group.enter()
-        queue.async (group: group) {
-            self.getEkEvents() { result in
-                ekEvents = result
-                group.leave()
+        if Show.shared.canShow(.showCalendar) {
+            group.enter()
+            queue.async (group: group) {
+                self.getEkEvents() { result in
+                    ekEvents = result
+                    group.leave()
+                }
             }
         }
         // ekreminders
-        group.enter()
-        queue.async (group: group) {
-            self.getEkReminders() { result in
-                ekReminders = result
-                group.leave()
+        if Show.shared.canShow(.showReminder) {
+            group.enter()
+            queue.async (group: group) {
+                self.getEkReminders() { result in
+                    ekReminders = result
+                    group.leave()
+                }
             }
         }
         // memos
-        group.enter()
-        queue.async (group: group) {
-            self.memos.unarchiveMemos() {
-                group.leave()
+        if Show.shared.canShow(.showMemo) {
+            group.enter()
+            queue.async (group: group) {
+                self.memos.unarchiveMemos() { result in
+                    memos = result
+                    group.leave()
+                }
             }
         }
+        // routine
+        if Show.shared.canShow(.showRoutine) {
+            group.enter()
+            queue.async (group: group) {
+                Routine.shared.getRoutineEvents() { result in
+                    routine = result
+                    group.leave()
+                }
+            }
+        }
+
         // marks
         group.enter()
         queue.async (group: group) {
@@ -74,7 +114,7 @@ class MuEvents {
         }
         // events + reminders done
         group.notify(queue: queue, execute: {
-            completion(ekEvents,ekReminders)
+            completion(ekEvents,ekReminders, memos, routine)
         })
     }
     
@@ -141,7 +181,7 @@ class MuEvents {
     }
 
     /// Get EventKit reminder after getting permission
-    func getEkReminders(completion: @escaping (_ result:[MuEvent]) ->Void) -> Void {
+    func getEkReminders(completion: @escaping (_ result:[MuEvent]) -> Void) -> Void {
         
         let store = EKEventStore()
         
@@ -174,7 +214,7 @@ class MuEvents {
     }
     
     
-      func addEvent(_ event:MuEvent) {
+    func addEvent(_ event:MuEvent) {
         events.append(event)
         if event.type == .memo {
             memos.addEvent(event)
@@ -203,21 +243,6 @@ class MuEvents {
         }
     }
     
-    /// real events used for production
-    func updateRealEvents(_ completion: @escaping () -> Void) -> Void {
-        
-        getRealEvents() { ekEvents, ekReminds in
-            
-            self.events.removeAll()
-            self.events = ekEvents + ekReminds + self.memos.items //+ self.getNearbyEvents() //???
-            self.sortTimeEventsStart()
-            self.applyMarks()
-            self.marks.synchronize()
-            self.memos.synchronize()
-            Cals.shared.synchronize()
-            completion()
-        }
-    }
 
     /// fake events used for testing
     func updateFakeEvents(_ completion: @escaping () -> Void) -> Void {
@@ -246,17 +271,22 @@ class MuEvents {
         }
     }
     
-    /// find nearest time index
-    /// - calls: Collection+Search binarySearch
+    /**
+     Find nearest time index
+     - calls: Collection+Search binarySearch
+     */
 
     func getTimeIndex(_ insertTime: TimeInterval) -> Int {
         let result = events.binarySearch({$0.bgnTime < insertTime})
         return result
     }
 
-    /// attempt to get next mark, if non then next event
-    ///  previous marked event, or previus event of none were marked
+    /**
+     Attempt to get next mark, if non then next event
+     previous marked event, or previus event of none were marked
+     */
     func getLastNextEvents() -> (MuEvent?, MuEvent?) {
+
         var lastEvent: MuEvent!
         var nextEvent: MuEvent!
 
@@ -281,6 +311,7 @@ class MuEvents {
         }
         return (lastEvent, nextEvent)
     }
+
     func minuteTimerTick() {
         
         if timeEvent == nil { return }

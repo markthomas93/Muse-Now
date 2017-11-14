@@ -6,12 +6,14 @@ class Settings: FileSync {
     
     static let shared = Settings()
 
+    var showSet: ShowSet!
     var hearSet: HearSet!
     var saySet: SaySet!
     var root = [String:Any]()
 
     override init() {
         super.init()
+        root["showSet"] = showSet
         root["hearSet"] = hearSet
         root["saySet"] = saySet
         fileName = "Settings.plist"
@@ -30,7 +32,8 @@ class Settings: FileSync {
                 self.archiveDict(root, 0)
             }
             else {
-                if let saySet  = root["saySet"]  { self.saySet = saySet as! SaySet }
+                if let showSet = root["showSet"] { self.showSet = showSet as! ShowSet }
+                if let saySet  = root["saySet"]  { self.saySet  = saySet  as! SaySet }
                 if let hearSet = root["hearSet"] { self.hearSet = hearSet as! HearSet }
                 self.updateSettings()
                 self.memoryTime = fileTime
@@ -66,8 +69,9 @@ class Settings: FileSync {
     }
     
     func initSettings() {
+        root["showSet"] = Show.shared.showSet
         root["hearSet"] = Hear.shared.options
-        root["saySet"] = Say.shared.saySet
+        root["saySet"]  = Say.shared.saySet
         root["dialColor"] = Actions.shared.scene?.uFade?.floatValue ?? 0
     }
 
@@ -75,6 +79,7 @@ class Settings: FileSync {
         if let value = root["dialColor"] as? Float {  Actions.shared.dialColor(value, isSender:false) }
         if let saySet = root["saySet"] as? Int { Say.shared.saySet = SaySet(rawValue:saySet)}
         if let hearSet = root["hearSet"] as? Int {  Hear.shared.options = HearSet(rawValue:hearSet) }
+        if let showSet = root["showSet"] as? Int {  Show.shared.showSet = ShowSet(rawValue:showSet) }
        }
 }
 

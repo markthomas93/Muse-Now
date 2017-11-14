@@ -62,7 +62,7 @@ class RowItem {
     }
 }
 
-class EventTableVC: UITableViewController, KoTableDelegate {
+class EventTableVC: UITableViewController, MuseTableDelegate {
 
     let say = Say.shared
     let anim = Anim.shared
@@ -78,6 +78,8 @@ class EventTableVC: UITableViewController, KoTableDelegate {
     var timeRowi     = Int(0)              // position of TimeCell in rowEventY array
     var timeCell      : EventTimeCell!      // cell shows current time, keep changing its position
     var cellTimer     = Timer()             // 1 minute time to change timeCell label and maybe position
+
+    var sayTimer        = Timer()           // delay saying anything while navigating
     
 
     let cal = Calendar.current as NSCalendar

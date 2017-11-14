@@ -17,17 +17,11 @@
  
  struct SaySet: OptionSet {
     let rawValue: Int
-    static let sayMemo          = SaySet(rawValue: 1 << 0)
-    static let saySpeech        = SaySet(rawValue: 1 << 1)
-
-    static let sayTimeNow       = SaySet(rawValue: 1 << 2)
-    static let sayTimeUntil     = SaySet(rawValue: 1 << 3)
-    static let sayDayOfWeek     = SaySet(rawValue: 1 << 4)
-    static let sayTimeHour      = SaySet(rawValue: 1 << 5)
-    static let sayEventTime     = SaySet(rawValue: 1 << 6)
-
-    static let size             = 7
-
+    static let sayMemo    = SaySet(rawValue: 1 << 0)
+    static let sayEvent   = SaySet(rawValue: 1 << 1)
+    static let saySpeech  = SaySet(rawValue: 1 << 2)
+    static let sayTime    = SaySet(rawValue: 1 << 3)
+    static let size       = 4
  }
 
  class Say : NSObject, AVSpeechSynthesizerDelegate {
@@ -48,9 +42,7 @@
     var audioSession = AVAudioSession.sharedInstance()
     var title = ""
 
-    var saySet = SaySet([.sayMemo,          .sayTimeNow,
-                         .sayTimeUntil,   .sayDayOfWeek,
-                         .sayTimeHour,      .sayEventTime])
+    var saySet = SaySet([.sayMemo, .sayEvent, .sayTime])
 
     var sayVolume = Float(0.5)
 
@@ -64,25 +56,43 @@
     override init() {
         super.init()
         synth.delegate = self
-        synth.outputChannels = []
-     }
+        do { try audioSession.setCategory(AVAudioSessionCategorySoloAmbient, with: [.allowBluetoothA2DP,.interruptSpokenAudioAndMixWithOthers] )}
+        catch {  print("\(#function) Error:\(error)") }
+        }
 
     // speech to text volume
-    public func doSpeakAction(_ act: DoAction) {
+    public func doSayAction(_ act: DoAction, isSender: Bool) {
+
         switch act {
-        case .speakOn:          saySet.insert(.saySpeech)
-        case .speakOff:         saySet.remove(.saySpeech)
-        case .speakLow:         saySet.insert(.saySpeech) ; sayVolume = 0.1
-        case .speakMedium:      saySet.insert(.saySpeech) ; sayVolume = 0.5
-        case .speakHigh:        saySet.insert(.saySpeech) ; sayVolume = 1.0
+        case .saySpeechOn:  saySet.insert(.saySpeech)
+        case .saySpeechOff: saySet.remove(.saySpeech)
+        case .sayMemoOn:    saySet.insert(.sayMemo)
+        case .sayMemoOff:   saySet.remove(.sayMemo)
+
+        case .speakLow:     saySet.insert(.saySpeech) ; sayVolume = 0.1
+        case .speakMedium:  saySet.insert(.saySpeech) ; sayVolume = 0.5
+        case .speakHigh:    saySet.insert(.saySpeech) ; sayVolume = 1.0
         default: break
         }
+        if isSender {
+            Session.shared.sendMsg(["class"  : "SaySet",
+                                    "putSet" : saySet.rawValue])
+        }
     }
-
-    func updateSaySetFromSession(_ saySet_:SaySet) {
+    func updateSetFromSession(_ saySet_:SaySet) {
         saySet = saySet_
     }
-    func clearAll() {  printLog("🗣 \(#function)")
+
+
+    func getMenus() -> [StrAct] {
+
+        var strActs = [StrAct]()
+        strActs.append(saySet.contains(.saySpeech) ? StrAct("mute speech" , .saySpeechOff) : StrAct("speak" ,    .saySpeechOn))
+        strActs.append(saySet.contains(.sayMemo)   ? StrAct("mute memo"   , .sayMemoOff)   : StrAct("play memos", .sayMemoOn))
+        return strActs
+     }
+
+     func clearAll() {  printLog("🗣 \(#function)")
         cancelSpeech()
         sayCache.clearAll()
     }

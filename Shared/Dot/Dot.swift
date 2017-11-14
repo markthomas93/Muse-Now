@@ -438,7 +438,7 @@ class Dot {
     
 
      /// - via: Scene.markAction -> dots.clearAllMarks()
-    func hideEventsWith(type hideType: KoType) {
+    func hideEventsWith(type hideType: EventType) {
         
         var hasTypeEvent = false
         for event in events {

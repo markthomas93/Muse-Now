@@ -12,8 +12,10 @@ class Memos: FileSync {
         fileName = "Memos.plist"
     }
  
-    
-    func unarchiveMemos(_ completion: @escaping () ->Void) {
+    /**
+     Memos are recorded and store outside of EkEvents
+     */
+    func unarchiveMemos(completion: @escaping (_ result:[MuEvent]) -> Void) -> Void {
         
         unarchiveArray() { array in
             
@@ -29,7 +31,7 @@ class Memos: FileSync {
 
             //printLog ("⧉ Memos::\(#function) items:\(self.items.count) fileTime:\(fileTime) -> memoryTime:\(self.memoryTime) ")
             self.memoryTime = fileTime
-            completion()
+            completion(self.items)
         }
     }
     

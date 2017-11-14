@@ -50,7 +50,7 @@ class MuColor {
         return makeColor32((rgba?[0])!,(rgba?[1])!,(rgba?[2])!)
     }
     
-    class func colorFrom(event: EKEvent, _ type: KoType = .ekevent) -> UInt32 {
+    class func colorFrom(event: EKEvent, _ type: EventType = .ekevent) -> UInt32 {
         if type == .routine {
             if let notes = event.notes {
                 let colorNames = notes.regex("#color:[ ]*([A-Za-z]+)")

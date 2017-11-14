@@ -97,7 +97,10 @@ extension MuEvents {
         let result = events + getNearbyEvents()
         completion(result)
     }
-    
+
+    /**
+    Add events before and after current time for debugging shifting timeEvent
+     */
     func getNearbyEvents() -> [MuEvent]  {
         
         var events : [MuEvent] = []

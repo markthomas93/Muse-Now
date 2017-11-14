@@ -16,7 +16,7 @@ extension EventTableVC {
                 if let event = cell.event, event.type == .memo, event.title == "Memo" {
                     print("✏ stt:\(event.sttApple) ✏ swm:\(event.sttSwm)")
                 }
-                nextKoCell(cell)
+                nextMuCell(cell)
                 prevIndexPath = indexPath
             }
         }
@@ -42,13 +42,29 @@ extension EventTableVC {
     /// - via: EventTable+PhoneCrown.selectMiddleRow
     /// - via: tableView(_,didSelectRowAt)
     
-    func nextKoCell(_ cell: MuCell) {
+    func nextMuCell(_ cell: MuCell) {
         
         clearPrevCell()
         cell.setHighlight(true)
         prevCell = cell
+
+        // get next event for this hour
+        if let event = cell.event {
+            sayTimer.invalidate()
+            sayTimer =  Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: {_ in
+                if event.type == .time {
+                    Anim.shared.userDotAction(/*flipTense*/false, dur:0.5)
+                    Say.shared.sayCurrentTime(event,/* isTouching */ true)
+                }
+                else {
+                    Say.shared.cancelSpeech()
+                    Say.shared.sayDotEvent(event, isTouching: true)
+                }
+            })
+        }
         anim.touchDialGotoTime(cell.event!.bgnTime)
-        //printLog("⿳ \(#function): \(cell.event.title)")
+
+        printLog("⿳ \(#function): \(cell.event.title)")
     }
     
     
@@ -63,7 +79,7 @@ extension EventTableVC {
     }
     
     
-    /// - via: nextKoCell
+    /// - via: nextMuCell
     /// - via: scrollDialEvent
     
     func clearPrevCell() {

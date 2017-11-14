@@ -22,6 +22,8 @@ func printLog(_ str: String) {
     //case NSLog(str)
 
     case
+    "✺", // complication
+    "⿳", // menu
     "←", // session receiving
     "↔︎", // session activation state
     "→", // session sending
@@ -36,9 +38,9 @@ func printLog(_ str: String) {
         print(MuDate.getHourMinSecMsec() + ": " + str)
         
     case
+    "𝓡", // routine
     "🗣", // Say TTS
     "⟳", // life cycle
-     "✺", // complication
     "👆", // tap action
     "⊛", // crown
     "✓", // actions

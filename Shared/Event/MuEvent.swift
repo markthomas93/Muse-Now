@@ -3,7 +3,7 @@ import Foundation
 import EventKit
 import UIKit
 
-public enum KoType: String { case
+public enum EventType: String { case
     unknown     = "unknown",
     routine     = "routine", // special MuseNow calendar in EKEvents
     ekevent     = "ekevent",
@@ -28,7 +28,7 @@ open class MuEvent: NSObject, NSCoding {
     var notes    = "" // notes from ekEvent
     var sttApple = "" // apple speech to text
     var sttSwm   = "" // speak with me stt
-    var type     = KoType.unknown
+    var type     = EventType.unknown
     var bgnTime  = TimeInterval(0) // begin time
     var endTime  = TimeInterval(0) // endTime
     var rgb      = UInt32(0)
@@ -41,7 +41,7 @@ open class MuEvent: NSObject, NSCoding {
         super.init()
         eventId  = decoder.decodeObject      (forKey:"eventId") as! String
         title    = decoder.decodeObject      (forKey:"title")   as! String
-        type     = KoType(rawValue:decoder.decodeObject (forKey:"type") as! String)!
+        type     = EventType(rawValue:decoder.decodeObject (forKey:"type") as! String)!
         notes    = decoder.decodeObject      (forKey:"note")    as! String
         sttSwm   = decoder.decodeObject      (forKey:"sttSwm")  as! String
         sttApple = decoder.decodeObject      (forKey:"sttApple") as! String
@@ -97,7 +97,7 @@ open class MuEvent: NSObject, NSCoding {
         eventId  = reminder.calendarItemIdentifier // makeEventId()
     }
     
-    convenience init(_ event: EKEvent, _ type_: KoType = .ekevent) {
+    convenience init(_ event: EKEvent, _ type_: EventType = .ekevent) {
         
         self.init()
         
@@ -115,7 +115,7 @@ open class MuEvent: NSObject, NSCoding {
     }
     
     
-    convenience init( _ type_: KoType, _ title_:String) {
+    convenience init( _ type_: EventType, _ title_:String) {
         
         self.init()
         
@@ -127,14 +127,14 @@ open class MuEvent: NSObject, NSCoding {
         eventId = makeEventId() // always last
     }
     
-    convenience init( _ type_: KoType, _ title_:String, _ color: TypeColor) {
+    convenience init( _ type_: EventType, _ title_:String, _ color: TypeColor) {
         
         self.init(type_, title_)
 
         rgb =  MuColor.makeTypeColor(color)
     }
 
-    convenience init( _ type_: KoType, _ title_:String, _ coord_:CLLocationCoordinate2D, _ color: TypeColor) {
+    convenience init( _ type_: EventType, _ title_:String, _ coord_:CLLocationCoordinate2D, _ color: TypeColor) {
 
         self.init(type_, title_)
 
@@ -142,7 +142,7 @@ open class MuEvent: NSObject, NSCoding {
         coord = coord_
     }
     
-    convenience init( _ type_: KoType, _ title_:String, _ time: TimeInterval,_ eventId_:String, _ coord_:CLLocationCoordinate2D, _ color: TypeColor) {
+    convenience init( _ type_: EventType, _ title_:String, _ time: TimeInterval,_ eventId_:String, _ coord_:CLLocationCoordinate2D, _ color: TypeColor) {
 
         self.init(type_,title_,coord_,color)
 
@@ -152,7 +152,20 @@ open class MuEvent: NSObject, NSCoding {
         eventId = eventId_
     }
 
-    convenience init( _ type_: KoType , _ title_:String,_ startTime:TimeInterval, deltaMin: TimeInterval) {
+    convenience init(routine item: RoutineItem,_ bgnTime_:TimeInterval) {
+
+        self.init()
+
+        type    = .routine
+        title   = item.title
+        bgnTime = bgnTime_
+        endTime = bgnTime + TimeInterval(item.durMinutes * 60)
+        rgb     = item.rgb
+        mark    = false
+        eventId = makeEventId()
+    }
+
+    convenience init( _ type_: EventType , _ title_:String,_ startTime:TimeInterval, deltaMin: TimeInterval) {
         
         self.init()
         
@@ -177,7 +190,7 @@ open class MuEvent: NSObject, NSCoding {
         eventId = makeEventId() // always last
     }
     
-    convenience init(_ type_: KoType, _ title_: String, bDay: Int, _ bHour: Int, _ bMin: Int, eDay: Int, _ eHour: Int, _ eMin: Int, _ color_: TypeColor) {
+    convenience init(_ type_: EventType, _ title_: String, bDay: Int, _ bHour: Int, _ bMin: Int, eDay: Int, _ eHour: Int, _ eMin: Int, _ color_: TypeColor) {
         
         self.init()
         type        = type_
@@ -193,7 +206,7 @@ open class MuEvent: NSObject, NSCoding {
         eventId     = makeEventId() // always last
     }
     
-    convenience init(_ type_: KoType, _ title_: String, day: Int, _ bHour: Int, _ bMin: Int, _ color: TypeColor) {
+    convenience init(_ type_: EventType, _ title_: String, day: Int, _ bHour: Int, _ bMin: Int, _ color: TypeColor) {
         
         self.init()
         type        = type_
@@ -209,7 +222,7 @@ open class MuEvent: NSObject, NSCoding {
         eventId     = makeEventId() // always last
     }
     
-    convenience init(_ type_ : KoType, _ title_ : String, _ time : TimeInterval) {
+    convenience init(_ type_ : EventType, _ title_ : String, _ time : TimeInterval) {
         
         self.init()
         

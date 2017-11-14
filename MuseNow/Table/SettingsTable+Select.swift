@@ -1,17 +1,12 @@
-//  CalTable+Select.swift
+//  SettingsTable+Select.swift
 
 import UIKit
 
-extension CalTableVC {
+extension SettingsTableVC {
     
-    
-    
-    // -----------------------------------------------------------------
-    
-
      /// - via: EventTable+PhoneCrown.selectMiddleRow
      /// - via: tableView(_,didSelectRowAt)
-    func nextKoCell(_ cell: MuCell) {
+    func nextMuCell(_ cell: MuCell) {
         
         clearPrevCell()
         cell.setHighlight(true)
@@ -32,7 +27,7 @@ extension CalTableVC {
     }
     
 
-     /// - via: nextKoCell
+     /// - via: nextMuCell
      /// - via: scrollDialEvent
 
     func clearPrevCell() {

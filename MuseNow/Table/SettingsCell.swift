@@ -26,7 +26,7 @@ class SettingsCell: MuCell {
         title.highlightedTextColor = .black
 
         // make this cell searchable within static cells
-        PagesVC.shared.calTable.cells[setting.title] = self
+        PagesVC.shared.settingsTable.cells[setting.title] = self
 
         // bezel for title
         bezel.layer.cornerRadius = innerH/4
@@ -68,6 +68,8 @@ class SettingsCell: MuCell {
 
         setting.flipSet()
         mark.setMark(setting.isOn)
+        
+        PagesVC.shared.settingsTable.updateShowCalendars()
     }
     
     override func touchTitle() {

@@ -11,7 +11,7 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
     var pagei = 1
     var scrollView: UIScrollView!
     
-    var calTable: CalTableVC!
+    var settingsTable: SettingsTableVC!
     var eventTable: EventTableVC!
     var panelY = CGFloat(0)
 
@@ -33,15 +33,15 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
         }
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        calTable   = storyboard.instantiateViewController(withIdentifier: "CalTable")   as! CalTableVC
+        settingsTable   = storyboard.instantiateViewController(withIdentifier: "SettingsTable")   as! SettingsTableVC
         eventTable = storyboard.instantiateViewController(withIdentifier: "EventTable") as! EventTableVC
-        setBorder(calTable,     radius:  8, width: 0)
+        setBorder(settingsTable,     radius:  8, width: 0)
         setBorder(eventTable,   radius: 16, width: 0)
         
-        calTable.tableView.contentInset   = UIEdgeInsetsMake(0, 0, 0, 0)
+        settingsTable.tableView.contentInset   = UIEdgeInsetsMake(0, 0, 0, 0)
         eventTable.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
         
-        pages = [calTable,eventTable]
+        pages = [settingsTable,eventTable]
         pageVC.setViewControllers([eventTable], direction: .reverse, animated: false, completion: nil)
 
         addChildViewController(pageVC)

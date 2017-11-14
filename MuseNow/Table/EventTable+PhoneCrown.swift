@@ -26,7 +26,7 @@ extension EventTableVC {
                     if cell is MuCell {
                         let museCell = (cell as! MuCell)
                         //print("??D \(#function) indexPath:\(indexPath) event:\(museCell.event.title)")
-                        nextKoCell(museCell)
+                        nextMuCell(museCell)
                     }
                      prevIndexPath = indexPath
                     return
@@ -46,7 +46,7 @@ extension EventTableVC {
                         posY <= centerY,
                         posY + rowHeight >= centerY {
 
-                        nextKoCell(cell as! MuCell)
+                        nextMuCell(cell as! MuCell)
                         prevIndexPath = pathi
                         return
                     }
@@ -99,7 +99,7 @@ extension EventTableVC {
             if let cell = tableView.cellForRow(at: nextIndexPath) {
                 // printLog("⿳ \(#function) centerY:\(nextOffset)")
                 prevIndexPath = tableView.indexPath(for: cell)!
-                nextKoCell(cell as! MuCell)
+                nextMuCell(cell as! MuCell)
 
                 UIView.animate(withDuration: 0.5,
                                animations: {

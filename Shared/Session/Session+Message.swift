@@ -51,41 +51,46 @@ extension Session {
         }
     }
 
+    func parseShowSet(_ msg: [String : Any])  {
 
-    func parseSay(_ msg: [String : Any])  {
+        if let putInt = msg["putSet"] as? Int {
+            let putSet = ShowSet(rawValue:putInt)
+            Show.shared.updateSetFromSession(putSet)
+            Actions.shared.doRefresh(false)
+            #if os(iOS)
+                PagesVC.shared.settingsTable.tableView.reloadData()
+            #endif
+        }
+    }
+
+    func parseSaySet(_ msg: [String : Any])  {
 
         if let putInt = msg["putSet"] as? Int {
             let putSet = SaySet(rawValue:putInt)
-            Say.shared.updateSaySetFromSession(putSet)
+            Say.shared.updateSetFromSession(putSet)
+            #if os(iOS)
+                PagesVC.shared.settingsTable.tableView.reloadData()
+            #endif
         }
     }
-    func parseHear(_ msg: [String : Any])  {
 
-        let hear = Hear.shared
-        // update remote device's route before changing options
-        if let routeInt = msg["putRouteNow"] as? Int {
-            let routeSet = HearSet(rawValue: routeInt)
-            hear.updateRemoteFromSession(routeSet)
-        }
-        // news options may 
-        if let optionInt = msg["putOptions"] as? Int {
-            let optionSet = HearSet(rawValue:optionInt)
-            hear.updateOptionsFromSession(optionSet)
+    func parseHearSet(_ msg: [String : Any])  {
+
+        // news options may
+        if let putInt = msg["putSet"] as? Int {
+            let putSet = HearSet(rawValue:putInt)
+            Hear.shared.updateOptionsFromSession(putSet)
+            #if os(iOS)
+                PagesVC.shared.settingsTable.tableView.reloadData()
+            #endif
         }
 
-        if let _ = msg["getRouteNow"] {
-
+        if let _ = msg["getSet"] { // TODO: Not called, updated via Settings file?
             Session.shared.sendMsg(
-                ["class" : "HearVia",
-                 "putRouteNow" : hear.route.rawValue])
+                ["class" : "HearSet",
+                 "putSet" : Hear.shared.options.rawValue])
         }
-        if let _ = msg["getOptions"] {
-
-            Session.shared.sendMsg(
-                ["class" : "HearVia",
-                 "putOptions" : hear.options.rawValue])
-        }
-}
+    }
 
     func parseMuEvent(_ msg: [String : Any]) {
 
@@ -104,7 +109,8 @@ extension Session {
         }
     }
 
-    func parseCals(_ msg: [String : Any]) {
+    func parseCalendars(_ msg: [String : Any]) {
+
         if  let calId = msg["calId"] as? String,
             let isOn  = msg["isOn"]  as? Bool {
 
@@ -118,12 +124,13 @@ extension Session {
         if let clss = msg["class"] as? String {
 
             switch clss {
-            case "SaySet":      parseSay(msg)
-            case "HearVia":     parseHear(msg)
+            case "ShowSet":     parseShowSet(msg)
+            case "SaySet":      parseSaySet(msg)
+            case "HearSet":     parseHearSet(msg)
             case "Transcribe":  parseTranscribe(msg)
-            case "MuEvent":     parseMuEvent(msg)
-            case "Cals":        parseCals(msg)
-            case "Actions":     parseActionsMsg(msg)
+            case "MuseEvent":   parseMuEvent(msg)
+            case "Calendars":   parseCalendars(msg)
+            case "Actions":     parseActions(msg)
             case "FileMsg":     FileMsg.parseMsg(msg)
             default: break
             }
@@ -134,20 +141,20 @@ extension Session {
      Parse action messages from other devices
      - via: Session.parseMsg
      */
-    func parseActionsMsg(_ msg: [String : Any]) {
+    func parseActions(_ msg: [String : Any]) {
 
         func parseAction(_ action:String) -> DoAction {
 
             switch action {
-            case "\(DoAction.markAdd)":         return .markAdd
-            case "\(DoAction.markRemove)":      return .markRemove
-            case "\(DoAction.markClearAll)":    return .markClearAll
-            case "\(DoAction.recClearAll)":     return .recClearAll
-            case "\(DoAction.noteAdd)":         return .noteAdd
-            case "\(DoAction.noteRemove)":      return .noteRemove
-            case "\(DoAction.refresh)":         return .refresh
-            case "\(DoAction.gotoEvent)":       return .gotoEvent
-            default:                            return .unknown
+            case "\(DoAction.markOn)":       return .markOn
+            case "\(DoAction.markOff)":      return .markOff
+            case "\(DoAction.markClearAll)": return .markClearAll
+            case "\(DoAction.memoClearAll)": return .memoClearAll
+            case "\(DoAction.noteAdd)":      return .noteAdd
+            case "\(DoAction.noteRemove)":   return .noteRemove
+            case "\(DoAction.refresh)":      return .refresh
+            case "\(DoAction.gotoEvent)":    return .gotoEvent
+            default:                         return .unknown
             }
         }
 
@@ -158,6 +165,7 @@ extension Session {
                 let bgnTime = msg["bgnTime"] as? TimeInterval {
                 let (event,index) = Dots.shared.findEvent(eventId, bgnTime)
                 if let event = event {
+                    
                     let act = parseAction(action)
                     Actions.shared.doAction(act, event, index)
                     Actions.shared.tableDelegate?.scrollSceneEvent(event)

@@ -1,23 +1,25 @@
-//  CalTable.swift
+//  SettingsTable.swift
 
 import UIKit
 import EventKit
 
-class CalTableVC: UITableViewController {
+class SettingsTableVC: UITableViewController {
     
     var cells : [String:MuCell] = [:]
     
     let faderHeight   = CGFloat(66)
     let rowHeight     = CGFloat(44)         // timeHeight * (1 + 1/phi2)
     let sectionHeight = CGFloat(32)         // rowHeight  * (1 + 1/phi2)
+    var showingCals   = true                // displaying last known state of Show.shared.canShow(.showCalendar)
+
     
     var prevCell: MuCell!
     var prevIndexPath: IndexPath!      // Select + PhoneCrown + EditRow + MuEvent
     var updating = false
-    
-    var sayIndex = 0
-    var hearIndex = 1
-    var colorIndex = 2
+    var showIndex = 0
+    var sayIndex = 1
+    var hearIndex = 2
+    var colorIndex = 3
     
     var colorCell: ColorCell!
     
@@ -26,11 +28,42 @@ class CalTableVC: UITableViewController {
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        
+        showingCals = Show.shared.canShow(.showCalendar)
     }
-    
+
+    func updateShowCalendars() {
+
+        let showingNext = Show.shared.canShow(.showCalendar)
+        let count = Cals.shared.sourceCals.count
+
+        if showingCals && !showingNext {
+            showingCals = showingNext
+            tableView.deleteSections(IndexSet(0..<count), with: .top)
+        }
+        else if !showingCals && showingNext {
+            showingCals = showingNext
+            tableView.insertSections(IndexSet(0..<count), with: .top)
+        }
+    }
+
+    // bottom cell has rounded corners
+    func roundCorners(_ cell:UITableViewCell,_ indexPath:IndexPath) -> UITableViewCell {
+
+        let rows = self.tableView(tableView, numberOfRowsInSection: indexPath.section)
+        if indexPath.row == rows-1 {
+            cell.roundCorners([UIRectCorner.bottomLeft,UIRectCorner.bottomRight],
+                              radius: sectionHeight/2)
+        }
+        else {
+            cell.layer.mask = nil
+        }
+        return cell
+    }
+
     override func numberOfSections(in tableView: UITableView) -> Int {
-        sayIndex = Cals.shared.sourceCals.count
+        
+        showIndex = Show.shared.canShow(.showCalendar) ? Cals.shared.sourceCals.count : 0
+        sayIndex = showIndex + 1
         hearIndex = sayIndex + 1
         colorIndex = hearIndex + 1
         return colorIndex + 1
@@ -41,13 +74,13 @@ class CalTableVC: UITableViewController {
         let keys = Array(sourceCals.keys)
         
         switch section {
+        case showIndex: return ShowSet.size
         case sayIndex: return SaySet.size
         case hearIndex: return HearSet.size
         case colorIndex: return 1
         default:
-            
-            let key = keys[section]
-            if let array = sourceCals[key] {
+            if Show.shared.canShow(.showCalendar),
+                let array = sourceCals[keys[section]] {
                 return array.count
             }
             else  {
@@ -90,9 +123,10 @@ class CalTableVC: UITableViewController {
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
         switch section {
-        case colorIndex:  return "Color"
-        case hearIndex: return "Hear"
-        case sayIndex: return "Say"
+        case showIndex:     return "Show"
+        case colorIndex:    return "Color"
+        case hearIndex:     return "Hear"
+        case sayIndex:      return "Say"
         default:
             
             let keys = Array(Cals.shared.sourceCals.keys)
@@ -108,14 +142,22 @@ class CalTableVC: UITableViewController {
         
         switch indexPath.section {
             
+        case showIndex:
+
+            let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell")! as! SettingsCell
+            let setting = ShowSetting(index)
+            cell.setCellSetting(setting, CGSize(width:width, height:rowHeight))
+            if prevCell != nil && prevCell == cell { prevCell = nil }
+            return roundCorners(cell, indexPath)
+
         case hearIndex:
-            
+
             let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell")! as! SettingsCell
             let setting = HearSetting(index)
             cell.setCellSetting(setting, CGSize(width:width, height:rowHeight))
             if prevCell != nil && prevCell == cell { prevCell = nil }
             return roundCorners(cell, indexPath)
-            
+
         case sayIndex:
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell")! as! SettingsCell
@@ -139,34 +181,17 @@ class CalTableVC: UITableViewController {
             return roundCorners(colorCell, indexPath)
             
         default:
+
             let cell = tableView.dequeueReusableCell(withIdentifier: "CalCell")! as! CalCell
             let values = Array(Cals.shared.sourceCals.values)
             let cals = values[indexPath.section]
             let cal = cals[index]
-            
             // if prevCell is offscreen and recycled, then set it nil
             if prevCell != nil && prevCell == cell { prevCell = nil }
             cell.setCellCalendar(cal,CGSize(width:width, height:rowHeight))
             return roundCorners(cell, indexPath)
         }
-        
     }
-    
-    // bottom cell has rounded corners
-    func roundCorners(_ cell:UITableViewCell,_ indexPath:IndexPath) -> UITableViewCell {
-        
-        let rows = self.tableView(tableView, numberOfRowsInSection: indexPath.section)
-        if indexPath.row == rows-1 {
-            cell.roundCorners([UIRectCorner.bottomLeft,UIRectCorner.bottomRight],
-                              radius: sectionHeight/2)
-        }
-        else {
-            cell.layer.mask = nil
-        }
-        return cell
-    }
-        
-    // UITableView Delegate --------------------------------------------------
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {//printLog("⿳ \(#function)")
         
@@ -175,7 +200,7 @@ class CalTableVC: UITableViewController {
         }
         else if let cell = tableView.cellForRow(at: indexPath) {
             if cell != prevCell {
-                nextKoCell(cell as! MuCell)
+                nextMuCell(cell as! MuCell)
                 prevIndexPath = indexPath
             }
         }

@@ -12,6 +12,55 @@ public class Setting: NSObject {
     func flipSet() { }
 }
 
+@objc(ShowSetting) // share data format for phone and watch devices
+public class ShowSetting: Setting, NSCoding {
+
+    var member = ShowSet([])
+
+    required public init?(coder decoder: NSCoder) {
+        super.init()
+        member = decoder.decodeObject(forKey:"member") as! ShowSet
+        title  = decoder.decodeObject(forKey:"title") as! String
+        isOn   = decoder.decodeBool  (forKey:"isOn")
+    }
+
+    public func encode(with aCoder: NSCoder) {
+        aCoder.encode(member, forKey: "member")
+        aCoder.encode(title,  forKey: "title")
+        aCoder.encode(isOn,   forKey: "isOn")
+    }
+
+    func updateTitle () {
+        if      member.contains(.showCalendar)  { title = "Calendars" }
+        else if member.contains(.showReminder)  { title = "Reminders" }
+        else if member.contains(.showRoutine)   { title = "Routine" }
+        else if member.contains(.showMemo)      { title = "Memos" }
+        else                                    { title = "" }
+    }
+
+    init(_ index:Int) {
+        super.init()
+        member = ShowSet(rawValue:1<<index)
+        isOn = Show.shared.showSet.contains(member)
+        updateTitle()
+    }
+
+    override func flipSet()  {
+
+        isOn = !isOn
+
+        if isOn { Show.shared.showSet.insert(member) }
+        else    { Show.shared.showSet.remove(member) }
+
+        Actions.shared.doRefresh(/*isSender*/false)
+        Settings.shared.initSettings()
+        Session.shared.sendMsg(["class"  : "ShowSet",
+                                "putSet" :  Show.shared.showSet.rawValue])
+    }
+}
+
+
+
 @objc(HearSetting) // share data format for phone and watch devices
 public class HearSetting: Setting, NSCoding {
     
@@ -31,8 +80,8 @@ public class HearSetting: Setting, NSCoding {
     }
 
     func updateTitle () {
-        if      member.contains(.earbuds) { title = "earbuds" }
-        else if member.contains(.speaker) { title = "speaker" }
+        if      member.contains(.earbuds) { title = "Earbuds" }
+        else if member.contains(.speaker) { title = "Speaker" }
         else                              { title = "" }
     }
 
@@ -49,8 +98,8 @@ public class HearSetting: Setting, NSCoding {
         else    {  Hear.shared.options.remove(member) }
         Hear.shared.updateRoute()
         Settings.shared.initSettings()
-        Session.shared.sendMsg(["class"       : "HearVia",
-                                "putOptions"  :  Hear.shared.options.rawValue])
+        Session.shared.sendMsg(["class"       : "HearSet",
+                                "putSet"  :  Hear.shared.options.rawValue])
     }
 }
 
@@ -76,13 +125,10 @@ public class SaySetting: Setting {
     
     func updateTitle () {
 
-        if      member.contains(.sayMemo     ) { title = "Memo" }
-        else if member.contains(.saySpeech   ) { title = "Speech" }
-        else if member.contains(.sayTimeNow  ) { title = "Time Now" }
-        else if member.contains(.sayTimeUntil) { title = "Time Until" }
-        else if member.contains(.sayDayOfWeek) { title = "Day of Week" }
-        else if member.contains(.sayTimeHour ) { title = "Time Hour" }
-        else if member.contains(.sayEventTime) { title = "Event Time" }
+        if      member.contains(.sayMemo  ) { title = "Memo" }
+        else if member.contains(.saySpeech) { title = "Speech" }
+        else if member.contains(.sayTime  ) { title = "Time" }
+        else if member.contains(.sayEvent ) { title = "Event" }
     }
     
     init(_ index:Int) {

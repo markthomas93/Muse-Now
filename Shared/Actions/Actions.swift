@@ -4,17 +4,29 @@ import EventKit
 
 
 public enum DoAction : Int { case
+
     unknown, gotoEvent,
 
-    speakOn, speakOff, speakLow, speakMedium, speakHigh, dialColor,
-    memoOn, memoOff,
+    // say
+    saySpeechOn, saySpeechOff,
+    sayMemoOn,  sayMemoOff,
+    speakLow, speakMedium, speakHigh,
 
-    hearEarbuds, hearSpeaker,
-    muteEarbuds, muteSpeaker,
+    // hear
+    hearEarbudsOn, hearSpeakerOn,
+    hearEarbudsOff, hearSpeakerOff,
+
+    // show
+    showCalendarOn, showCalendarOff,
+    showReminderOn, showReminderOff,
+    showRoutineOn,  showRoutineOff,
+    showMemoOn,     showMemoOff,
+
+    dialColor,
 
     showEvents, showAlarms, showMarks,showTime,
-    markAdd, markRemove, markClearAll,
-    recClearAll,
+    markOn, markOff, markClearAll,
+    memoClearAll,
     noteAdd, noteRemove,
     //chimeOff, chimeLow, chimeMedium, chimeHigh, chimeOn,
     debugOn, debugOff,
@@ -37,15 +49,9 @@ class Actions {
     static let shared = Actions()
     
     var scene         : Scene!
-    var tableDelegate : KoTableDelegate?
-    var strAct        : [String:DoAction] = [:]
-    var menuAct       = [StrAct]()
+    var tableDelegate : MuseTableDelegate?
+    var strActs       = [StrAct]()
     var suggestions   = [String]()
-    
-    init () {
-        makeTxtActions()
-    }
-    
 
     func dialColor(_ fade:Float, isSender: Bool)  {
         
@@ -92,7 +98,8 @@ class Actions {
     func doRefresh(_ isSender:Bool) {
         
         scene?.pauseScene()
-        
+
+        /// testing: MuEvents.shared.updateFakeEvents() {
         MuEvents.shared.updateEvents() {
             
             self.scene?.updateSceneFinish()
@@ -133,7 +140,7 @@ class Actions {
         if isSender {
             let data = NSKeyedArchiver.archivedData(withRootObject:event)
             Session.shared.sendMsg(
-                ["class" : "MuEvent",
+                ["class" : "MuseEvent",
                  "addEvent" : data])
         }
     }
@@ -150,7 +157,7 @@ class Actions {
         }
         if isSender {
             let data = NSKeyedArchiver.archivedData(withRootObject:event)
-            Session.shared.sendMsg(["class"       : "MuEvent",
+            Session.shared.sendMsg(["class"       : "MuseEvent",
                                     "updateEvent" : data])
         }
         else {
@@ -167,7 +174,7 @@ class Actions {
         if let table = tableDelegate {
             
             let (event,isOn) = table.toggleCurrentCell()
-            let act = isOn ? DoAction.markAdd : DoAction.markRemove
+            let act = isOn ? DoAction.markOn : DoAction.markOff
             if let event = event {
                 doAction(act, event, dots.gotoEvent(event), isSender: true)
             }
@@ -183,7 +190,7 @@ class Actions {
             let index = Int(dots.dotNow) + delta
             if let event = event {
                 
-                let act = event.mark ? DoAction.markRemove : DoAction.markAdd
+                let act = event.mark ? DoAction.markOff : DoAction.markOn
                 doAction(act, event, index, isSender: true)
                 Haptic.play(.success)
             }
@@ -199,96 +206,62 @@ class Actions {
         - scrolling menu table that returns text string
         - speech to text string to match
      */
-    func makeTxtActions () {
-
-        //addAction(.showEvents, "show events")
-        //addAction(.showAlarms, "show alarms")
-        //addAction(.showMarks,  "show marks")
-        //addAction(.showTime,   "show time")
-
-        strAct["add mark"] = .markAdd
-
-        strAct["remove mark"] = .markRemove
-        strAct["clear mark"] = .markRemove
-        strAct["clear all marks"] = .markClearAll
-        strAct["clear all recordings"] = .recClearAll
-        
-        // text to speech
-        strAct["set speech on"] = .speakOn
-        strAct["set speech off"] = .speakOff
-        strAct["set memos on"] = .memoOn
-        strAct["set memos off"] = .memoOff
-        strAct["set speak on"] = .speakOn
-        strAct["set speak off"] = .speakOff
-        strAct["set volume off"] = .speakOff
-        strAct["set volume low"] = .speakLow
-        strAct["set volume medium"] = .speakMedium
-        strAct["set volume hi"] = .speakHigh
-
-        strAct["hear earbuds"] = .hearEarbuds
-        strAct["hear speaker"] = .hearSpeaker
-        strAct["mute speaker"] = .muteSpeaker
-        strAct["mute earbuds"] = .muteEarbuds
-
-        // chimes
-        // addAction(.chimeOff,     "set chime off")
-        // addAction(.chimeLow,     "set chime low")
-        // addAction(.chimeMedium,  "set chime medium")
-        // addAction(.chimeHigh,    "set chime high")
-        // addAction(.chimeOn,      "set chime on")
-        
-        // addAction(.debugOn,  "set debug on")
-        // addAction(.debugOff, "set debug off")
-
-    }
-
     func updateMenuActions() {
 
-        menuAct.removeAll()
+        strActs.removeAll()
 
-        menuAct.append(contentsOf:Hear.shared.getMenus())
-
-        menuAct.append(Say.shared.saySet.contains(.saySpeech)
-            ? StrAct("set speech off",.speakOff)
-            : StrAct("set speech on",.speakOn))
-
-        menuAct.append(Say.shared.saySet.contains(.sayMemo)
-            ? StrAct("set memos off",.memoOff)
-            : StrAct("set memos on",.memoOn))
-
-        menuAct.append(StrAct("clear all marks",.markClearAll))
-        menuAct.append(StrAct("refresh",.refresh))
+        strActs.append(contentsOf:Hear.shared.getMenus())
+        strActs.append(contentsOf:Show.shared.getMenus())
+        strActs.append(contentsOf:Say.shared.getMenus())
+        
+        strActs.append(StrAct("clear all marks",.markClearAll))
+        strActs.append(StrAct("clear all memos",.memoClearAll))
+        strActs.append(StrAct("refresh",.refresh))
     }
 
     func getSuggestions() -> [String] {
         updateMenuActions()
         var suggestions = [String]()
-        for item in Actions.shared.menuAct {
+        for item in Actions.shared.strActs {
             suggestions.append(item.str)
         }
         return suggestions
     }
 
 
-     /// - via: doToggleMark, parseMsg,
+    /**
+     Dispatch commands to Show, Say, Hear, Dots, Anim
+     - via: Actions.[doUpdateEvent, doToggleMark]
+     - via: Session.parseMsg["Action":]
+     - via: EventCell.touchMark
+     */
     func doAction(_ act: DoAction, _ event:MuEvent! = nil, _ index:Int = 0, isSender:Bool = false) {
         
         printLog("⌘ \(#function):\(act) event:\(event?.title ?? "nil")")
         
         switch act {
-            
+        case  // show
+        .showCalendarOn, .showCalendarOff,
+        .showReminderOn, .showReminderOff,
+        .showRoutineOn,  .showRoutineOff,
+        .showMemoOn,     .showMemoOff:
+
+            Show.shared.doShowAction(act, isSender: true)
+
         // speech to text volume
-        case .speakOn, .speakOff, .speakLow, .speakMedium, .speakHigh:
+        case .saySpeechOn, .saySpeechOff,
+             .sayMemoOn, .sayMemoOff,
+             .speakLow, .speakMedium, .speakHigh:
 
-            Say.shared.doSpeakAction(act)
+            Say.shared.doSayAction(act, isSender:true)
 
-        case  .hearEarbuds, .hearSpeaker,
-              .muteEarbuds, .muteSpeaker:
+        case  .hearEarbudsOn, .hearSpeakerOn,
+              .hearEarbudsOff, .hearSpeakerOff:
 
             Hear.shared.doHearAction(act, isSender:true)
 
         // mark a dot
-        case .markAdd, .markRemove, .markClearAll, .noteRemove, .noteAdd:
+        case .markOn, .markOff, .markClearAll, .noteRemove, .noteAdd:
 
             markAction(act, event, index, isSender)
 
@@ -297,7 +270,7 @@ class Actions {
             Dots.shared.gotoEvent(event)
             Anim.shared.touchDialGotoTime(event?.bgnTime ?? 0)
 
-        case .recClearAll:  markAction(act, event, index, isSender)
+        case .memoClearAll:  markAction(act, event, index, isSender)
         /**/                Memos.shared.clearAll()
         /**/                doRefresh(isSender)
             
@@ -310,18 +283,20 @@ class Actions {
         }
     }
 
-    /// via WatchCon.Record.recordMenuFinish
+    /**
+     Translate Watch STT to command
+    - via WatchCon.Record.recordMenuFinish
+     */
     func parseString(_ str: String, _ event: MuEvent!,_ index: Int, isSender:Bool) {
         
         printLog("⌘ \(#function):\(str)")
         
         let loStr = str.lowercased()
         
-        for (str,act) in strAct {
-            if loStr.contains(str) {
-                doAction(act, event, index, isSender: isSender)
-                Haptic.play(.success)
-                return
+        for strAct in strActs {
+            if loStr.contains(strAct.str) {
+                doAction(strAct.act, event, index, isSender: isSender)
+                return Haptic.play(.success)
             }
         }
         // Haptic.play(.failure)
@@ -351,10 +326,10 @@ class Actions {
         switch act {
         case .noteAdd:      markEvent = dot.addNote(event)
         case .noteRemove:   dot.removeEvent(event)
-        case .markAdd:      markEvent = dot.setMark(true, event)
-        case .markRemove:   markEvent = dot.setMark(false, event)
+        case .markOn:       markEvent = dot.setMark(true, event)
+        case .markOff:      markEvent = dot.setMark(false, event)
         case .markClearAll: Dots.shared.hideEventsWith(type:.mark)
-        case .recClearAll:  Dots.shared.hideEventsWith(type:.memo)
+        case .memoClearAll: Dots.shared.hideEventsWith(type:.memo)
         default: break
         }
         

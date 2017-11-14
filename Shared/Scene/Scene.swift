@@ -5,7 +5,7 @@ import UIKit
 import WatchKit
 import AVFoundation
 
-public protocol KoTableDelegate : NSObjectProtocol {
+public protocol MuseTableDelegate : NSObjectProtocol {
     
     func scrollSceneEvent(_ event: MuEvent) // scroll table and select event
     func scrollDialEvent(_ event: MuEvent,_ delta:Int) // scroll table and center event, but dont select

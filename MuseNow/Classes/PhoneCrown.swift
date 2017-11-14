@@ -71,13 +71,15 @@ class PhoneCrown: TouchForce {
     var deltaYY = CGFloat(0)
     var prevDeltaRow = 0
     
-    /// user sliding finger moves to next/prev row
-    /// - via: PhoneCrown.[moved,ended]
-    ///
-    /// note: moving back and forth accross start line would normally feels like a skipped beat.
-    /// Instead, wait for first delta and set that as the dividing line.
-    /// Thus, you need to move twice the distance, which has an engaging theshold feel
+    /**
+     User sliding finger moves to next/prev row
 
+     - via: PhoneCrown.[moved,ended]
+
+     note: moving back and forth accross start line would normally feels like a skipped beat.
+     Instead, wait for first delta and set that as the dividing line.
+     Thus, you need to move twice the distance, which has an engaging theshold feel
+     */
     func updateTableRow (_ delta: CGPoint) {
         
         deltaY = delta.y - deltaYY // used by draw routine

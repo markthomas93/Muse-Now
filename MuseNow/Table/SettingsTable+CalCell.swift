@@ -1,15 +1,15 @@
-//  CalTable+CalCell.swift
+//  SettingsTable+CalCell.swift
 
 import EventKit
 import UIKit
 
-extension CalTableVC {
+extension SettingsTableVC {
     
     func updateCellMarks() {
         for cell in tableView.visibleCells {
             if cell is CalCell {
-                let museCell = cell as! CalCell
-                museCell.mark.setMark(museCell.isShowCal)
+                let cell = cell as! CalCell
+                cell.mark.setMark(cell.isShowCal)
             }
         }
     }

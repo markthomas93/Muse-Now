@@ -73,7 +73,7 @@ class CalCell: MuCell {
         mark?.setMark(isShowCal)
         
         Cals.shared.updateMark(cal.calId, isShowCal)
-        Session.shared.sendMsg( [ "class" : "Cals",
+        Session.shared.sendMsg( [ "class" : "Calendars",
                                   "calId" : cal.calId,
                                   "isOn"  : isShowCal])
     }

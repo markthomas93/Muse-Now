@@ -5,7 +5,7 @@ class TouchDial: TouchMove {
     
     let anim = Anim.shared
     let dots = Dots.shared
-    var table : KoTableDelegate!
+    var table : MuseTableDelegate!
 
     var lastPanT = TimeInterval(0)
     var lastPan˚ = Double(-720)
@@ -13,7 +13,7 @@ class TouchDial: TouchMove {
     var taps = Taps.shared
 
     
-    convenience init(_ size_: CGSize, _ delegate_: KoTableDelegate!) {
+    convenience init(_ size_: CGSize, _ delegate_: MuseTableDelegate!) {
         self.init(size_)
         table = delegate_
     }

@@ -128,7 +128,7 @@ extension Anim {
     
     
     /// animate dial to new time.
-    /// - via: EventTable+Select.(nextKoCell actionTap) -> forceAnim:true
+    /// - via: EventTable+Select.(nextMuCell actionTap) -> forceAnim:true
     /// - via: Scene+Marks.markEvent -> forceAnim:true
 
     func touchDialGotoTime(_ timeNext: TimeInterval) {

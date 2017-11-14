@@ -245,7 +245,6 @@ class Complication: NSObject, CLKComplicationDataSource {
             if nextDate.timeIntervalSince(date) > 0,
                 let template = getTemplate(for: complication, hour: hour)  {
 
-
                 printLog("✺ getTimelineEntries after date:\(date)")
                 entries.append(CLKComplicationTimelineEntry.init(date: nextDate, complicationTemplate: template))
             }

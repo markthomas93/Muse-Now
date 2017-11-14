@@ -117,7 +117,7 @@ class Dots {
         }
     }
     
-    func hideEventsWith(type hideType:KoType) {
+    func hideEventsWith(type hideType:EventType) {
         
         for dot in future {
             dot.hideEventsWith(type:hideType)

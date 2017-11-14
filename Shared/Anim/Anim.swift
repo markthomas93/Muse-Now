@@ -46,7 +46,7 @@ class Anim {
     let say     = Say.shared
     
     var scene : Scene!
-    var table : KoTableDelegate!
+    var table : MuseTableDelegate!
     var closures : [Closure] = []
     
     var sceneFrame  = Float(0)

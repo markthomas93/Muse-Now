@@ -60,13 +60,13 @@ class Marks: FileSync {
             
             switch act {
             
-            case .markAdd:
+            case .markOn:
                 
                 let mark = Mark(event)
                 let index = items.binarySearch { $0.eventId < mark.eventId }
                 items.insert(mark, at: index)
                 
-            case .markRemove:
+            case .markOff:
                 
                 if items.isEmpty { break }
                 let index = items.binarySearch { $0.eventId < event.eventId }

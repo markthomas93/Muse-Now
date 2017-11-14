@@ -7,7 +7,7 @@ import Foundation
 
 public class Mark: NSObject, NSCoding {
     
-    //var type = KoType.unknown
+    //var type = EventType.unknown
     var bgnTime = TimeInterval(0)
     var eventId = ""
     var isOn = true

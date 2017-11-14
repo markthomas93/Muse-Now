@@ -117,12 +117,12 @@ class WatchCon: WKInterfaceController {
     
     @IBAction func menuMarkAction() { printLog("✓ \(#function)")
         active.startMenuTime()
-        actions.markAction(.markAdd, /*event*/ nil, anim.getIndexForMark(), /*isSender*/ true)
+        actions.markAction(.markOn, /*event*/ nil, anim.getIndexForMark(), /*isSender*/ true)
     }
     
     @IBAction func menuClearAction() { printLog("✓ \(#function)")
         active.startMenuTime()
-        actions.markAction(.markRemove, /*event*/ nil, anim.getIndexForMark(), /*isSender*/ true)
+        actions.markAction(.markOff, /*event*/ nil, anim.getIndexForMark(), /*isSender*/ true)
     }
     
     @IBAction func menuMenuAction() { printLog("⿳ \(#function)")
