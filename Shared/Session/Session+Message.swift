@@ -58,7 +58,7 @@ extension Session {
             Show.shared.updateSetFromSession(putSet)
             Actions.shared.doRefresh(false)
             #if os(iOS)
-                PagesVC.shared.settingsTable.tableView.reloadData()
+                PagesVC.shared.treeTable.tableView.reloadData()
             #endif
         }
     }
@@ -69,26 +69,25 @@ extension Session {
             let putSet = SaySet(rawValue:putInt)
             Say.shared.updateSetFromSession(putSet)
             #if os(iOS)
-                PagesVC.shared.settingsTable.tableView.reloadData()
+                PagesVC.shared.treeTable.tableView.reloadData()
             #endif
         }
     }
 
     func parseHearSet(_ msg: [String : Any])  {
 
-        // news options may
         if let putInt = msg["putSet"] as? Int {
             let putSet = HearSet(rawValue:putInt)
             Hear.shared.updateOptionsFromSession(putSet)
             #if os(iOS)
-                PagesVC.shared.settingsTable.tableView.reloadData()
+                PagesVC.shared.treeTable.tableView.reloadData()
             #endif
         }
 
         if let _ = msg["getSet"] { // TODO: Not called, updated via Settings file?
             Session.shared.sendMsg(
                 ["class" : "HearSet",
-                 "putSet" : Hear.shared.options.rawValue])
+                 "putSet" : Hear.shared.hearSet.rawValue])
         }
     }
 

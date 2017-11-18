@@ -12,7 +12,6 @@ class SettingsTableVC: UITableViewController {
     let sectionHeight = CGFloat(32)         // rowHeight  * (1 + 1/phi2)
     var showingCals   = true                // displaying last known state of Show.shared.canShow(.showCalendar)
 
-    
     var prevCell: MuCell!
     var prevIndexPath: IndexPath!      // Select + PhoneCrown + EditRow + MuEvent
     var updating = false
@@ -117,6 +116,7 @@ class SettingsTableVC: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+
         return sectionHeight
     }
     
@@ -145,24 +145,21 @@ class SettingsTableVC: UITableViewController {
         case showIndex:
 
             let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell")! as! SettingsCell
-            let setting = ShowSetting(index)
-            cell.setCellSetting(setting, CGSize(width:width, height:rowHeight))
+            cell.setCell(setting:ShowSetting(index, Show.shared.showSet.rawValue), CGSize(width:width, height:rowHeight))
             if prevCell != nil && prevCell == cell { prevCell = nil }
             return roundCorners(cell, indexPath)
 
         case hearIndex:
 
             let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell")! as! SettingsCell
-            let setting = HearSetting(index)
-            cell.setCellSetting(setting, CGSize(width:width, height:rowHeight))
+            cell.setCell(setting:HearSetting(index, Hear.shared.hearSet.rawValue), CGSize(width:width, height:rowHeight))
             if prevCell != nil && prevCell == cell { prevCell = nil }
             return roundCorners(cell, indexPath)
 
         case sayIndex:
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell")! as! SettingsCell
-            let setting = SaySetting(index)
-            cell.setCellSetting(setting, CGSize(width:width, height:rowHeight))
+            cell.setCell(setting:SaySetting(index, Say.shared.saySet.rawValue), CGSize(width:width, height:rowHeight))
             if prevCell != nil && prevCell == cell { prevCell = nil }
             return roundCorners(cell, indexPath)
             
@@ -173,11 +170,8 @@ class SettingsTableVC: UITableViewController {
             colorCell = tableView.dequeueReusableCell(withIdentifier: "ColorCell")! as! ColorCell
             colorCell.frame.size.width = width
             let faderFrame = CGRect(x:44, y:4, width: width-88, height:rowHeight-8)
-            let fader = Fader(frame:faderFrame)
-            
-            fader.tableView = tableView
-            fader.value = value
-            colorCell.setCellFader(fader)
+            let fader = Fader(frame:faderFrame,tableView,value)
+            colorCell.setCell(fader:Fader(frame:faderFrame,tableView,value))
             return roundCorners(colorCell, indexPath)
             
         default:
@@ -188,7 +182,7 @@ class SettingsTableVC: UITableViewController {
             let cal = cals[index]
             // if prevCell is offscreen and recycled, then set it nil
             if prevCell != nil && prevCell == cell { prevCell = nil }
-            cell.setCellCalendar(cal,CGSize(width:width, height:rowHeight))
+            cell.setCell(calendar:cal,CGSize(width:width, height:rowHeight))
             return roundCorners(cell, indexPath)
         }
     }

@@ -9,8 +9,10 @@ class Fader: TouchForce {
     let borderWidth = CGFloat(1)
     var tableView : UITableView!
     
-    override init(frame : CGRect) {
+    init(frame : CGRect,_ tableView_: UITableView!,_ value_:Float) {
         super.init(frame : frame)
+        tableView = tableView_
+        value = value_
         initialize()
     }
     

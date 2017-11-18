@@ -181,7 +181,7 @@ class EventTableVC: UITableViewController, MuseTableDelegate {
             if timeCell == nil {
                 timeCell = EventTimeCell()
                 let size = CGSize(width: view.frame.size.width, height: timeHeight)
-                timeCell.setCellEvent(event,size)
+                timeCell.setCell(event:event,size)
                 timeIndexPath = indexPath
             }
             return roundCorners(timeCell,indexPath)
@@ -191,7 +191,7 @@ class EventTableVC: UITableViewController, MuseTableDelegate {
             let cell = tableView.dequeueReusableCell(withIdentifier: "EventCell")! as! EventCell
             // if prevCell is offscreen and recycled, then set it nil
             if prevCell != nil && prevCell == cell { prevCell = nil }
-            cell.setCellEvent(event,tableView)
+            cell.setCell(event:event,tableView)
             cell.frame.size.width = view.frame.size.width
             return roundCorners(cell, indexPath)
           }

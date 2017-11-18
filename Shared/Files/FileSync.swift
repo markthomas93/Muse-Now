@@ -40,6 +40,7 @@ class FileSync: NSObject {
         //printLog ("⧉ archive:\(fileName) count:\(root.count) memoryTime:\(memoryTime) -> fileTime:\(fileTime)")
         
         do {
+
             let data = NSKeyedArchiver.archivedData(withRootObject:root)
             let url = FileManager.documentUrlFile(fileName)
             try data.write(to:url)

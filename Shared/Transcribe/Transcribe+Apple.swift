@@ -96,6 +96,7 @@ extension Transcribe {
         var museFound = MuseFound("Memo",nil,Int.max)
 
         if !recognizer.isAvailable {
+            
             print("✏ \(#function) recognizer is NOT available")
             completion(museFound)
             return

@@ -16,10 +16,10 @@ class Hear {
 
     static let shared = Hear()
     #if os(watchOS)
-    var options = HearSet([.earbuds]) // user options -- manually set
+    var hearSet = HearSet([.earbuds]) // user options -- manually set
     var route   = HearSet([])
     #else
-    var options = HearSet([.earbuds,.speaker]) // user options -- manually set
+    var hearSet = HearSet([.earbuds,.speaker]) // user options -- manually set
     var route   = HearSet([.speaker])
     #endif
 
@@ -66,9 +66,9 @@ class Hear {
      Update from remote device via Session.
      Determine route from state if both devices
      */
-    func updateOptionsFromSession(_ options_: HearSet) {
+    func updateOptionsFromSession(_ hearSet_: HearSet) {
 
-        options = options_
+        hearSet = hearSet_
         let oldRoute = route
         updateRoute()
         printLog("🎧 \(#function) \(oldRoute) ⟶ \(route)")
@@ -83,13 +83,13 @@ class Hear {
 
         case .earbuds:
 
-            if      options.contains(.earbuds)  { route = [.earbuds] }
-            else if options.contains(.speaker)  { route = [.speaker] }
+            if      hearSet.contains(.earbuds)  { route = [.earbuds] }
+            else if hearSet.contains(.speaker)  { route = [.speaker] }
             else                                { route = [] }
 
         default: // speaker
 
-            if options.contains(.speaker)  { route = [.speaker] }
+            if hearSet.contains(.speaker)  { route = [.speaker] }
             else                           { route = [] }
         }
     }
@@ -114,7 +114,7 @@ class Hear {
     }
 
     func canPlay() -> Bool {
-        return options.contains(local)
+        return hearSet.contains(local)
     }
 
     func getMenus() -> [StrAct] {
@@ -122,8 +122,9 @@ class Hear {
         var strActs = [StrAct]()
 
         if route.isEmpty {
-            if      local.contains(.earbuds) { strActs.append(StrAct("play earbuds", .hearEarbudsOn)) }
-            else if local.contains(.speaker) { strActs.append(StrAct("play speaker", .hearSpeakerOn)) }
+            
+            if hearSet.contains(.speaker) { strActs.append(StrAct("play speaker", .hearSpeakerOn)) }
+            if hearSet.contains(.earbuds) { strActs.append(StrAct("play earbuds", .hearEarbudsOn)) }
         }
         else {
             if      local.contains(.speaker) { strActs.append(StrAct("mute speaker", .hearSpeakerOff)) }
@@ -136,18 +137,18 @@ class Hear {
 
         switch act {
 
-        case .hearSpeakerOn:    options.insert(.speaker)
-        case .hearEarbudsOn:    options.insert(.earbuds)
+        case .hearSpeakerOn:    hearSet.insert(.speaker)
+        case .hearEarbudsOn:    hearSet.insert(.earbuds)
 
-        case .hearSpeakerOff:   options.remove(.speaker)
-        case .hearEarbudsOff:   options.remove(.earbuds)
+        case .hearSpeakerOff:   hearSet.remove(.speaker)
+        case .hearEarbudsOff:   hearSet.remove(.earbuds)
  
         default: break
         }
         updateRoute()
         if isSender {
-            Session.shared.sendMsg(["class"       : "HearSet",
-                                    "putSet"  : options.rawValue])
+            Session.shared.sendMsg(["class"   : "HearSet",
+                                    "putSet"  : hearSet.rawValue])
         }
 
     }

@@ -8,7 +8,7 @@ class ColorCell: UITableViewCell {
     
     var fader: Fader!
     
-    func setCellFader(_ fader_: Fader) {
+    func setCell(fader fader_: Fader) {
         
         fader = fader_
         contentView.backgroundColor = cellColor

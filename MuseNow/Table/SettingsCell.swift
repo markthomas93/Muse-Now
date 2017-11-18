@@ -11,8 +11,8 @@ class SettingsCell: MuCell {
     @IBOutlet weak var bezel: UIView!
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var mark: ToggleCheck!
-    
-    func setCellSetting (_ setting_: Setting!,_ size:CGSize) {
+
+    func setCell(setting setting_: Setting!,_ size:CGSize) {
         
         setting = setting_
         self.frame.size = size
@@ -21,12 +21,12 @@ class SettingsCell: MuCell {
         let innerH = CGFloat(36)    // inner height
         
         // title
-        title.text = setting.title
+        title.text = setting?.title ?? ""
         title.textColor = .white
         title.highlightedTextColor = .black
 
         // make this cell searchable within static cells
-        PagesVC.shared.settingsTable.cells[setting.title] = self
+        PagesVC.shared.treeTable.cells[setting.title] = self
 
         // bezel for title
         bezel.layer.cornerRadius = innerH/4
@@ -37,10 +37,11 @@ class SettingsCell: MuCell {
         mark.layer.cornerRadius = innerH/4
         mark.layer.borderWidth = 1
         mark.layer.masksToBounds = true
-        mark.setMark(setting.isOn)
+        mark.setMark(setting.isOn())
         
         setHighlight(false, animated:false)
     }
+
 
     override func setHighlight(_ isHighlight_:Bool, animated:Bool = true) {
         
@@ -67,9 +68,9 @@ class SettingsCell: MuCell {
     override func touchMark() {
 
         setting.flipSet()
-        mark.setMark(setting.isOn)
+        mark.setMark(setting.isOn())
         
-        PagesVC.shared.settingsTable.updateShowCalendars()
+        //???? PagesVC.shared.treeTable.updateShowCalendars()
     }
     
     override func touchTitle() {

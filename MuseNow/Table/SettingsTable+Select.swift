@@ -15,17 +15,6 @@ extension SettingsTableVC {
     }
     
 
-     /// - via:  EventTable+MuEvent.scroll(Dial|Scene)Event
-
-    func nextDialCell(_ cell: MuCell) {
-        
-        if prevCell != cell {
-            clearPrevCell()
-        }
-        cell.setHighlight(true)
-        prevCell = cell
-    }
-    
 
      /// - via: nextMuCell
      /// - via: scrollDialEvent

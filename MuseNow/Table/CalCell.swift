@@ -14,7 +14,7 @@ class CalCell: MuCell {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var mark: ToggleCheck!
     
-    func setCellCalendar(_ calendar: Cal!,_ size:CGSize) {
+    func setCell(calendar: Cal!,_ size:CGSize) {
         
         cal = calendar
         self.frame.size = size

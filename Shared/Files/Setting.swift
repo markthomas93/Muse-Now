@@ -5,147 +5,111 @@ import EventKit
 import UIKit
 
 @objc(Setting)
-public class Setting: NSObject {
+public class Setting: NSObject, NSCoding {
 
+    var member = 0
+    var set = 0
     var title = "title"
-    var isOn  = true
-    func flipSet() { }
-}
 
-@objc(ShowSetting) // share data format for phone and watch devices
-public class ShowSetting: Setting, NSCoding {
+    func isOn() -> Bool {
+        return set & member != 0
+    }
 
-    var member = ShowSet([])
+    func flipSet() {
+        set ^= member
+    }
+    func updateTitle() {} // override
 
     required public init?(coder decoder: NSCoder) {
         super.init()
-        member = decoder.decodeObject(forKey:"member") as! ShowSet
+        member = decoder.decodeInteger(forKey:"member")
         title  = decoder.decodeObject(forKey:"title") as! String
-        isOn   = decoder.decodeBool  (forKey:"isOn")
+        set    = decoder.decodeInteger(forKey:"set")
+        member = decoder.decodeInteger(forKey:"member")
     }
 
     public func encode(with aCoder: NSCoder) {
+
         aCoder.encode(member, forKey: "member")
         aCoder.encode(title,  forKey: "title")
-        aCoder.encode(isOn,   forKey: "isOn")
+        aCoder.encode(set,    forKey: "set")
+        aCoder.encode(member, forKey: "member")
     }
 
-    func updateTitle () {
-        if      member.contains(.showCalendar)  { title = "Calendars" }
-        else if member.contains(.showReminder)  { title = "Reminders" }
-        else if member.contains(.showRoutine)   { title = "Routine" }
-        else if member.contains(.showMemo)      { title = "Memos" }
-        else                                    { title = "" }
-    }
-
-    init(_ index:Int) {
+    init(_ index:Int, _ set_:Int, _ title_:String = "") {
         super.init()
-        member = ShowSet(rawValue:1<<index)
-        isOn = Show.shared.showSet.contains(member)
+        member = 1<<index
+        set = set_
+        title = title_
         updateTitle()
+    }
+
+}
+
+@objc(ShowSetting) // share data format for phone and watch devices
+public class ShowSetting: Setting {
+
+    override func updateTitle () {
+        let set = ShowSet(rawValue:member)
+        if      set.contains(.showCalendar)  { title = "Calendars" }
+        else if set.contains(.showReminder)  { title = "Reminders" }
+        else if set.contains(.showRoutine)   { title = "Routine" }
+        else if set.contains(.showMemo)      { title = "Memos" }
+        else                                 { title = "" }
     }
 
     override func flipSet()  {
 
-        isOn = !isOn
-
-        if isOn { Show.shared.showSet.insert(member) }
-        else    { Show.shared.showSet.remove(member) }
+        super.flipSet()
+        Show.shared.showSet = ShowSet(rawValue:set)
 
         Actions.shared.doRefresh(/*isSender*/false)
         Settings.shared.initSettings()
         Session.shared.sendMsg(["class"  : "ShowSet",
-                                "putSet" :  Show.shared.showSet.rawValue])
+                                "putSet" :  set])
     }
 }
 
-
-
 @objc(HearSetting) // share data format for phone and watch devices
-public class HearSetting: Setting, NSCoding {
-    
-    var member = HearSet([])
+public class HearSetting: Setting {
 
-    required public init?(coder decoder: NSCoder) {
-        super.init()
-        member = decoder.decodeObject(forKey:"member") as! HearSet
-        title  = decoder.decodeObject(forKey:"title") as! String
-        isOn   = decoder.decodeBool  (forKey:"isOn")
-    }
-    
-    public func encode(with aCoder: NSCoder) {
-        aCoder.encode(member, forKey:"member")
-        aCoder.encode(title,   forKey:"title")
-        aCoder.encode(isOn,    forKey:"isOn")
-    }
-
-    func updateTitle () {
-        if      member.contains(.earbuds) { title = "Earbuds" }
-        else if member.contains(.speaker) { title = "Speaker" }
-        else                              { title = "" }
-    }
-
-    init(_ index:Int) {
-        super.init()
-        member = HearSet(rawValue:1<<index)
-        isOn = Hear.shared.options.contains(member)
-        updateTitle()
+    override func updateTitle () {
+        let set = HearSet(rawValue:member)
+        if      set.contains(.earbuds) { title = "Earbuds" }
+        else if set.contains(.speaker) { title = "Speaker" }
+        else                           { title = "" }
     }
 
     override func flipSet()  {
-        isOn = !isOn
-        if isOn {  Hear.shared.options.insert(member) }
-        else    {  Hear.shared.options.remove(member) }
+        super.flipSet()
+        Hear.shared.hearSet = HearSet(rawValue:set)
         Hear.shared.updateRoute()
         Settings.shared.initSettings()
-        Session.shared.sendMsg(["class"       : "HearSet",
-                                "putSet"  :  Hear.shared.options.rawValue])
+        Session.shared.sendMsg(["class"  : "HearSet",
+                                "putSet" : Hear.shared.hearSet])
     }
 }
 
 @objc(SaySetting) // share data format for phone and watch devices
-
 public class SaySetting: Setting {
-    
-    var member = SaySet([.sayMemo])
-    
-    required public init?(coder decoder: NSCoder) {
-        super.init()
-        member = decoder.decodeObject(forKey:"member") as! SaySet
-        title  = decoder.decodeObject(forKey:"title") as! String
-        isOn   = decoder.decodeBool  (forKey:"isOn")
-    }
-    
-    public func encode(with aCoder: NSCoder) {
 
-        aCoder.encode(member, forKey:"member")
-        aCoder.encode(title,   forKey:"title")
-        aCoder.encode(isOn,    forKey:"isOn")
+     override func updateTitle () {
+        let set = SaySet(rawValue:member)
+        if      set.contains(.sayMemo  ) { title = "Memo" }
+        else if set.contains(.saySpeech) { title = "Speech" }
+        else if set.contains(.sayTime  ) { title = "Time" }
+        else if set.contains(.sayEvent ) { title = "Event" }
     }
-    
-    func updateTitle () {
 
-        if      member.contains(.sayMemo  ) { title = "Memo" }
-        else if member.contains(.saySpeech) { title = "Speech" }
-        else if member.contains(.sayTime  ) { title = "Time" }
-        else if member.contains(.sayEvent ) { title = "Event" }
-    }
-    
-    init(_ index:Int) {
-        super.init()
-        member = SaySet(rawValue:1<<index)
-        isOn = Say.shared.saySet.contains(member)
-        updateTitle()
-    }
-    
     override func flipSet() {
-        isOn = !isOn
-        if isOn { Say.shared.saySet.insert(member) }
-        else    { Say.shared.saySet.remove(member) }
+        super.flipSet()
+        Say.shared.saySet = SaySet(rawValue:set)
         Settings.shared.initSettings()
         Session.shared.sendMsg(["class"   : "SaySet",
-                                "putSet"  : Say.shared.saySet.rawValue])
+                                "putSet"  : Say.shared.saySet])
 
     }
-    
+
 }
+
+

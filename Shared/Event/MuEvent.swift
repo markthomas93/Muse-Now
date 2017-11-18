@@ -5,9 +5,9 @@ import UIKit
 
 public enum EventType: String { case
     unknown     = "unknown",
-    routine     = "routine", // special MuseNow calendar in EKEvents
-    ekevent     = "ekevent",
-    ekreminder  = "ekreminder",
+    routine     = "routine",
+    ekevent     = "ekevent",    // Apple Calendar events
+    ekreminder  = "ekreminder", // Apple Reminders
     note        = "note",
     memo        = "memo",
     mark        = "mark",
@@ -81,8 +81,7 @@ open class MuEvent: NSObject, NSCoding {
             return "\(bgnTime)-\(identifier)-\(title)"
         }
         else {
-            let createTime = Date().timeIntervalSince1970
-            return "\(bgnTime)-\(createTime)-\(title)"
+            return "\(bgnTime)-\(type.rawValue)-\(title)"
         }
     }
     

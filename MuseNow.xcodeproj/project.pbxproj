@@ -171,6 +171,8 @@
 		8004F7E21FA3F01600F7ED94 /* WatchCon+TestSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7DB1FA3F01600F7ED94 /* WatchCon+TestSession.swift */; };
 		8004F7E31FA3F01600F7ED94 /* WatchCon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7DC1FA3F01600F7ED94 /* WatchCon.swift */; };
 		8004F7E41FA3F01600F7ED94 /* WatchMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7DD1FA3F01600F7ED94 /* WatchMenu.swift */; };
+		803C5B231FBF82E000BA9C6C /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076435F1FACDBE6001733C6 /* Setting.swift */; };
+		803C5B241FBF9A2F00BA9C6C /* TreeTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803C5B211FBF622400BA9C6C /* TreeTableVC.swift */; };
 		803C5F5E1FA3DFBE002A1C11 /* MuseNow WatchKit App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 803C5F5D1FA3DFBE002A1C11 /* MuseNow WatchKit App.app */; };
 		803C5F641FA3DFBE002A1C11 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 803C5F621FA3DFBE002A1C11 /* Interface.storyboard */; };
 		803C5F661FA3DFBE002A1C11 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 803C5F651FA3DFBE002A1C11 /* Assets.xcassets */; };
@@ -209,7 +211,6 @@
 		8076435A1FACBEA8001733C6 /* Muse.par in Resources */ = {isa = PBXBuildFile; fileRef = 8076434C1FACBE55001733C6 /* Muse.par */; };
 		8076435B1FACBEB8001733C6 /* Muse.par in Resources */ = {isa = PBXBuildFile; fileRef = 8076434C1FACBE55001733C6 /* Muse.par */; };
 		8076435E1FACDB63001733C6 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076435D1FACDB63001733C6 /* SettingsCell.swift */; };
-		807643601FACDBE6001733C6 /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076435F1FACDBE6001733C6 /* Setting.swift */; };
 		807643611FACDBF7001733C6 /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076435F1FACDBE6001733C6 /* Setting.swift */; };
 		80920B451FA4F6E4004E4D8B /* ComplicationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80920B441FA4F6E4004E4D8B /* ComplicationProvider.swift */; };
 		809E55631FB4C6A700974CB7 /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809E55621FB4C6A700974CB7 /* Audio.swift */; };
@@ -357,6 +358,7 @@
 		8004F7DB1FA3F01600F7ED94 /* WatchCon+TestSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WatchCon+TestSession.swift"; sourceTree = "<group>"; };
 		8004F7DC1FA3F01600F7ED94 /* WatchCon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchCon.swift; sourceTree = "<group>"; };
 		8004F7DD1FA3F01600F7ED94 /* WatchMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchMenu.swift; sourceTree = "<group>"; };
+		803C5B211FBF622400BA9C6C /* TreeTableVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeTableVC.swift; sourceTree = "<group>"; };
 		803C5F4B1FA3DFBD002A1C11 /* MuseNow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MuseNow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		803C5F5D1FA3DFBE002A1C11 /* MuseNow WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MuseNow WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		803C5F631FA3DFBE002A1C11 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
@@ -748,6 +750,7 @@
 		804D5A0B1FA3FCAA0025B724 /* Table */ = {
 			isa = PBXGroup;
 			children = (
+				803C5B211FBF622400BA9C6C /* TreeTableVC.swift */,
 				8076435D1FACDB63001733C6 /* SettingsCell.swift */,
 				804D5A0C1FA3FCAA0025B724 /* CalCell.swift */,
 				804D5A0D1FA3FCAA0025B724 /* SettingsTable+CalCell.swift */,
@@ -1007,6 +1010,7 @@
 				804D5A2D1FA3FCAA0025B724 /* ToggleDot.swift in Sources */,
 				8004F7711FA3EE2400F7ED94 /* Dots+Action.swift in Sources */,
 				804D5A271FA3FCAA0025B724 /* EventTable+Select.swift in Sources */,
+				803C5B231FBF82E000BA9C6C /* Setting.swift in Sources */,
 				804D5A251FA3FCAA0025B724 /* EventTable+PhoneCrown.swift in Sources */,
 				8004F6F01FA3ED5E00F7ED94 /* Edge.swift in Sources */,
 				804D5A071FA3FC8B0025B724 /* PhoneCrown.swift in Sources */,
@@ -1015,6 +1019,7 @@
 				8004F6E01FA3ED5E00F7ED94 /* String+.swift in Sources */,
 				8004F7C71FA3EE2400F7ED94 /* Scene.swift in Sources */,
 				8004F7771FA3EE2400F7ED94 /* Dots.swift in Sources */,
+				803C5B241FBF9A2F00BA9C6C /* TreeTableVC.swift in Sources */,
 				8004F78F1FA3EE2400F7ED94 /* FileManager+MuseNow.swift in Sources */,
 				804D5A1E1FA3FCAA0025B724 /* SettingsTable+CalCell.swift in Sources */,
 				8004F7691FA3EE2400F7ED94 /* Anim+Closure.swift in Sources */,
@@ -1057,7 +1062,6 @@
 				8004F7CD1FA3EE2400F7ED94 /* Session.swift in Sources */,
 				8004F6DE1FA3ED5E00F7ED94 /* Repetitions.swift in Sources */,
 				804D5A291FA3FCAA0025B724 /* EventTable+Update.swift in Sources */,
-				807643601FACDBE6001733C6 /* Setting.swift in Sources */,
 				8004F79D1FA3EE2400F7ED94 /* FileMsg.swift in Sources */,
 				804D5A081FA3FC8B0025B724 /* TouchDialForce.swift in Sources */,
 				804D5A221FA3FCAA0025B724 /* EventTable+EditRow.swift in Sources */,

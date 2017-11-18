@@ -6,16 +6,10 @@ class Settings: FileSync {
     
     static let shared = Settings()
 
-    var showSet: ShowSet!
-    var hearSet: HearSet!
-    var saySet: SaySet!
     var root = [String:Any]()
 
     override init() {
         super.init()
-        root["showSet"] = showSet
-        root["hearSet"] = hearSet
-        root["saySet"] = saySet
         fileName = "Settings.plist"
     }
     
@@ -32,13 +26,10 @@ class Settings: FileSync {
                 self.archiveDict(root, 0)
             }
             else {
-                if let showSet = root["showSet"] { self.showSet = showSet as! ShowSet }
-                if let saySet  = root["saySet"]  { self.saySet  = saySet  as! SaySet }
-                if let hearSet = root["hearSet"] { self.hearSet = hearSet as! HearSet }
                 self.updateSettings()
                 self.memoryTime = fileTime
             }
-            printLog ("⧉ Settings::\(#function) saySet:\(self.saySet) hearSet:\(self.hearSet) fileTime:\(fileTime) -> memoryTime:\(self.memoryTime)")
+            printLog ("⧉ Settings::\(#function) saySet:\(Say.shared.saySet) hearSet:\(Hear.shared.hearSet) fileTime:\(fileTime) -> memoryTime:\(self.memoryTime)")
             completion()
         }
     }
@@ -64,22 +55,22 @@ class Settings: FileSync {
     
     func updateColor(_ value: Any) {
 
-        root["dialColor"] = value
+        root["dialColor"] = value as! Float
         archiveDict(root,Date().timeIntervalSince1970)
     }
     
     func initSettings() {
-        root["showSet"] = Show.shared.showSet
-        root["hearSet"] = Hear.shared.options
-        root["saySet"]  = Say.shared.saySet
+        root["showSet"]   = Show.shared.showSet.rawValue
+        root["hearSet"]   = Hear.shared.hearSet.rawValue
+        root["saySet"]    = Say.shared.saySet.rawValue
         root["dialColor"] = Actions.shared.scene?.uFade?.floatValue ?? 0
     }
 
     func updateSettings() {
-        if let value = root["dialColor"] as? Float {  Actions.shared.dialColor(value, isSender:false) }
-        if let saySet = root["saySet"] as? Int { Say.shared.saySet = SaySet(rawValue:saySet)}
-        if let hearSet = root["hearSet"] as? Int {  Hear.shared.options = HearSet(rawValue:hearSet) }
-        if let showSet = root["showSet"] as? Int {  Show.shared.showSet = ShowSet(rawValue:showSet) }
+        if let value   = root["dialColor"] as? Float { Actions.shared.dialColor(value, isSender:false) }
+        if let saySet  = root["saySet"]    as? Int   { Say.shared.saySet   = SaySet(rawValue:saySet) }
+        if let hearSet = root["hearSet"]   as? Int   { Hear.shared.hearSet = HearSet(rawValue:hearSet) }
+        if let showSet = root["showSet"]   as? Int   { Show.shared.showSet = ShowSet(rawValue:showSet) }
        }
 }
 

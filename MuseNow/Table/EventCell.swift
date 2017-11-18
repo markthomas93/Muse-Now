@@ -12,7 +12,7 @@ class EventCell: MuCell {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var mark:  ToggleDot!
     
-    func setCellEvent(_ event_: MuEvent!, _ tableView: UITableView!) {
+    func setCell(event event_: MuEvent!, _ tableView: UITableView!) {
         
         event = event_
         mark.setMark(event.mark)

@@ -8,7 +8,7 @@ class EventTimeCell: MuCell {
     let rowHeight = CGFloat(44)
     let sectionHeight = CGFloat(36)
     
-    func setCellEvent(_ event_: MuEvent!, _ size: CGSize) {
+    func setCell(event event_: MuEvent!, _ size: CGSize) {
     
         selectionStyle = UITableViewCellSelectionStyle.none
         event = event_ // not really needed
