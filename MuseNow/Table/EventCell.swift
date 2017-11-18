@@ -71,8 +71,8 @@ class EventCell: MuCell {
         
         event.mark = !(event.mark)
         mark?.setMark(event.mark)
-        let act : DoAction = event.mark ? .markOn : .markOff
-        let index =  Dots.shared.gotoEvent(event)
+        let act = event.mark ? DoAction.markOn : DoAction.markOff
+        let index = Dots.shared.gotoEvent(event)
         Actions.shared.doAction(act, event, index, isSender: true)
         Anim.shared.touchDialGotoTime(event.bgnTime)
     }

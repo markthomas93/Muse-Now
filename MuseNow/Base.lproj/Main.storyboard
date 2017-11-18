@@ -122,11 +122,6 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <outlet property="bezel" destination="nuJ-MB-6IJ" id="2VP-G7-2KT"/>
-                                    <outlet property="mark" destination="buH-2n-PYo" id="FSN-kB-VPZ"/>
-                                    <outlet property="title" destination="lNK-Iv-GG9" id="dZo-sS-uE8"/>
-                                </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ColorCell" focusStyle="custom" id="LHr-1o-2b0" userLabel="ColorCell" customClass="ColorCell" customModule="MuseNow" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="143.5" width="375" height="44"/>

@@ -144,22 +144,19 @@ class SettingsTableVC: UITableViewController {
             
         case showIndex:
 
-            let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell")! as! SettingsCell
-            cell.setCell(setting:ShowSetting(index, Show.shared.showSet.rawValue), CGSize(width:width, height:rowHeight))
+            let cell =  SettingsCell(setting:ShowSetting(index, Show.shared.showSet.rawValue), /*level*/ 0, CGSize(width:width, height:rowHeight))
             if prevCell != nil && prevCell == cell { prevCell = nil }
             return roundCorners(cell, indexPath)
 
         case hearIndex:
 
-            let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell")! as! SettingsCell
-            cell.setCell(setting:HearSetting(index, Hear.shared.hearSet.rawValue), CGSize(width:width, height:rowHeight))
+            let cell = SettingsCell(setting:HearSetting(index, Hear.shared.hearSet.rawValue), /*level*/ 0, CGSize(width:width, height:rowHeight))
             if prevCell != nil && prevCell == cell { prevCell = nil }
             return roundCorners(cell, indexPath)
 
         case sayIndex:
             
-            let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell")! as! SettingsCell
-            cell.setCell(setting:SaySetting(index, Say.shared.saySet.rawValue), CGSize(width:width, height:rowHeight))
+            let cell = SettingsCell(setting:SaySetting(index, Say.shared.saySet.rawValue), /*level*/ 0, CGSize(width:width, height:rowHeight))
             if prevCell != nil && prevCell == cell { prevCell = nil }
             return roundCorners(cell, indexPath)
             
@@ -171,7 +168,7 @@ class SettingsTableVC: UITableViewController {
             colorCell.frame.size.width = width
             let faderFrame = CGRect(x:44, y:4, width: width-88, height:rowHeight-8)
             let fader = Fader(frame:faderFrame,tableView,value)
-            colorCell.setCell(fader:Fader(frame:faderFrame,tableView,value))
+            colorCell.setCell(fader:fader)
             return roundCorners(colorCell, indexPath)
             
         default:

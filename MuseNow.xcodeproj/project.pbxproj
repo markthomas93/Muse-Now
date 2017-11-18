@@ -45,7 +45,6 @@
 		8004F70A1FA3ED5E00F7ED94 /* ParWords.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F6DD1FA3ED5E00F7ED94 /* ParWords.swift */; };
 		8004F70B1FA3ED5E00F7ED94 /* ParWords.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F6DD1FA3ED5E00F7ED94 /* ParWords.swift */; };
 		8004F7591FA3EE2400F7ED94 /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F70E1FA3EE2400F7ED94 /* Actions.swift */; };
-		8004F75A1FA3EE2400F7ED94 /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F70E1FA3EE2400F7ED94 /* Actions.swift */; };
 		8004F75B1FA3EE2400F7ED94 /* Haptic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F70F1FA3EE2400F7ED94 /* Haptic.swift */; };
 		8004F75C1FA3EE2400F7ED94 /* Haptic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F70F1FA3EE2400F7ED94 /* Haptic.swift */; };
 		8004F75D1FA3EE2400F7ED94 /* Motion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7101FA3EE2400F7ED94 /* Motion.swift */; };
@@ -189,9 +188,6 @@
 		804D5A091FA3FC8B0025B724 /* TouchForce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D59FF1FA3FC8B0025B724 /* TouchForce.swift */; };
 		804D5A0A1FA3FC8B0025B724 /* UITouch+Force.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A001FA3FC8B0025B724 /* UITouch+Force.swift */; };
 		804D5A1D1FA3FCAA0025B724 /* CalCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A0C1FA3FCAA0025B724 /* CalCell.swift */; };
-		804D5A1E1FA3FCAA0025B724 /* SettingsTable+CalCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A0D1FA3FCAA0025B724 /* SettingsTable+CalCell.swift */; };
-		804D5A1F1FA3FCAA0025B724 /* SettingsTable+Select.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A0E1FA3FCAA0025B724 /* SettingsTable+Select.swift */; };
-		804D5A201FA3FCAA0025B724 /* SettingsTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A0F1FA3FCAA0025B724 /* SettingsTableVC.swift */; };
 		804D5A211FA3FCAA0025B724 /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A101FA3FCAA0025B724 /* EventCell.swift */; };
 		804D5A221FA3FCAA0025B724 /* EventTable+EditRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A111FA3FCAA0025B724 /* EventTable+EditRow.swift */; };
 		804D5A231FA3FCAA0025B724 /* EventTable+EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A121FA3FCAA0025B724 /* EventTable+EventCell.swift */; };
@@ -217,6 +213,8 @@
 		809E55641FB4C6A700974CB7 /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809E55621FB4C6A700974CB7 /* Audio.swift */; };
 		809E55671FB4C6EA00974CB7 /* Show.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809E55661FB4C6EA00974CB7 /* Show.swift */; };
 		809E55681FB4C6EA00974CB7 /* Show.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809E55661FB4C6EA00974CB7 /* Show.swift */; };
+		80A3E36C1FC0CABC00195BD3 /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F70E1FA3EE2400F7ED94 /* Actions.swift */; };
+		80A3E36E1FC0D51500195BD3 /* TreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A3E36D1FC0D51500195BD3 /* TreeNode.swift */; };
 		80F26DBC1FBA07E100C26973 /* Routine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F26DBB1FBA07E100C26973 /* Routine.swift */; };
 		80F26DBD1FBA07E100C26973 /* Routine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F26DBB1FBA07E100C26973 /* Routine.swift */; };
 		80F26DBF1FBA110300C26973 /* Routine.par in Resources */ = {isa = PBXBuildFile; fileRef = 80F26DBE1FBA110300C26973 /* Routine.par */; };
@@ -404,6 +402,7 @@
 		80920B441FA4F6E4004E4D8B /* ComplicationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationProvider.swift; sourceTree = "<group>"; };
 		809E55621FB4C6A700974CB7 /* Audio.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Audio.swift; sourceTree = "<group>"; };
 		809E55661FB4C6EA00974CB7 /* Show.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Show.swift; sourceTree = "<group>"; };
+		80A3E36D1FC0D51500195BD3 /* TreeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TreeNode.swift; path = Shared/TreeNode.swift; sourceTree = "<group>"; };
 		80CE545E1FA3E0C7005C4D96 /* MuseNow WatchKit App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "MuseNow WatchKit App.entitlements"; sourceTree = "<group>"; };
 		80CE545F1FA3E0CE005C4D96 /* MuseNow WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "MuseNow WatchKit Extension.entitlements"; sourceTree = "<group>"; };
 		80F26DBB1FBA07E100C26973 /* Routine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Routine.swift; path = Routine/Routine.swift; sourceTree = "<group>"; };
@@ -676,6 +675,7 @@
 		803C5F421FA3DFBD002A1C11 = {
 			isa = PBXGroup;
 			children = (
+				80A3E36D1FC0D51500195BD3 /* TreeNode.swift */,
 				8004F70C1FA3EE2400F7ED94 /* Shared */,
 				8004F6C21FA3ED5E00F7ED94 /* ParGraph */,
 				803C5F4D1FA3DFBD002A1C11 /* MuseNow */,
@@ -963,7 +963,6 @@
 				8004F7001FA3ED5E00F7ED94 /* Par.swift in Sources */,
 				8004F7871FA3EE2400F7ED94 /* Array+.swift in Sources */,
 				8004F7C31FA3EE2400F7ED94 /* Polar.swift in Sources */,
-				804D5A1F1FA3FCAA0025B724 /* SettingsTable+Select.swift in Sources */,
 				804D5A061FA3FC8B0025B724 /* PagesVC.swift in Sources */,
 				8004F7041FA3ED5E00F7ED94 /* ParObj.swift in Sources */,
 				8004F7B51FA3EE2400F7ED94 /* Say.swift in Sources */,
@@ -996,7 +995,6 @@
 				804D5A091FA3FC8B0025B724 /* TouchForce.swift in Sources */,
 				8004F7B91FA3EE2400F7ED94 /* SayItem.swift in Sources */,
 				804D5A2B1FA3FCAA0025B724 /* MuCell.swift in Sources */,
-				804D5A201FA3FCAA0025B724 /* SettingsTableVC.swift in Sources */,
 				8004F7A31FA3EE2400F7ED94 /* Marks.swift in Sources */,
 				8004F7591FA3EE2400F7ED94 /* Actions.swift in Sources */,
 				804D5A0A1FA3FC8B0025B724 /* UITouch+Force.swift in Sources */,
@@ -1021,8 +1019,8 @@
 				8004F7771FA3EE2400F7ED94 /* Dots.swift in Sources */,
 				803C5B241FBF9A2F00BA9C6C /* TreeTableVC.swift in Sources */,
 				8004F78F1FA3EE2400F7ED94 /* FileManager+MuseNow.swift in Sources */,
-				804D5A1E1FA3FCAA0025B724 /* SettingsTable+CalCell.swift in Sources */,
 				8004F7691FA3EE2400F7ED94 /* Anim+Closure.swift in Sources */,
+				80A3E36E1FC0D51500195BD3 /* TreeNode.swift in Sources */,
 				8004F7021FA3ED5E00F7ED94 /* ParLem.swift in Sources */,
 				809E55671FB4C6EA00974CB7 /* Show.swift in Sources */,
 				804D5A031FA3FC8B0025B724 /* Fader.swift in Sources */,
@@ -1112,7 +1110,6 @@
 				8004F7CA1FA3EE2400F7ED94 /* Texture.swift in Sources */,
 				8004F7881FA3EE2400F7ED94 /* Array+.swift in Sources */,
 				8004F7CE1FA3EE2400F7ED94 /* Session.swift in Sources */,
-				8004F75A1FA3EE2400F7ED94 /* Actions.swift in Sources */,
 				8004F6E11FA3ED5E00F7ED94 /* String+.swift in Sources */,
 				80920B451FA4F6E4004E4D8B /* ComplicationProvider.swift in Sources */,
 				8004F7A21FA3EE2400F7ED94 /* Mark.swift in Sources */,
@@ -1139,6 +1136,7 @@
 				8004F7621FA3EE2400F7ED94 /* TouchDial.swift in Sources */,
 				8004F6F31FA3ED5E00F7ED94 /* Node+connect.swift in Sources */,
 				8004F7D21FA3EE2400F7ED94 /* Transcribe+SWM.swift in Sources */,
+				80A3E36C1FC0CABC00195BD3 /* Actions.swift in Sources */,
 				8004F7721FA3EE2400F7ED94 /* Dots+Action.swift in Sources */,
 				8004F7DE1FA3F01600F7ED94 /* Complication.swift in Sources */,
 				8004F75C1FA3EE2400F7ED94 /* Haptic.swift in Sources */,
