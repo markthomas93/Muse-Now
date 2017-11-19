@@ -77,7 +77,6 @@ class SettingsCell: MuCell {
         bezel.addSubview(title)
         contentView.addSubview(mark)
 
-
         selectedBackgroundView = UIView()
         selectedBackgroundView?.backgroundColor = cellColor
 
@@ -115,8 +114,11 @@ class SettingsCell: MuCell {
     override func touchTitle() {
 
         if treeNode.children.count > 0 {
+
+            let oldCount = TreeNodes.shared.nodes.count
             treeNode.expanded = !treeNode.expanded
-            PagesVC.shared.treeTable.updateTouchCell(self,reload:true)
+            TreeNodes.shared.renumber(treeNode)
+            PagesVC.shared.treeTable.updateTouchCell(self,reload:true, oldCount)
         }
         else {
             PagesVC.shared.treeTable.updateTouchCell(self,reload:false)

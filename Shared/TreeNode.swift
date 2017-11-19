@@ -8,11 +8,37 @@
 
 import Foundation
 
+class TreeNodes {
+    static var shared = TreeNodes()
+    var nodes = [TreeNode!]()
+
+    func renumber(_ node:TreeNode) {
+
+        var parenti = node.parent
+        while parenti?.parent != nil {
+            parenti = parenti?.parent
+        }
+        nodes.removeAll()
+        parenti?.expanded = true // root always expanded
+        renumbering(parenti)
+    }
+
+    func renumbering(_ node:TreeNode!)  {
+
+        if node.expanded {
+            for child in node.children {
+                child.row = nodes.count
+                nodes.append(child)
+                renumbering(child)
+            }
+        }
+    }
+}
 
 class TreeNode {
 
     var parent: TreeNode!
-    var children = [TreeNode]()
+    var children = [TreeNode ]()
     var level = 0
     var expanded = false
     var setting: Setting!
@@ -41,39 +67,5 @@ class TreeNode {
         set ^= member
         return isOn()
     }
-
-    func showing() -> Int {
-        var count = children.count
-        for child in children {
-            if child.expanded {
-                count += child.showing()
-            }
-        }
-        return count
-    }
-
-    func nodeForRow(_ row:Int) -> TreeNode! {
-        var index = -1
-        expanded = true // root is always expanded
-        return nodeForRow(row,&index)
-    }
-
-    func nodeForRow(_ row:Int,_ index:inout Int) -> TreeNode! {
-
-        if expanded {
-
-            for child in children {
-
-                index += 1
-                //printLog("⿳ \(index): \(child.cell?.title.text! ?? "")")
-                if index == row {
-                    return child
-                }
-                if let node = child.nodeForRow(row,&index) {
-                    return node
-                }
-            }
-        }
-        return nil
-    }
-}
+    
+  }
