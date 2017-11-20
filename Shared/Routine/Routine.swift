@@ -59,26 +59,40 @@ class Routine {
     static let shared  = Routine()
 
     var items = [RoutineItem]()
+    var categories = [String]()
+    var catalog = [String:[RoutineItem]]()
 
     init() {
 
-        func add(_ dow:Int,_ bgnHours:Float, _ durHours:Float, _ color: String, _ str: String) {
-            items.append(RoutineItem(dow, bgnHours, durHours, color, str))
+        func add(_ dow:Int,_ bgnHours:Float, _ durHours:Float, _ color: String,_ category:String, _ str: String) {
+
+            let item = RoutineItem(dow, bgnHours, durHours, color, str)
+
+            items.append(item)
+
+            if catalog[category] != nil {
+                catalog[category]?.append(item)
+            }
+            else {
+                catalog[category] = [item]
+                categories.append(category)
+            }
         }
-        add(0b1111111, 22.0, 8.0, "purple", "Sleep") // "Sleep from 10 pm to 8 am every day color purple"
-        add(0b1111111,  7.0, 0.5, "green", "Breakfast") // "Breakfast from 7 to 7:30 am on week days color green"
-        add(0b0111110, 12.0, 1.0, "green", "Lunch") // "Lunch from noon to 1 pm on week days color green"
-        add(0b0111100, 18.0, 1.0, "green", "Dinner") // "Dinner from 6 to 7 pm from monday to thursday color green"
-        add(0b0111100, 19.0, 1.0, "yellow", "Study") // "Study from 7 to 8 pm on sunday through thursday color yellow"
-        add(0b0001000, 15.0, 1.0, "yellow", "Quiz") // "Quiz on Wednesday at 3 color yellow"
-        add(0b0000010, 12.0, 1.0, "yellow", "Test") // "Test on Friday at 3 color yellow"
-        add(0b0111111,  9.0, 3.0, "orange", "Work") // "Work from 9 to 12 on weekdays and saturday color orange"
-        add(0b0001010, 13.0, 2.0, "orange", "Work") // "Work from 1 to 3 on wednesday and thurday color orange"
-        add(0b0110100, 13.0, 3.0, "orange", "Work") // "Work from 1 to 4 on monday, tuesday, thursday color orange"
-        add(0b0101000, 17.5, 2.5, "violet", "Stretch") // "Stretch from 5:30 to 8 pm on monday and tuesday color violet"
-        add(0b1000000,  8.0, 4.0, "violet", "Bike") // "Bike from 8 to 2 on sunday color violet"
-        add(0b1000000, 16.0, 2.0, "violet", "Stretch") // "Stretch from 4 to 6 pm on sunday color violet"
-        add(0b0010001, 16.0, 2.0, "violet", "Weights") // "Weights from 4p to 6 on Tuesday color violet"
+        
+        add(0b1111111, 22.0, 8.0, "purple", "Rest","Sleep") // "Sleep from 10 pm to 8 am every day color purple"
+        add(0b1111111,  7.0, 0.5, "green", "Meal","Breakfast") // "Breakfast from 7 to 7:30 am on week days color green"
+        add(0b0111110, 12.0, 1.0, "green", "Meal","Lunch") // "Lunch from noon to 1 pm on week days color green"
+        add(0b0111100, 18.0, 1.0, "green", "Meal","Dinner") // "Dinner from 6 to 7 pm from monday to thursday color green"
+        add(0b0111100, 19.0, 1.0, "yellow", "Study","Study") // "Study from 7 to 8 pm on sunday through thursday color yellow"
+        add(0b0001000, 15.0, 1.0, "yellow", "Study","Quiz") // "Quiz on Wednesday at 3 color yellow"
+        add(0b0000010, 12.0, 1.0, "yellow", "Study","Test") // "Test on Friday at 3 color yellow"
+        add(0b0111111,  9.0, 3.0, "orange", "Work","Work") // "Work from 9 to 12 on weekdays and saturday color orange"
+        add(0b0001010, 13.0, 2.0, "orange", "Work","Work") // "Work from 1 to 3 on wednesday and thurday color orange"
+        add(0b0110100, 13.0, 3.0, "orange", "Work","Work") // "Work from 1 to 4 on monday, tuesday, thursday color orange"
+        add(0b0101000, 17.5, 2.5, "violet", "Health","Stretch") // "Stretch from 5:30 to 8 pm on monday and tuesday color violet"
+        add(0b1000000,  8.0, 4.0, "violet", "Health","Bike") // "Bike from 8 to 2 on sunday color violet"
+        add(0b1000000, 16.0, 2.0, "violet", "Health","Stretch") // "Stretch from 4 to 6 pm on sunday color violet"
+        add(0b0010001, 16.0, 2.0, "violet", "Health","Weights") // "Weights from 4p to 6 on Tuesday color violet"
     }
 
     func getRoutineEvents(completion: @escaping (_ result:[MuEvent]) -> Void) -> Void  {
@@ -99,6 +113,7 @@ class Routine {
             // printLog("𝓡 \(day),\(daylabel[weekday]): " +  MuDate.dateToString(dayDate!.timeIntervalSince1970, "MM-dd HH:mm"))
 
             for item in items {
+                
                 if item.daysOfWeek.contains(dayOfWeek) {
 
                     let bgnDate = cal.date(byAdding:.minute, value:Int(item.bgnMinutes), to:dayDate!)

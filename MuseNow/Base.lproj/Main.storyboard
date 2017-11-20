@@ -84,7 +84,7 @@
                                     <outlet property="title" destination="VKE-5n-rLV" id="CG8-dx-O7B"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SettingsCell" focusStyle="custom" id="uBt-JI-hi6" customClass="SettingsCell" customModule="MuseNow" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TreeCell" focusStyle="custom" id="uBt-JI-hi6" customClass="TreeCell" customModule="MuseNow" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="99.5" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" tableViewCell="uBt-JI-hi6" id="4gV-cQ-vXw">

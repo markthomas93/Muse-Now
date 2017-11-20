@@ -50,8 +50,8 @@ class CalCell: MuCell {
         isHighlight = isHighlight_
         
         let index       = isHighlight ? 1 : 0
-        let borders     = [cellColor.cgColor, UIColor.white.cgColor]
-        let backgrounds = [cellColor.cgColor, UIColor.black.cgColor]
+        let borders     = [UIColor.black.cgColor, UIColor.white.cgColor]
+        let backgrounds = [UIColor.black.cgColor, UIColor.black.cgColor]
         
         if animated {
             animateViews([bezel,mark], borders, backgrounds, index, duration: 0.25)

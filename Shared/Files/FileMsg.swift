@@ -18,7 +18,6 @@ class FileMsg:  NSObject {
         let anim = Anim.shared
         let setn = Settings.shared
 
-
         if // other device has updated a file, such as Memos.plist, Marks.plist
             let postFile = msg["postFile"] as? String,
             let fileTime = msg["fileTime"] as? TimeInterval,

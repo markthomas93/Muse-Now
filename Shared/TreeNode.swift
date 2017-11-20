@@ -34,21 +34,26 @@ class TreeNodes {
         }
     }
 }
+enum TreeNodeType { case
+    generic,
+    routineCategory,
+    routineItem
+}
 
 class TreeNode {
-
+    var type = TreeNodeType.generic
     var parent: TreeNode!
-    var children = [TreeNode ]()
+    var children = [TreeNode]()
     var level = 0
     var expanded = false
     var setting: Setting!
-    var cell: SettingsCell!
+    var cell: TreeCell!
     var row = -1
 
     var set: Int // OptionSet value
     var member: Int // member within that optionset
 
-    init (_ parent_:TreeNode!,_ title_:String, set_:Int=0, member_:Int=1) {
+    init (_ parent_:TreeNode!,_ title_:String,_ set_:Int=0,_ member_:Int=1) {
         parent = parent_
         set = set_
         member = member_
@@ -67,5 +72,22 @@ class TreeNode {
         set ^= member
         return isOn()
     }
-    
-  }
+}
+
+class TreeRoutineCategoryNode: TreeNode {
+    init (_ parent_:TreeNode!,_ title_:String) {
+        super.init(parent_,title_)
+        type = TreeNodeType.routineCategory
+    }
+}
+class TreeRoutineItemNode: TreeNode {
+    var routineItem: RoutineItem!
+    init (_ parent_:TreeNode!,_ item:RoutineItem) {
+        routineItem = item
+        super.init(parent_,item.title)
+        type = TreeNodeType.routineItem
+    }
+}
+
+
+

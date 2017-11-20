@@ -126,8 +126,6 @@
 		8004F7AA1FA3EE2400F7ED94 /* Hear.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F73D1FA3EE2400F7ED94 /* Hear.swift */; };
 		8004F7AD1FA3EE2400F7ED94 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7401FA3EE2400F7ED94 /* Location.swift */; };
 		8004F7AE1FA3EE2400F7ED94 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7401FA3EE2400F7ED94 /* Location.swift */; };
-		8004F7AF1FA3EE2400F7ED94 /* Main.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8004F7411FA3EE2400F7ED94 /* Main.xcassets */; };
-		8004F7B01FA3EE2400F7ED94 /* Main.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8004F7411FA3EE2400F7ED94 /* Main.xcassets */; };
 		8004F7B11FA3EE2400F7ED94 /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7421FA3EE2400F7ED94 /* Record.swift */; };
 		8004F7B21FA3EE2400F7ED94 /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7421FA3EE2400F7ED94 /* Record.swift */; };
 		8004F7B31FA3EE2400F7ED94 /* Say+Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7441FA3EE2400F7ED94 /* Say+Event.swift */; };
@@ -170,6 +168,10 @@
 		8004F7E21FA3F01600F7ED94 /* WatchCon+TestSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7DB1FA3F01600F7ED94 /* WatchCon+TestSession.swift */; };
 		8004F7E31FA3F01600F7ED94 /* WatchCon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7DC1FA3F01600F7ED94 /* WatchCon.swift */; };
 		8004F7E41FA3F01600F7ED94 /* WatchMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7DD1FA3F01600F7ED94 /* WatchMenu.swift */; };
+		800C51B41FC2053F00904121 /* Main.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 800C51B31FC2053F00904121 /* Main.xcassets */; };
+		800C51B51FC2053F00904121 /* Main.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 800C51B31FC2053F00904121 /* Main.xcassets */; };
+		800C51B71FC2213F00904121 /* TreeRoutineItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800C51B61FC2213E00904121 /* TreeRoutineItemCell.swift */; };
+		800C51B91FC221EF00904121 /* TreeGenericCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800C51B81FC221EF00904121 /* TreeGenericCell.swift */; };
 		803C5B231FBF82E000BA9C6C /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076435F1FACDBE6001733C6 /* Setting.swift */; };
 		803C5B241FBF9A2F00BA9C6C /* TreeTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803C5B211FBF622400BA9C6C /* TreeTableVC.swift */; };
 		803C5F5E1FA3DFBE002A1C11 /* MuseNow WatchKit App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 803C5F5D1FA3DFBE002A1C11 /* MuseNow WatchKit App.app */; };
@@ -206,7 +208,7 @@
 		807643581FACBE55001733C6 /* MuseFound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076434F1FACBE55001733C6 /* MuseFound.swift */; };
 		8076435A1FACBEA8001733C6 /* Muse.par in Resources */ = {isa = PBXBuildFile; fileRef = 8076434C1FACBE55001733C6 /* Muse.par */; };
 		8076435B1FACBEB8001733C6 /* Muse.par in Resources */ = {isa = PBXBuildFile; fileRef = 8076434C1FACBE55001733C6 /* Muse.par */; };
-		8076435E1FACDB63001733C6 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076435D1FACDB63001733C6 /* SettingsCell.swift */; };
+		8076435E1FACDB63001733C6 /* TreeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076435D1FACDB63001733C6 /* TreeCell.swift */; };
 		807643611FACDBF7001733C6 /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076435F1FACDBE6001733C6 /* Setting.swift */; };
 		80920B451FA4F6E4004E4D8B /* ComplicationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80920B441FA4F6E4004E4D8B /* ComplicationProvider.swift */; };
 		809E55631FB4C6A700974CB7 /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809E55621FB4C6A700974CB7 /* Audio.swift */; };
@@ -329,7 +331,6 @@
 		8004F73A1FA3EE2400F7ED94 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		8004F73D1FA3EE2400F7ED94 /* Hear.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hear.swift; sourceTree = "<group>"; };
 		8004F7401FA3EE2400F7ED94 /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
-		8004F7411FA3EE2400F7ED94 /* Main.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Main.xcassets; sourceTree = "<group>"; };
 		8004F7421FA3EE2400F7ED94 /* Record.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
 		8004F7441FA3EE2400F7ED94 /* Say+Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Say+Event.swift"; sourceTree = "<group>"; };
 		8004F7451FA3EE2400F7ED94 /* Say.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Say.swift; sourceTree = "<group>"; };
@@ -356,6 +357,9 @@
 		8004F7DB1FA3F01600F7ED94 /* WatchCon+TestSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WatchCon+TestSession.swift"; sourceTree = "<group>"; };
 		8004F7DC1FA3F01600F7ED94 /* WatchCon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchCon.swift; sourceTree = "<group>"; };
 		8004F7DD1FA3F01600F7ED94 /* WatchMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchMenu.swift; sourceTree = "<group>"; };
+		800C51B31FC2053F00904121 /* Main.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Main.xcassets; sourceTree = "<group>"; };
+		800C51B61FC2213E00904121 /* TreeRoutineItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeRoutineItemCell.swift; sourceTree = "<group>"; };
+		800C51B81FC221EF00904121 /* TreeGenericCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeGenericCell.swift; sourceTree = "<group>"; };
 		803C5B211FBF622400BA9C6C /* TreeTableVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeTableVC.swift; sourceTree = "<group>"; };
 		803C5F4B1FA3DFBD002A1C11 /* MuseNow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MuseNow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		803C5F5D1FA3DFBE002A1C11 /* MuseNow WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MuseNow WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -376,9 +380,6 @@
 		804D59FF1FA3FC8B0025B724 /* TouchForce.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchForce.swift; sourceTree = "<group>"; };
 		804D5A001FA3FC8B0025B724 /* UITouch+Force.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITouch+Force.swift"; sourceTree = "<group>"; };
 		804D5A0C1FA3FCAA0025B724 /* CalCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalCell.swift; sourceTree = "<group>"; };
-		804D5A0D1FA3FCAA0025B724 /* SettingsTable+CalCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SettingsTable+CalCell.swift"; sourceTree = "<group>"; };
-		804D5A0E1FA3FCAA0025B724 /* SettingsTable+Select.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SettingsTable+Select.swift"; sourceTree = "<group>"; };
-		804D5A0F1FA3FCAA0025B724 /* SettingsTableVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableVC.swift; sourceTree = "<group>"; };
 		804D5A101FA3FCAA0025B724 /* EventCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventCell.swift; sourceTree = "<group>"; };
 		804D5A111FA3FCAA0025B724 /* EventTable+EditRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EventTable+EditRow.swift"; sourceTree = "<group>"; };
 		804D5A121FA3FCAA0025B724 /* EventTable+EventCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EventTable+EventCell.swift"; sourceTree = "<group>"; };
@@ -397,7 +398,7 @@
 		8076434D1FACBE55001733C6 /* Muse.par2 */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; path = Muse.par2; sourceTree = "<group>"; };
 		8076434E1FACBE55001733C6 /* Muse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Muse.swift; sourceTree = "<group>"; };
 		8076434F1FACBE55001733C6 /* MuseFound.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuseFound.swift; sourceTree = "<group>"; };
-		8076435D1FACDB63001733C6 /* SettingsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
+		8076435D1FACDB63001733C6 /* TreeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeCell.swift; sourceTree = "<group>"; };
 		8076435F1FACDBE6001733C6 /* Setting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Setting.swift; path = Shared/Files/Setting.swift; sourceTree = SOURCE_ROOT; };
 		80920B441FA4F6E4004E4D8B /* ComplicationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationProvider.swift; sourceTree = "<group>"; };
 		809E55621FB4C6A700974CB7 /* Audio.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Audio.swift; sourceTree = "<group>"; };
@@ -491,6 +492,7 @@
 		8004F70C1FA3EE2400F7ED94 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				800C51B31FC2053F00904121 /* Main.xcassets */,
 				8004F70D1FA3EE2400F7ED94 /* Actions */,
 				8004F7151FA3EE2400F7ED94 /* Anim */,
 				8004F7141FA3EE2400F7ED94 /* Active.swift */,
@@ -501,7 +503,6 @@
 				809E55651FB4C6EA00974CB7 /* Show */,
 				8004F73C1FA3EE2400F7ED94 /* Hear */,
 				8004F73F1FA3EE2400F7ED94 /* Location */,
-				8004F7411FA3EE2400F7ED94 /* Main.xcassets */,
 				8004F7421FA3EE2400F7ED94 /* Record.swift */,
 				8004F7431FA3EE2400F7ED94 /* Say */,
 				8004F7481FA3EE2400F7ED94 /* Scene */,
@@ -751,11 +752,10 @@
 			isa = PBXGroup;
 			children = (
 				803C5B211FBF622400BA9C6C /* TreeTableVC.swift */,
-				8076435D1FACDB63001733C6 /* SettingsCell.swift */,
+				8076435D1FACDB63001733C6 /* TreeCell.swift */,
+				800C51B81FC221EF00904121 /* TreeGenericCell.swift */,
+				800C51B61FC2213E00904121 /* TreeRoutineItemCell.swift */,
 				804D5A0C1FA3FCAA0025B724 /* CalCell.swift */,
-				804D5A0D1FA3FCAA0025B724 /* SettingsTable+CalCell.swift */,
-				804D5A0E1FA3FCAA0025B724 /* SettingsTable+Select.swift */,
-				804D5A0F1FA3FCAA0025B724 /* SettingsTableVC.swift */,
 				804D5A101FA3FCAA0025B724 /* EventCell.swift */,
 				804D5A111FA3FCAA0025B724 /* EventTable+EditRow.swift */,
 				804D5A121FA3FCAA0025B724 /* EventTable+EventCell.swift */,
@@ -925,8 +925,8 @@
 				80F26DBF1FBA110300C26973 /* Routine.par in Resources */,
 				8004F6191FA3EB0100F7ED94 /* Main.storyboard in Resources */,
 				8004F6181FA3EB0100F7ED94 /* LaunchScreen.storyboard in Resources */,
-				8004F7AF1FA3EE2400F7ED94 /* Main.xcassets in Resources */,
 				8004F6171FA3EB0100F7ED94 /* Assets.xcassets in Resources */,
+				800C51B41FC2053F00904121 /* Main.xcassets in Resources */,
 				8004F7BF1FA3EE2400F7ED94 /* Dial.fsh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -946,9 +946,9 @@
 			files = (
 				80F26DC01FBA110300C26973 /* Routine.par in Resources */,
 				8076435B1FACBEB8001733C6 /* Muse.par in Resources */,
-				8004F7B01FA3EE2400F7ED94 /* Main.xcassets in Resources */,
 				803C5F7A1FA3DFBE002A1C11 /* Assets.xcassets in Resources */,
 				8004F7BC1FA3EE2400F7ED94 /* Blank.fsh in Resources */,
+				800C51B51FC2053F00904121 /* Main.xcassets in Resources */,
 				8004F7C01FA3EE2400F7ED94 /* Dial.fsh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1003,6 +1003,7 @@
 				809E55631FB4C6A700974CB7 /* Audio.swift in Sources */,
 				8004F77B1FA3EE2400F7ED94 /* MuDate.swift in Sources */,
 				8004F7971FA3EE2400F7ED94 /* View+roundCorners.swift in Sources */,
+				800C51B71FC2213F00904121 /* TreeRoutineItemCell.swift in Sources */,
 				8004F7611FA3EE2400F7ED94 /* TouchDial.swift in Sources */,
 				804D5A241FA3FCAA0025B724 /* EventTable+MuEvent.swift in Sources */,
 				804D5A2D1FA3FCAA0025B724 /* ToggleDot.swift in Sources */,
@@ -1028,7 +1029,7 @@
 				8004F7651FA3EE2400F7ED94 /* Active.swift in Sources */,
 				8004F7631FA3EE2400F7ED94 /* TouchMove.swift in Sources */,
 				804D5A021FA3FC8B0025B724 /* ColorCell.swift in Sources */,
-				8076435E1FACDB63001733C6 /* SettingsCell.swift in Sources */,
+				8076435E1FACDB63001733C6 /* TreeCell.swift in Sources */,
 				8004F75F1FA3EE2400F7ED94 /* Taps.swift in Sources */,
 				804D5A211FA3FCAA0025B724 /* EventCell.swift in Sources */,
 				8004F70A1FA3ED5E00F7ED94 /* ParWords.swift in Sources */,
@@ -1063,6 +1064,7 @@
 				8004F79D1FA3EE2400F7ED94 /* FileMsg.swift in Sources */,
 				804D5A081FA3FC8B0025B724 /* TouchDialForce.swift in Sources */,
 				804D5A221FA3FCAA0025B724 /* EventTable+EditRow.swift in Sources */,
+				800C51B91FC221EF00904121 /* TreeGenericCell.swift in Sources */,
 				8004F6FC1FA3ED5E00F7ED94 /* NodeAnys.swift in Sources */,
 				8004F7C11FA3EE2400F7ED94 /* Image+context.swift in Sources */,
 				804D5A041FA3FC8B0025B724 /* Main+Text.swift in Sources */,
