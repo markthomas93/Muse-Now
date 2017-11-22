@@ -37,7 +37,8 @@ class TreeNodes {
 enum TreeNodeType { case
     generic,
     routineCategory,
-    routineItem
+    routineItem,
+    routineItemTime
 }
 
 class TreeNode {
@@ -88,6 +89,17 @@ class TreeRoutineItemNode: TreeNode {
         type = TreeNodeType.routineItem
     }
 }
+
+class TreeRoutineTimeNode: TreeNode {
+    var routineItem: RoutineItem!
+    init (_ parent_:TreeNode!,_ item:RoutineItem) {
+        routineItem = item
+        super.init(parent_,item.title)
+        type = TreeNodeType.routineItemTime
+    }
+}
+
+
 
 
 

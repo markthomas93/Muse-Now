@@ -8,6 +8,7 @@ class MuCell: UITableViewCell {
     var event : MuEvent!
     var isHighlight = false
     var tableView : UITableView!
+    var height = CGFloat(44)
 
     func setHighlight(_ isHighlight_:Bool, animated:Bool = true) {
         //assert("must override this")

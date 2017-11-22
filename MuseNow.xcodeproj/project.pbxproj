@@ -172,6 +172,8 @@
 		800C51B51FC2053F00904121 /* Main.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 800C51B31FC2053F00904121 /* Main.xcassets */; };
 		800C51B71FC2213F00904121 /* TreeRoutineItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800C51B61FC2213E00904121 /* TreeRoutineItemCell.swift */; };
 		800C51B91FC221EF00904121 /* TreeGenericCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800C51B81FC221EF00904121 /* TreeGenericCell.swift */; };
+		8018E1A41FC36F8E00F4C0AC /* TreeRoutineCategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8018E1A31FC36F8E00F4C0AC /* TreeRoutineCategoryCell.swift */; };
+		8018E1A61FC394FC00F4C0AC /* TreeRoutineTimeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8018E1A51FC394FB00F4C0AC /* TreeRoutineTimeCell.swift */; };
 		803C5B231FBF82E000BA9C6C /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076435F1FACDBE6001733C6 /* Setting.swift */; };
 		803C5B241FBF9A2F00BA9C6C /* TreeTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803C5B211FBF622400BA9C6C /* TreeTableVC.swift */; };
 		803C5F5E1FA3DFBE002A1C11 /* MuseNow WatchKit App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 803C5F5D1FA3DFBE002A1C11 /* MuseNow WatchKit App.app */; };
@@ -360,6 +362,8 @@
 		800C51B31FC2053F00904121 /* Main.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Main.xcassets; sourceTree = "<group>"; };
 		800C51B61FC2213E00904121 /* TreeRoutineItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeRoutineItemCell.swift; sourceTree = "<group>"; };
 		800C51B81FC221EF00904121 /* TreeGenericCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeGenericCell.swift; sourceTree = "<group>"; };
+		8018E1A31FC36F8E00F4C0AC /* TreeRoutineCategoryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeRoutineCategoryCell.swift; sourceTree = "<group>"; };
+		8018E1A51FC394FB00F4C0AC /* TreeRoutineTimeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeRoutineTimeCell.swift; sourceTree = "<group>"; };
 		803C5B211FBF622400BA9C6C /* TreeTableVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeTableVC.swift; sourceTree = "<group>"; };
 		803C5F4B1FA3DFBD002A1C11 /* MuseNow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MuseNow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		803C5F5D1FA3DFBE002A1C11 /* MuseNow WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MuseNow WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -754,7 +758,9 @@
 				803C5B211FBF622400BA9C6C /* TreeTableVC.swift */,
 				8076435D1FACDB63001733C6 /* TreeCell.swift */,
 				800C51B81FC221EF00904121 /* TreeGenericCell.swift */,
+				8018E1A31FC36F8E00F4C0AC /* TreeRoutineCategoryCell.swift */,
 				800C51B61FC2213E00904121 /* TreeRoutineItemCell.swift */,
+				8018E1A51FC394FB00F4C0AC /* TreeRoutineTimeCell.swift */,
 				804D5A0C1FA3FCAA0025B724 /* CalCell.swift */,
 				804D5A101FA3FCAA0025B724 /* EventCell.swift */,
 				804D5A111FA3FCAA0025B724 /* EventTable+EditRow.swift */,
@@ -972,6 +978,7 @@
 				804D5A011FA3FC8B0025B724 /* AppDelegate.swift in Sources */,
 				8004F76D1FA3EE2400F7ED94 /* Anim.swift in Sources */,
 				8004F7B11FA3EE2400F7ED94 /* Record.swift in Sources */,
+				8018E1A41FC36F8E00F4C0AC /* TreeRoutineCategoryCell.swift in Sources */,
 				8004F7D11FA3EE2400F7ED94 /* Transcribe+SWM.swift in Sources */,
 				8004F7731FA3EE2400F7ED94 /* Dots+Crown.swift in Sources */,
 				807643501FACBE55001733C6 /* Muse+Test.swift in Sources */,
@@ -994,6 +1001,7 @@
 				807643581FACBE55001733C6 /* MuseFound.swift in Sources */,
 				804D5A091FA3FC8B0025B724 /* TouchForce.swift in Sources */,
 				8004F7B91FA3EE2400F7ED94 /* SayItem.swift in Sources */,
+				8018E1A61FC394FC00F4C0AC /* TreeRoutineTimeCell.swift in Sources */,
 				804D5A2B1FA3FCAA0025B724 /* MuCell.swift in Sources */,
 				8004F7A31FA3EE2400F7ED94 /* Marks.swift in Sources */,
 				8004F7591FA3EE2400F7ED94 /* Actions.swift in Sources */,

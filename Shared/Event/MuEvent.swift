@@ -151,7 +151,7 @@ open class MuEvent: NSObject, NSCoding {
         eventId = eventId_
     }
 
-    convenience init(routine item: RoutineItem,_ bgnTime_:TimeInterval) {
+    convenience init(routine item: RoutineItem,_ bgnTime_:TimeInterval, _ rgb_: UInt32) {
 
         self.init()
 
@@ -159,7 +159,7 @@ open class MuEvent: NSObject, NSCoding {
         title   = item.title
         bgnTime = bgnTime_
         endTime = bgnTime + TimeInterval(item.durMinutes * 60)
-        rgb     = item.rgb
+        rgb     = rgb_
         mark    = false
         eventId = makeEventId()
     }

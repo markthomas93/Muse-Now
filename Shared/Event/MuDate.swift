@@ -57,6 +57,17 @@ open class MuDate {
         let newTime = Int64((startMidnight?.timeIntervalSince1970)!)
         return newTime
     }
+    /// Beginning of day starting from days from now
+    class func minutesFromMidnight(_ minutes: Int) -> Date {
+
+        let cal = Calendar.current as NSCalendar
+        let startDate = cal.date(byAdding: [.day], value:0, to: Date(), options: NSCalendar.Options.matchNextTime)
+        let startMidnight = cal.date(bySettingHour: 0, minute: 0, second: 0, of:startDate!, options: NSCalendar.Options.matchNextTime)
+        let startHour = cal.date(byAdding: [.minute], value: minutes, to: startMidnight!, options: NSCalendar.Options.matchNextTime)
+        return startHour!
+    }
+
+
     /// date with lowercase a p for am pm
     class func dateToString(_ startTime:TimeInterval, _ format: String) -> String {
         

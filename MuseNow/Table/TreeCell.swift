@@ -25,15 +25,16 @@ class TreeCell: MuCell {
         self.init(coder: decoder)
     }
 
-    convenience init(treeNode treeNode_: TreeNode!, _ size:CGSize) {
+    convenience init(_ treeNode_: TreeNode!, _ size:CGSize) {
 
         self.init()
         treeNode = treeNode_
         buildViews(size)
-         setHighlight(false, animated:false)
+        setHighlight(false, animated:false)
     }
     
     func buildViews(_ size:CGSize) {
+
         self.frame.size = size
         updateFrames(size)
 
@@ -69,6 +70,9 @@ class TreeCell: MuCell {
 
         selectedBackgroundView = UIView()
         selectedBackgroundView?.backgroundColor = .black
+
+        title.frame = titleFrame
+        bezel.frame = bezelFrame
     }
 
     func updateLeft(animate:Bool) {
@@ -114,8 +118,7 @@ class TreeCell: MuCell {
 
         let size = PagesVC.shared.treeTable.view.frame.size
         updateFrames(size)
-        title.frame = titleFrame
-        bezel.frame = bezelFrame
+        buildViews(size)
     }
 
     override func setHighlight(_ isHighlight_:Bool, animated:Bool = true) {
