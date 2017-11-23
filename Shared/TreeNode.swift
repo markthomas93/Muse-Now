@@ -35,14 +35,17 @@ class TreeNodes {
     }
 }
 enum TreeNodeType { case
-    generic,
-    routineCategory,
-    routineItem,
-    routineItemTime
+    titleMark,
+    colorTitleMark,
+    timeTitleDays,
+    editTime,
+    editTitle,
+    editWeekd,
+    editColor
 }
 
 class TreeNode {
-    var type = TreeNodeType.generic
+    var type = TreeNodeType.titleMark
     var parent: TreeNode!
     var children = [TreeNode]()
     var level = 0
@@ -78,24 +81,15 @@ class TreeNode {
 class TreeRoutineCategoryNode: TreeNode {
     init (_ parent_:TreeNode!,_ title_:String) {
         super.init(parent_,title_)
-        type = TreeNodeType.routineCategory
+        type = TreeNodeType.colorTitleMark
     }
 }
 class TreeRoutineItemNode: TreeNode {
     var routineItem: RoutineItem!
-    init (_ parent_:TreeNode!,_ item:RoutineItem) {
+    init (_ parent_:TreeNode!,_ item:RoutineItem, _ type_: TreeNodeType) {
         routineItem = item
         super.init(parent_,item.title)
-        type = TreeNodeType.routineItem
-    }
-}
-
-class TreeRoutineTimeNode: TreeNode {
-    var routineItem: RoutineItem!
-    init (_ parent_:TreeNode!,_ item:RoutineItem) {
-        routineItem = item
-        super.init(parent_,item.title)
-        type = TreeNodeType.routineItemTime
+        type = type_
     }
 }
 

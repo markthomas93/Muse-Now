@@ -51,9 +51,8 @@ class MuCell: UITableViewCell {
 
     var startTime = TimeInterval(0)
     
-    func touchTitle() { } // print("\(#function) should override !!!") }
-    func touchMark()  { } // print("\(#function) should override !!!") }
-   
+    func touchCell(_ location: CGPoint) { } // print("\(#function) should override !!!") }
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) { //print(#function)
         
         tableView?.isScrollEnabled = false
@@ -67,12 +66,10 @@ class MuCell: UITableViewCell {
         
         let deltaTime = (event?.timestamp)! - startTime
         let location = (touches.first?.location(in: self))!
-        let toggleX = frame.size.width -  frame.size.height*1.618
-        
+         
         if deltaTime < 0.5 {
             
-            if location.x > toggleX { touchMark() }
-            else                    { touchTitle() }
+            touchCell(location)
         }
         super.touchesEnded(touches, with: event)
         

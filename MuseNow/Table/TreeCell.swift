@@ -9,12 +9,9 @@ class TreeCell: MuCell {
     var treeNode: TreeNode!
     var left: UIImageView!
     var bezel: UIView!
-    var title: UILabel!
 
     var leftFrame  = CGRect.zero
     var bezelFrame = CGRect.zero
-    var titleFrame = CGRect.zero
-
 
     let leftW = CGFloat(24)     // width (and height) of left disclosure image
     let innerH = CGFloat(36)    // inner height
@@ -47,13 +44,6 @@ class TreeCell: MuCell {
         left.image = UIImage(named:"DotArrow.png")
         updateLeft(animate:false)
 
-        // title
-        title = UILabel(frame:titleFrame)
-        title.backgroundColor = .clear
-        title.text = treeNode.setting?.title ?? ""
-        title.textColor = .white
-        title.highlightedTextColor = .white
-
         // make this cell searchable within static cells
         PagesVC.shared.treeTable.cells[treeNode.setting.title] = self
 
@@ -66,12 +56,10 @@ class TreeCell: MuCell {
 
         contentView.addSubview(left)
         contentView.addSubview(bezel)
-        bezel.addSubview(title)
 
         selectedBackgroundView = UIView()
         selectedBackgroundView?.backgroundColor = .black
 
-        title.frame = titleFrame
         bezel.frame = bezelFrame
     }
 
@@ -80,10 +68,27 @@ class TreeCell: MuCell {
         var transform = CGAffineTransform.identity
         var alpha = CGFloat(0.0)
 
-        if let treeNode = treeNode, treeNode.children.count > 0 {
-            let angle = CGFloat(treeNode.expanded ? Pi/3 : 0)
-            transform = CGAffineTransform(rotationAngle: angle)
-            alpha = treeNode.expanded ? 1.0 : 0.25
+        if let treeNode = treeNode {
+
+            var expandable = false
+
+            switch treeNode.type {
+            case .titleMark,
+                 .colorTitleMark:    expandable = treeNode.children.count > 0
+
+            case .timeTitleDays:     expandable = true
+
+            case .editTime,
+                 .editTitle,
+                 .editWeekd,
+                 .editColor:         expandable = false
+            }
+            if expandable {
+
+                let angle = CGFloat(treeNode.expanded ? Pi/3 : 0)
+                transform = CGAffineTransform(rotationAngle: angle)
+                alpha = treeNode.expanded ? 1.0 : 0.25
+            }
         }
         if animate {
             UIView.animate(withDuration: 0.25, animations: {
@@ -107,10 +112,8 @@ class TreeCell: MuCell {
         let bezelH = size.height - 2*marginH
 
         let bezelW = size.width - marginW - bezelX
-        let titleW = bezelW - marginW
 
         leftFrame  = CGRect(x:leftX, y:leftY, width: leftW, height: leftW)
-        titleFrame = CGRect(x:marginW, y:0, width: titleW, height: bezelH)
         bezelFrame = CGRect(x:bezelX, y:bezelY, width: bezelW, height: bezelH)
        }
 
@@ -138,34 +141,68 @@ class TreeCell: MuCell {
         }
         isSelected = isHighlight
     }
-    func touchFlipExpand() {
-        let oldCount = TreeNodes.shared.nodes.count
-        treeNode.expanded = !treeNode.expanded
-        TreeNodes.shared.renumber(treeNode)
-        updateLeft(animate:true)
-        PagesVC.shared.treeTable.updateTouchCell(self,reload:true, oldCount)
-    }
-     override func touchTitle() {
 
-        if treeNode.children.count > 0 {
+    override func touchCell(_ location: CGPoint) {
 
-            // collapse any siblings
-            if !treeNode.expanded && treeNode.parent != nil {
-                for node in treeNode.parent.children {
-                    if node.expanded {
-                        node.cell.touchFlipExpand()
-                        let _ = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: {_ in
-                            self.touchFlipExpand()
-                        })
-                        return
-                    }
+        let wasExpanded = treeNode.expanded
+        var siblingCollapsing = false
+
+        if treeNode.parent != nil {
+
+            for node in treeNode.parent.children {
+                if node.expanded {
+                    node.cell.touchFlipExpand()
+                    siblingCollapsing = true
+                    break
                 }
             }
-            touchFlipExpand()
+        }
+        if treeNode.children.count > 0,
+            wasExpanded == treeNode.expanded {
+
+            if siblingCollapsing {
+                // wait until sibling has finshed collapasing before expanding self
+                let _ = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: {_ in
+                    return self.touchFlipExpand()
+                })
+            }
+            else {
+                return touchFlipExpand()
+            }
+        }
+        // nothing happend, so only update bezel
+        PagesVC.shared.treeTable.updateTouchCell(self,reload:false)
+    }
+
+    /**
+     collapse sibling and its currently expanded child, grandchild etc
+     */
+    func collapseAllTheWayDown() {
+
+        treeNode.expanded = false
+        updateLeft(animate:true)
+        for childNode in treeNode.children {
+            if childNode.expanded,
+                let childCell = childNode.cell {
+                childCell.collapseAllTheWayDown()
+            }
+        }
+    }
+
+    func touchFlipExpand() {
+        
+        let oldCount = TreeNodes.shared.nodes.count
+
+        if treeNode.expanded == true {
+            collapseAllTheWayDown()
         }
         else {
-            PagesVC.shared.treeTable.updateTouchCell(self,reload:false)
+            treeNode.expanded = true
+            updateLeft(animate:true)
         }
+
+        TreeNodes.shared.renumber(treeNode)
+        PagesVC.shared.treeTable.updateTouchCell(self, reload:true, oldCount)
     }
 }
 

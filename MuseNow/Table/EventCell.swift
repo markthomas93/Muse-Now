@@ -67,22 +67,22 @@ class EventCell: MuCell {
     }
     
     
-    override func touchMark() {
-        
-        event.mark = !(event.mark)
-        mark?.setMark(event.mark)
-        let act = event.mark ? DoAction.markOn : DoAction.markOff
-        let index = Dots.shared.gotoEvent(event)
-        Actions.shared.doAction(act, event, index, isSender: true)
-        Anim.shared.touchDialGotoTime(event.bgnTime)
-    }
-    
-    override func touchTitle() {
-        
-        if event.type == .memo {
-            Say.shared.sayDotEvent(event, isTouching: true)
+    override func touchCell(_ location: CGPoint) {
+
+        let toggleX = frame.size.width -  frame.size.height*1.618
+        if location.x > toggleX {
+
+            event.mark = !(event.mark)
+            mark?.setMark(event.mark)
+            let act = event.mark ? DoAction.markOn : DoAction.markOff
+            let index = Dots.shared.gotoEvent(event)
+            Actions.shared.doAction(act, event, index, isSender: true)
         }
-        Anim.shared.touchDialGotoTime(event.bgnTime)
+        else if event.type == .memo {
+
+                Say.shared.sayDotEvent(event, isTouching: true)
+        }
+         Anim.shared.touchDialGotoTime(event.bgnTime)
     }
 
 }

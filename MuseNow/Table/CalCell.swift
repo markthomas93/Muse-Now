@@ -67,19 +67,20 @@ class CalCell: MuCell {
         }
     }
     
-    override func touchMark() {
-        
-        isShowCal = !isShowCal
-        mark?.setMark(isShowCal)
-        
-        Cals.shared.updateMark(cal.calId, isShowCal)
-        Session.shared.sendMsg( [ "class" : "Calendars",
-                                  "calId" : cal.calId,
-                                  "isOn"  : isShowCal])
+    override func touchCell(_ location: CGPoint) {
+
+        let toggleX = frame.size.width -  frame.size.height*1.618
+        if location.x > toggleX {
+
+            isShowCal = !isShowCal
+            mark?.setMark(isShowCal)
+            
+            Cals.shared.updateMark(cal.calId, isShowCal)
+            Session.shared.sendMsg( [ "class" : "Calendars",
+                                      "calId" : cal.calId,
+                                      "isOn"  : isShowCal])
+        }
     }
     
-    override func touchTitle() {
-    
-    }
 }
 

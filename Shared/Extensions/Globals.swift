@@ -22,6 +22,7 @@ func printLog(_ str: String) {
     //case NSLog(str)
 
     case
+    "▭", // textfield
     "✺", // complication
     "⿳", // menu
     "←", // session receiving
