@@ -48,7 +48,7 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
         view.addSubview(pageVC.view)
         pageVC!.didMove(toParentViewController: self)
     }
-    
+   
     func setBorder(_ vc:UIViewController, radius: CGFloat, width: CGFloat) {
         vc.view.frame = CGRect(x:2,y:0,width:self.view.frame.size.width-4,height:  panelY - 40)
         vc.view.layer.cornerRadius = radius

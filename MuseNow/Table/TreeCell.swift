@@ -73,7 +73,8 @@ class TreeCell: MuCell {
             var expandable = false
 
             switch treeNode.type {
-            case .titleMark,
+            case .unknown,
+                 .titleMark,
                  .colorTitleMark:    expandable = treeNode.children.count > 0
 
             case .timeTitleDays:     expandable = true
@@ -130,7 +131,7 @@ class TreeCell: MuCell {
         
         let index       = isHighlight ? 1 : 0
         let borders     = [UIColor.black.cgColor, UIColor.white.cgColor]
-        let backgrounds = [UIColor.black.cgColor, UIColor.black.cgColor]
+        let backgrounds = [UIColor.clear.cgColor, UIColor.black.cgColor]
         
         if animated {
             animateViews([bezel], borders, backgrounds, index, duration: 0.25)
@@ -142,36 +143,37 @@ class TreeCell: MuCell {
         isSelected = isHighlight
     }
 
-    override func touchCell(_ location: CGPoint) {
+    override func touchCell(_ location: CGPoint, highlight: Bool = true) {
 
         let wasExpanded = treeNode.expanded
+
+        // collapse siblings
         var siblingCollapsing = false
-
         if treeNode.parent != nil {
-
             for node in treeNode.parent.children {
                 if node.expanded {
-                    node.cell.touchFlipExpand()
+                    node.cell.touchFlipExpand(highlight:false)
                     siblingCollapsing = true
                     break
                 }
             }
         }
+        // expand self
         if treeNode.children.count > 0,
             wasExpanded == treeNode.expanded {
 
             if siblingCollapsing {
                 // wait until sibling has finshed collapasing before expanding self
                 let _ = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: {_ in
-                    return self.touchFlipExpand()
+                    return self.touchFlipExpand(highlight:highlight)
                 })
             }
             else {
-                return touchFlipExpand()
+                return touchFlipExpand(highlight:highlight)
             }
         }
         // nothing happend, so only update bezel
-        PagesVC.shared.treeTable.updateTouchCell(self,reload:false)
+        PagesVC.shared.treeTable.updateTouchCell(self, reload:false, highlight: true)
     }
 
     /**
@@ -189,7 +191,7 @@ class TreeCell: MuCell {
         }
     }
 
-    func touchFlipExpand() {
+    func touchFlipExpand(highlight:Bool) {
         
         let oldCount = TreeNodes.shared.nodes.count
 
@@ -200,9 +202,8 @@ class TreeCell: MuCell {
             treeNode.expanded = true
             updateLeft(animate:true)
         }
-
         TreeNodes.shared.renumber(treeNode)
-        PagesVC.shared.treeTable.updateTouchCell(self, reload:true, oldCount)
+        PagesVC.shared.treeTable.updateTouchCell(self, reload:true, highlight:highlight, oldCount)
     }
 }
 

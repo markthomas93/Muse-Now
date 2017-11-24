@@ -35,6 +35,7 @@ class TreeNodes {
     }
 }
 enum TreeNodeType { case
+    unknown,
     titleMark,
     colorTitleMark,
     timeTitleDays,
@@ -75,6 +76,15 @@ class TreeNode {
     func toggle() -> Bool {
         set ^= member
         return isOn()
+    }
+
+    /**
+     Wait for table update before setting child highlight
+     */
+    func setCellHighlight(_ highlight:Bool) {
+        let _ = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: {_ in
+            self.cell?.setHighlight(highlight, animated: true)
+        })
     }
 }
 

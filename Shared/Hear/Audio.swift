@@ -16,9 +16,9 @@
     func startPlaybackSession() { printLog("🔈 \(#function)")
         do {
             // AVAudioSessionCategoryPlayAndRecord will play back only small ear speaker
-            //try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord, with: [.allowBluetoothA2DP,.interruptSpokenAudioAndMixWithOthers] )
-            
-            try audioSession.setCategory(AVAudioSessionCategoryPlayback, with: [.allowBluetoothA2DP,.interruptSpokenAudioAndMixWithOthers] )
+            // try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord, with: [.allowBluetoothA2DP,.interruptSpokenAudioAndMixWithOthers] )
+            // try audioSession.setCategory(AVAudioSessionCategoryPlayback, with: [.allowBluetoothA2DP,.interruptSpokenAudioAndMixWithOthers] )
+            try audioSession.setCategory(AVAudioSessionCategorySoloAmbient, with: [.allowBluetoothA2DP,.interruptSpokenAudioAndMixWithOthers] )
             //?? sayTimer?.invalidate() //?? new
         }
         catch {  print("\(#function) Error:\(error)") }
@@ -28,10 +28,12 @@
 
         if let audioPlayer = audioPlayer,
             audioPlayer.isPlaying {
-                audioPlayer.stop()
+            audioPlayer.stop()
+
+            do { try self.audioSession.setActive(false, with: .notifyOthersOnDeactivation) }
+            catch { print("🔈\(#function) Error:\(error)")}
         }
-        do { try self.audioSession.setActive(false, with: .notifyOthersOnDeactivation) }
-        catch { print("🔈\(#function) Error:\(error)")}
+
         actions.doSetTitle("")
     }
 
