@@ -17,11 +17,12 @@
  
  struct SaySet: OptionSet {
     let rawValue: Int
-    static let sayMemo    = SaySet(rawValue: 1 << 0)
-    static let sayEvent   = SaySet(rawValue: 1 << 1)
-    static let saySpeech  = SaySet(rawValue: 1 << 2)
-    static let sayTime    = SaySet(rawValue: 1 << 3)
+    static let memo    = SaySet(rawValue: 1 << 0)
+    static let event   = SaySet(rawValue: 1 << 1)
+    static let speech  = SaySet(rawValue: 1 << 2)
+    static let time    = SaySet(rawValue: 1 << 3)
     static let size       = 4
+    
  }
 
  class Say : NSObject, AVSpeechSynthesizerDelegate {
@@ -42,7 +43,7 @@
     var audioSession = AVAudioSession.sharedInstance()
     var title = ""
 
-    var saySet = SaySet([.sayMemo, .sayEvent, .sayTime])
+    var saySet = SaySet([.memo, .event, .time])
 
     var sayVolume = Float(0.5)
 
@@ -64,16 +65,24 @@
     public func doSayAction(_ act: DoAction, isSender: Bool) {
 
         switch act {
-        case .saySpeechOn:  saySet.insert(.saySpeech)
-        case .saySpeechOff: saySet.remove(.saySpeech)
-        case .sayMemoOn:    saySet.insert(.sayMemo)
-        case .sayMemoOff:   saySet.remove(.sayMemo)
+        case .sayMemo:    saySet.insert(.memo)
+        case .skipMemo:   saySet.remove(.memo)
 
-        case .speakLow:     saySet.insert(.saySpeech) ; sayVolume = 0.1
-        case .speakMedium:  saySet.insert(.saySpeech) ; sayVolume = 0.5
-        case .speakHigh:    saySet.insert(.saySpeech) ; sayVolume = 1.0
+        case .sayTime:    saySet.insert(.time)
+        case .skipTime:   saySet.remove(.time)
+
+        case .sayEvent:    saySet.insert(.event)
+        case .skipEvent:   saySet.remove(.event)
+
+        case .saySpeech:  saySet.insert(.speech)
+        case .skipSpeech: saySet.remove(.speech)
+
+        case .speakLow:     saySet.insert(.speech) ; sayVolume = 0.1
+        case .speakMedium:  saySet.insert(.speech) ; sayVolume = 0.5
+        case .speakHigh:    saySet.insert(.speech) ; sayVolume = 1.0
         default: break
         }
+        Settings.shared.updateArchive()
         if isSender {
             Session.shared.sendMsg(["class"  : "SaySet",
                                     "putSet" : saySet.rawValue])
@@ -87,8 +96,10 @@
     func getMenus() -> [StrAct] {
 
         var strActs = [StrAct]()
-        strActs.append(saySet.contains(.saySpeech) ? StrAct("mute speech" , .saySpeechOff) : StrAct("speak" ,    .saySpeechOn))
-        strActs.append(saySet.contains(.sayMemo)   ? StrAct("mute memo"   , .sayMemoOff)   : StrAct("play memos", .sayMemoOn))
+        strActs.append(saySet.contains(.speech) ? StrAct("skip speech"  , .skipSpeech) : StrAct("say speech", .saySpeech))
+        strActs.append(saySet.contains(.memo)   ? StrAct("skip memos"   , .skipMemo)   : StrAct("say memos",  .sayMemo))
+        strActs.append(saySet.contains(.event)  ? StrAct("skip events"  , .skipEvent)  : StrAct("say events", .sayEvent))
+        strActs.append(saySet.contains(.time)   ? StrAct("skip times"   , .skipTime)   : StrAct("say times",   .sayTime))
         return strActs
      }
 
@@ -105,7 +116,7 @@
             for phrase in phrases {
                 if sayingNow.phrase == phrase {
                     clearTimers()
-                    if saySet.contains(.saySpeech) { synth.stopSpeaking(at: .immediate) }
+                    if saySet.contains(.speech) { synth.stopSpeaking(at: .immediate) }
                     else       { actions.doSetTitle("") }
                     return
                 }
@@ -191,7 +202,7 @@
 
         transcribe(item) // transcribe item if
 
-        if Say.shared.saySet.contains(.sayMemo) && Hear.shared.canPlay() {
+        if Say.shared.saySet.contains(.memo) && Hear.shared.canPlay() {
             self.synth.stopSpeaking(at: .immediate) //?? remove?
             let url = FileManager.documentUrlFile(item.spoken)
             if !Audio.shared.playUrl(url: url) {
@@ -230,7 +241,7 @@
         }
 
         if item.phrase == .phraseMemo && playMemo(item) {}
-        else if saySet.contains(.saySpeech) && playSay(item) {}
+        else if saySet.contains(.speech) && playSay(item) {}
         else { txtLocal() }
     }
 

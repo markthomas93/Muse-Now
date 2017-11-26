@@ -45,9 +45,7 @@ extension TreeEditTitleCell: UITextFieldDelegate {
             changeParentText(prevText)
         }
         else {
-            
             prevText = textField.text ?? prevText
-            //??? searchDelegate.searchTextAction(textField.text!)
         }
     }
 

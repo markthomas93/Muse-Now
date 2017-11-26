@@ -19,7 +19,6 @@
             // try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord, with: [.allowBluetoothA2DP,.interruptSpokenAudioAndMixWithOthers] )
             // try audioSession.setCategory(AVAudioSessionCategoryPlayback, with: [.allowBluetoothA2DP,.interruptSpokenAudioAndMixWithOthers] )
             try audioSession.setCategory(AVAudioSessionCategorySoloAmbient, with: [.allowBluetoothA2DP,.interruptSpokenAudioAndMixWithOthers] )
-            //?? sayTimer?.invalidate() //?? new
         }
         catch {  print("\(#function) Error:\(error)") }
 

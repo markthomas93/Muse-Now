@@ -69,7 +69,7 @@ class Motion: NSObject {
 
                 }
                 else if gravityNow.x < 0.25 {
-                    //?? WKExtension.shared().isAutorotating = true
+                    //? WKExtension.shared().isAutorotating = true
                 }
                 gravityPrev = gravityNow
             }

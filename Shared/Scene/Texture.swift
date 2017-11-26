@@ -381,7 +381,7 @@ class Texture {
     
     static func makeDialMask(_ days:Int, hour:Int, _ size:CGSize, lineWidth: CGFloat, dotFactor: CGFloat, maskFactor: CGFloat) -> [SKTexture?] {
         
-        let margin = CGFloat(8) //???????
+        let margin = CGFloat(8) // iPHone X margin at bottom?
         let center = CGPoint(x: size.width / 2, y: size.height / 2)
         let radius =  min(size.width, size.height)/2 - margin
         var dialMask : [SKTexture] = []

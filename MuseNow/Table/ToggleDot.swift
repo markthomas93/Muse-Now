@@ -70,6 +70,12 @@ class ToggleCheck: UIView {
         self.addSubview(check)
         
     }
+    func setGray(_ alpha_:CGFloat) {
+        let isOn = alpha_ > 0.0
+        check.isHidden = !isOn
+        check.alpha = alpha_
+    }
+
     func setMark(_ isOn:Bool) {
         check.isHidden = !isOn
     }

@@ -1,7 +1,7 @@
 import UIKit
 import EventKit
 
-class TreeEditWeekdCell: TreeEditCell {
+class TreeEditWeekdayCell: TreeEditCell {
 
     var weekdays = [UILabel]()
     var weekFrames = [CGRect]()
@@ -11,13 +11,13 @@ class TreeEditWeekdCell: TreeEditCell {
         self.init(coder: decoder)
     }
 
-    convenience init(_ treeNode_: TreeNode!, _ size:CGSize) {
+    convenience init(_ treeNode_: TreeNode!, _ width: CGFloat) {
         
         self.init()
-        height = 64
         treeNode = treeNode_
-        buildViews(size)
-        setHighlight(true, animated:false)
+        height = 64
+        frame.size = CGSize(width: width, height: height)
+        buildViews(frame.size)
     }
 
     func setLabel(_ label:UILabel!, isOn:Bool) {
@@ -38,6 +38,7 @@ class TreeEditWeekdCell: TreeEditCell {
 
         label.font = UIFont(name: "Menlo-Bold", size: 14)!
         label.textAlignment = .center
+        label.lineBreakMode = .byClipping
 
         //label.isHighlighted = true
         label.layer.borderWidth = 0.5

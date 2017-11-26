@@ -86,7 +86,7 @@ extension Anim {
             else if // if crossing the rubicon, then clear out title
                 abs(lastFrame) > spokeFan {
                 
-                say.updateDialog(nil, .phraseBlank, spoken: "", title: "") //???
+                say.updateDialog(nil, .phraseBlank, spoken: "", title: "")
             }
         }
             // finish animation
@@ -385,7 +385,7 @@ extension Anim {
                 let timeEvent = MuEvents.shared.timeEvent {
                 table.scrollSceneEvent(timeEvent)
             }
-            dots.dotNow = 0.0 ///??? 0.1
+            dots.dotNow = 0.0
             sceneFrame = Anidex.animEnd.rawValue
             Say.shared.sayCurrentTime(nil, false)
             return

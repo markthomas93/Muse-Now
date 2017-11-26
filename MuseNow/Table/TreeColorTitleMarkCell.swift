@@ -19,15 +19,13 @@ class TreeColorTitleMark: TreeTitleCell {
         self.init()
         treeNode = treeNode_
         buildViews(size)
-        setHighlight(false, animated:false)
     }
 
     override func buildViews(_ size: CGSize) {
 
         super.buildViews(size)
 
-        if let node = treeNode as? TreeRoutineCategoryNode,
-            let title = node.setting?.title,
+        if  let title = treeNode.setting?.title,
             let rgb = Routine.shared.colors[title] {
 
             // color dot

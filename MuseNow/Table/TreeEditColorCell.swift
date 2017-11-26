@@ -15,7 +15,7 @@ class TreeEditColorCell: TreeEditCell {
         self.init()
         treeNode = treeNode_
         buildViews(size)
-        setHighlight(true, animated:false)
+        //setHighlight(true, animated:false)
     }
 
     override func buildViews(_ size: CGSize) {

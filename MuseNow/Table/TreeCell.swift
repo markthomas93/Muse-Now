@@ -22,17 +22,16 @@ class TreeCell: MuCell {
         self.init(coder: decoder)
     }
 
-    convenience init(_ treeNode_: TreeNode!, _ size:CGSize) {
+    convenience init(_ treeNode_: TreeNode!, _ width:CGFloat) {
 
         self.init()
+        frame.size = CGSize(width:width, height:height)
         treeNode = treeNode_
-        buildViews(size)
-        setHighlight(false, animated:false)
+        buildViews(frame.size)
     }
     
     func buildViews(_ size:CGSize) {
 
-        self.frame.size = size
         updateFrames(size)
 
         contentView.backgroundColor = .black
@@ -42,7 +41,7 @@ class TreeCell: MuCell {
 
         left = UIImageView(frame:leftFrame)
         left.image = UIImage(named:"DotArrow.png")
-        updateLeft(animate:false)
+        left.alpha = 0.0 // refreshNodeCells() will setup left's alpha for the whole tree
 
         // make this cell searchable within static cells
         PagesVC.shared.treeTable.cells[treeNode.setting.title] = self
@@ -62,7 +61,12 @@ class TreeCell: MuCell {
 
         bezel.frame = bezelFrame
     }
-
+    /**
+     adjust display (such as a check mark) based on ratio of children that are set on
+    */
+    func updateOnRatio() {
+        // override
+    }
     func updateLeft(animate:Bool) {
 
         var transform = CGAffineTransform.identity
@@ -73,7 +77,9 @@ class TreeCell: MuCell {
             var expandable = false
 
             switch treeNode.type {
+
             case .unknown,
+                 .title,
                  .titleMark,
                  .colorTitleMark:    expandable = treeNode.children.count > 0
 
@@ -81,7 +87,7 @@ class TreeCell: MuCell {
 
             case .editTime,
                  .editTitle,
-                 .editWeekd,
+                 .editWeekday,
                  .editColor:         expandable = false
             }
             if expandable {
@@ -90,7 +96,9 @@ class TreeCell: MuCell {
                 transform = CGAffineTransform(rotationAngle: angle)
                 alpha = treeNode.expanded ? 1.0 : 0.25
             }
+            print ("\(treeNode.setting?.title ?? "unknown") \(treeNode.type):\(expandable) ")
         }
+
         if animate {
             UIView.animate(withDuration: 0.25, animations: {
                 self.left.transform = transform
@@ -127,32 +135,35 @@ class TreeCell: MuCell {
 
     override func setHighlight(_ isHighlight_:Bool, animated:Bool = true) {
         
-        isHighlight = isHighlight_
-        
-        let index       = isHighlight ? 1 : 0
-        let borders     = [UIColor.black.cgColor, UIColor.white.cgColor]
-        let backgrounds = [UIColor.clear.cgColor, UIColor.black.cgColor]
-        
-        if animated {
-            animateViews([bezel], borders, backgrounds, index, duration: 0.25)
-        }
-        else {
-            bezel.layer.borderColor     = borders[index]
-            bezel.layer.backgroundColor = backgrounds[index]
+        if isHighlight != isHighlight_ {
+            isHighlight = isHighlight_
+
+            let index       = isHighlight ? 1 : 0
+            let borders     = [UIColor.black.cgColor, UIColor.white.cgColor]
+            let backgrounds = [UIColor.clear.cgColor, UIColor.black.cgColor]
+
+            if animated {
+                animateViews([bezel], borders, backgrounds, index, duration: 0.25)
+            }
+            else {
+                bezel.layer.borderColor     = borders[index]
+                bezel.layer.backgroundColor = backgrounds[index]
+            }
         }
         isSelected = isHighlight
     }
 
     override func touchCell(_ location: CGPoint, highlight: Bool = true) {
 
+        // when collapsing sibling, self may also get collapsed, so need to know original state to determine highlight
         let wasExpanded = treeNode.expanded
 
         // collapse siblings
         var siblingCollapsing = false
         if treeNode.parent != nil {
-            for node in treeNode.parent.children {
-                if node.expanded {
-                    node.cell.touchFlipExpand(highlight:false)
+            for sib in treeNode.parent.children {
+                if sib.expanded {
+                    sib.cell.touchFlipExpand(highlight:false)
                     siblingCollapsing = true
                     break
                 }
@@ -165,15 +176,18 @@ class TreeCell: MuCell {
             if siblingCollapsing {
                 // wait until sibling has finshed collapasing before expanding self
                 let _ = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: {_ in
-                    return self.touchFlipExpand(highlight:highlight)
+                    self.touchFlipExpand(highlight:highlight)
                 })
+                return
             }
             else {
                 return touchFlipExpand(highlight:highlight)
             }
         }
-        // nothing happend, so only update bezel
-        PagesVC.shared.treeTable.updateTouchCell(self, reload:false, highlight: true)
+        // either no siblings were collapsed or I'm not one of the siblings with children
+        if !siblingCollapsing || treeNode.children.count == 0 {
+            PagesVC.shared.treeTable.updateTouchCell(self, reload:false, highlight: true)
+        }
     }
 
     /**
@@ -193,7 +207,7 @@ class TreeCell: MuCell {
 
     func touchFlipExpand(highlight:Bool) {
         
-        let oldCount = TreeNodes.shared.nodes.count
+        let oldCount = TreeNodes.shared.shownNodes.count
 
         if treeNode.expanded == true {
             collapseAllTheWayDown()

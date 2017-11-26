@@ -9,28 +9,16 @@ class TreeTableVC: UITableViewController {
     var cells : [String:MuCell] = [:]
 
     let rowHeight = CGFloat(44)         // timeHeight * (1 + 1/phi2)
-    let root = TreeNode(nil,"Settings")
+    var root: TreeNode!
     var prevCell: MuCell!
     var updating = false
 
     var show: TreeNode!
-    var showCalendars: TreeNode!
-    var showReminders: TreeNode!
-    var showRoutine: TreeNode!
-    var showMemos: TreeNode!
-
-    var say: TreeNode!
-    var sayMemo: TreeNode!
-    var sayEvent: TreeNode!
-    var saySpeech: TreeNode!
-    var sayTime: TreeNode!
-
-    var hear: TreeNode!
-    var hearSpeaker: TreeNode!
-    var hearEarbuds: TreeNode!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        let width = view.frame.size.width
+        root = TreeNode(.titleMark, nil,Setting(set:0,member:1,"Settings"), width)
         tableView.backgroundColor = .black
         self.view.backgroundColor = .black
     }
@@ -44,34 +32,62 @@ class TreeTableVC: UITableViewController {
     
     func initTree() {
 
-        show = TreeNode(root,"Show | Hide")
+        let width = view.frame.size.width
 
-        showCalendars = TreeNode(show,"Calendars")
-        for (key,_) in Cals.shared.sourceCals {
-            let _ = TreeNode(showCalendars,key)
+        func optNode(_ parent_:TreeNode!,_ title_:String, _ updateAny: @escaping (_ treeNode: TreeNode, _ any:Any?) -> Void) -> TreeNode! {
+            let setting = Setting(set:1,member:1,title_)
+            let treeNode = TreeNode(.titleMark, parent_, setting, width)
+            treeNode.updateAny = updateAny
+            return treeNode
+        }
+        func optNode(_ parent_:TreeNode!,_ title_:String, _ set:Int, _ member: Int,_ onAct:DoAction,_ offAct:DoAction) -> TreeNode! {
+            let setting = Setting(set:set, member:member, title_)
+            let treeNode = TreeNode(.titleMark, parent_, setting, width)
+
+            treeNode.updateAny = { treeNode,any in
+                Actions.shared.doAction(treeNode.setting.isOn() ? onAct : offAct )
+                //??? tn.parent.updateOnFromChild()
+            }
+            return treeNode
         }
 
-        showRoutine = TreeNode(show,"Routine")
+        // show | hide
+
+        let showSet = Show.shared.showSet.rawValue
+        show = TreeNode(.titleMark, root, Setting(set:0, member:1, "Show | Hide"), width)
+        let showCal = optNode(show, "Calendars", showSet, ShowSet.calendar.rawValue, .showCalendar , .hideCalendar)
+        for (key,_) in Cals.shared.sourceCals {
+            let _ = TreeNode(.titleMark, showCal, Setting(set:0, member:1, key), width)
+        }
+
+        let routine = optNode(show,"Routine", showSet, ShowSet.routine.rawValue, .showRoutine, .hideRoutine)
+        
         let catalog = Routine.shared.catalog
         for category in Routine.shared.categories {
-            let catNode = TreeRoutineCategoryNode(showRoutine,category)
+            let catNode = TreeRoutineCategoryNode(routine, category, width)
             for item in catalog[category]! {
-                let editNode = TreeRoutineItemNode(catNode, item,.timeTitleDays)
+                let _ = TreeRoutineItemNode(.timeTitleDays, catNode, item, width)
             }
         }
 
-        showReminders = TreeNode(show,"Reminders")
-        showMemos   = TreeNode(show,"Memos")
+        let _ = optNode(show,"Reminders", showSet, ShowSet.reminder.rawValue, .showReminder, .hideReminder)
+        let _ = optNode(show,"Memos",     showSet, ShowSet.memo.rawValue,     .showMemo,     .hideMemo)
 
-        say         = TreeNode(root,"Say | Skip")
-        sayMemo     = TreeNode(say,"Memo")
-        sayEvent    = TreeNode(say,"Event")
-        sayTime     = TreeNode(say,"Time")
+        // say | skip
+        let saySet = Say.shared.saySet.rawValue
+        let say = optNode(root,"Say | Skip") { treeNode,_ in }
+        let _   = optNode(say, "Memo",  saySet, SaySet.memo.rawValue,  .sayMemo,  .skipMemo)
+        let _   = optNode(say, "Event", saySet, SaySet.event.rawValue, .sayEvent, .skipEvent)
+        let _   = optNode(say, "Time",  saySet, SaySet.time.rawValue,  .sayTime,  .skipTime)
 
-        hear        = TreeNode(root,"Hear | Mute")
-        hearSpeaker = TreeNode(hear,"Speaker")
-        hearEarbuds = TreeNode(hear,"Earbuds")
+        // hear | mute
+        let hearSet = Hear.shared.hearSet.rawValue
+        let hear = optNode(root,"Hear | Mute") { treeNode,any in }
+        let _    = optNode(hear,"Speaker", hearSet, HearSet.speaker.rawValue, .hearSpeaker , .muteSpeaker)
+        let _    = optNode(hear,"Earbuds", hearSet, HearSet.earbuds.rawValue, .hearEarbuds , .muteEarbuds)
 
+        // setup table cells from current state of hierary
+        root.refreshNodeCells()
         TreeNodes.shared.renumber(show)
     }
 
@@ -82,7 +98,7 @@ class TreeTableVC: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let rows = TreeNodes.shared.nodes.count
+        let rows = TreeNodes.shared.shownNodes.count
         //printLog("⿳ numberOfRowsInSection: \(rows)")
         return rows
     }
@@ -92,15 +108,17 @@ class TreeTableVC: UITableViewController {
     }
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let row = indexPath.row
-        let node = TreeNodes.shared.nodes[row]
+        let node = TreeNodes.shared.shownNodes[row]
         if let height = node?.cell?.height {
             return height
         }
         return rowHeight
     }
+    
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 0
     }
+
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return nil
     }
@@ -108,22 +126,7 @@ class TreeTableVC: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let row = indexPath.row
-        if let node = TreeNodes.shared.nodes[row] {
-            if node.cell == nil {
-                
-                let size = CGSize(width:tableView.frame.size.width, height:rowHeight)
-                switch node.type {
-                case .titleMark:        node.cell = TreeTitleMarkCell(node, size)
-                case .colorTitleMark:   node.cell = TreeColorTitleMark(node, size)
-                case .timeTitleDays:    node.cell = TreeTimeTitleDaysCell(node, size)
-                case .editTime:         node.cell = TreeEditTimeCell(node, size)
-                case .editTitle:        node.cell = TreeEditTitleCell(node, size)
-                case .editWeekd:        node.cell = TreeEditWeekdCell(node, size)
-                case .editColor:        node.cell = TreeEditColorCell(node, size)
-                case .unknown:          node.cell = TreeEditColorCell(node, size)
-                }
-                if prevCell != nil && prevCell == node.cell { prevCell = nil }
-            }
+        if let node = TreeNodes.shared.shownNodes[row] {
             //printLog("⿳ cellForRowAt:\(row) title:\(node.cell.title.text!)")
             return node.cell
         }
@@ -132,11 +135,11 @@ class TreeTableVC: UITableViewController {
     
     func updateTouchCell(_ cell: TreeCell, reload:Bool, highlight:Bool, _ oldCount: Int = 0) {
 
-        prevCell?.setHighlight(false)
+        prevCell?.setHighlight(false) 
 
         if reload {
             let row = cell.treeNode.row
-            let newCount = TreeNodes.shared.nodes.count
+            let newCount = TreeNodes.shared.shownNodes.count
             let delta = newCount - oldCount
             if delta > 0 {
                 let indexPaths = (row+1 ... row+delta).map { IndexPath(row: $0, section: 0) }
@@ -150,8 +153,8 @@ class TreeTableVC: UITableViewController {
                 tableView.reloadData()
             }
         }
-        cell.setHighlight(highlight)
-        prevCell = cell
+        cell.setHighlight(highlight)  ; printLog("⿳ \(#function): cell.setHighlight(\(highlight))")
+        prevCell = highlight ? cell : nil
     }
 
 

@@ -123,12 +123,12 @@ class Hear {
 
         if route.isEmpty {
             
-            if hearSet.contains(.speaker) { strActs.append(StrAct("play speaker", .hearSpeakerOn)) }
-            if hearSet.contains(.earbuds) { strActs.append(StrAct("play earbuds", .hearEarbudsOn)) }
+            if hearSet.contains(.speaker) { strActs.append(StrAct("hear speaker", .hearSpeaker)) }
+            if hearSet.contains(.earbuds) { strActs.append(StrAct("hear earbuds", .hearEarbuds)) }
         }
         else {
-            if      local.contains(.speaker) { strActs.append(StrAct("mute speaker", .hearSpeakerOff)) }
-            else if local.contains(.earbuds) { strActs.append(StrAct("mute earbuds", .hearEarbudsOff)) }
+            if      local.contains(.speaker) { strActs.append(StrAct("mute speaker", .muteSpeaker)) }
+            else if local.contains(.earbuds) { strActs.append(StrAct("mute earbuds", .muteEarbuds)) }
         }
         return strActs
     }
@@ -137,14 +137,15 @@ class Hear {
 
         switch act {
 
-        case .hearSpeakerOn:    hearSet.insert(.speaker)
-        case .hearEarbudsOn:    hearSet.insert(.earbuds)
+        case .hearSpeaker:  hearSet.insert(.speaker)
+        case .hearEarbuds:  hearSet.insert(.earbuds)
 
-        case .hearSpeakerOff:   hearSet.remove(.speaker)
-        case .hearEarbudsOff:   hearSet.remove(.earbuds)
+        case .muteSpeaker:   hearSet.remove(.speaker)
+        case .muteEarbuds:   hearSet.remove(.earbuds)
  
         default: break
         }
+        Settings.shared.updateArchive()
         updateRoute()
         if isSender {
             Session.shared.sendMsg(["class"   : "HearSet",

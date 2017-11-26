@@ -13,7 +13,6 @@ class TreeEditCell: TreeTitleCell {
         height = 64
         treeNode = treeNode_
         buildViews(size)
-        setHighlight(true, animated:false)
     }
 
     override func buildViews(_ size: CGSize) {

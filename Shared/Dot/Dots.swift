@@ -44,7 +44,7 @@ class Dots {
             let timeHour = MuDate.relativeHour(i).timeIntervalSince1970
             getDot(i).setDotIndex(i, timeHour)
         }
-        ///??? discard redundant past[0]
+        // TODO: discard redundant past[0]
         /// past[0] = future[0]
     }
     

@@ -13,12 +13,12 @@ class TreeTitleMarkCell: TreeTitleCell {
         self.init(coder: decoder)
     }
 
-    convenience init(_ treeNode_: TreeNode!, _ size:CGSize) {
+    convenience init(_ treeNode_: TreeNode!, _ width:CGFloat) {
 
         self.init()
+        frame.size = CGSize(width:width, height:height)
         treeNode = treeNode_
-        buildViews(size)
-        setHighlight(false, animated:false)
+        buildViews(frame.size)
     }
 
     override func buildViews(_ size: CGSize) {
@@ -36,6 +36,13 @@ class TreeTitleMarkCell: TreeTitleCell {
 
         contentView.addSubview(mark)
 
+    }
+    /**
+ cell can be partially grayed out depending on number of children are set
+ */
+    override func updateOnRatio() {
+        treeNode.updateOnRatioFromChildren()
+        mark.setGray(treeNode.onRatio)
     }
     override func updateFrames(_ size:CGSize) {
 
@@ -97,8 +104,8 @@ class TreeTitleMarkCell: TreeTitleCell {
         let toggleX = frame.size.width -  frame.size.height*1.618
         if location.x > toggleX {
 
-            treeNode.setting.flipSet()
-            mark.setMark(treeNode.setting.isOn())
+            let isOn = treeNode.toggle()
+            mark.setMark(isOn)
             PagesVC.shared.treeTable.updateTouchCell(self, reload:false, highlight: true)
         }
         else {

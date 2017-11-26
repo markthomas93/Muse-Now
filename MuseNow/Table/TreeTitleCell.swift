@@ -13,12 +13,12 @@ class TreeTitleCell: TreeCell {
         self.init(coder: decoder)
     }
 
-    convenience init(_ treeNode_: TreeNode!, _ size:CGSize) {
+    convenience init(_ treeNode_: TreeNode!, _ width:CGFloat) {
 
         self.init()
+        frame.size = CGSize(width:width, height:height)
         treeNode = treeNode_
-        buildViews(size)
-        setHighlight(false, animated:false)
+        buildViews(frame.size)
     }
 
     override func buildViews(_ size:CGSize) {

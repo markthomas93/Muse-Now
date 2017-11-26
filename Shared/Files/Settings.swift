@@ -22,11 +22,10 @@ class Settings: FileSync {
 
             let fileTime = self.getFileTime()
             if root.count == 0 {
-                self.initSettings()
-                self.archiveDict(root, 0)
+                self.updateArchive()
             }
             else {
-                self.updateSettings()
+                self.updateFromArchive()
                 self.memoryTime = fileTime
             }
             printLog ("⧉ Settings::\(#function) saySet:\(Say.shared.saySet) hearSet:\(Hear.shared.hearSet) fileTime:\(fileTime) -> memoryTime:\(self.memoryTime)")
@@ -47,7 +46,7 @@ class Settings: FileSync {
                 root.removeAll()
                 root = newDict
                 archiveDict(root, fileTime)
-                updateSettings()
+                updateFromArchive()
             }
             completion()
         }
@@ -59,14 +58,15 @@ class Settings: FileSync {
         archiveDict(root,Date().timeIntervalSince1970)
     }
     
-    func initSettings() {
+    func updateArchive() {
         root["showSet"]   = Show.shared.showSet.rawValue
         root["hearSet"]   = Hear.shared.hearSet.rawValue
         root["saySet"]    = Say.shared.saySet.rawValue
         root["dialColor"] = Actions.shared.scene?.uFade?.floatValue ?? 0
+        archiveDict(root,Date().timeIntervalSince1970)
     }
 
-    func updateSettings() {
+    func updateFromArchive() {
         if let value   = root["dialColor"] as? Float { Actions.shared.dialColor(value, isSender:false) }
         if let saySet  = root["saySet"]    as? Int   { Say.shared.saySet   = SaySet(rawValue:saySet) }
         if let hearSet = root["hearSet"]   as? Int   { Hear.shared.hearSet = HearSet(rawValue:hearSet) }

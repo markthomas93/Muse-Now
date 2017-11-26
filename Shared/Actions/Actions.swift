@@ -8,19 +8,21 @@ public enum DoAction : Int { case
     unknown, gotoEvent,
 
     // say
-    saySpeechOn, saySpeechOff,
-    sayMemoOn,  sayMemoOff,
+    saySpeech, skipSpeech,
+    sayMemo,  skipMemo,
+    sayTime,  skipTime,
+    sayEvent, skipEvent,
     speakLow, speakMedium, speakHigh,
 
     // hear
-    hearEarbudsOn, hearSpeakerOn,
-    hearEarbudsOff, hearSpeakerOff,
+    hearEarbuds, hearSpeaker,
+    muteEarbuds, muteSpeaker,
 
     // show
-    showCalendarOn, showCalendarOff,
-    showReminderOn, showReminderOff,
-    showRoutineOn,  showRoutineOff,
-    showMemoOn,     showMemoOff,
+    showCalendar, hideCalendar,
+    showReminder, hideReminder,
+    showRoutine,  hideRoutine,
+    showMemo,     hideMemo,
 
     dialColor,
 
@@ -67,7 +69,7 @@ class Actions {
     //-----------------------------------------
 
     func doSetTitle(_ title_: String) {
-        #if os(watchOS) //????
+        #if os(watchOS)
             let root = WKExtension.shared().rootInterfaceController!
             root.setTitle(title_)
         #endif
@@ -241,22 +243,22 @@ class Actions {
         
         switch act {
         case  // show
-        .showCalendarOn, .showCalendarOff,
-        .showReminderOn, .showReminderOff,
-        .showRoutineOn,  .showRoutineOff,
-        .showMemoOn,     .showMemoOff:
+        .showCalendar, .hideCalendar,
+        .showReminder, .hideReminder,
+        .showRoutine,  .hideRoutine,
+        .showMemo,     .hideMemo:
 
             Show.shared.doShowAction(act, isSender: true)
 
         // speech to text volume
-        case .saySpeechOn, .saySpeechOff,
-             .sayMemoOn, .sayMemoOff,
+        case .saySpeech, .skipSpeech,
+             .sayMemo, .skipMemo,
              .speakLow, .speakMedium, .speakHigh:
 
             Say.shared.doSayAction(act, isSender:true)
 
-        case  .hearEarbudsOn, .hearSpeakerOn,
-              .hearEarbudsOff, .hearSpeakerOff:
+        case  .hearEarbuds, .hearSpeaker,
+              .muteEarbuds, .muteSpeaker:
 
             Hear.shared.doHearAction(act, isSender:true)
 

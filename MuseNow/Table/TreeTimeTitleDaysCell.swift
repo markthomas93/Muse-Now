@@ -30,7 +30,6 @@ class TreeTimeTitleDaysCell: TreeTitleCell {
         self.init()
         treeNode = treeNode_
         buildViews(size)
-        setHighlight(false, animated:false)
     }
 
     override func buildViews(_ size: CGSize) {
@@ -113,7 +112,7 @@ class TreeTimeTitleDaysCell: TreeTitleCell {
 
         case .collapsing:
 
-            super.touchCell(location, highlight: true)
+            super.touchCell(location, highlight: false)
             editType = .none
 
         case .switching:
@@ -138,22 +137,25 @@ class TreeTimeTitleDaysCell: TreeTitleCell {
     }
 
 
+    /**
+        replace child with new one
+     */
     func replaceChild() {
 
-        var nodeType = TreeNodeType.unknown
-        switch editType {
-        case .time:  nodeType = .editTime
-        case .title: nodeType = .editTitle
-        case .days:  nodeType = .editWeekd
-        case .none: return
+        func updateChild(_ nodeType:TreeNodeType) {
+
+            if let node = treeNode as? TreeRoutineItemNode {
+                child = TreeRoutineItemNode(nodeType, node, node.routineItem, frame.size.width)
+                node.children.removeAll()
+                node.children.append(child)
+            }
         }
 
-        // replace child with new one
-        if let node = treeNode as? TreeRoutineItemNode {
-
-            child = TreeRoutineItemNode(node,node.routineItem,nodeType)
-            node.children.removeAll()
-            node.children.append(child)
+        switch editType {
+        case .time:  updateChild(.editTime)
+        case .title: updateChild(.editTitle)
+        case .days:  updateChild(.editWeekday)
+        case .none: return
         }
     }
 

@@ -63,7 +63,7 @@ class WatchCon: WKInterfaceController {
         scene = Scene(size : size)
         skInterface.preferredFramesPerSecond = 60
         skInterface.presentScene(scene)
-        scene.isPaused = true  //??? attempted
+        scene.isPaused = true
 
         actions.scene = scene
         active.scene = scene

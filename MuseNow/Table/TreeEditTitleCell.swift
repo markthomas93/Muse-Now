@@ -14,13 +14,13 @@ class TreeEditTitleCell: TreeEditCell {
         self.init(coder: decoder)
     }
 
-    convenience init(_ treeNode_: TreeNode!, _ size:CGSize) {
+    convenience init(_ treeNode_: TreeNode!, _ width: CGFloat) {
         
         self.init()
-        height = 64
         treeNode = treeNode_
-        buildViews(size)
-        setHighlight(false, animated:false)
+        height = 64
+        frame.size = CGSize(width: width, height: height)
+        buildViews(frame.size)
     }
 
     override func buildViews(_ size: CGSize) {

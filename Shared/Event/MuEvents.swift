@@ -30,7 +30,7 @@ class MuEvents {
         getRealEvents() { ekEvents, ekReminds, memos, routine in
 
             self.events.removeAll()
-            self.events = ekEvents + ekReminds + memos + routine //+ self.getNearbyEvents() //???
+            self.events = ekEvents + ekReminds + memos + routine //+ self.getNearbyEvents() 
             self.sortTimeEventsStart()
             self.applyMarks()
             self.marks.synchronize()
@@ -65,7 +65,7 @@ class MuEvents {
         var routine     = [MuEvent]()
 
         // ekevents
-        if Show.shared.canShow(.showCalendar) {
+        if Show.shared.canShow(.calendar) {
             group.enter()
             queue.async (group: group) {
                 self.getEkEvents() { result in
@@ -75,7 +75,7 @@ class MuEvents {
             }
         }
         // ekreminders
-        if Show.shared.canShow(.showReminder) {
+        if Show.shared.canShow(.reminder) {
             group.enter()
             queue.async (group: group) {
                 self.getEkReminders() { result in
@@ -85,7 +85,7 @@ class MuEvents {
             }
         }
         // memos
-        if Show.shared.canShow(.showMemo) {
+        if Show.shared.canShow(.memo) {
             group.enter()
             queue.async (group: group) {
                 self.memos.unarchiveMemos() { result in
@@ -95,7 +95,7 @@ class MuEvents {
             }
         }
         // routine
-        if Show.shared.canShow(.showRoutine) {
+        if Show.shared.canShow(.routine) {
             group.enter()
             queue.async (group: group) {
                 Routine.shared.getRoutineEvents() { result in
