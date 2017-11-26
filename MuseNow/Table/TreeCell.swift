@@ -81,6 +81,7 @@ class TreeCell: MuCell {
             case .unknown,
                  .title,
                  .titleMark,
+                 .colorTitle,
                  .colorTitleMark:    expandable = treeNode.children.count > 0
 
             case .timeTitleDays:     expandable = true

@@ -26,7 +26,7 @@ extension Scene {
         uMask  = SKUniform(name:"u_mask",  texture:dialMask[1])
         uPal   = SKUniform(name:"u_pal",   texture:futrPalTex)
         uFrame = SKUniform(name:"u_frame", float:0.0)
-        uFade  = SKUniform(name:"u_fade",  float:0.5)
+        uFade  = SKUniform(name:"u_fade",  float:1.0)
         uCount = SKUniform(name:"u_count", float:Float(indexWidth))
 
         updatePalTex()
@@ -53,9 +53,8 @@ extension Scene {
        
 
     /**
-     Flip horizonally the dot index texture,
-     which is used for both past and future.
-     replace the color palette to reflect past or future hours
+     Flip horizonally the dot index texture, which is used for both past and future.
+     Replace the color palette to reflect past or future hours
      - via: animOut
      */
     func updateSprite(xScale:CGFloat) {

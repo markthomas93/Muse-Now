@@ -45,6 +45,7 @@ enum TreeNodeType { case
     unknown,
     title,
     titleMark,
+    colorTitle,
     colorTitleMark,
     timeTitleDays,
     editTime,
@@ -85,7 +86,8 @@ class TreeNode {
         switch type {
         case .title:            cell = TreeTitleCell(self, width)
         case .titleMark:        cell = TreeTitleMarkCell(self, width)
-        case .colorTitleMark:   cell = TreeColorTitleMark(self, width)
+        case .colorTitle:       cell = TreeColorTitleCell(self, width)
+        case .colorTitleMark:   cell = TreeColorTitleMarkCell(self, width)
         case .timeTitleDays:    cell = TreeTimeTitleDaysCell(self, width)
         case .editTime:         cell = TreeEditTimeCell(self, width)
         case .editTitle:        cell = TreeEditTitleCell(self, width)
@@ -180,7 +182,7 @@ class TreeNode {
 
 class TreeRoutineCategoryNode: TreeNode {
     init (_ parent_:TreeNode!,_ title_:String, _ width:CGFloat) {
-        super.init(.colorTitleMark, parent_, Setting(set:0,member:1,title_), width)
+        super.init(.colorTitle, parent_, Setting(set:0,member:1,title_), width)
     }
 }
 class TreeRoutineItemNode: TreeNode {

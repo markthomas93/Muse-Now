@@ -4,14 +4,14 @@ import UIKit
 
 extension UIImage {
     
-    class func circle(diameter: CGFloat, color: UIColor) -> UIImage {
+    class func circle(diameter: CGFloat, cgColor: CGColor) -> UIImage {
         
         UIGraphicsBeginImageContextWithOptions(CGSize(width: diameter, height: diameter), false, 0)
         let ctx = UIGraphicsGetCurrentContext()!
         ctx.saveGState()
         
         let rect = CGRect(x: 0, y: 0, width: diameter, height: diameter)
-        ctx.setFillColor(color.cgColor)
+        ctx.setFillColor(cgColor)
         ctx.fillEllipse(in: rect)
         
         ctx.restoreGState()
@@ -19,6 +19,11 @@ extension UIImage {
         UIGraphicsEndImageContext()
         
         return img
+    }
+
+    class func circle(diameter: CGFloat, color: UIColor) -> UIImage {
+
+        return UIImage.circle(diameter:diameter, cgColor:color.cgColor)
     }
 
     // MARK: - Timeline Population

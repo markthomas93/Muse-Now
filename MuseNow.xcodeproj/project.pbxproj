@@ -225,6 +225,8 @@
 		809E55681FB4C6EA00974CB7 /* Show.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809E55661FB4C6EA00974CB7 /* Show.swift */; };
 		80A3E36C1FC0CABC00195BD3 /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F70E1FA3EE2400F7ED94 /* Actions.swift */; };
 		80A3E36E1FC0D51500195BD3 /* TreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A3E36D1FC0D51500195BD3 /* TreeNode.swift */; };
+		80D483EA1FCB3BBD00D28095 /* TreeColorTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D483E91FCB3BBD00D28095 /* TreeColorTitleCell.swift */; };
+		80D483EC1FCB496800D28095 /* TreeTableVC+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D483EB1FCB496800D28095 /* TreeTableVC+.swift */; };
 		80D974801FCA130300EE0BEB /* CalCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A0C1FA3FCAA0025B724 /* CalCell.swift */; };
 		80F26DBC1FBA07E100C26973 /* Routine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F26DBB1FBA07E100C26973 /* Routine.swift */; };
 		80F26DBD1FBA07E100C26973 /* Routine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F26DBB1FBA07E100C26973 /* Routine.swift */; };
@@ -424,6 +426,8 @@
 		80A3E36D1FC0D51500195BD3 /* TreeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeNode.swift; sourceTree = "<group>"; };
 		80CE545E1FA3E0C7005C4D96 /* MuseNow WatchKit App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "MuseNow WatchKit App.entitlements"; sourceTree = "<group>"; };
 		80CE545F1FA3E0CE005C4D96 /* MuseNow WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "MuseNow WatchKit Extension.entitlements"; sourceTree = "<group>"; };
+		80D483E91FCB3BBD00D28095 /* TreeColorTitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeColorTitleCell.swift; sourceTree = "<group>"; };
+		80D483EB1FCB496800D28095 /* TreeTableVC+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TreeTableVC+.swift"; sourceTree = "<group>"; };
 		80F26DBB1FBA07E100C26973 /* Routine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Routine.swift; path = Routine/Routine.swift; sourceTree = "<group>"; };
 		80F26DBE1FBA110300C26973 /* Routine.par */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; path = Routine.par; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -769,10 +773,12 @@
 			isa = PBXGroup;
 			children = (
 				803C5B211FBF622400BA9C6C /* TreeTableVC.swift */,
+				80D483EB1FCB496800D28095 /* TreeTableVC+.swift */,
 				80A3E36D1FC0D51500195BD3 /* TreeNode.swift */,
 				806ACFE81FC624CB00220EB6 /* TreeCell.swift */,
 				8076435D1FACDB63001733C6 /* TreeTitleCell.swift */,
 				800C51B81FC221EF00904121 /* TreeBodyMarkCell.swift */,
+				80D483E91FCB3BBD00D28095 /* TreeColorTitleCell.swift */,
 				8018E1A31FC36F8E00F4C0AC /* TreeColorTitleMarkCell.swift */,
 				800C51B61FC2213E00904121 /* TreeTimeTitleDaysCell.swift */,
 				806ACFE41FC60EA900220EB6 /* TreeEditCell.swift */,
@@ -1024,9 +1030,11 @@
 				8004F79F1FA3EE2400F7ED94 /* FileSync.swift in Sources */,
 				807643581FACBE55001733C6 /* MuseFound.swift in Sources */,
 				804D5A091FA3FC8B0025B724 /* TouchForce.swift in Sources */,
+				80D483EC1FCB496800D28095 /* TreeTableVC+.swift in Sources */,
 				8004F7B91FA3EE2400F7ED94 /* SayItem.swift in Sources */,
 				8018E1A61FC394FC00F4C0AC /* TreeEditTimeCell.swift in Sources */,
 				804D5A2B1FA3FCAA0025B724 /* MuCell.swift in Sources */,
+				80D483EA1FCB3BBD00D28095 /* TreeColorTitleCell.swift in Sources */,
 				8004F7A31FA3EE2400F7ED94 /* Marks.swift in Sources */,
 				8004F7591FA3EE2400F7ED94 /* Actions.swift in Sources */,
 				804D5A0A1FA3FC8B0025B724 /* UITouch+Force.swift in Sources */,

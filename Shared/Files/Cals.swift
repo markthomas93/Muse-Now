@@ -9,11 +9,12 @@ class Cals: FileSync {
     
     static let shared = Cals()
     
-    var ekCals = [EKCalendar]()
-    var sourceCals = [String:[Cal!]]()
-    var idCal = [String:Cal!]()
-    var cals = [Cal]()
+    var ekCals = [EKCalendar]()         // event kit calendars minus holidays and contacts
+    var cals = [Cal!]()                  // muse translated version of EKCalendar
+    var idCal = [String:Cal!]()         // retreive cal from its calendarID
+    var sourceCals = [String:[Cal!]]()  // each data source may have several calendars
     
+
     override init() {
         super.init()
         fileName = "Cals.plist"
@@ -87,15 +88,19 @@ class Cals: FileSync {
             completion()
         }
     }
-    
+
+    func updateArchive() {
+        archiveArray(cals,Date().timeIntervalSince1970)
+        Actions.shared.doRefresh(/*isSender*/false)
+        sendSyncFile()
+    }
+
     /// find and update event Marker
     func updateMark(_ calId:String,_ isOn:Bool) {
         for cali in cals {
-            if cali.calId == calId {
-                cali.isOn = isOn
-                archiveArray(cals,Date().timeIntervalSince1970)
-                Actions.shared.doRefresh(/*isSender*/false)
-                sendSyncFile()
+            if cali?.calId == calId {
+                cali!.isOn = isOn
+                updateArchive()
                 return
             }
         }

@@ -70,10 +70,20 @@ class ToggleCheck: UIView {
         self.addSubview(check)
         
     }
+    
     func setGray(_ alpha_:CGFloat) {
-        let isOn = alpha_ > 0.0
-        check.isHidden = !isOn
-        check.alpha = alpha_
+
+        if alpha_ == 1.0 {
+            check.image = UIImage(named: "icon-check.png")!
+            check.isHidden = false
+        }
+        else if alpha_ > 0.0 {
+            check.image = UIImage(named: "icon-dash.png")!
+            check.isHidden = false
+        }
+        else {
+            check.isHidden = true
+        }
     }
 
     func setMark(_ isOn:Bool) {

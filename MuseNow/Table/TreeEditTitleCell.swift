@@ -38,7 +38,7 @@ class TreeEditTitleCell: TreeEditCell {
         textField.textAlignment = .center
         textField.clearButtonMode = .whileEditing
         textField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
-
+        textField.keyboardAppearance = UIAccessibilityIsInvertColorsEnabled() ? .default : .dark
         textClear = UIImageView(frame:clearFrame)
         textClear.image = UIImage(named: "Icon-X-plus.png")
         textClear.isUserInteractionEnabled = false

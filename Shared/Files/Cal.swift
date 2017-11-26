@@ -51,4 +51,10 @@ public class Cal: NSObject, NSCoding {
         color = cal.color
         isOn = true
     }
+    /// find and update event Marker
+    func updateMark(_ isOn_:Bool) {
+        isOn = isOn_
+        Cals.shared.updateArchive()
+    }
+
 }
