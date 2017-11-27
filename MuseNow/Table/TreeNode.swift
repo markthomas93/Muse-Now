@@ -44,6 +44,7 @@ class TreeNodes {
 enum TreeNodeType { case
     unknown,
     title,
+    titleFader,
     titleMark,
     colorTitle,
     colorTitleMark,
@@ -67,12 +68,9 @@ class TreeNode {
     var row = -1
     var onRatio = CGFloat(1.0)
 
-    var updateAny: ((TreeNode,Any?) -> ())?
+    var callback: ((TreeNode) -> ())?
 
-//    var set: Int // OptionSet value
-//    var member: Int // member within that optionset
-
-    init (_ type_:TreeNodeType, _ parent_:TreeNode!,_ setting_: Setting ,_ width:CGFloat) {
+      init (_ type_:TreeNodeType, _ parent_:TreeNode!,_ setting_: Setting ,_ width:CGFloat) {
 
         parent = parent_
         setting = setting_
@@ -85,6 +83,7 @@ class TreeNode {
         type = type_
         switch type {
         case .title:            cell = TreeTitleCell(self, width)
+        case .titleFader:       cell = TreeTitleFaderCell(self, width)
         case .titleMark:        cell = TreeTitleMarkCell(self, width)
         case .colorTitle:       cell = TreeColorTitleCell(self, width)
         case .colorTitleMark:   cell = TreeColorTitleMarkCell(self, width)
@@ -96,8 +95,10 @@ class TreeNode {
         case .unknown:          cell = TreeEditColorCell(self, width)
         }
     }
-
-    func updateOnRatioFromChildren() {
+    func updateCallback() {
+        callback?(self)
+    }
+      func updateOnRatioFromChildren() {
         if children.count > 0 {
 
             // only count children which have marks
@@ -140,7 +141,7 @@ class TreeNode {
             setting.setOn(onRatio > 0) // synch setting with onRatio
             updateMyChildren()
             cell?.updateOnRatio()
-            updateAny?(self,any)
+            callback?(self)
         }
     }
 
@@ -152,7 +153,7 @@ class TreeNode {
         updateMyChildren()
         parent?.cell?.updateOnRatio()
         cell?.updateOnRatio()
-        updateAny?(self,any)
+        callback?(self)
         return isOn
     }
 
@@ -177,7 +178,69 @@ class TreeNode {
             child.refreshNodeCells()
         }
     }
+}
 
+class TreeCalendarNode: TreeNode {
+
+    init (_ parent_:TreeNode!,_ title_:String, _ cal:Cal!,_ width:CGFloat) {
+
+        super.init(.colorTitleMark, parent_, Setting(set:1,member:1,title_), width)
+
+        if let cell = cell as? TreeColorTitleMarkCell {
+            cell.setColor(cal.color)
+        }
+        any = cal.calId // any makes a copy of Cal, so use calID, instead
+        callback = { treeNode in
+
+            if let calId = treeNode.any as? String,
+                let cal = Cals.shared.idCal[calId],
+                let isOn = treeNode.setting?.isOn() {
+                cal.updateMark(isOn)
+            }
+        }
+    }
+}
+class TreeDialColorNode: TreeNode {
+
+    init (_ parent_:TreeNode!,_ title_:String,_ width:CGFloat) {
+
+        super.init(.titleFader, parent_, Setting(set:0,member:1,title_), width)
+
+        if let cell = cell as? TreeTitleFaderCell {
+
+            // intialize fader
+            if let value = Settings.shared.root["dialColor"] as? Float{
+                cell.fader.setValue(value)
+            }
+            // callback when starting fade, so freeze scrolling
+            cell.fader.updateBegan = {
+                PagesVC.shared.treeTable.tableView.isScrollEnabled = false
+                PagesVC.shared.scrollView?.isScrollEnabled = false
+            }
+            // callback when ending fade, so free scrolling
+            cell.fader.updateEnded = {
+                PagesVC.shared.treeTable.tableView.isScrollEnabled = true
+                PagesVC.shared.scrollView?.isScrollEnabled = true
+            }
+            // callback to set dial color
+            cell.fader.updateValue = { value in
+                Actions.shared.dialColor(value, isSender: true)
+                let phrase = String(format:"%.2f",value)
+                Say.shared.updateDialog(nil, .phraseSlider, spoken:phrase, title:phrase)
+            }
+        }
+    }
+}
+
+class TreeActNode: TreeNode {
+    init (_ parent_:TreeNode!,_ title_:String, _ set:Int, _ member: Int,_ onAct:DoAction,_ offAct:DoAction,_ width: CGFloat) {
+        super.init(.titleMark, parent_, Setting(set:0,member:1,title_), width)
+
+        // callback to set action message based on isOn()
+         callback = { treeNode in
+            Actions.shared.doAction(treeNode.setting.isOn() ? onAct : offAct )
+        }
+    }
 }
 
 class TreeRoutineCategoryNode: TreeNode {
@@ -190,10 +253,10 @@ class TreeRoutineItemNode: TreeNode {
     init (_ type_: TreeNodeType,_ parent_:TreeNode!,_ item:RoutineItem, _ width:CGFloat) {
         routineItem = item
         super.init(type_, parent_, Setting(set:0, member:1, item.title), width)
+        // callback to refresh display for changes
+        callback = { treeNode in
+            Actions.shared.doAction(.refresh)
+        }
     }
 }
-
-
-
-
 

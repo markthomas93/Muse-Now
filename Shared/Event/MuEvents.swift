@@ -19,6 +19,7 @@ class MuEvents {
     var timeEventIndex : Int = -1   // index of timeEvent in muEvents
 
     let eventStore = EKEventStore()
+    var refreshTimer = Timer()
 
     /**
      Main entry for updating events
@@ -38,12 +39,19 @@ class MuEvents {
             Cals.shared.synchronize()
             completion()
         }
-       NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
         NotificationCenter.default.addObserver(self, selector: #selector(EkNotification(notification:)), name: Notification.Name.EKEventStoreChanged, object: eventStore)
     }
     
     @objc private func EkNotification(notification: NSNotification) {
+
         printLog("📅 notification:\(notification.name.rawValue)")
+
+        // often, more than one notification comes in a batch, so defer multiple refreshes
+        refreshTimer.invalidate()
+        refreshTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false, block: {_ in 
+            Actions.shared.doAction(.refresh)
+        })
     }
 
     /**

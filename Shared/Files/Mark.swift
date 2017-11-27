@@ -20,9 +20,9 @@ public class Mark: NSObject, NSCoding {
     }
     
     public func encode(with aCoder: NSCoder) {
-        aCoder.encode(eventId,       forKey:"eventId")
-        aCoder.encode(bgnTime,       forKey:"bgnTime")
-        aCoder.encode(isOn,          forKey:"isOn")
+        aCoder.encode(eventId, forKey:"eventId")
+        aCoder.encode(bgnTime, forKey:"bgnTime")
+        aCoder.encode(isOn,    forKey:"isOn")
     }
 
     init (_ bgnTime_: TimeInterval,eventId_: String, isOn_: Bool) {

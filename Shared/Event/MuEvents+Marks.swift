@@ -13,9 +13,11 @@ extension MuEvents {
         }
     }
     
-    /// refresh all event's marks, after reading Marks.plist
-     /// - via: MuEvents::updateRealEvents,
-     /// - via: Session::parseMsg(Msg["addFile":"Marks.plist",...])
+    /**
+     Refresh all event's marks, after reading Marks.plist
+      - via: MuEvents::updateRealEvents
+      - via: Session::parseMsg(Msg["addFile":"Marks.plist",...])
+     */
     func applyMarks() { printLog ("✓ \(#function)")
         
         let items = marks.items

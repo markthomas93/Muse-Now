@@ -131,7 +131,7 @@ extension TreeEditTimeCell: UIPickerViewDelegate, UIPickerViewDataSource {
                 node.routineItem.updateLabelStrings()
             }
 
-
+            treeNode.updateCallback() // refresh dial
         }
     }
  }

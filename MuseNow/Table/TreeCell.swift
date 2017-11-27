@@ -86,7 +86,8 @@ class TreeCell: MuCell {
 
             case .timeTitleDays:     expandable = true
 
-            case .editTime,
+            case .titleFader,
+                 .editTime,
                  .editTitle,
                  .editWeekday,
                  .editColor:         expandable = false

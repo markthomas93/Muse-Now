@@ -7,19 +7,27 @@ class Fader: TouchForce {
     var thumbR = CGFloat(16)
     var runway = CGFloat(16)
     let borderWidth = CGFloat(1)
-    var tableView : UITableView!
+
+    var updateValue: ((Float) -> ())?
+    var updateBegan: (() -> ())?
+    var updateEnded: (() -> ())?
     
-    init(frame : CGRect,_ tableView_: UITableView!,_ value_:Float) {
-        super.init(frame : frame)
-        tableView = tableView_
+    convenience init (frame : CGRect,_ value_:Float) {
+        self.init(frame : frame)
         value = value_
         initialize()
     }
-    
+
+    override init (frame : CGRect) {
+        super.init(frame : frame)
+        initialize()
+    }
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         initialize()
     }
+
     
     func initialize() {
         
@@ -36,29 +44,22 @@ class Fader: TouchForce {
         thumb.layer.backgroundColor = UIColor.gray.cgColor
         thumb.layer.borderColor     = UIColor.white.cgColor
         self.addSubview(thumb)
-        
+
         runway = frame.size.width -  2*thumbR - 4*borderWidth
-        initFromSettings()
-        self.alpha = 0.5
+    }
+    func setValue(_ value_:Float) {
+        value = value_
+        thumb.center.x = thumbR + 2*borderWidth + runway * CGFloat(value)
     }
     
-     func initFromSettings() {
-        if let value = Settings.shared.root["dialColor"]  {
-            thumb.center.x = thumbR + 2*borderWidth + runway * CGFloat(value as! Float)
-        }
-    }
-    
+
     func updatePos(_ pos:CGPoint) {
         
         let width = frame.size.width
         let norm = pos.x/width
         value = Float(max(0.0, min(1.0, norm)))
         thumb.center.x = thumbR + 2*borderWidth + runway * CGFloat(value)
-        
-        Actions.shared.dialColor(value, isSender: true)
-        
-        let phrase = String(format:"%.2f",value)
-        Say.shared.updateDialog(nil, .phraseSlider, spoken:phrase, title:phrase)
+        updateValue?(value)
     }
     
     // override Touching
@@ -71,11 +72,8 @@ class Fader: TouchForce {
     
     override func began(_ pos: CGPoint,_ time: TimeInterval) {
         
-        tableView?.isScrollEnabled = false
-        PagesVC.shared.scrollView?.isScrollEnabled = false
-        
+        updateBegan?()
         Say.shared.updateDialog(nil, .phraseSlider, spoken:"fader", title:"fader")
-        setHighlight(on:true)
         updatePos(pos)
      }
     
@@ -86,11 +84,8 @@ class Fader: TouchForce {
     
     override func ended(_ pos: CGPoint, _ delta:CGPoint,_ time: TimeInterval) {
 
+        updateEnded?()
         updatePos(pos)
-        setHighlight(on: false)
-        
-        tableView?.isScrollEnabled = true
-        PagesVC.shared.scrollView?.isScrollEnabled = true
     }
     
  }

@@ -43,6 +43,7 @@ extension TreeEditTitleCell: UITextFieldDelegate {
         if textField.text == nil || textField.text! == "" {
             textField.text = prevText
             changeParentText(prevText)
+            treeNode.updateCallback()
         }
         else {
             prevText = textField.text ?? prevText

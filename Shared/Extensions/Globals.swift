@@ -26,6 +26,7 @@ func printLog(_ str: String) {
     "▭", // textfield
     "✺", // complication
     "⿳", // menu
+
     "←", // session receiving
     "↔︎", // session activation state
     "→", // session sending

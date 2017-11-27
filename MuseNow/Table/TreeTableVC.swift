@@ -34,53 +34,24 @@ class TreeTableVC: UITableViewController {
 
         let width = view.frame.size.width
 
-        func optNode(_ parent_:TreeNode!,_ title_:String) -> TreeNode! {
-            let setting = Setting(set:1,member:1,title_)
-            let treeNode = TreeNode(.titleMark, parent_, setting, width)
-            return treeNode
-        }
-        func optNode(_ parent_:TreeNode!,_ title_:String, _ set:Int, _ member: Int,_ onAct:DoAction,_ offAct:DoAction) -> TreeNode! {
-            let setting = Setting(set:set, member:member, title_)
-            let treeNode = TreeNode(.titleMark, parent_, setting, width)
-            treeNode.updateAny = { treeNode,any in Actions.shared.doAction(treeNode.setting.isOn() ? onAct : offAct ) }
-            return treeNode
-        }
-        func calNode(_ parent_:TreeNode!,_ title_:String, _ cal:Cal!) -> TreeNode! {
-            let setting = Setting(set:1,member:1,title_)
-            let treeNode = TreeNode(.colorTitleMark, parent_, setting, width)
-            if let cell = treeNode.cell as? TreeColorTitleMarkCell {
-                cell.setColor(cal.color)
-            }
-            treeNode.any = cal.calId // any makes a copy of Cal, so use calID, instead
-            treeNode.updateAny = { treeNode, any in
-
-                if let calId = any as? String,
-                    let cal = Cals.shared.idCal[calId],
-                    let isOn = treeNode.setting?.isOn() {
-                    cal.updateMark(isOn)
-                }
-            }
-            return treeNode
-        }
-
         // show | hide - Calendars
 
         let showSet = Show.shared.showSet.rawValue
         show = TreeNode(.titleMark, root, Setting(set:0, member:1, "Show | Hide"), width)
-        let showCal = optNode(show, "Calendars", showSet, ShowSet.calendar.rawValue, .showCalendar , .hideCalendar)
+        let showCal = TreeActNode(show, "Calendars", showSet, ShowSet.calendar.rawValue, .showCalendar , .hideCalendar, width)
         for (key,cals) in Cals.shared.sourceCals {
             if cals.count == 1 {
-                let _ = calNode( showCal, key, cals.first)
+                let _ = TreeCalendarNode(showCal, key, cals.first, width)
             }
             else {
                 for cal in cals {
-                    let _ = calNode( showCal, cal!.title, cal)
+                    let _ = TreeCalendarNode(showCal, cal!.title, cal, width)
                 }
             }
         }
          // show | hide - Routine
 
-        let routine = optNode(show,"Routine", showSet, ShowSet.routine.rawValue, .showRoutine, .hideRoutine)
+        let routine = TreeActNode(show,"Routine", showSet, ShowSet.routine.rawValue, .showRoutine, .hideRoutine, width)
         
         let catalog = Routine.shared.catalog
         for category in Routine.shared.categories {
@@ -94,23 +65,28 @@ class TreeTableVC: UITableViewController {
             }
         }
 
-        let _ = optNode(show,"Reminders", showSet, ShowSet.reminder.rawValue, .showReminder, .hideReminder)
-        let _ = optNode(show,"Memos",     showSet, ShowSet.memo.rawValue,     .showMemo,     .hideMemo)
+        let _   = TreeActNode(show,"Reminders", showSet, ShowSet.reminder.rawValue, .showReminder, .hideReminder, width)
+        let _   = TreeActNode(show,"Memos",     showSet, ShowSet.memo.rawValue,     .showMemo,     .hideMemo, width)
 
         // say | skip
 
         let saySet = Say.shared.saySet.rawValue
-        let say = optNode(root,"Say | Skip")
-        let _   = optNode(say, "Memo",  saySet, SaySet.memo.rawValue,  .sayMemo,  .skipMemo)
-        let _   = optNode(say, "Event", saySet, SaySet.event.rawValue, .sayEvent, .skipEvent)
-        let _   = optNode(say, "Time",  saySet, SaySet.time.rawValue,  .sayTime,  .skipTime)
+        let say = TreeNode(.titleMark, root, Setting(set:1,member:1,"Say | Skip"), width)
+        let _  = TreeActNode(say, "Memo",  saySet, SaySet.memo.rawValue,  .sayMemo,  .skipMemo, width)
+        let _  = TreeActNode(say, "Event", saySet, SaySet.event.rawValue, .sayEvent, .skipEvent, width)
+        let _  = TreeActNode(say, "Time",  saySet, SaySet.time.rawValue,  .sayTime,  .skipTime, width)
 
         // hear | mute
 
         let hearSet = Hear.shared.hearSet.rawValue
-        let hear = optNode(root,"Hear | Mute")
-        let _    = optNode(hear,"Speaker", hearSet, HearSet.speaker.rawValue, .hearSpeaker , .muteSpeaker)
-        let _    = optNode(hear,"Earbuds", hearSet, HearSet.earbuds.rawValue, .hearEarbuds , .muteEarbuds)
+        let hear = TreeNode(.titleMark, root, Setting(set:1,member:1,"Hear | Mute"), width)
+        let _   = TreeActNode(hear,"Speaker", hearSet, HearSet.speaker.rawValue, .hearSpeaker , .muteSpeaker, width)
+        let _   = TreeActNode(hear,"Earbuds", hearSet, HearSet.earbuds.rawValue, .hearEarbuds , .muteEarbuds, width)
+
+        // dial
+
+        let dial = TreeNode(.title, root, Setting(set:1,member:1,"Dial"), width)
+        let _ =  TreeDialColorNode(dial, "Color", width)
 
         // setup table cells from current state of hierary
         root.refreshNodeCells()

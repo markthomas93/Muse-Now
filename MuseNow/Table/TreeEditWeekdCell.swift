@@ -43,7 +43,6 @@ class TreeEditWeekdayCell: TreeEditCell {
         //label.isHighlighted = true
         label.layer.borderWidth = 0.5
         label.layer.borderColor = UIColor.white.cgColor
-        label.isUserInteractionEnabled = false
 
         label.text = dayLabels[index]
         return label
@@ -132,6 +131,7 @@ class TreeEditWeekdayCell: TreeEditCell {
                 }
             }
         }
+        treeNode.updateCallback() // refresh dial
     }
  }
 
