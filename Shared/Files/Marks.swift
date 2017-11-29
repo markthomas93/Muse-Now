@@ -5,29 +5,20 @@ import Foundation
 class Marks: FileSync {
     
     static let shared = Marks()
-    var items = [Mark]() //TODO: can this be [Any]() ?? so, as to simplify FileSync read,update,post
-    
+    var idMark = [String:Mark]()
     override init() {
         super.init()
         fileName = "Marks.plist"
     }
     
-  
+
     func unarchiveMarks(_ completion: @escaping () ->Void) {
         
         unarchiveArray() { array in
             
-            self.items.removeAll()
+            self.idMark.removeAll()
             let dataItems = array as! [Mark]
-            
-            let weekSecs: TimeInterval = (7*24+1)*60*60 // 168+1 hours as seconds
-            let lastWeekSecs = Date().timeIntervalSince1970 - weekSecs
-            self.items = dataItems.filter { $0.bgnTime >= lastWeekSecs }
-            
-            self.items.sort { $0.eventId < $1.eventId }
-            let fileTime = self.getFileTime()
-            printLog ("⧉ Marks::\(#function) items:\(self.items.count) fileTime:\(fileTime) -> memoryTime:\(self.memoryTime)")
-            self.memoryTime = fileTime
+            self.updateMarks(dataItems)
             completion()
         }
     }
@@ -43,14 +34,26 @@ class Marks: FileSync {
         if memoryTime < fileTime {
             
             memoryTime = fileTime
-            items = NSKeyedUnarchiver.unarchiveObject(with:data as Data) as! [Mark]
-            items.sort { $0.eventId < $1.eventId }
-            archiveArray(items,fileTime)
+            let dataItems = NSKeyedUnarchiver.unarchiveObject(with:data as Data) as! [Mark]
+            updateMarks(dataItems)
+            updateArchive()
             completion()
         }
     }
     
- 
+
+    func updateMarks(_ dataItems:[Mark]) {
+
+        let weekSecs: TimeInterval = (7*24+1)*60*60 // 168+1 hours as seconds
+        let lastWeekSecs = Date().timeIntervalSince1970 - weekSecs
+
+        let items = dataItems.filter { $0.bgnTime >= lastWeekSecs }
+        idMark = items.reduce(into: [String: Mark]()) { $0[$1.eventId] = $1 }
+
+        let fileTime = self.getFileTime()
+        printLog ("⧉ Marks::\(#function) items:\(items.count) fileTime:\(fileTime) -> memoryTime:\(memoryTime)")
+        self.memoryTime = fileTime
+    }
     
     func updateAct(_ act: DoAction, _ event: MuEvent!) {
         
@@ -61,31 +64,38 @@ class Marks: FileSync {
             switch act {
             
             case .markOn:
-                
-                let mark = Mark(event)
-                let index = items.binarySearch { $0.eventId < mark.eventId }
-                items.insert(mark, at: index)
-                
-            case .markOff:
-                
-                if items.isEmpty { break }
-                let index = items.binarySearch { $0.eventId < event.eventId }
-               
-                if index >= 0,
-                    index < items.count,
-                    items[index].eventId == event.eventId {
-                    
-                    items.remove(at:index)
+                 event.mark = true
+
+                if let mark = idMark[event.eventId] {
+                    mark.isOn = true
                 }
-                
+                else {
+                    idMark[event.eventId] = Mark(event)
+                }
+            case .markOff:
+
+                event.mark = false
+
+                if let mark = idMark[event.eventId] {
+                    mark.isOn = false
+                }
+                else {
+                    idMark[event.eventId] = Mark(event)
+                }
+
             case .markClearAll:
                 
-                items.removeAll()
+                idMark.removeAll()
                 
             default: return
             }
         }
-        archiveArray(items,Date().timeIntervalSince1970)
+       updateArchive()
     }
+    func updateArchive() {
+
+        archiveArray(Array(idMark.values), Date().timeIntervalSince1970)
+    }
+
 
 }

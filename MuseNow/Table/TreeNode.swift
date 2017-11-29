@@ -14,31 +14,19 @@ class TreeNodes {
     static var shared = TreeNodes()
 
     var shownNodes = [TreeNode!]() // currently displayed nodes
+    var root: TreeNode!
 
     /**
-        Renumber currently displayed table cells. Used for animating expand/collapse of children
+     Renumber currently displayed table cells. Used for animating expand/collapse of children
      */
-    func renumber(_ node:TreeNode) {
+    func renumber() {
 
-        var parenti = node.parent
-        while parenti?.parent != nil {
-            parenti = parenti?.parent
-        }
         shownNodes.removeAll()
-        parenti?.expanded = true // root always expanded
-        renumbering(parenti)
+        root?.expanded = true // root always expanded
+        root?.renumber()
+        root?.rehighlight()
     }
 
-    private func renumbering(_ node:TreeNode!)  {
-
-        if node.expanded {
-            for child in node.children {
-                child.row = shownNodes.count
-                shownNodes.append(child)
-                renumbering(child)
-            }
-        }
-    }
 }
 
 enum TreeNodeType { case
@@ -60,6 +48,7 @@ class TreeNode {
     var type = TreeNodeType.titleMark
     var parent: TreeNode!
     var children = [TreeNode]()
+    var depth = 0 // how deep do children go
     var level = 0
     var expanded = false
     var setting: Setting!
@@ -68,9 +57,32 @@ class TreeNode {
     var row = -1
     var onRatio = CGFloat(1.0)
 
+    @discardableResult func renumber() -> Int {
+        depth = 0
+        if expanded {
+            for child in children {
+                child.row = TreeNodes.shared.shownNodes.count
+                TreeNodes.shared.shownNodes.append(child)
+                depth = max(depth,child.renumber())
+            }
+        }
+        return depth+1
+    }
+    func rehighlight() {
+
+        if depth == 0, parent?.depth == 1 { cell?.setCellColorStyle(.child) }
+        else if depth == 1, expanded      { cell?.setCellColorStyle(.parent) }
+        else                              { cell?.setCellColorStyle(.other) }
+
+        if expanded {
+            for child in children {
+                child.rehighlight()
+            }
+        }
+    }
     var callback: ((TreeNode) -> ())?
 
-      init (_ type_:TreeNodeType, _ parent_:TreeNode!,_ setting_: Setting ,_ width:CGFloat) {
+    init (_ type_:TreeNodeType, _ parent_:TreeNode!,_ setting_: Setting ,_ width:CGFloat) {
 
         parent = parent_
         setting = setting_
@@ -98,7 +110,7 @@ class TreeNode {
     func updateCallback() {
         callback?(self)
     }
-      func updateOnRatioFromChildren() {
+    func updateOnRatioFromChildren() {
         if children.count > 0 {
 
             // only count children which have marks
@@ -106,10 +118,10 @@ class TreeNode {
             var isOnCount = CGFloat(0)
             for child in children {
                 switch child.type {
-                    case .titleMark,
-                         .colorTitleMark:
-                        markCount += 1.0
-                        isOnCount += child.setting.isOn() ? 1.0 : 0.0
+                case .titleMark,
+                     .colorTitleMark:
+                    markCount += 1.0
+                    isOnCount += child.setting.isOn() ? 1.0 : 0.0
                 default: break // ignore non marked child
                 }
             }
@@ -145,7 +157,7 @@ class TreeNode {
         }
     }
 
-  
+
     func toggle() -> Bool {
         let isOn = setting.flipSet()
         onRatio = isOn ? 1.0 : 0.0
@@ -157,16 +169,8 @@ class TreeNode {
         return isOn
     }
 
-    /**
-     Wait for table update before setting child highlight
-     */
-    func setCellHighlight(_ highlight:Bool) {
-        let _ = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: {_ in
-            self.cell?.setHighlight(highlight, animated: true) ; printLog("⿳ \(#function):  self.cell?.setHighlight(\(highlight))")
-        })
-    }
-    /**
-    After building hierarchy
+     /**
+     After building hierarchy
      - refresh left arrows to show if any children
      - refresh grayed check to show how many checked children
      */
@@ -237,7 +241,7 @@ class TreeActNode: TreeNode {
         super.init(.titleMark, parent_, Setting(set:0,member:1,title_), width)
 
         // callback to set action message based on isOn()
-         callback = { treeNode in
+        callback = { treeNode in
             Actions.shared.doAction(treeNode.setting.isOn() ? onAct : offAct )
         }
     }

@@ -22,6 +22,7 @@ func printLog(_ str: String) {
     //case NSLog(str)
 
     case
+    "⧉", // sync files
     "⌘", // doAction
     "▭", // textfield
     "✺", // complication
@@ -41,6 +42,7 @@ func printLog(_ str: String) {
         print(MuDate.getHourMinSecMsec() + ": " + str)
         
     case
+    "𐂷", // tree cell
     "𝓡", // routine
     "🗣", // Say TTS
     "⟳", // life cycle
@@ -55,8 +57,8 @@ func printLog(_ str: String) {
     "⿳", // menu
     "🎞", // texture
     "⚇", // dot
-    "✏", // Transcribe
-    "⧉": // sync files
+    "✏": // Transcribe
+
 
         break
 

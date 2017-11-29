@@ -4,6 +4,8 @@
 import UIKit
 import EventKit
 
+public enum CellColorStyle { case parent, child, other }
+
 class TreeCell: MuCell {
 
     var treeNode: TreeNode!
@@ -16,7 +18,9 @@ class TreeCell: MuCell {
     let leftW = CGFloat(24)     // width (and height) of left disclosure image
     let innerH = CGFloat(36)    // inner height
     let marginW = CGFloat(8)    // margin between elements
-    let marginH = CGFloat(4)    //
+    let marginH = CGFloat(2)    //
+
+    var colorStyle = CellColorStyle.other
 
     convenience required init(coder decoder: NSCoder) {
         self.init(coder: decoder)
@@ -34,6 +38,7 @@ class TreeCell: MuCell {
 
         updateFrames(size)
 
+        selectionStyle = .none
         contentView.backgroundColor = .black
         backgroundColor = .black
 
@@ -44,7 +49,7 @@ class TreeCell: MuCell {
         left.alpha = 0.0 // refreshNodeCells() will setup left's alpha for the whole tree
 
         // make this cell searchable within static cells
-        PagesVC.shared.treeTable.cells[treeNode.setting.title] = self
+        PagesVC.shared.treeTable.cells[treeNode.setting.title] = self //TODO: move this to caller
 
         // bezel for title
         bezel = UIView(frame:bezelFrame)
@@ -98,7 +103,7 @@ class TreeCell: MuCell {
                 transform = CGAffineTransform(rotationAngle: angle)
                 alpha = treeNode.expanded ? 1.0 : 0.25
             }
-            print ("\(treeNode.setting?.title ?? "unknown") \(treeNode.type):\(expandable) ")
+            //printLog ("𐂷 \(treeNode.setting?.title ?? "unknown") \(treeNode.type):\(expandable) ")
         }
 
         if animate {
@@ -119,7 +124,7 @@ class TreeCell: MuCell {
         let leftY = (size.height - leftW) / 2
 
         let bezelX = leftX + leftW + marginW
-        let bezelY = (size.height - innerH) / 2
+        let bezelY = marginH / 2
         let bezelH = size.height - 2*marginH
 
         let bezelW = size.width - marginW - bezelX
@@ -135,24 +140,20 @@ class TreeCell: MuCell {
         buildViews(size)
     }
 
-    override func setHighlight(_ isHighlight_:Bool, animated:Bool = true) {
-        
-        if isHighlight != isHighlight_ {
-            isHighlight = isHighlight_
+     func setCellColorStyle(_ colorStyle_:CellColorStyle) {
 
-            let index       = isHighlight ? 1 : 0
-            let borders     = [UIColor.black.cgColor, UIColor.white.cgColor]
-            let backgrounds = [UIColor.clear.cgColor, UIColor.black.cgColor]
-
-            if animated {
-                animateViews([bezel], borders, backgrounds, index, duration: 0.25)
-            }
-            else {
-                bezel.layer.borderColor     = borders[index]
-                bezel.layer.backgroundColor = backgrounds[index]
-            }
+        colorStyle = colorStyle_
+        var background = UIColor.black
+        var newAlpha = CGFloat(1.0)
+        switch colorStyle {
+        case .parent: background = headColor ; newAlpha = 1.0
+        case .child: background  = cellColor ; newAlpha = 1.0
+        case .other: background  = .black    ; newAlpha = 0.6
         }
-        isSelected = isHighlight
+        UIView.animate(withDuration: 0.25, animations: {
+            self.bezel.backgroundColor = background
+            self.bezel.alpha = newAlpha
+        })
     }
 
     override func touchCell(_ location: CGPoint, highlight: Bool = true) {
@@ -218,7 +219,7 @@ class TreeCell: MuCell {
             treeNode.expanded = true
             updateLeft(animate:true)
         }
-        TreeNodes.shared.renumber(treeNode)
+        TreeNodes.shared.renumber()
         PagesVC.shared.treeTable.updateTouchCell(self, reload:true, highlight:highlight, oldCount)
     }
 }

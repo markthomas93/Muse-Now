@@ -6,9 +6,7 @@ import WatchKit
 extension MuEvents {
     
     func applyMark(_ mark: Mark) {
-        let index = events.binarySearch({$0.eventId < mark.eventId})
-        let event = events[index]
-        if event.eventId == mark.eventId {
+        if let event = idEvents[mark.eventId] {
             event.mark = mark.isOn
         }
     }
@@ -20,29 +18,12 @@ extension MuEvents {
      */
     func applyMarks() { printLog ("✓ \(#function)")
         
-        let items = marks.items
-        
-        if items.count > 0 {
-            
-            var idMark = [String:Mark!]()
-            for mark in marks.items {
+        if marks.idMark.count > 0 {
 
-                idMark[mark.eventId] = mark
-            }
-            
-            // marks are sorted by eventId == bgnTime+title
-            var marksi = 0
-            var mark = items[0]
-            
-            func advanceIndex() -> Bool {
-                marksi += 1
-                if marksi < items.count {
-                    mark = items[marksi]
-                    return true
-                }
-                return false
-            }
+            let idMark = Marks.shared.idMark
+
             for event in events {
+
                 if let mark = idMark[event.eventId] {
                     event.mark = mark.isOn
                 }

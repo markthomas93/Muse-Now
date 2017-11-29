@@ -251,8 +251,9 @@ class Actions {
             Show.shared.doShowAction(act, isSender: true)
 
         // speech to text volume
-        case .saySpeech, .skipSpeech,
-             .sayMemo, .skipMemo,
+        case .sayMemo, .skipMemo,
+             .sayTime, .skipTime,
+             .sayEvent, .skipEvent,
              .speakLow, .speakMedium, .speakHigh:
 
             Say.shared.doSayAction(act, isSender:true)

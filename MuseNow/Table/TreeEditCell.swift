@@ -10,7 +10,6 @@ class TreeEditCell: TreeTitleCell {
     convenience init(_ treeNode_: TreeNode!, _ size:CGSize) {
         
         self.init()
-        height = 64
         treeNode = treeNode_
         buildViews(size)
     }
@@ -18,20 +17,18 @@ class TreeEditCell: TreeTitleCell {
     override func buildViews(_ size: CGSize) {
         
         super.buildViews(size)
-
-        // view
-        // bezel.addSubview(editView)
+        bezel.layer.borderWidth = 1.0
+        bezel.layer.borderColor = UIColor.gray.cgColor
     }
 
-  
     override func updateFrames(_ size:CGSize) {
 
         let leftX = CGFloat(treeNode.level-2) * 2 * marginW
         let leftY = marginH
 
         let bezelX = leftX + leftW + marginW
-        let bezelY = marginH
-        let bezelH = height - 2*marginH
+        let bezelY = marginH / 2
+        let bezelH = height - marginH
         let bezelW = size.width - bezelX
 
         leftFrame  = CGRect(x: leftX,   y: leftY,  width: leftW,  height: leftW)

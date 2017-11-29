@@ -18,7 +18,7 @@ class FileSync: NSObject {
 
     func archiveArray(_ root: [Any], _ fileTime:TimeInterval) {
         
-        //printLog ("⧉ archive:\(fileName) count:\(root.count) memoryTime:\(memoryTime) -> fileTime:\(fileTime)")
+        printLog ("⧉ archive:\(fileName) count:\(root.count) memoryTime:\(memoryTime) -> fileTime:\(fileTime)")
         
         do {
             let data = NSKeyedArchiver.archivedData(withRootObject:root)    

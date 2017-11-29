@@ -42,20 +42,20 @@ class TreeColorTitleMarkCell: TreeTitleMarkCell {
 
     override func updateFrames(_ size:CGSize) {
 
-        let markW = size.height - marginW
+        let markW = height
 
         let leftX = CGFloat(treeNode.level-1) * 2 * marginW
         let leftY = (size.height - leftW) / 2
 
         let bezelX = leftX + leftW + marginW
-        let bezelY = (size.height - innerH) / 2
-        let bezelH = size.height - 2*marginH
+        let bezelY = marginH / 2
+        let bezelH = height - marginH
 
         let markX = size.width - markW
         let markY = bezelY
         let markH = bezelH
 
-        let bezelW = size.width - markW - marginW - bezelX
+        let bezelW = size.width - markW - marginH - bezelX
 
         let colorX = marginW
         let colorY = (bezelH - colorW) / 2

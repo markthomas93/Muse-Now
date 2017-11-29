@@ -18,7 +18,6 @@ class TreeEditTitleCell: TreeEditCell {
         
         self.init()
         treeNode = treeNode_
-        height = 64
         frame.size = CGSize(width: width, height: height)
         buildViews(frame.size)
     }
@@ -60,8 +59,8 @@ class TreeEditTitleCell: TreeEditCell {
         let leftY = marginH
 
         let bezelX = leftX + leftW + marginW
-        let bezelY = marginH
-        let bezelH = height - 2*marginH
+        let bezelY = marginH / 2
+        let bezelH = height - marginH
         let bezelW = size.width - bezelX
 
         let clearH = CGFloat(22)

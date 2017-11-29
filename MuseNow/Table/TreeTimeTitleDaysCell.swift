@@ -64,8 +64,8 @@ class TreeTimeTitleDaysCell: TreeTitleCell {
         let leftY = (size.height - leftW) / 2
 
         let bezelX = leftX + leftW + marginW
-        let bezelY = (size.height - innerH) / 2
-        let bezelH = size.height - 2*marginH
+        let bezelY = marginH / 2
+        let bezelH = height - marginH
         let bezelW = size.width - bezelX
 
         let daysX = bezelW - daysW
@@ -124,7 +124,6 @@ class TreeTimeTitleDaysCell: TreeTitleCell {
             
             let _ = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: {_ in
                 super.touchCell(location, highlight: false)
-                self.child?.setCellHighlight(true)
             })
         case .expanding:
             
@@ -132,7 +131,6 @@ class TreeTimeTitleDaysCell: TreeTitleCell {
             replaceChild()
 
             super.touchCell(location, highlight: false)
-            self.child?.setCellHighlight(true)
         }
     }
 

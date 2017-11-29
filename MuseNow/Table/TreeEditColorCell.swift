@@ -15,7 +15,6 @@ class TreeEditColorCell: TreeEditCell {
         self.init()
         treeNode = treeNode_
         buildViews(size)
-        //setHighlight(true, animated:false)
     }
 
     override func buildViews(_ size: CGSize) {
@@ -34,8 +33,8 @@ class TreeEditColorCell: TreeEditCell {
         let leftY = marginH
 
         let bezelX = leftX + leftW + marginW
-        let bezelY = marginH
-        let bezelH = height - 2*marginH
+        let bezelY = marginH / 2
+        let bezelH = height - marginH
         let bezelW = size.width - bezelX
 
         leftFrame  = CGRect(x: leftX,   y: leftY,  width: leftW,  height: leftW)

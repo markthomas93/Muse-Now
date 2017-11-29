@@ -9,8 +9,6 @@ class TreeTableVC: UITableViewController {
     var cells : [String:MuCell] = [:]
 
     let rowHeight = CGFloat(44)         // timeHeight * (1 + 1/phi2)
-    var root: TreeNode!
-    var prevCell: MuCell!
     var updating = false
 
     var show: TreeNode!
@@ -18,7 +16,7 @@ class TreeTableVC: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let width = view.frame.size.width
-        root = TreeNode(.titleMark, nil,Setting(set:0,member:1,"Settings"), width)
+        TreeNodes.shared.root = TreeNode(.titleMark, nil,Setting(set:0,member:1,"Settings"), width)
         tableView.backgroundColor = .black
         self.view.backgroundColor = .black
     }
@@ -33,6 +31,7 @@ class TreeTableVC: UITableViewController {
     func initTree() {
 
         let width = view.frame.size.width
+        let root = TreeNodes.shared.root
 
         // show | hide - Calendars
 
@@ -89,14 +88,12 @@ class TreeTableVC: UITableViewController {
         let _ =  TreeDialColorNode(dial, "Color", width)
 
         // setup table cells from current state of hierary
-        root.refreshNodeCells()
-        TreeNodes.shared.renumber(show)
+        root!.refreshNodeCells()
+        TreeNodes.shared.renumber()
     }
 
 
     func updateTouchCell(_ cell: TreeCell, reload:Bool, highlight:Bool, _ oldCount: Int = 0) {
-
-        prevCell?.setHighlight(false) 
 
         if reload {
             let row = cell.treeNode.row
@@ -114,8 +111,6 @@ class TreeTableVC: UITableViewController {
                 tableView.reloadData()
             }
         }
-        cell.setHighlight(highlight)  ; printLog("⿳ \(#function): cell.setHighlight(\(highlight))")
-        prevCell = highlight ? cell : nil
     }
 
 

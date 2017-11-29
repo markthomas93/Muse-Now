@@ -15,7 +15,6 @@ class TreeEditWeekdayCell: TreeEditCell {
         
         self.init()
         treeNode = treeNode_
-        height = 64
         frame.size = CGSize(width: width, height: height)
         buildViews(frame.size)
     }
@@ -42,7 +41,7 @@ class TreeEditWeekdayCell: TreeEditCell {
 
         //label.isHighlighted = true
         label.layer.borderWidth = 0.5
-        label.layer.borderColor = UIColor.white.cgColor
+        label.layer.borderColor = UIColor.gray.cgColor
 
         label.text = dayLabels[index]
         return label
@@ -65,7 +64,6 @@ class TreeEditWeekdayCell: TreeEditCell {
                 bezel.addSubview(label)
             }
         }
-        selectionStyle = .none
     }
 
   
@@ -75,8 +73,8 @@ class TreeEditWeekdayCell: TreeEditCell {
         let leftY = marginH
 
         let bezelX = leftX + leftW + marginW
-        let bezelY = marginH
-        let bezelH = height - 2*marginH
+        let bezelY = marginH / 2
+        let bezelH = height - marginH
         let bezelW = size.width - bezelX
 
         let weekW = ceil(bezelW / 7 * 2) / 2

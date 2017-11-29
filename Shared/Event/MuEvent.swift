@@ -78,7 +78,7 @@ open class MuEvent: NSObject, NSCoding {
     func makeEventId(_ ekEvent: EKEvent! = nil) -> String {
         if  let ekEvent = ekEvent,
             let identifier = ekEvent.eventIdentifier {
-            return "\(bgnTime)-\(identifier)-\(title)"
+            return "\(identifier)"
         }
         else {
             return "\(bgnTime)-\(type.rawValue)-\(title)"

@@ -44,8 +44,8 @@ class TreeTitleCell: TreeCell {
         let leftY = (size.height - leftW) / 2
 
         let bezelX = leftX + leftW + marginW
-        let bezelY = (size.height - innerH) / 2
-        let bezelH = size.height - 2*marginH
+        let bezelY = marginH / 2
+        let bezelH = height - marginH
 
         let bezelW = size.width - marginW - bezelX
         let titleW = bezelW - marginW

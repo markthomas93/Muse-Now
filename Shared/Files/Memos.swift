@@ -26,7 +26,7 @@ class Memos: FileSync {
             let lastWeekSecs = Date().timeIntervalSince1970 - weekSecs
             self.items = dataItems.filter { $0.bgnTime >= lastWeekSecs }
             
-            self.items.sort { $0.eventId < $1.eventId }
+            self.items.sort { "\($0.bgnTime)"+$0.eventId < "\($1.bgnTime)"+$1.eventId }
             let fileTime = self.getFileTime()
 
             //printLog ("⧉ Memos::\(#function) items:\(self.items.count) fileTime:\(fileTime) -> memoryTime:\(self.memoryTime) ")

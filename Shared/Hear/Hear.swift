@@ -140,8 +140,8 @@ class Hear {
         case .hearSpeaker:  hearSet.insert(.speaker)
         case .hearEarbuds:  hearSet.insert(.earbuds)
 
-        case .muteSpeaker:   hearSet.remove(.speaker)
-        case .muteEarbuds:   hearSet.remove(.earbuds)
+        case .muteSpeaker:  hearSet.remove(.speaker)
+        case .muteEarbuds:  hearSet.remove(.earbuds)
  
         default: break
         }

@@ -19,8 +19,8 @@
     let rawValue: Int
     static let memo    = SaySet(rawValue: 1 << 0)
     static let event   = SaySet(rawValue: 1 << 1)
-    static let speech  = SaySet(rawValue: 1 << 2)
-    static let time    = SaySet(rawValue: 1 << 3)
+    //static let speech  = SaySet(rawValue: 1 << 2)
+    static let time    = SaySet(rawValue: 1 << 2)
     static let size       = 4
     
  }
@@ -74,12 +74,9 @@
         case .sayEvent:    saySet.insert(.event)
         case .skipEvent:   saySet.remove(.event)
 
-        case .saySpeech:  saySet.insert(.speech)
-        case .skipSpeech: saySet.remove(.speech)
-
-        case .speakLow:     saySet.insert(.speech) ; sayVolume = 0.1
-        case .speakMedium:  saySet.insert(.speech) ; sayVolume = 0.5
-        case .speakHigh:    saySet.insert(.speech) ; sayVolume = 1.0
+        case .speakLow:     sayVolume = 0.1
+        case .speakMedium:  sayVolume = 0.5
+        case .speakHigh:    sayVolume = 1.0
         default: break
         }
         Settings.shared.updateArchive()
@@ -96,7 +93,7 @@
     func getMenus() -> [StrAct] {
 
         var strActs = [StrAct]()
-        strActs.append(saySet.contains(.speech) ? StrAct("skip speech"  , .skipSpeech) : StrAct("say speech", .saySpeech))
+        //strActs.append(saySet.contains(.speech) ? StrAct("skip speech"  , .skipSpeech) : StrAct("say speech", .saySpeech))
         strActs.append(saySet.contains(.memo)   ? StrAct("skip memos"   , .skipMemo)   : StrAct("say memos",  .sayMemo))
         strActs.append(saySet.contains(.event)  ? StrAct("skip events"  , .skipEvent)  : StrAct("say events", .sayEvent))
         strActs.append(saySet.contains(.time)   ? StrAct("skip times"   , .skipTime)   : StrAct("say times",   .sayTime))
@@ -116,7 +113,7 @@
             for phrase in phrases {
                 if sayingNow.phrase == phrase {
                     clearTimers()
-                    if saySet.contains(.speech) { synth.stopSpeaking(at: .immediate) }
+                    if saySet.rawValue > 0 { synth.stopSpeaking(at: .immediate) }
                     else       { actions.doSetTitle("") }
                     return
                 }
@@ -241,7 +238,7 @@
         }
 
         if item.phrase == .phraseMemo && playMemo(item) {}
-        else if saySet.contains(.speech) && playSay(item) {}
+        else if saySet.rawValue > 1 && playSay(item) {}
         else { txtLocal() }
     }
 

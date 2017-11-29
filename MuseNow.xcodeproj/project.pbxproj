@@ -374,6 +374,30 @@
 		800C51B81FC221EF00904121 /* TreeBodyMarkCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeBodyMarkCell.swift; sourceTree = "<group>"; };
 		8018E1A31FC36F8E00F4C0AC /* TreeColorTitleMarkCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeColorTitleMarkCell.swift; sourceTree = "<group>"; };
 		8018E1A51FC394FB00F4C0AC /* TreeEditTimeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeEditTimeCell.swift; sourceTree = "<group>"; };
+		80203BF91FCDC63900CA4D38 /* Repetitions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repetitions.swift; sourceTree = "<group>"; };
+		80203BFA1FCDC63900CA4D38 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
+		80203BFB1FCDC63900CA4D38 /* Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
+		80203BFC1FCDC63900CA4D38 /* Visitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visitor.swift; sourceTree = "<group>"; };
+		80203BFE1FCDC63900CA4D38 /* Muse+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Muse+Test.swift"; sourceTree = "<group>"; };
+		80203BFF1FCDC63900CA4D38 /* Muse.par */ = {isa = PBXFileReference; lastKnownFileType = text; path = Muse.par; sourceTree = "<group>"; };
+		80203C001FCDC63900CA4D38 /* Muse.par2 */ = {isa = PBXFileReference; lastKnownFileType = text; path = Muse.par2; sourceTree = "<group>"; };
+		80203C011FCDC63900CA4D38 /* Muse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Muse.swift; sourceTree = "<group>"; };
+		80203C021FCDC63900CA4D38 /* MuseFound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuseFound.swift; sourceTree = "<group>"; };
+		80203C031FCDC63900CA4D38 /* Routine.par */ = {isa = PBXFileReference; lastKnownFileType = text; path = Routine.par; sourceTree = "<group>"; };
+		80203C051FCDC63900CA4D38 /* Edge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Edge.swift; sourceTree = "<group>"; };
+		80203C061FCDC63900CA4D38 /* Node+connect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Node+connect.swift"; sourceTree = "<group>"; };
+		80203C071FCDC63900CA4D38 /* Node+find.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Node+find.swift"; sourceTree = "<group>"; };
+		80203C081FCDC63900CA4D38 /* Node+print.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Node+print.swift"; sourceTree = "<group>"; };
+		80203C091FCDC63900CA4D38 /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
+		80203C0A1FCDC63900CA4D38 /* NodeAny.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeAny.swift; sourceTree = "<group>"; };
+		80203C0B1FCDC63900CA4D38 /* NodeAnys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeAnys.swift; sourceTree = "<group>"; };
+		80203C0D1FCDC63900CA4D38 /* Par.par */ = {isa = PBXFileReference; lastKnownFileType = text; path = Par.par; sourceTree = "<group>"; };
+		80203C0E1FCDC63900CA4D38 /* Par.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Par.swift; sourceTree = "<group>"; };
+		80203C0F1FCDC63900CA4D38 /* ParLem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParLem.swift; sourceTree = "<group>"; };
+		80203C101FCDC63900CA4D38 /* ParObj.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParObj.swift; sourceTree = "<group>"; };
+		80203C111FCDC63900CA4D38 /* ParStr+Compare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ParStr+Compare.swift"; sourceTree = "<group>"; };
+		80203C121FCDC63900CA4D38 /* ParStr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParStr.swift; sourceTree = "<group>"; };
+		80203C131FCDC63900CA4D38 /* ParWords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParWords.swift; sourceTree = "<group>"; };
 		803C5B211FBF622400BA9C6C /* TreeTableVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeTableVC.swift; sourceTree = "<group>"; };
 		803C5F4B1FA3DFBD002A1C11 /* MuseNow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MuseNow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		803C5F5D1FA3DFBE002A1C11 /* MuseNow WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MuseNow WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -697,6 +721,69 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
+		80203BF71FCDC63900CA4D38 /* ParGraph */ = {
+			isa = PBXGroup;
+			children = (
+				80203BF81FCDC63900CA4D38 /* Etc */,
+				80203BFD1FCDC63900CA4D38 /* Muse */,
+				80203C041FCDC63900CA4D38 /* Node */,
+				80203C0C1FCDC63900CA4D38 /* Par */,
+			);
+			path = ParGraph;
+			sourceTree = "<group>";
+		};
+		80203BF81FCDC63900CA4D38 /* Etc */ = {
+			isa = PBXGroup;
+			children = (
+				80203BF91FCDC63900CA4D38 /* Repetitions.swift */,
+				80203BFA1FCDC63900CA4D38 /* String+.swift */,
+				80203BFB1FCDC63900CA4D38 /* Types.swift */,
+				80203BFC1FCDC63900CA4D38 /* Visitor.swift */,
+			);
+			path = Etc;
+			sourceTree = "<group>";
+		};
+		80203BFD1FCDC63900CA4D38 /* Muse */ = {
+			isa = PBXGroup;
+			children = (
+				80203BFE1FCDC63900CA4D38 /* Muse+Test.swift */,
+				80203BFF1FCDC63900CA4D38 /* Muse.par */,
+				80203C001FCDC63900CA4D38 /* Muse.par2 */,
+				80203C011FCDC63900CA4D38 /* Muse.swift */,
+				80203C021FCDC63900CA4D38 /* MuseFound.swift */,
+				80203C031FCDC63900CA4D38 /* Routine.par */,
+			);
+			path = Muse;
+			sourceTree = "<group>";
+		};
+		80203C041FCDC63900CA4D38 /* Node */ = {
+			isa = PBXGroup;
+			children = (
+				80203C051FCDC63900CA4D38 /* Edge.swift */,
+				80203C061FCDC63900CA4D38 /* Node+connect.swift */,
+				80203C071FCDC63900CA4D38 /* Node+find.swift */,
+				80203C081FCDC63900CA4D38 /* Node+print.swift */,
+				80203C091FCDC63900CA4D38 /* Node.swift */,
+				80203C0A1FCDC63900CA4D38 /* NodeAny.swift */,
+				80203C0B1FCDC63900CA4D38 /* NodeAnys.swift */,
+			);
+			path = Node;
+			sourceTree = "<group>";
+		};
+		80203C0C1FCDC63900CA4D38 /* Par */ = {
+			isa = PBXGroup;
+			children = (
+				80203C0D1FCDC63900CA4D38 /* Par.par */,
+				80203C0E1FCDC63900CA4D38 /* Par.swift */,
+				80203C0F1FCDC63900CA4D38 /* ParLem.swift */,
+				80203C101FCDC63900CA4D38 /* ParObj.swift */,
+				80203C111FCDC63900CA4D38 /* ParStr+Compare.swift */,
+				80203C121FCDC63900CA4D38 /* ParStr.swift */,
+				80203C131FCDC63900CA4D38 /* ParWords.swift */,
+			);
+			path = Par;
+			sourceTree = "<group>";
+		};
 		803C5F421FA3DFBD002A1C11 = {
 			isa = PBXGroup;
 			children = (
@@ -722,6 +809,7 @@
 		803C5F4D1FA3DFBD002A1C11 /* MuseNow */ = {
 			isa = PBXGroup;
 			children = (
+				80203BF71FCDC63900CA4D38 /* ParGraph */,
 				804D5A0B1FA3FCAA0025B724 /* Table */,
 				804D59F61FA3FC8B0025B724 /* Classes */,
 				8004F6111FA3EB0100F7ED94 /* Base.lproj */,

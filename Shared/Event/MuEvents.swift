@@ -15,11 +15,13 @@ class MuEvents {
 
     var calendars = [EKCalendar]()
     var events = [MuEvent]()
-    var timeEvent: MuEvent!
+    var idEvents = [String:MuEvent]() // find event based on eventId
+    var timeEvent: MuEvent!         // unique event for displaying time
     var timeEventIndex : Int = -1   // index of timeEvent in muEvents
 
     let eventStore = EKEventStore()
     var refreshTimer = Timer()
+
 
     /**
      Main entry for updating events
@@ -28,10 +30,11 @@ class MuEvents {
     func updateEvents(_ completion: @escaping () -> Void) {
 
         // real events used for production
-        getRealEvents() { ekEvents, ekReminds, memos, routine in
+        getRealEvents(Show.shared.showSet) { ekEvents, ekReminds, memos, routine in
 
             self.events.removeAll()
-            self.events = ekEvents + ekReminds + memos + routine //+ self.getNearbyEvents() 
+            self.events = ekEvents + ekReminds + memos + routine //+ self.getNearbyEvents()
+            self.idEvents = self.events.reduce(into: [String: MuEvent]()) { $0[$1.eventId] = $1 }
             self.sortTimeEventsStart()
             self.applyMarks()
             self.marks.synchronize()
@@ -50,14 +53,33 @@ class MuEvents {
         // often, more than one notification comes in a batch, so defer multiple refreshes
         refreshTimer.invalidate()
         refreshTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false, block: {_ in 
-            Actions.shared.doAction(.refresh)
+            self.markCalendarAdditions()
         })
     }
+
+    func markCalendarAdditions () {
+        getRealEvents([.calendar,.reminder]) { ekEvents, ekReminds, memos, routine in
+            for nowEvents in [ekEvents,ekReminds] {
+                for event in nowEvents {
+                    // new event added
+                    if self.idEvents[event.eventId] == nil {
+                        Marks.shared.updateAct(.markOn, event)
+                    }
+                        // existing event's begin time changed
+                    else if self.idEvents[event.eventId]?.bgnTime != event.bgnTime {
+                        Marks.shared.updateAct(.markOn, event)
+                    }
+                }
+            }
+            Actions.shared.doAction(.refresh)
+        }
+    }
+
 
     /**
     Get events from several data sources, each on its own thread
     */
-    func getRealEvents(_ completion: @escaping (
+    func getRealEvents(_ set:ShowSet, _ completion: @escaping (
         _ ekEvents      : [MuEvent],
         _ ekReminders   : [MuEvent],
         _ memos         : [MuEvent],
@@ -183,7 +205,7 @@ class MuEvents {
                     events.append(MuEvent(ekEvent))
                 }
             }
-            events.sort { $0.bgnTime < $1.endTime }
+            events.sort { "\($0.bgnTime)"+$0.eventId < "\($1.bgnTime)"+$1.eventId  }
             completion(events)
         }
     }
@@ -228,7 +250,7 @@ class MuEvents {
             memos.addEvent(event)
         }
         events.sort { lhs, rhs in
-            return lhs.bgnTime < rhs.bgnTime
+            return "\(lhs.bgnTime)"+lhs.eventId < "\(rhs.bgnTime)"+rhs.eventId // lhs.bgnTime < rhs.bgnTime
         }
     }
     
@@ -275,7 +297,7 @@ class MuEvents {
         }
         events.append(timeEvent)
         events.sort { lhs, rhs in
-            return lhs.bgnTime < rhs.bgnTime
+            return "\(lhs.bgnTime)"+lhs.eventId < "\(rhs.bgnTime)"+rhs.eventId 
         }
     }
     

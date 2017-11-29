@@ -17,7 +17,6 @@ class TreeTitleFaderCell: TreeTitleCell {
     convenience init(_ treeNode_: TreeNode!, _ width:CGFloat) {
 
         self.init()
-        //height = 64
         frame.size = CGSize(width:width, height:height)
         treeNode = treeNode_
         let str = treeNode.setting?.title ?? "Unknown"
@@ -43,7 +42,7 @@ class TreeTitleFaderCell: TreeTitleCell {
         let leftY = (size.height - leftW) / 2
 
         let bezelX = leftX + leftW + marginW
-        let bezelY = (size.height - innerH) / 2
+        let bezelY = marginH / 2
         let bezelH = size.height //- 2*marginH
 
         let bezelW = size.width - marginW - bezelX
