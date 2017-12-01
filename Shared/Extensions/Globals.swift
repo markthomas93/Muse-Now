@@ -22,18 +22,14 @@ func printLog(_ str: String) {
     //case NSLog(str)
 
     case
+    "▤", // TreeTableView
     "⧉", // sync files
     "⌘", // doAction
     "▭", // textfield
     "✺", // complication
     "⿳", // menu
 
-    "←", // session receiving
-    "↔︎", // session activation state
-    "→", // session sending
-
-    "⧉", // sync files
-    "📅", // EkNotification
+     "📅", // EkNotification
     "🔈", // Audio
 
     "🎧", // Hear Via
@@ -42,6 +38,10 @@ func printLog(_ str: String) {
         print(MuDate.getHourMinSecMsec() + ": " + str)
         
     case
+    "←", // session receiving
+    "↔︎", // session activation state
+    "→", // session sending
+
     "𐂷", // tree cell
     "𝓡", // routine
     "🗣", // Say TTS

@@ -13,7 +13,7 @@ extension MuEvents {
     
     /**
      Refresh all event's marks, after reading Marks.plist
-      - via: MuEvents::updateRealEvents
+      - via: MuEvents::updateEvents
       - via: Session::parseMsg(Msg["addFile":"Marks.plist",...])
      */
     func applyMarks() { printLog ("✓ \(#function)")

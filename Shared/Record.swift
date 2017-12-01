@@ -47,7 +47,8 @@ class Record: NSObject, CLLocationManagerDelegate {
             finishRecording()
             Haptic.play(.stop)
         }
-        else {
+            // only allow recording if "show memo" is set
+        else if Show.shared.canShow(.memo) {
             Haptic.play(.start)
             queueRecording()
         }
@@ -66,8 +67,10 @@ class Record: NSObject, CLLocationManagerDelegate {
         catch { printLog("∿∿∿ \(#function) !!! catch") }
     }
 
-     /// setup multithread queue to prepare, animate, start locacation,
-    /// which all must finish before startRecording()
+     /**
+     Setup multithread queue to prepare, animate, start locacation,
+     which all must finish before startRecording()
+     */
     func queueRecording() {
         
         func prepareRecording(_ done: @escaping () -> ()) {
@@ -94,7 +97,6 @@ class Record: NSObject, CLLocationManagerDelegate {
             audioRecorder?.record()
             audioTimer = Timer.scheduledTimer(timeInterval: recDur, target: self, selector: #selector(finishRecording), userInfo: nil, repeats: false)
         }
-
 
         if isRecording {  return }
         isRecording = true

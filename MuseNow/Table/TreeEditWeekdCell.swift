@@ -98,7 +98,7 @@ class TreeEditWeekdayCell: TreeEditCell {
 
     }
 
-    override func touchCell(_ point: CGPoint, highlight: Bool = true) {
+    override func touchCell(_ point: CGPoint) {
 
         let location = CGPoint(x: point.x - bezelFrame.origin.x, y: point.y)
 

@@ -34,6 +34,9 @@ class TreeTitleCell: TreeCell {
         title.text = treeNode.setting?.title ?? ""
         title.textColor = .white
         title.highlightedTextColor = .white
+        title.layer.cornerRadius = innerH/4
+        title.layer.borderWidth = 0.5
+        title.layer.borderColor = UIColor.clear.cgColor
 
         bezel.addSubview(title)
     }

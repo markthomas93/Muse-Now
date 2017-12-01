@@ -111,31 +111,35 @@ class TreeNode {
         callback?(self)
     }
     func updateOnRatioFromChildren() {
-        if children.count > 0 {
 
-            // only count children which have marks
-            var markCount = CGFloat(0)
-            var isOnCount = CGFloat(0)
-            for child in children {
-                switch child.type {
-                case .titleMark,
-                     .colorTitleMark:
-                    markCount += 1.0
-                    isOnCount += child.setting.isOn() ? 1.0 : 0.0
-                default: break // ignore non marked child
+        if setting.setFrom.contains(.child) {
+
+            if children.count > 0 {
+
+                // only count children which have marks
+                var markCount = CGFloat(0)
+                var isOnCount = CGFloat(0)
+                for child in children {
+                    switch child.type {
+                    case .titleMark,
+                         .colorTitleMark:
+                        markCount += 1.0
+                        isOnCount += child.setting.isOn() ? 1.0 : 0.0
+                    default: break // ignore non marked child
+                    }
                 }
-            }
-            if markCount > 0 {
-                onRatio =  isOnCount/markCount
+                if markCount > 0 {
+                    onRatio =  isOnCount/markCount
+                }
+                else {
+                    onRatio = CGFloat(setting.isOn() ? 1.0 : 0.0)
+                }
             }
             else {
                 onRatio = CGFloat(setting.isOn() ? 1.0 : 0.0)
             }
+            setting.setOn(onRatio > 0) // synch setting with onRatio
         }
-        else {
-            onRatio = CGFloat(setting.isOn() ? 1.0 : 0.0)
-        }
-        setting.setOn(onRatio > 0) // synch setting with onRatio
     }
 
     func updateMyChildren() {
@@ -147,7 +151,10 @@ class TreeNode {
         }
     }
     func updateOnFromParent(_ parentOn:Bool) {
-        if parentOn != setting.isOn() {
+
+        if  setting.setFrom.contains(.parent),
+            parentOn != setting.isOn() {
+
             let isOn = setting.flipSet()
             onRatio = isOn ? 1.0 : 0.0
             setting.setOn(onRatio > 0) // synch setting with onRatio
@@ -238,7 +245,7 @@ class TreeDialColorNode: TreeNode {
 
 class TreeActNode: TreeNode {
     init (_ parent_:TreeNode!,_ title_:String, _ set:Int, _ member: Int,_ onAct:DoAction,_ offAct:DoAction,_ width: CGFloat) {
-        super.init(.titleMark, parent_, Setting(set:0,member:1,title_), width)
+        super.init(.titleMark, parent_, Setting(set:set,member:member,title_), width)
 
         // callback to set action message based on isOn()
         callback = { treeNode in
@@ -250,13 +257,15 @@ class TreeActNode: TreeNode {
 class TreeRoutineCategoryNode: TreeNode {
     init (_ parent_:TreeNode!,_ title_:String, _ width:CGFloat) {
         super.init(.colorTitle, parent_, Setting(set:0,member:1,title_), width)
+        
     }
 }
 class TreeRoutineItemNode: TreeNode {
     var routineItem: RoutineItem!
     init (_ type_: TreeNodeType,_ parent_:TreeNode!,_ item:RoutineItem, _ width:CGFloat) {
         routineItem = item
-        super.init(type_, parent_, Setting(set:0, member:1, item.title), width)
+        let setting = Setting(set:0, member:1, item.title, [])
+        super.init(type_, parent_, setting, width)
         // callback to refresh display for changes
         callback = { treeNode in
             Actions.shared.doAction(.refresh)

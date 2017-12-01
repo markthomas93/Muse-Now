@@ -51,7 +51,7 @@ class MuCell: UITableViewCell {
 
     var startTime = TimeInterval(0)
     
-    func touchCell(_ location: CGPoint, highlight: Bool = true) { } // print("\(#function) should override !!!") }
+    func touchCell(_ location: CGPoint) { } // print("\(#function) should override !!!") }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) { //print(#function)
         

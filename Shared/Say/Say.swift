@@ -19,16 +19,18 @@
     let rawValue: Int
     static let memo    = SaySet(rawValue: 1 << 0)
     static let event   = SaySet(rawValue: 1 << 1)
-    //static let speech  = SaySet(rawValue: 1 << 2)
     static let time    = SaySet(rawValue: 1 << 2)
-    static let size       = 4
+    static let size    = 3
     
  }
 
  class Say : NSObject, AVSpeechSynthesizerDelegate {
     
     static let shared = Say()
-    
+
+    var saySet = SaySet([.event, .time])
+    var sayVolume = Float(1.0)
+
     #if os(watchOS)
     let itemDuration = TimeInterval(1) // duration when not speaking
     #else
@@ -43,9 +45,6 @@
     var audioSession = AVAudioSession.sharedInstance()
     var title = ""
 
-    var saySet = SaySet([.memo, .event, .time])
-
-    var sayVolume = Float(0.5)
 
     weak var sayTimer : Timer?
     weak var txtTimer : Timer?

@@ -98,28 +98,28 @@ class Actions {
      - via: FileMsg.parseMsg
      */
     func doRefresh(_ isSender:Bool) {
-        
+
         scene?.pauseScene()
 
-        /// testing: MuEvents.shared.updateFakeEvents() {
-        MuEvents.shared.updateEvents() {
-            
-            self.scene?.updateSceneFinish()
-            Dots.shared.updateTime(event: MuEvents.shared.timeEvent)
-            if let table = self.tableDelegate {
+        Settings.shared.unarchiveSettings {
 
-                table.updateTable(MuEvents.shared.events)
-                table.updateTimeEvent()
-                if let timeEvent = MuEvents.shared.timeEvent {
-                    table.scrollSceneEvent(timeEvent)
+            MuEvents.shared.updateEvents() {
+
+                self.scene?.updateSceneFinish()
+                Dots.shared.updateTime(event: MuEvents.shared.timeEvent)
+                if let table = self.tableDelegate {
+
+                    table.updateTable(MuEvents.shared.events)
+                    table.updateTimeEvent()
+                    if let timeEvent = MuEvents.shared.timeEvent {
+                        table.scrollSceneEvent(timeEvent)
+                    }
                 }
+                #if os(watchOS)
+                    Crown.shared.updateCrown()
+                #endif
             }
-            #if os(watchOS)
-                Crown.shared.updateCrown()
-            #endif
-            Settings.shared.unarchiveSettings {
-                Settings.shared.synchronize()
-            }
+             Settings.shared.synchronize()
         }
         
         if isSender {

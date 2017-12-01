@@ -78,8 +78,7 @@ extension EventTableVC {
     }
     
     
-    /// - via: nextMuCell
-    /// - via: scrollDialEvent
+    /// - via: eventTable
     
     func clearPrevCell() {
         

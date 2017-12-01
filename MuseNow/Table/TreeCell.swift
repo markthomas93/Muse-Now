@@ -156,7 +156,7 @@ class TreeCell: MuCell {
         })
     }
 
-    override func touchCell(_ location: CGPoint, highlight: Bool = true) {
+    override func touchCell(_ location: CGPoint) {
 
         // when collapsing sibling, self may also get collapsed, so need to know original state to determine highlight
         let wasExpanded = treeNode.expanded
@@ -166,7 +166,7 @@ class TreeCell: MuCell {
         if treeNode.parent != nil {
             for sib in treeNode.parent.children {
                 if sib.expanded {
-                    sib.cell.touchFlipExpand(highlight:false)
+                    sib.cell.touchFlipExpand(self)
                     siblingCollapsing = true
                     break
                 }
@@ -179,17 +179,13 @@ class TreeCell: MuCell {
             if siblingCollapsing {
                 // wait until sibling has finshed collapasing before expanding self
                 let _ = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: {_ in
-                    self.touchFlipExpand(highlight:highlight)
+                    self.touchFlipExpand(self)
                 })
                 return
             }
             else {
-                return touchFlipExpand(highlight:highlight)
+                return touchFlipExpand(self)
             }
-        }
-        // either no siblings were collapsed or I'm not one of the siblings with children
-        if !siblingCollapsing || treeNode.children.count == 0 {
-            PagesVC.shared.treeTable.updateTouchCell(self, reload:false, highlight: true)
         }
     }
 
@@ -208,9 +204,7 @@ class TreeCell: MuCell {
         }
     }
 
-    func touchFlipExpand(highlight:Bool) {
-        
-        let oldCount = TreeNodes.shared.shownNodes.count
+    func touchFlipExpand(_ focus:TreeCell) {
 
         if treeNode.expanded == true {
             collapseAllTheWayDown()
@@ -219,8 +213,7 @@ class TreeCell: MuCell {
             treeNode.expanded = true
             updateLeft(animate:true)
         }
-        TreeNodes.shared.renumber()
-        PagesVC.shared.treeTable.updateTouchCell(self, reload:true, highlight:highlight, oldCount)
+        PagesVC.shared.treeTable.updateTouchCell(self,focus)
     }
 }
 

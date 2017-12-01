@@ -101,15 +101,14 @@ class TreeTitleMarkCell: TreeTitleCell {
         })
     }
 
-    override func touchCell(_ location: CGPoint, highlight: Bool = true) {
+    override func touchCell(_ location: CGPoint) {
 
-        let toggleX = frame.size.width -  frame.size.height*1.618
+        let toggleX = frame.size.width -  frame.size.height * 1.618
         if colorStyle != .other,
             location.x > toggleX {
 
             let isOn = treeNode.toggle()
             mark.setMark(isOn)
-            PagesVC.shared.treeTable.updateTouchCell(self, reload:false, highlight: true)
         }
         else {
             super.touchCell(location)

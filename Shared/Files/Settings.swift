@@ -28,7 +28,7 @@ class Settings: FileSync {
                 self.updateFromArchive()
                 self.memoryTime = fileTime
             }
-            printLog ("⧉ Settings::\(#function) saySet:\(Say.shared.saySet) hearSet:\(Hear.shared.hearSet) fileTime:\(fileTime) -> memoryTime:\(self.memoryTime)")
+            printLog ("⧉ Settings::\(#function) show:\(Show.shared.showSet.rawValue) saySet:\(Say.shared.saySet.rawValue) hearSet:\(Hear.shared.hearSet.rawValue) fileTime:\(fileTime) -> memoryTime:\(self.memoryTime)")
             completion()
         }
     }

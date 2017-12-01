@@ -29,6 +29,7 @@ extension TreeEditTitleCell: UITextFieldDelegate {
     // delegates
 
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+
         printLog ("▭ \(#function)")
         if textField.text != nil {
             textField.text = ""

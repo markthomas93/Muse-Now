@@ -15,16 +15,9 @@ struct HearSet: OptionSet {
 class Hear {
 
     static let shared = Hear()
-    #if os(watchOS)
     var hearSet = HearSet([.earbuds]) // user options -- manually set
     var route   = HearSet([])
-    #else
-    var hearSet = HearSet([.earbuds,.speaker]) // user options -- manually set
-    var route   = HearSet([.speaker])
-    #endif
-
     var local   = HearSet([.speaker])     // this device's harware route
-
     var reason  = "unknown reason"   // reason for change
 
     init() {

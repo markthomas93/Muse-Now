@@ -10,6 +10,7 @@ class TreeEditTitleCell: TreeEditCell {
     var textClear: UIImageView!
     var clearFrame = CGRect.zero
 
+
     convenience required init(coder decoder: NSCoder) {
         self.init(coder: decoder)
     }
@@ -50,9 +51,22 @@ class TreeEditTitleCell: TreeEditCell {
 
         bezel.addSubview(textField)
         bezel.addSubview(textClear)
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow),
+            name: NSNotification.Name.UIKeyboardWillShow,
+            object: nil
+        )
     }
 
-  
+    @objc func keyboardWillShow(_ notification: Notification) {
+        if let frameVal: NSValue = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue {
+            let height = frameVal.cgRectValue.size.height
+            printLog ("▭ \(#function) height:\(height))")
+        }
+    }
+
     override func updateFrames(_ size:CGSize) {
 
         let leftX = CGFloat(treeNode.level-2) * 2 * marginW
