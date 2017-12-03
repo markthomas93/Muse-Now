@@ -69,6 +69,9 @@ class EventCell: MuCell {
     
     override func touchCell(_ location: CGPoint) {
 
+        if let tableVC = tableVC as? TreeTableVC {
+            tableVC.touchedCell = self
+        }
         let toggleX = frame.size.width -  frame.size.height*1.618
         if location.x > toggleX {
 

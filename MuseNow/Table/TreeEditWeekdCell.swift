@@ -11,11 +11,12 @@ class TreeEditWeekdayCell: TreeEditCell {
         self.init(coder: decoder)
     }
 
-    convenience init(_ treeNode_: TreeNode!, _ width: CGFloat) {
-        
+    convenience init(_ treeNode_: TreeNode!, _ tableVC_:UITableViewController) {
         self.init()
+        tableVC = tableVC_
+        height = 64
+        frame.size = CGSize(width:tableVC.view.frame.size.width, height:height)
         treeNode = treeNode_
-        frame.size = CGSize(width: width, height: height)
         buildViews(frame.size)
     }
 
@@ -100,6 +101,9 @@ class TreeEditWeekdayCell: TreeEditCell {
 
     override func touchCell(_ point: CGPoint) {
 
+        if let tableVC = tableVC as? TreeTableVC {
+            tableVC.touchedCell = self
+        }
         let location = CGPoint(x: point.x - bezelFrame.origin.x, y: point.y)
 
         for i in 0..<7 {

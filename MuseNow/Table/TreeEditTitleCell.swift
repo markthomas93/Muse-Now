@@ -10,16 +10,15 @@ class TreeEditTitleCell: TreeEditCell {
     var textClear: UIImageView!
     var clearFrame = CGRect.zero
 
-
     convenience required init(coder decoder: NSCoder) {
         self.init(coder: decoder)
     }
 
-    convenience init(_ treeNode_: TreeNode!, _ width: CGFloat) {
-        
+    convenience init(_ treeNode_: TreeNode!, _ tableVC_:UITableViewController) {
         self.init()
+        tableVC = tableVC_
+        frame.size = CGSize(width:tableVC.view.frame.size.width, height:height)
         treeNode = treeNode_
-        frame.size = CGSize(width: width, height: height)
         buildViews(frame.size)
     }
 
@@ -39,6 +38,7 @@ class TreeEditTitleCell: TreeEditCell {
         textField.clearButtonMode = .whileEditing
         textField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
         textField.keyboardAppearance = UIAccessibilityIsInvertColorsEnabled() ? .default : .dark
+        textField.autocorrectionType = .no
         textClear = UIImageView(frame:clearFrame)
         textClear.image = UIImage(named: "Icon-X-plus.png")
         textClear.isUserInteractionEnabled = false
@@ -52,22 +52,10 @@ class TreeEditTitleCell: TreeEditCell {
         bezel.addSubview(textField)
         bezel.addSubview(textClear)
 
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(keyboardWillShow),
-            name: NSNotification.Name.UIKeyboardWillShow,
-            object: nil
-        )
-    }
+     }
 
-    @objc func keyboardWillShow(_ notification: Notification) {
-        if let frameVal: NSValue = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue {
-            let height = frameVal.cgRectValue.size.height
-            printLog ("▭ \(#function) height:\(height))")
-        }
-    }
 
-    override func updateFrames(_ size:CGSize) {
+     override func updateFrames(_ size:CGSize) {
 
         let leftX = CGFloat(treeNode.level-2) * 2 * marginW
         let leftY = marginH
@@ -81,10 +69,10 @@ class TreeEditTitleCell: TreeEditCell {
         let clearX = bezelW - clearH - marginW
         let clearY = (bezelH-clearH)/2
 
-        leftFrame     = CGRect(x: leftX,   y: leftY,  width: leftW,  height: leftW)
-        textFrame     = CGRect(x: 0,       y: 0,      width: bezelW, height: bezelH)
-        clearFrame    = CGRect(x: clearX,  y: clearY, width: clearH, height: clearH)
-        bezelFrame    = CGRect(x: bezelX,  y: bezelY, width: bezelW, height: bezelH)
+        leftFrame  = CGRect(x: leftX,   y: leftY,  width: leftW,  height: leftW)
+        textFrame  = CGRect(x: 0,       y: 0,      width: bezelW, height: bezelH)
+        clearFrame = CGRect(x: clearX,  y: clearY, width: clearH, height: clearH)
+        bezelFrame = CGRect(x: bezelX,  y: bezelY, width: bezelW, height: bezelH)
     }
 
     override func updateViews() {
@@ -93,7 +81,7 @@ class TreeEditTitleCell: TreeEditCell {
 
     }
 
- }
+  }
 
 
 

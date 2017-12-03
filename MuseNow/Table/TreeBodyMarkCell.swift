@@ -13,10 +13,10 @@ class TreeTitleMarkCell: TreeTitleCell {
         self.init(coder: decoder)
     }
 
-    convenience init(_ treeNode_: TreeNode!, _ width:CGFloat) {
-
+    convenience init(_ treeNode_: TreeNode!, _ tableVC_:UITableViewController) {
         self.init()
-        frame.size = CGSize(width:width, height:height)
+        tableVC = tableVC_
+        frame.size = CGSize(width:tableVC.view.frame.size.width, height:height)
         treeNode = treeNode_
         buildViews(frame.size)
     }
@@ -35,8 +35,8 @@ class TreeTitleMarkCell: TreeTitleCell {
         mark.setMark(treeNode.setting.isOn())
 
         contentView.addSubview(mark)
-
     }
+
     /**
      cell can be partially grayed out depending on number of children are set
      */
@@ -75,9 +75,9 @@ class TreeTitleMarkCell: TreeTitleCell {
 
         title.frame = titleFrame
         bezel.frame = bezelFrame
-        mark.frame = markFrame
-
+        mark.frame  = markFrame
     }
+
     override func setCellColorStyle(_ colorStyle_:CellColorStyle) {
 
         colorStyle = colorStyle_
@@ -88,8 +88,8 @@ class TreeTitleMarkCell: TreeTitleCell {
 
         switch colorStyle {
         case .parent: background = headColor ; newAlpha = 1.0 ; markBorder = .gray
-        case .child: background  = cellColor ; newAlpha = 1.0 ; markBorder = .gray
-        case .other: background  = .black    ; newAlpha = 0.6 ; markBorder = .black
+        case .child:  background = cellColor ; newAlpha = 1.0 ; markBorder = .gray
+        case .other:  background = .black    ; newAlpha = 0.6 ; markBorder = .black
         }
         UIView.animate(withDuration: 0.25, animations: {
             self.bezel.backgroundColor = background
@@ -102,6 +102,10 @@ class TreeTitleMarkCell: TreeTitleCell {
     }
 
     override func touchCell(_ location: CGPoint) {
+
+        if let tableVC = tableVC as? TreeTableVC {
+            tableVC.touchedCell = self
+        }
 
         let toggleX = frame.size.width -  frame.size.height * 1.618
         if colorStyle != .other,

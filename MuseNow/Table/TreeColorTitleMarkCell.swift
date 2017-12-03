@@ -14,11 +14,12 @@ class TreeColorTitleMarkCell: TreeTitleMarkCell {
         self.init(coder: decoder)
     }
 
-    convenience init(_ treeNode_: TreeNode!, _ size:CGSize) {
-        
+    convenience init(_ treeNode_: TreeNode!, _ tableVC_:UITableViewController) {
         self.init()
+        tableVC = tableVC_
+        frame.size = CGSize(width:tableVC.view.frame.size.width, height:height)
         treeNode = treeNode_
-        buildViews(size)
+        buildViews(frame.size)
     }
 
     override func buildViews(_ size: CGSize) {

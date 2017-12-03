@@ -7,7 +7,7 @@ class MuCell: UITableViewCell {
     
     var event : MuEvent!
     var isHighlight = false
-    var tableView : UITableView!
+    var tableVC : UITableViewController!
     var height = CGFloat(44)
 
     func setHighlight(_ isHighlight_:Bool, animated:Bool = true) {
@@ -55,7 +55,7 @@ class MuCell: UITableViewCell {
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) { //print(#function)
         
-        tableView?.isScrollEnabled = false
+        tableVC?.tableView.isScrollEnabled = false
         PagesVC.shared.scrollView?.isScrollEnabled = false
         
         startTime = (event?.timestamp)!
@@ -73,7 +73,7 @@ class MuCell: UITableViewCell {
         }
         super.touchesEnded(touches, with: event)
         
-        tableView?.isScrollEnabled = true
+        tableVC?.tableView.isScrollEnabled = true
         PagesVC.shared.scrollView?.isScrollEnabled = true
     }
 

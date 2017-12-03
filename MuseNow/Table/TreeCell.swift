@@ -26,10 +26,10 @@ class TreeCell: MuCell {
         self.init(coder: decoder)
     }
 
-    convenience init(_ treeNode_: TreeNode!, _ width:CGFloat) {
-
+    convenience init(_ treeNode_: TreeNode!, _ tableVC_:UITableViewController) {
         self.init()
-        frame.size = CGSize(width:width, height:height)
+        tableVC = tableVC_
+        frame.size = CGSize(width:tableVC.view.frame.size.width, height:height)
         treeNode = treeNode_
         buildViews(frame.size)
     }
@@ -75,7 +75,8 @@ class TreeCell: MuCell {
     func updateLeft(animate:Bool) {
 
         var transform = CGAffineTransform.identity
-        var alpha = CGFloat(0.0)
+        var alphaPrev = self.alpha
+        var alphaNext = CGFloat(0.0)
 
         if let treeNode = treeNode {
 
@@ -101,7 +102,7 @@ class TreeCell: MuCell {
 
                 let angle = CGFloat(treeNode.expanded ? Pi/3 : 0)
                 transform = CGAffineTransform(rotationAngle: angle)
-                alpha = treeNode.expanded ? 1.0 : 0.25
+                alphaNext = treeNode.expanded ? 1.0 : 0.25
             }
             //printLog ("𐂷 \(treeNode.setting?.title ?? "unknown") \(treeNode.type):\(expandable) ")
         }
@@ -109,12 +110,13 @@ class TreeCell: MuCell {
         if animate {
             UIView.animate(withDuration: 0.25, animations: {
                 self.left.transform = transform
-                self.left.alpha = alpha
+                self.left.alpha = alphaNext
+
             })
         }
         else {
             left.transform = transform
-            left.alpha = alpha
+            left.alpha = alphaNext
         }
     }
 
@@ -157,6 +159,9 @@ class TreeCell: MuCell {
     }
 
     override func touchCell(_ location: CGPoint) {
+        if let tableVC = tableVC as? TreeTableVC {
+            tableVC.touchedCell = self
+        }
 
         // when collapsing sibling, self may also get collapsed, so need to know original state to determine highlight
         let wasExpanded = treeNode.expanded

@@ -164,11 +164,23 @@ class TreeTimeTitleDaysCell: TreeTitleCell {
             titleBzl.layer.borderColor = color.cgColor
             daysBzl.layer.borderColor  = color.cgColor
         }
+        if type == .title,
+            let child = treeNode.children.first?.cell as? TreeEditTitleCell {
+                child.textField.becomeFirstResponder()
+        }
     }
     override func touchCell(_ point: CGPoint) {
 
+        if let tableVC = tableVC as? TreeTableVC {
+            tableVC.touchedCell = self
+        }
+        
         let location = CGPoint(x: point.x - bezelFrame.origin.x, y: point.y)
+        if editType == .title,
+            let child = treeNode.children.first?.cell as? TreeEditTitleCell {
 
+            child.textField.resignFirstResponder()
+        }
         let nextEdit: EditType =
             /**/timeFrame.contains(location)  ? .time  :
                 titleFrame.contains(location) ? .title :
@@ -223,7 +235,7 @@ class TreeTimeTitleDaysCell: TreeTitleCell {
         func updateChild(_ nodeType:TreeNodeType) {
 
             if let node = treeNode as? TreeRoutineItemNode {
-                child = TreeRoutineItemNode(nodeType, node, node.routineItem, frame.size.width)
+                child = TreeRoutineItemNode(nodeType, node, node.routineItem,tableVC)
                 node.children.removeAll()
                 node.children.append(child)
             }

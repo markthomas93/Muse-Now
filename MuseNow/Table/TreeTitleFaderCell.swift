@@ -14,10 +14,10 @@ class TreeTitleFaderCell: TreeTitleCell {
         self.init(coder: decoder)
     }
 
-    convenience init(_ treeNode_: TreeNode!, _ width:CGFloat) {
-
+    convenience init(_ treeNode_: TreeNode!, _ tableVC_:UITableViewController) {
         self.init()
-        frame.size = CGSize(width:width, height:height)
+        tableVC = tableVC_
+        frame.size = CGSize(width:tableVC.view.frame.size.width, height:height)
         treeNode = treeNode_
         let str = treeNode.setting?.title ?? "Unknown"
         titleW = str.width(withConstraintedHeight: height, font:  UILabel().font!)

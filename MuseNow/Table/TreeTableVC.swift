@@ -7,16 +7,18 @@ import EventKit
 class TreeTableVC: UITableViewController {
     
     var cells : [String:MuCell] = [:]
-
-    let rowHeight = CGFloat(44)         // timeHeight * (1 + 1/phi2)
+    var touchedCell: MuCell!
+    var blockKeyboard = false       // block keyboard to prevent multiple scrolls
+    let rowHeight = CGFloat(44)     // timeHeight * (1 + 1/phi2)
     var updating = false
 
     var show: TreeNode!
 
     override func viewDidLoad() {
+
         super.viewDidLoad()
-        let width = view.frame.size.width
-        TreeNodes.shared.root = TreeNode(.titleMark, nil,Setting(set:0,member:1,"Settings"), width)
+
+        TreeNodes.shared.root = TreeNode(.titleMark, nil, Setting(set:0,member:1,"Settings"), self)
         tableView.backgroundColor = .black
         self.view.backgroundColor = .black
     }
@@ -26,8 +28,18 @@ class TreeTableVC: UITableViewController {
         }
         Anim.shared.animNow = .futrWheel
         Anim.shared.userDotAction()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow),
+            name: NSNotification.Name.UIKeyboardWillShow,
+            object: nil
+        )
     }
-    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        NotificationCenter.default.removeObserver(self)
+    }
+
     func initTree() {
 
         let width = view.frame.size.width
@@ -36,57 +48,57 @@ class TreeTableVC: UITableViewController {
         // show | hide - Calendars & Reminders
 
         let showSet = Show.shared.showSet.rawValue
-        show = TreeNode(.titleMark, root, Setting(set:0, member:1, "Show | Hide"), width)
-        let showCal = TreeActNode(show, "Calendars", showSet, ShowSet.calendar.rawValue, .showCalendar , .hideCalendar, width)
+        show = TreeNode(.titleMark, root, Setting(set:0, member:1, "Show | Hide"), self)
+        let showCal = TreeActNode(show, "Calendars", showSet, ShowSet.calendar.rawValue, .showCalendar , .hideCalendar, self)
         for (key,cals) in Cals.shared.sourceCals {
             if cals.count == 1 {
-                let _ = TreeCalendarNode(showCal, key, cals.first, width)
+                let _ = TreeCalendarNode(showCal, key, cals.first, self)
             }
             else {
                 for cal in cals {
-                    let _ = TreeCalendarNode(showCal, cal!.title, cal, width)
+                    let _ = TreeCalendarNode(showCal, cal!.title, cal, self)
                 }
             }
         }
 
-        let _   = TreeActNode(show,"Reminders", showSet, ShowSet.reminder.rawValue, .showReminder, .hideReminder, width)
+        let _   = TreeActNode(show,"Reminders", showSet, ShowSet.reminder.rawValue, .showReminder, .hideReminder, self)
 
         // show | hide - Routine, memos
 
-        let routine = TreeActNode(show,"Routine", showSet, ShowSet.routine.rawValue, .showRoutine, .hideRoutine, width)
+        let routine = TreeActNode(show,"Routine", showSet, ShowSet.routine.rawValue, .showRoutine, .hideRoutine, self)
         
         let catalog = Routine.shared.catalog
         for category in Routine.shared.categories {
-            let catNode = TreeRoutineCategoryNode(routine, category, width)
+            let catNode = TreeRoutineCategoryNode(routine, category, self)
             if let cell = catNode.cell as? TreeColorTitleCell,
                 let rgb = Routine.shared.colors[category] {
                 cell.setColor(rgb)
             }
             for item in catalog[category]! {
-                let _ = TreeRoutineItemNode(.timeTitleDays, catNode, item, width)
+                let node = TreeRoutineItemNode(.timeTitleDays, catNode, item, self)
             }
         }
-        let _   = TreeActNode(show,"Memos",     showSet, ShowSet.memo.rawValue,     .showMemo,     .hideMemo, width)
+        let _   = TreeActNode(show,"Memos", showSet, ShowSet.memo.rawValue, .showMemo, .hideMemo, self)
 
         // say | skip
 
         let saySet = Say.shared.saySet.rawValue
-        let say = TreeNode(.titleMark, root, Setting(set:1,member:1,"Say | Skip"), width)
-        let _  = TreeActNode(say, "Event", saySet, SaySet.event.rawValue, .sayEvent, .skipEvent, width)
-        let _  = TreeActNode(say, "Time",  saySet, SaySet.time.rawValue,  .sayTime,  .skipTime, width)
-        let _  = TreeActNode(say, "Memo",  saySet, SaySet.memo.rawValue,  .sayMemo,  .skipMemo, width)
+        let say = TreeNode(.titleMark, root, Setting(set:1,member:1,"Say | Skip"), self)
+        let _  = TreeActNode(say, "Event", saySet, SaySet.event.rawValue, .sayEvent, .skipEvent, self)
+        let _  = TreeActNode(say, "Time",  saySet, SaySet.time.rawValue,  .sayTime,  .skipTime, self)
+        let _  = TreeActNode(say, "Memo",  saySet, SaySet.memo.rawValue,  .sayMemo,  .skipMemo, self)
 
         // hear | mute
 
         let hearSet = Hear.shared.hearSet.rawValue
-        let hear = TreeNode(.titleMark, root, Setting(set:1,member:1,"Hear | Mute"), width)
-        let _   = TreeActNode(hear,"Speaker", hearSet, HearSet.speaker.rawValue, .hearSpeaker , .muteSpeaker, width)
-        let _   = TreeActNode(hear,"Earbuds", hearSet, HearSet.earbuds.rawValue, .hearEarbuds , .muteEarbuds, width)
+        let hear = TreeNode(.titleMark, root, Setting(set:1,member:1,"Hear | Mute"), self)
+        let _   = TreeActNode(hear,"Speaker", hearSet, HearSet.speaker.rawValue, .hearSpeaker , .muteSpeaker, self)
+        let _   = TreeActNode(hear,"Earbuds", hearSet, HearSet.earbuds.rawValue, .hearEarbuds , .muteEarbuds, self)
 
         // dial
 
-        let dial = TreeNode(.title, root, Setting(set:1,member:1,"Dial"), width)
-        let _ =  TreeDialColorNode(dial, "Color", width)
+        let dial = TreeNode(.title, root, Setting(set:1,member:1,"Dial"), self)
+        let _ =  TreeDialColorNode(dial, "Color", self)
 
         // setup table cells from current state of hierary
         root!.refreshNodeCells()

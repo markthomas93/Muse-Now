@@ -22,12 +22,12 @@ class TreeEditTimeCell: TreeEditCell {
         self.init(coder: decoder)
     }
 
-    convenience init(_ treeNode_: TreeNode!, _ width: CGFloat) {
-        
+    convenience init(_ treeNode_: TreeNode!, _ tableVC_:UITableViewController) {
         self.init()
-        treeNode = treeNode_
+        tableVC = tableVC_
         height = 64
-        frame.size = CGSize(width: width, height: height)
+        frame.size = CGSize(width:tableVC.view.frame.size.width, height:height)
+        treeNode = treeNode_
         buildViews(frame.size)
     }
 

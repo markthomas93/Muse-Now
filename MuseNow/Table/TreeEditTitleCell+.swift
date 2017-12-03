@@ -22,7 +22,6 @@ extension TreeEditTitleCell: UITextFieldDelegate {
         if let changedText = textChanged.text {
             textField.text = changedText
             changeParentText(changedText)
-
         }
     }
 

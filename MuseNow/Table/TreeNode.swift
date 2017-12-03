@@ -82,7 +82,7 @@ class TreeNode {
     }
     var callback: ((TreeNode) -> ())?
 
-    init (_ type_:TreeNodeType, _ parent_:TreeNode!,_ setting_: Setting ,_ width:CGFloat) {
+    init (_ type_:TreeNodeType, _ parent_:TreeNode!,_ setting_: Setting,_ tableVC_:UITableViewController) {
 
         parent = parent_
         setting = setting_
@@ -94,17 +94,17 @@ class TreeNode {
 
         type = type_
         switch type {
-        case .title:            cell = TreeTitleCell(self, width)
-        case .titleFader:       cell = TreeTitleFaderCell(self, width)
-        case .titleMark:        cell = TreeTitleMarkCell(self, width)
-        case .colorTitle:       cell = TreeColorTitleCell(self, width)
-        case .colorTitleMark:   cell = TreeColorTitleMarkCell(self, width)
-        case .timeTitleDays:    cell = TreeTimeTitleDaysCell(self, width)
-        case .editTime:         cell = TreeEditTimeCell(self, width)
-        case .editTitle:        cell = TreeEditTitleCell(self, width)
-        case .editWeekday:      cell = TreeEditWeekdayCell(self, width)
-        case .editColor:        cell = TreeEditColorCell(self, width)
-        case .unknown:          cell = TreeEditColorCell(self, width)
+        case .title:            cell = TreeTitleCell(self, tableVC_)
+        case .titleFader:       cell = TreeTitleFaderCell(self, tableVC_)
+        case .titleMark:        cell = TreeTitleMarkCell(self, tableVC_)
+        case .colorTitle:       cell = TreeColorTitleCell(self, tableVC_)
+        case .colorTitleMark:   cell = TreeColorTitleMarkCell(self, tableVC_)
+        case .timeTitleDays:    cell = TreeTimeTitleDaysCell(self, tableVC_)
+        case .editTime:         cell = TreeEditTimeCell(self, tableVC_)
+        case .editTitle:        cell = TreeEditTitleCell(self, tableVC_)
+        case .editWeekday:      cell = TreeEditWeekdayCell(self, tableVC_)
+        case .editColor:        cell = TreeEditColorCell(self, tableVC_)
+        case .unknown:          cell = TreeEditColorCell(self, tableVC_)
         }
     }
     func updateCallback() {
@@ -189,13 +189,14 @@ class TreeNode {
             child.refreshNodeCells()
         }
     }
+
 }
 
 class TreeCalendarNode: TreeNode {
 
-    init (_ parent_:TreeNode!,_ title_:String, _ cal:Cal!,_ width:CGFloat) {
+    init (_ parent_:TreeNode!,_ title_:String, _ cal:Cal!,_ tableVC_:UITableViewController) {
 
-        super.init(.colorTitleMark, parent_, Setting(set:1,member:1,title_), width)
+        super.init(.colorTitleMark, parent_, Setting(set:1,member:1,title_), tableVC_)
 
         if let cell = cell as? TreeColorTitleMarkCell {
             cell.setColor(cal.color)
@@ -213,9 +214,9 @@ class TreeCalendarNode: TreeNode {
 }
 class TreeDialColorNode: TreeNode {
 
-    init (_ parent_:TreeNode!,_ title_:String,_ width:CGFloat) {
+    init (_ parent_:TreeNode!,_ title_:String,_ tableVC_:UITableViewController) {
 
-        super.init(.titleFader, parent_, Setting(set:0,member:1,title_), width)
+        super.init(.titleFader, parent_, Setting(set:0,member:1,title_),tableVC_)
 
         if let cell = cell as? TreeTitleFaderCell {
 
@@ -244,8 +245,8 @@ class TreeDialColorNode: TreeNode {
 }
 
 class TreeActNode: TreeNode {
-    init (_ parent_:TreeNode!,_ title_:String, _ set:Int, _ member: Int,_ onAct:DoAction,_ offAct:DoAction,_ width: CGFloat) {
-        super.init(.titleMark, parent_, Setting(set:set,member:member,title_), width)
+    init (_ parent_:TreeNode!,_ title_:String, _ set:Int, _ member: Int,_ onAct:DoAction,_ offAct:DoAction,_ tableVC_:UITableViewController) {
+        super.init(.titleMark, parent_, Setting(set:set,member:member,title_),tableVC_)
 
         // callback to set action message based on isOn()
         callback = { treeNode in
@@ -255,21 +256,22 @@ class TreeActNode: TreeNode {
 }
 
 class TreeRoutineCategoryNode: TreeNode {
-    init (_ parent_:TreeNode!,_ title_:String, _ width:CGFloat) {
-        super.init(.colorTitle, parent_, Setting(set:0,member:1,title_), width)
+    init (_ parent_:TreeNode!,_ title_:String,_ tableVC_:UITableViewController) {
+        super.init(.colorTitle, parent_, Setting(set:0,member:1,title_), tableVC_)
         
     }
 }
 class TreeRoutineItemNode: TreeNode {
     var routineItem: RoutineItem!
-    init (_ type_: TreeNodeType,_ parent_:TreeNode!,_ item:RoutineItem, _ width:CGFloat) {
+    init (_ type_: TreeNodeType,_ parent_:TreeNode!,_ item:RoutineItem,_ tableVC_:UITableViewController) {
         routineItem = item
         let setting = Setting(set:0, member:1, item.title, [])
-        super.init(type_, parent_, setting, width)
+        super.init(type_, parent_, setting, tableVC_)
         // callback to refresh display for changes
         callback = { treeNode in
             Actions.shared.doAction(.refresh)
         }
     }
+
 }
 

@@ -174,6 +174,7 @@
 		800C51B91FC221EF00904121 /* TreeBodyMarkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800C51B81FC221EF00904121 /* TreeBodyMarkCell.swift */; };
 		8018E1A41FC36F8E00F4C0AC /* TreeColorTitleMarkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8018E1A31FC36F8E00F4C0AC /* TreeColorTitleMarkCell.swift */; };
 		8018E1A61FC394FC00F4C0AC /* TreeEditTimeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8018E1A51FC394FB00F4C0AC /* TreeEditTimeCell.swift */; };
+		80203C171FD47DA500CA4D38 /* TreeTableVC+KB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80203C161FD47DA500CA4D38 /* TreeTableVC+KB.swift */; };
 		803C5B231FBF82E000BA9C6C /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076435F1FACDBE6001733C6 /* Setting.swift */; };
 		803C5B241FBF9A2F00BA9C6C /* TreeTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803C5B211FBF622400BA9C6C /* TreeTableVC.swift */; };
 		803C5F5E1FA3DFBE002A1C11 /* MuseNow WatchKit App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 803C5F5D1FA3DFBE002A1C11 /* MuseNow WatchKit App.app */; };
@@ -228,7 +229,6 @@
 		80AD99891FCBA06B00BECC4A /* TreeTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AD99881FCBA06A00BECC4A /* TreeTitleCell.swift */; };
 		80D483EA1FCB3BBD00D28095 /* TreeColorTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D483E91FCB3BBD00D28095 /* TreeColorTitleCell.swift */; };
 		80D483EC1FCB496800D28095 /* TreeTableVC+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D483EB1FCB496800D28095 /* TreeTableVC+.swift */; };
-		80D974801FCA130300EE0BEB /* CalCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A0C1FA3FCAA0025B724 /* CalCell.swift */; };
 		80F26DBC1FBA07E100C26973 /* Routine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F26DBB1FBA07E100C26973 /* Routine.swift */; };
 		80F26DBD1FBA07E100C26973 /* Routine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F26DBB1FBA07E100C26973 /* Routine.swift */; };
 		80F26DBF1FBA110300C26973 /* Routine.par in Resources */ = {isa = PBXBuildFile; fileRef = 80F26DBE1FBA110300C26973 /* Routine.par */; };
@@ -398,6 +398,7 @@
 		80203C111FCDC63900CA4D38 /* ParStr+Compare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ParStr+Compare.swift"; sourceTree = "<group>"; };
 		80203C121FCDC63900CA4D38 /* ParStr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParStr.swift; sourceTree = "<group>"; };
 		80203C131FCDC63900CA4D38 /* ParWords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParWords.swift; sourceTree = "<group>"; };
+		80203C161FD47DA500CA4D38 /* TreeTableVC+KB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TreeTableVC+KB.swift"; sourceTree = "<group>"; };
 		803C5B211FBF622400BA9C6C /* TreeTableVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeTableVC.swift; sourceTree = "<group>"; };
 		803C5F4B1FA3DFBD002A1C11 /* MuseNow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MuseNow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		803C5F5D1FA3DFBE002A1C11 /* MuseNow WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MuseNow WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -863,6 +864,7 @@
 			isa = PBXGroup;
 			children = (
 				803C5B211FBF622400BA9C6C /* TreeTableVC.swift */,
+				80203C161FD47DA500CA4D38 /* TreeTableVC+KB.swift */,
 				80D483EB1FCB496800D28095 /* TreeTableVC+.swift */,
 				80A3E36D1FC0D51500195BD3 /* TreeNode.swift */,
 				806ACFE81FC624CB00220EB6 /* TreeCell.swift */,
@@ -1092,7 +1094,7 @@
 				8004F7B51FA3EE2400F7ED94 /* Say.swift in Sources */,
 				8004F7C91FA3EE2400F7ED94 /* Texture.swift in Sources */,
 				8004F6F41FA3ED5E00F7ED94 /* Node+find.swift in Sources */,
-				80D974801FCA130300EE0BEB /* CalCell.swift in Sources */,
+				80203C171FD47DA500CA4D38 /* TreeTableVC+KB.swift in Sources */,
 				8004F6E41FA3ED5E00F7ED94 /* Visitor.swift in Sources */,
 				806ACFD71FC5E1D500220EB6 /* TreeEditTimeCell+.swift in Sources */,
 				804D5A011FA3FC8B0025B724 /* AppDelegate.swift in Sources */,
