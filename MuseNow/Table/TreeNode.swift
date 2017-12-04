@@ -14,6 +14,8 @@ class TreeNodes {
     static var shared = TreeNodes()
 
     var shownNodes = [TreeNode!]() // currently displayed nodes
+    var nextNodes = [TreeNode!]() // double buffer update
+
     var root: TreeNode!
 
     /**
@@ -21,12 +23,24 @@ class TreeNodes {
      */
     func renumber() {
 
-        shownNodes.removeAll()
+        nextNodes.removeAll()
         root?.expanded = true // root always expanded
         root?.renumber()
+        shownNodes = nextNodes
         root?.rehighlight()
     }
 
+    // what is the maximum height needed when for longest child
+    func maxExpandedChildHeight() -> CGFloat {
+        var maxGrandHeight = CGFloat(0)
+        for child in root.children {
+            let grandchildRowsHeight = child.cell.height + child.childRowsHeight()
+            if maxGrandHeight < grandchildRowsHeight {
+                maxGrandHeight = grandchildRowsHeight
+            }
+        }
+        return maxGrandHeight
+    }
 }
 
 enum TreeNodeType { case
@@ -61,13 +75,14 @@ class TreeNode {
         depth = 0
         if expanded {
             for child in children {
-                child.row = TreeNodes.shared.shownNodes.count
-                TreeNodes.shared.shownNodes.append(child)
+                child.row = TreeNodes.shared.nextNodes.count
+                TreeNodes.shared.nextNodes.append(child)
                 depth = max(depth,child.renumber())
             }
         }
         return depth+1
     }
+
     func rehighlight() {
 
         if depth == 0, parent?.depth == 1 { cell?.setCellColorStyle(.child) }
@@ -190,6 +205,18 @@ class TreeNode {
         }
     }
 
+    func childRowsHeight() -> CGFloat {
+        var height = CGFloat(0)
+        for node in TreeNodes.shared.root.children {
+            if let cell = node.cell {
+                height += cell.height
+            }
+        }
+        return height
+    }
+    func parentChildRowsHeight() -> CGFloat {
+        return cell?.height ?? 0 + childRowsHeight()
+    }
 }
 
 class TreeCalendarNode: TreeNode {
@@ -226,12 +253,12 @@ class TreeDialColorNode: TreeNode {
             }
             // callback when starting fade, so freeze scrolling
             cell.fader.updateBegan = {
-                PagesVC.shared.treeTable.tableView.isScrollEnabled = false
+                cell.tableVC?.tableView.isScrollEnabled = false
                 PagesVC.shared.scrollView?.isScrollEnabled = false
             }
             // callback when ending fade, so free scrolling
             cell.fader.updateEnded = {
-                PagesVC.shared.treeTable.tableView.isScrollEnabled = true
+                cell.tableVC?.tableView.isScrollEnabled = true
                 PagesVC.shared.scrollView?.isScrollEnabled = true
             }
             // callback to set dial color

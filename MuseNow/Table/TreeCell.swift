@@ -15,8 +15,8 @@ class TreeCell: MuCell {
     var leftFrame  = CGRect.zero
     var bezelFrame = CGRect.zero
 
-    let leftW = CGFloat(24)     // width (and height) of left disclosure image
-    let innerH = CGFloat(36)    // inner height
+    let leftW   = CGFloat(24)   // width (and height) of left disclosure image
+    let innerH  = CGFloat(36)   // inner height
     let marginW = CGFloat(8)    // margin between elements
     let marginH = CGFloat(2)    //
 
@@ -75,7 +75,6 @@ class TreeCell: MuCell {
     func updateLeft(animate:Bool) {
 
         var transform = CGAffineTransform.identity
-        var alphaPrev = self.alpha
         var alphaNext = CGFloat(0.0)
 
         if let treeNode = treeNode {
@@ -194,6 +193,18 @@ class TreeCell: MuCell {
         }
     }
 
+      func touchFlipExpand(_ focus:TreeCell) {
+
+        if treeNode.expanded == true {
+            collapseAllTheWayDown()
+        }
+        else {
+            treeNode.expanded = true
+            updateLeft(animate:true)
+        }
+        PagesVC.shared.treeTable.updateTouchCell(self,focus)
+    }
+
     /**
      collapse sibling and its currently expanded child, grandchild etc
      */
@@ -209,16 +220,6 @@ class TreeCell: MuCell {
         }
     }
 
-    func touchFlipExpand(_ focus:TreeCell) {
 
-        if treeNode.expanded == true {
-            collapseAllTheWayDown()
-        }
-        else {
-            treeNode.expanded = true
-            updateLeft(animate:true)
-        }
-        PagesVC.shared.treeTable.updateTouchCell(self,focus)
-    }
 }
 

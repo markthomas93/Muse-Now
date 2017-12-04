@@ -73,7 +73,7 @@ class MuCell: UITableViewCell {
         }
         super.touchesEnded(touches, with: event)
         
-        tableVC?.tableView.isScrollEnabled = true
+        tableVC?.tableView?.isScrollEnabled = true
         PagesVC.shared.scrollView?.isScrollEnabled = true
     }
 

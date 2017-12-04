@@ -94,7 +94,6 @@ class EventTableVC: UITableViewController, MuseTableDelegate {
     var scrollingEvent: MuEvent!            // EventTable+MuEvent: prevent duplicate scrollDialEvent
     var updating = false
     
-    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return sectionDate.count
     }

@@ -60,7 +60,7 @@ class Actions {
         scene?.uFade?.floatValue = Float(fade)
         
         if isSender {
-            
+
             Session.shared.sendMsg( ["class" : "Actions", "dialColor" : fade])
 
             Settings.shared.updateColor(fade)

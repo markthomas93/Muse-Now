@@ -11,6 +11,8 @@ class TreeTableVC: UITableViewController {
     var blockKeyboard = false       // block keyboard to prevent multiple scrolls
     let rowHeight = CGFloat(44)     // timeHeight * (1 + 1/phi2)
     var updating = false
+    var lastDisappearTime = TimeInterval(0)
+    var headerY = CGFloat(0) // there is only one section header
 
     var show: TreeNode!
 
@@ -22,27 +24,51 @@ class TreeTableVC: UITableViewController {
         tableView.backgroundColor = .black
         self.view.backgroundColor = .black
     }
+
+    func collapseBackToMain() {
+        if let root = TreeNodes.shared.root {
+            root.cell.collapseAllTheWayDown()
+            root.expanded = true
+            TreeNodes.shared.renumber()
+            tableView.reloadData()
+        }
+    }
+
+    func makeReachable() {
+
+        let maxChildHeight = TreeNodes.shared.maxExpandedChildHeight()
+        let height = tableView.frame.size.height
+        let scrollY = max(0, height - maxChildHeight)
+        let offsetY = tableView.contentOffset.y
+        let deltaY =  headerY - scrollY
+        printLog("⿳ \(#function) \(offsetY): \(headerY) - \(scrollY) => \(deltaY)")
+        self.tableView.contentOffset.y = deltaY
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         if show == nil {
             initTree()
+            makeReachable()
         }
+        else if Date().timeIntervalSince1970 - lastDisappearTime > 2 {
+            collapseBackToMain()
+            makeReachable()
+        }
+        
         Anim.shared.animNow = .futrWheel
         Anim.shared.userDotAction()
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(keyboardWillShow),
-            name: NSNotification.Name.UIKeyboardWillShow,
-            object: nil
-        )
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
     }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
+        lastDisappearTime = Date().timeIntervalSince1970
         NotificationCenter.default.removeObserver(self)
+        Actions.shared.doRefresh(true)
     }
 
     func initTree() {
 
-        let width = view.frame.size.width
         let root = TreeNodes.shared.root
 
         // show | hide - Calendars & Reminders
@@ -61,9 +87,7 @@ class TreeTableVC: UITableViewController {
             }
         }
 
-        let _   = TreeActNode(show,"Reminders", showSet, ShowSet.reminder.rawValue, .showReminder, .hideReminder, self)
-
-        // show | hide - Routine, memos
+        // show | hide - Routine
 
         let routine = TreeActNode(show,"Routine", showSet, ShowSet.routine.rawValue, .showRoutine, .hideRoutine, self)
         
@@ -78,6 +102,8 @@ class TreeTableVC: UITableViewController {
                 let node = TreeRoutineItemNode(.timeTitleDays, catNode, item, self)
             }
         }
+         // show | hide - Reminders, Memos
+        let _   = TreeActNode(show,"Reminders", showSet, ShowSet.reminder.rawValue, .showReminder, .hideReminder, self)
         let _   = TreeActNode(show,"Memos", showSet, ShowSet.memo.rawValue, .showMemo, .hideMemo, self)
 
         // say | skip
@@ -108,7 +134,7 @@ class TreeTableVC: UITableViewController {
 
     func updateTouchCell(_ cell: TreeCell, _ focus: TreeCell) {
 
-        // let oldTableY = tableView.contentOffset.y
+        let oldTableY = tableView.contentOffset.y
         // let oldCellY = focus.convert(cell.frame.origin, to: tableView).y
 
         // old height of cells preceeding cell
