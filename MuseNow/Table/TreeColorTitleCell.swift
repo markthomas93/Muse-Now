@@ -60,6 +60,7 @@ class TreeColorTitleCell: TreeTitleCell {
         colorFrame = CGRect(x: colorX, y: colorY, width: colorW, height: colorW)
         titleFrame = CGRect(x: titleX, y: 0,      width: titleW, height: bezelH)
         bezelFrame = CGRect(x: bezelX, y: bezelY, width: bezelW, height: bezelH)
+        autoExpand = false 
     }
 
     override func updateViews() {

@@ -25,21 +25,22 @@ class Active {
     var stopTime = TimeInterval(0)
     var activateAudioTimer = Timer()
     
-    /// called when
-    /// 1) Watch: user raises wrist
-    /// 2) Watch: return from Menu
-    /// 3) Watch+Phone: screen will reappear
-
+    /**
+     Start activity, when
+     1) Watch: user raises wrist
+     2) Watch: return from Menu
+     3) Watch+Phone: screen will reappear
+     */
     func startActive() { printLog("⟳ \(#function) recording:\(Record.shared.isRecording)")
 
         throttleTimer.invalidate()
         Motion.shared.startMotion()
 
-//        if !Record.shared.isRecording {
-//            activateAudioTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: {_ in
-//                Record.shared.activateAudio()
-//            })
-//        }
+        // if !Record.shared.isRecording {
+        //     activateAudioTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: {_ in
+        //         Record.shared.activateAudio()
+        //     })
+        // }
 
         // sometimes, immediately after deactivate, a spurious willActivate is called, so ignore
         let thisTime =  Date().timeIntervalSince1970
@@ -57,11 +58,12 @@ class Active {
         anim.gotoStartupAnim()
     }
     
-    /// called when:
-    /// 1) Watch: user lowers wrist
-    /// 2) Watch: user force touches Menu
-    /// 3) Watch+Phone: timeout of screen display
-
+    /**
+     Stop animation and recording, when:
+     1) Watch: user lowers wrist
+     2) Watch: user force touches Menu
+     3) Watch+Phone: timeout of screen display
+     */
     func stopActive() { printLog("⟳ \(#function) recording:\(Record.shared.isRecording)")
 
         restartTimer.invalidate()

@@ -13,18 +13,12 @@ class TreeEditCell: TreeTitleCell {
         frame.size = CGSize(width:tableVC.view.frame.size.width, height:height)
         treeNode = treeNode_
         buildViews(frame.size)
+
     }
 
-    override func buildViews(_ size: CGSize) {
-        
-        super.buildViews(size)
-        bezel.layer.borderWidth = 1.0
-        bezel.layer.borderColor = UIColor.gray.cgColor
-    }
+      override func updateFrames(_ size:CGSize) {
 
-    override func updateFrames(_ size:CGSize) {
-
-        let leftX = CGFloat(treeNode.level-2) * 2 * marginW
+        let leftX = CGFloat(treeNode.level-1) * 2 * marginW
         let leftY = marginH
 
         let bezelX = leftX + leftW + marginW
@@ -34,6 +28,25 @@ class TreeEditCell: TreeTitleCell {
 
         leftFrame  = CGRect(x: leftX,   y: leftY,  width: leftW,  height: leftW)
         bezelFrame = CGRect(x: bezelX,  y: bezelY, width: bezelW, height: bezelH)
+    }
+    override func setHighlight(_ isHighlight_:Bool, animated:Bool = true) {
+
+        if isHighlight != isHighlight_ {
+            isHighlight = isHighlight_
+
+            let index       = isHighlight ? 1 : 0
+            let borders     = [headColor.cgColor, UIColor.white.cgColor]
+            let backgrounds = [UIColor.black.cgColor, UIColor.clear.cgColor]
+
+            if animated {
+                animateViews([bezel], borders, backgrounds, index, duration: 0.25)
+            }
+            else {
+                bezel.layer.borderColor    = borders[index]
+                bezel.layer.backgroundColor = backgrounds[index]
+            }
+        }
+        isSelected = isHighlight
     }
 
     override func updateViews() {

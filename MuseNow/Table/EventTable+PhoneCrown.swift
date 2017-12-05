@@ -1,15 +1,20 @@
-//
 //  EventTable+PhoneCrown.swift
 
 import UIKit
 
-extension EventTableVC {
-    
-    /// user touched crown
-    /// - via: PhoneCrown.began
-    /// - via: PhoneCrown.[moved ended].updateTableRow.deltaTableRow
-
-    func selectMiddleRow() {
+extension EventTableVC: PhoneCrownDelegate {
+    /**
+    User force touches our double tapped on phoneCrowndouble
+     */
+    func phoneCrownToggle(_ isRight:Bool) {
+         Actions.shared.doToggleMark()
+    }
+    /**
+     User touched crown
+     - via: PhoneCrown.began
+     - via: PhoneCrown.[moved ended].updateDelta.phoneCrownDeltaRow
+     */
+    func phoneCrownUpdate() {  printLog ("⊛ TreeTableVC::\(#function)")
         
             // prevCell is still showing
         if prevCell != nil && tableView.bounds.contains(prevCell.frame) {
@@ -56,11 +61,12 @@ extension EventTableVC {
     }
 
 
-    /// user moved crown
-    /// - via: PhoneCrown.[moved ended].updateTableRow
+    /**
+     User moved crown
+     - via: PhoneCrown.[moved ended].updateDelta
+     */
+    func phoneCrownDeltaRow(_ deltaRow: Int,_ isRight:Bool) { printLog ("⊛ EventTableVC::\(#function):\(deltaRow)")
 
-    func deltaTableRow(_ deltaRow: Int) {
-        
         anim.touchDialClockwise(deltaRow > 0)
         var nextOffset = tableView.contentOffset.y
         
@@ -108,10 +114,9 @@ extension EventTableVC {
             }
         }
         else {
-            selectMiddleRow()
+            phoneCrownUpdate()
             return
         }
     }
     
-
 }

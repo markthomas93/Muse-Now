@@ -22,8 +22,7 @@ class MainVC: UIViewController {
     var touchForce : TouchDialForce!
     
     var panel       = UIView() // contains dial, crowns, fader
-    var crownLeft   : PhoneCrown!
-    var crownRight  : PhoneCrown! 
+    var phoneCrown  : PhoneCrown!
     
     var skView: SKView!
 
@@ -64,15 +63,7 @@ class MainVC: UIViewController {
         skView.presentScene(scene)
         skView.preferredFramesPerSecond = 60
         skView.addSubview(touchForce)
-        
-        // crown left right
-        
-        let xR = viewW - crownW
-        crownLeft  = PhoneCrown(frame: CGRect(x: 0,  y:0, width:crownW, height: dialH))
-        crownRight = PhoneCrown(frame: CGRect(x: xR, y:0, width:crownW, height: dialH))
-        crownLeft.twin = crownRight ; crownLeft.isRight = false
-        crownRight.twin = crownLeft ; crownRight.isRight = true
-        
+
         // delegates
         
         actions.scene = scene
@@ -80,16 +71,20 @@ class MainVC: UIViewController {
         pagesVC.eventTable?.scene = scene
         actions.tableDelegate = pagesVC.eventTable
         session.startSession()
-        
-        crownLeft.eventTable = pagesVC.eventTable
-        crownRight.eventTable = pagesVC.eventTable
+
+        // crown left right
+
+        let xR = viewW - crownW
+        let leftFrame =  CGRect(x: 0,  y:0, width:crownW, height: dialH)
+        let rightFrame = CGRect(x: xR, y:0, width:crownW, height: dialH)
+        phoneCrown = PhoneCrown(left:leftFrame, right:rightFrame, pagesVC.eventTable)
         
         // view hierarcy
         view.frame.origin.y = viewY
         view.addSubview(panel)
         panel.addSubview(skView)
-        panel.addSubview(crownLeft)
-        panel.addSubview(crownRight)
+        panel.addSubview(phoneCrown)
+        panel.addSubview(phoneCrown.twin)
     }
     
     func setBorder(_ v:UIView) {

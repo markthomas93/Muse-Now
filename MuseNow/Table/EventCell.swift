@@ -67,11 +67,8 @@ class EventCell: MuCell {
     }
     
     
-    override func touchCell(_ location: CGPoint) {
+    override func touchCell(_ location: CGPoint, expand:Bool = true) {
 
-        if let tableVC = tableVC as? TreeTableVC {
-            tableVC.touchedCell = self
-        }
         let toggleX = frame.size.width -  frame.size.height*1.618
         if location.x > toggleX {
 
@@ -83,9 +80,9 @@ class EventCell: MuCell {
         }
         else if event.type == .memo {
 
-                Say.shared.sayDotEvent(event, isTouching: true)
+            Say.shared.sayDotEvent(event, isTouching: true)
         }
-         Anim.shared.touchDialGotoTime(event.bgnTime)
+        Anim.shared.touchDialGotoTime(event.bgnTime)
     }
 
 }

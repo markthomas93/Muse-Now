@@ -84,7 +84,7 @@ class TreeEditTimeCell: TreeEditCell {
   
     override func updateFrames(_ size:CGSize) {
 
-        let leftX = CGFloat(treeNode.level-2) * 2 * marginW
+        let leftX = CGFloat(treeNode.level-1) * 2 * marginW
         let leftY = marginH
 
         let bezelX = leftX + leftW + marginW
@@ -103,6 +103,7 @@ class TreeEditTimeCell: TreeEditCell {
         bezelFrame    = CGRect(x: bezelX,  y: bezelY, width: bezelW, height: bezelH)
     }
 
+ 
     override func updateViews() {
         
         super.updateViews()

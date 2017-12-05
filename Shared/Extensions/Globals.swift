@@ -22,22 +22,25 @@ func printLog(_ str: String) {
     //case NSLog(str)
 
     case
+    "⊛", // crown
     "▤", // TreeTableView
     "⧉", // sync files
     "⌘", // doAction
     "▭", // textfield
-    "✺", // complication
+
     "⿳", // menu
 
-     "📅", // EkNotification
     "🔈", // Audio
-
     "🎧", // Hear Via
     "∿": // audio recorder
 
         print(MuDate.getHourMinSecMsec() + ": " + str)
         
     case
+
+    "📅", // EkNotification
+
+    "✺", // complication
     "←", // session receiving
     "↔︎", // session activation state
     "→", // session sending
@@ -47,7 +50,6 @@ func printLog(_ str: String) {
     "🗣", // Say TTS
     "⟳", // life cycle
     "👆", // tap action
-    "⊛", // crown
     "✓", // actions
     "⎚", // scene animation
     "⚆", // wheel spoke animation
@@ -58,10 +60,7 @@ func printLog(_ str: String) {
     "🎞", // texture
     "⚇", // dot
     "✏": // Transcribe
-
-
         break
-
     default: break
     }
 

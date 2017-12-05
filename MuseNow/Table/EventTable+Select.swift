@@ -38,7 +38,7 @@ extension EventTableVC {
         return (nil,false)
     }
     
-    /// - via: EventTable+PhoneCrown.selectMiddleRow
+    /// - via: EventTable+PhoneCrown.phoneCrownUpdate
     /// - via: tableView(_,didSelectRowAt)
     
     func nextMuCell(_ cell: MuCell) {

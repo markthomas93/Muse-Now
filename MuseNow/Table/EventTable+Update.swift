@@ -38,7 +38,7 @@ extension EventTableVC {
                 sectionTitles.append(dateStr)
 
                 let rowTime = bgnDayDate!.timeIntervalSince1970
-                let rowItem = RowItem(rowTime,dateStr,posY)
+                let rowItem = EventRowItem(rowTime,dateStr,posY)
                 rowItems.append(rowItem)
                 rowItemId[rowItem.getId()] = rowItem
                 posY += sectionHeight + footerHeight
@@ -47,7 +47,7 @@ extension EventTableVC {
             if event.type == .time {
                 timeRowi = rowItems.count
             }
-            let rowItem = RowItem(event,posY)
+            let rowItem = EventRowItem(event,posY)
             rowItems.append(rowItem)
             rowItemId[rowItem.getId()] = rowItem
             posY += rowHeight

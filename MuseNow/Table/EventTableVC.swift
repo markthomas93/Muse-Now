@@ -5,63 +5,6 @@ let rowHeight     = CGFloat(44)         // timeHeight * (1 + 1/phi2)
 let sectionHeight = CGFloat(32)         // rowHeight * (1 + 1/phi2)
 let footerHeight  = CGFloat(18)
 
-class RowItem {
-
-    var event: MuEvent!
-    var title: String!
-    var rowTime = TimeInterval(0)
-    var posY = CGFloat(0)
-
-    init(_ event_:MuEvent!,_ posY_:CGFloat) {
-
-        event = event_
-        rowTime = event.bgnTime
-        title = event.title
-        posY = posY_
-    }
-
-    init(_ rowTime_: TimeInterval,_ title_: String, _ posY_: CGFloat) {
-
-        event = nil
-        rowTime = rowTime_
-        title = title_
-        posY = posY_
-    }
-
-    func getId() -> String {
-        if let event = event {
-            return event.eventId
-        }
-        else if let title = title {
-            return title
-        }
-        else {
-            print("!!! \(#function) unexpected \(self)")
-            return "unknown"
-        }
-    }
-    /**
-     when the minute matches, cell may appear above or below
-    - hour headers will appear below
-    - calendar and reminder events appear below
-    - recorded memos will appear above
-     */
-
-    func isAfterTime(_ testTime:TimeInterval) -> Bool {
-        if let event = event,
-            event.type == .memo {
-                return rowTime >= testTime + 60
-        }
-        else {
-            return rowTime >= testTime
-        }
-    }
-    func nextFreeY() -> CGFloat {
-        if event != nil { return posY + rowHeight }
-        else            { return posY + sectionHeight }
-    }
-}
-
 class EventTableVC: UITableViewController, MuseTableDelegate {
 
     let say = Say.shared
@@ -73,8 +16,8 @@ class EventTableVC: UITableViewController, MuseTableDelegate {
     var sectionDate   = [Date]()            // edit select update
     var sectionTitles = [String]()          // update
    
-    var rowItemId      = [String:RowItem]()  // scroll crown select update
-    var rowItems      = [RowItem]()        // for timeCell and contentOffset.y updates
+    var rowItemId      = [String:EventRowItem]()  // scroll crown select update
+    var rowItems      = [EventRowItem]()        // for timeCell and contentOffset.y updates
     var timeRowi     = Int(0)              // position of TimeCell in rowEventY array
     var timeCell      : EventTimeCell!      // cell shows current time, keep changing its position
     var cellTimer     = Timer()             // 1 minute time to change timeCell label and maybe position
@@ -93,7 +36,12 @@ class EventTableVC: UITableViewController, MuseTableDelegate {
     
     var scrollingEvent: MuEvent!            // EventTable+MuEvent: prevent duplicate scrollDialEvent
     var updating = false
-    
+
+
+    override func viewWillAppear(_ animated: Bool) {
+         PhoneCrown.shared?.setDelegate(self)
+    }
+
     override func numberOfSections(in tableView: UITableView) -> Int {
         return sectionDate.count
     }

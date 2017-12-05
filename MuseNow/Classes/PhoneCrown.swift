@@ -1,12 +1,18 @@
  import UIKit
  
- 
+ protocol PhoneCrownDelegate {
+    func phoneCrownUpdate()
+    func phoneCrownDeltaRow(_ deltaRow: Int,_ isRight:Bool)
+    func phoneCrownToggle(_ isRight:Bool)
+ }
+
 class PhoneCrown: TouchForce {
-    
+
+    static var shared: PhoneCrown!
     var twin : PhoneCrown!
     var updating = false
     
-    var eventTable: EventTableVC!
+    var delegate: PhoneCrownDelegate!
     var actions = Actions.shared
     
     let grooves = 5 // number of dots for crown, between 3...9, higher number will switch rows with less movement
@@ -15,18 +21,41 @@ class PhoneCrown: TouchForce {
     var crownOffset = CGPoint(x:0,y:0)
     var dimmed = true
     var prevOffsetY = CGFloat(0)
+    
     enum Direction: UInt8 { case unknown, past, future }
     var direction : Direction = .unknown
     var isRight = true
     
-    override init (frame : CGRect) {
-        super.init(frame : frame)
+    convenience init (left:CGRect, right:CGRect,_ delegate_:PhoneCrownDelegate! ) {
+
+        self.init(frame: left)
+
+        PhoneCrown.shared = self // this is a departure from normal Singleton init
+
         initialize(frame)
+        delegate = delegate_
+        isRight = false
+
+        twin = PhoneCrown(frame: right)
+        twin.initialize(right)
+        twin.delegate = delegate_
+        twin.isRight = true
+        twin.twin = self
     }
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+
+    /**
+    Each TableVC will use the phoneCrown to navigate up and down between cells. So, each will change the PhoneCrownDelegate.
+     - via: *TableVC.viewWillAppear()
+     */
+    func setDelegate(_ delegate_:PhoneCrownDelegate) {
+        delegate = delegate_
+        if let twin = twin {
+            twin.delegate = delegate_
+        }
     }
-    
+
+
+
     func initialize(_ frame: CGRect) {
         
         backgroundColor = UIColor.black
@@ -66,21 +95,19 @@ class PhoneCrown: TouchForce {
         }
         prevOffsetY = offsetY
     }
-    
+
     var deltaY = CGFloat(0)
     var deltaYY = CGFloat(0)
     var prevDeltaRow = 0
-    
+
     /**
      User sliding finger moves to next/prev row
-
      - via: PhoneCrown.[moved,ended]
-
      note: moving back and forth accross start line would normally feels like a skipped beat.
      Instead, wait for first delta and set that as the dividing line.
      Thus, you need to move twice the distance, which has an engaging theshold feel
      */
-    func updateTableRow (_ delta: CGPoint) {
+    func updateDelta (_ delta: CGPoint) {
         
         deltaY = delta.y - deltaYY // used by draw routine
         let nextDeltaRow = Int(deltaY / maxOffset)
@@ -93,14 +120,14 @@ class PhoneCrown: TouchForce {
             }
             //printLog ("\(#function) deltaY:\(deltaY) deltaYY:\(deltaYY) row:\(prevDeltaRow) -> \(nextDeltaRow)")
             
-            eventTable.deltaTableRow(deltaCell)
+            delegate.phoneCrownDeltaRow(deltaCell, isRight)
             Haptic.play(.click)
         }
         prevDeltaRow = nextDeltaRow
     }
     
     //? Touching superclass overrides left and right side are synchonized with each other
-    
+
     // began
     override func began(_ pos: CGPoint,_ time: TimeInterval) {
         
@@ -108,7 +135,7 @@ class PhoneCrown: TouchForce {
             updating = true
             
             twin?.beganSlave()
-            eventTable.selectMiddleRow()
+            delegate.phoneCrownUpdate()
             beganSlave()
             
             updating = false
@@ -121,8 +148,7 @@ class PhoneCrown: TouchForce {
         prevDeltaRow = 0
         dimmed = false
         setNeedsDisplay()
-        UIView.animate(withDuration: 0.25, delay: 0, options: .allowUserInteraction,
-                       animations: {self.alpha = 1.0 }, completion:nil)
+        UIView.animate(withDuration: 0.25, delay: 0, options: .allowUserInteraction, animations: {self.alpha = 1.0 }, completion:nil)
     }
 
     // moved
@@ -130,7 +156,7 @@ class PhoneCrown: TouchForce {
         if !updating {
             updating = true
             twin?.movedSlave()
-            updateTableRow(delta)
+            updateDelta(delta)
             twin?.deltaY = deltaY
             movedSlave()
             updating = false
@@ -159,8 +185,7 @@ class PhoneCrown: TouchForce {
     // singleTap: toggle mark for current row
     
     override func singleTap(){
-        actions.doToggleMark()
-        //setNeedsDisplay()
+        delegate.phoneCrownToggle(isRight)
     }
     
     override func forceTap(_ isForceOn: Bool) {

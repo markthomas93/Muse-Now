@@ -66,7 +66,7 @@ class TreeTitleFaderCell: TreeTitleCell {
             isHighlight = isHighlight_
 
             let index       = isHighlight ? 1 : 0
-            let borders     = [UIColor.gray.cgColor, UIColor.white.cgColor]
+            let borders     = [headColor.cgColor, UIColor.white.cgColor]
             let backgrounds = [UIColor.black.cgColor, UIColor.black.cgColor]
 
             if animated {

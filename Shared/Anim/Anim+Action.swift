@@ -103,9 +103,11 @@ extension Anim {
     
     // Touch --------------------------------------------------
 
-    /// - via: WatchCon.crownDidRotate
-    /// - via: EventVC^TouchDial.began
-
+    /**
+     User has touched dial
+     - via: WatchCon.crownDidRotate
+     - via: EventVC^TouchDial.began
+     */
     func touchDialDown() {
 
         finishTimer.invalidate()
@@ -127,9 +129,11 @@ extension Anim {
     }
     
     
-    /// animate dial to new time.
-    /// - via: EventTable+Select.(nextMuCell actionTap) -> forceAnim:true
-    /// - via: Scene+Marks.markEvent -> forceAnim:true
+    /**
+     Animate dial to new time.
+     - via: EventTable+Select.(nextMuCell actionTap) -> forceAnim:true
+     - via: Scene+Marks.markEvent -> forceAnim:true
+     */
 
     func touchDialGotoTime(_ timeNext: TimeInterval) {
 
@@ -175,9 +179,10 @@ extension Anim {
         }
     }
 
-    /// while scrolling animate dial to new time.
-    /// - via: EventTable+Scroll^scrollViewDidScroll -> forceAnim:false
-
+    /**
+    While scrolling animate dial to new time.
+    - via: EventTable+Scroll^scrollViewDidScroll -> forceAnim:false
+    */
     func scrollingGotoTime(_ timeNext: TimeInterval, duration:TimeInterval) {
         
         dots.selectTime(timeNext) // set +/10.5 for current hour?
@@ -203,9 +208,10 @@ extension Anim {
         }
     }
 
-    /// - via: EventTable+PhoneCrown.deltaTableRow
-    /// - via: EventTable+Scroll.scrollViewWillEndDragging
-
+    /**
+     Set animatino direction of dial animation
+     - via: EventTable+PhoneCrown::phoneCrownDeltaRow
+     */
     func touchDialClockwise(_ clockwise: Bool) {
         
         dots.dotPrev = dots.dotNow //

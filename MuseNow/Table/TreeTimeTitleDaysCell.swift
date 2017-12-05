@@ -27,7 +27,6 @@ class TreeTimeTitleDaysCell: TreeTitleCell {
 
     var child: TreeRoutineItemNode!
 
-
     convenience required init(coder decoder: NSCoder) {
         self.init(coder: decoder)
     }
@@ -38,6 +37,7 @@ class TreeTimeTitleDaysCell: TreeTitleCell {
         treeNode = treeNode_
         buildViews(size)
     }
+
 
     override func buildViews(_ size: CGSize) {
 
@@ -92,10 +92,22 @@ class TreeTimeTitleDaysCell: TreeTitleCell {
             bezel.addSubview(timeBzl)
             bezel.addSubview(titleBzl)
             bezel.addSubview(daysBzl)
+
+            // add edit children
+
+            let editTime    = TreeRoutineItemNode(.editTime,    node, node.routineItem,tableVC)
+            let editTitle   = TreeRoutineItemNode(.editTitle,   node, node.routineItem,tableVC)
+            let editWeekday = TreeRoutineItemNode(.editWeekday, node, node.routineItem,tableVC)
+            node.children.removeAll()
+            node.children.append(editTitle)
+            node.children.append(editTime)
+            node.children.append(editWeekday)
+
+            autoExpand = false
         }
     }
 
-    override func updateFrames(_ size:CGSize) {
+     override func updateFrames(_ size:CGSize) {
 
         let leftX = CGFloat(treeNode.level-1) * 2 * marginW
         let leftY = (size.height - leftW) / 2
@@ -148,10 +160,11 @@ class TreeTimeTitleDaysCell: TreeTitleCell {
 
     /**
      */
-    override func setCellColorStyle(_ colorStyle_:CellColorStyle) {
-        super.setCellColorStyle(colorStyle_)
+    override func setParentChildOther(_ parentChild_:ParentChildOther) {
+        super.setParentChildOther(parentChild_)
         setInnerBezel(.none, .clear)
     }
+
     func setInnerBezel(_ type:EditType,_ color: UIColor) {
 
         switch type {
@@ -169,85 +182,86 @@ class TreeTimeTitleDaysCell: TreeTitleCell {
                 child.textField.becomeFirstResponder()
         }
     }
-    override func touchCell(_ point: CGPoint) {
+//    override func touchCell(_ point: CGPoint) {
+//
+//        (tableVC as? TreeTableVC)?.setTouchedCell(self)
+//
+//        let location = CGPoint(x: point.x - bezelFrame.origin.x, y: point.y)
+//        if editType == .title,
+//            let child = treeNode.children.first?.cell as? TreeEditTitleCell {
+//
+//            child.textField.resignFirstResponder()
+//        }
+//        let nextEdit: EditType =
+//            /**/timeFrame.contains(location)  ? .time  :
+//                titleFrame.contains(location) ? .title :
+//                daysFrame.contains(location)  ? .days  : .time
+//
+//        enum TouchAct { case switching, collapsing, expanding }
+//        let touchAct: TouchAct =
+//            treeNode.expanded
+//                ? editType == nextEdit
+//                    ? .collapsing
+//                    : .switching
+//                : .expanding
+//
+//        printLog("▭ \(#function) \(editType)⟶\(nextEdit) \(location) \(touchAct)")
+//
+//        setInnerBezel(editType, .clear)
+//
+//        switch touchAct {
+//
+//        case .collapsing:
+//
+//            super.touchCell(location)
+//            editType = .none
+//            setHighlight(true)
+//
+//        case .switching:
+//
+//            super.touchCell(location)
+//            editType = nextEdit
+//            replaceChild()
+//            setHighlight(false)
+//
+//            let _ = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: {_ in
+//                super.touchCell(location)
+//                self.setInnerBezel(self.editType, .gray)
+//            })
+//        case .expanding:
+//
+//            editType = nextEdit
+//            replaceChild()
+//            setHighlight(false)
+//            super.touchCell(location)
+//            let _ = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: {_ in
+//                self.setInnerBezel(self.editType, .gray)
+//            })
+//        }
+//    }
 
-        if let tableVC = tableVC as? TreeTableVC {
-            tableVC.touchedCell = self
-        }
-        
-        let location = CGPoint(x: point.x - bezelFrame.origin.x, y: point.y)
-        if editType == .title,
-            let child = treeNode.children.first?.cell as? TreeEditTitleCell {
 
-            child.textField.resignFirstResponder()
-        }
-        let nextEdit: EditType =
-            /**/timeFrame.contains(location)  ? .time  :
-                titleFrame.contains(location) ? .title :
-                daysFrame.contains(location)  ? .days  : .time
-
-        enum TouchAct { case switching, collapsing, expanding }
-        let touchAct: TouchAct =
-            treeNode.expanded
-                ? editType == nextEdit
-                    ? .collapsing
-                    : .switching
-                : .expanding
-
-        printLog("▭ \(#function) \(editType)⟶\(nextEdit) \(location) \(touchAct)")
-
-        setInnerBezel(editType, .clear)
-
-        switch touchAct {
-
-        case .collapsing:
-
-            super.touchCell(location)
-            editType = .none
-
-        case .switching:
-
-            super.touchCell(location)
-            editType = nextEdit
-            replaceChild()
-
-            let _ = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: {_ in
-                super.touchCell(location)
-                self.setInnerBezel(self.editType, .gray)
-            })
-        case .expanding:
-            
-            editType = nextEdit
-            replaceChild()
-            super.touchCell(location)
-            let _ = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: {_ in
-                self.setInnerBezel(self.editType, .gray)
-            })
-        }
-    }
-
-
-    /**
-        replace child with new one
-     */
-    func replaceChild() {
-
-        func updateChild(_ nodeType:TreeNodeType) {
-
-            if let node = treeNode as? TreeRoutineItemNode {
-                child = TreeRoutineItemNode(nodeType, node, node.routineItem,tableVC)
-                node.children.removeAll()
-                node.children.append(child)
-            }
-        }
-
-        switch editType {
-        case .time:  updateChild(.editTime)
-        case .title: updateChild(.editTitle)
-        case .days:  updateChild(.editWeekday)
-        case .none: return
-        }
-    }
+//    /**
+//        replace child with new one
+//     */
+//    func replaceChild() {
+//
+//        func updateChild(_ nodeType:TreeNodeType) {
+//
+//            if let node = treeNode as? TreeRoutineItemNode {
+//                child = TreeRoutineItemNode(nodeType, node, node.routineItem,tableVC)
+//                node.children.removeAll()
+//                node.children.append(child)
+//            }
+//        }
+//
+//        switch editType {
+//        case .time:  updateChild(.editTime)
+//        case .title: updateChild(.editTitle)
+//        case .days:  updateChild(.editWeekday)
+//        case .none: return
+//        }
+//    }
 
 }
 

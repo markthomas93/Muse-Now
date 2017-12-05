@@ -171,10 +171,12 @@
 		800C51B41FC2053F00904121 /* Main.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 800C51B31FC2053F00904121 /* Main.xcassets */; };
 		800C51B51FC2053F00904121 /* Main.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 800C51B31FC2053F00904121 /* Main.xcassets */; };
 		800C51B71FC2213F00904121 /* TreeTimeTitleDaysCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800C51B61FC2213E00904121 /* TreeTimeTitleDaysCell.swift */; };
-		800C51B91FC221EF00904121 /* TreeBodyMarkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800C51B81FC221EF00904121 /* TreeBodyMarkCell.swift */; };
+		800C51B91FC221EF00904121 /* TreeTitleMarkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800C51B81FC221EF00904121 /* TreeTitleMarkCell.swift */; };
 		8018E1A41FC36F8E00F4C0AC /* TreeColorTitleMarkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8018E1A31FC36F8E00F4C0AC /* TreeColorTitleMarkCell.swift */; };
 		8018E1A61FC394FC00F4C0AC /* TreeEditTimeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8018E1A51FC394FB00F4C0AC /* TreeEditTimeCell.swift */; };
 		80203C171FD47DA500CA4D38 /* TreeTableVC+KB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80203C161FD47DA500CA4D38 /* TreeTableVC+KB.swift */; };
+		80203C1B1FD5A5D400CA4D38 /* TreeTable+PhoneCrown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80203C1A1FD5A5D400CA4D38 /* TreeTable+PhoneCrown.swift */; };
+		80203C1D1FD5B51A00CA4D38 /* EventRowItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80203C1C1FD5B51A00CA4D38 /* EventRowItem.swift */; };
 		803C5B231FBF82E000BA9C6C /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076435F1FACDBE6001733C6 /* Setting.swift */; };
 		803C5B241FBF9A2F00BA9C6C /* TreeTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803C5B211FBF622400BA9C6C /* TreeTableVC.swift */; };
 		803C5F5E1FA3DFBE002A1C11 /* MuseNow WatchKit App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 803C5F5D1FA3DFBE002A1C11 /* MuseNow WatchKit App.app */; };
@@ -371,7 +373,7 @@
 		8004F7DD1FA3F01600F7ED94 /* WatchMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchMenu.swift; sourceTree = "<group>"; };
 		800C51B31FC2053F00904121 /* Main.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Main.xcassets; sourceTree = "<group>"; };
 		800C51B61FC2213E00904121 /* TreeTimeTitleDaysCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeTimeTitleDaysCell.swift; sourceTree = "<group>"; };
-		800C51B81FC221EF00904121 /* TreeBodyMarkCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeBodyMarkCell.swift; sourceTree = "<group>"; };
+		800C51B81FC221EF00904121 /* TreeTitleMarkCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeTitleMarkCell.swift; sourceTree = "<group>"; };
 		8018E1A31FC36F8E00F4C0AC /* TreeColorTitleMarkCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeColorTitleMarkCell.swift; sourceTree = "<group>"; };
 		8018E1A51FC394FB00F4C0AC /* TreeEditTimeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeEditTimeCell.swift; sourceTree = "<group>"; };
 		80203BF91FCDC63900CA4D38 /* Repetitions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repetitions.swift; sourceTree = "<group>"; };
@@ -399,6 +401,8 @@
 		80203C121FCDC63900CA4D38 /* ParStr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParStr.swift; sourceTree = "<group>"; };
 		80203C131FCDC63900CA4D38 /* ParWords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParWords.swift; sourceTree = "<group>"; };
 		80203C161FD47DA500CA4D38 /* TreeTableVC+KB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TreeTableVC+KB.swift"; sourceTree = "<group>"; };
+		80203C1A1FD5A5D400CA4D38 /* TreeTable+PhoneCrown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TreeTable+PhoneCrown.swift"; sourceTree = "<group>"; };
+		80203C1C1FD5B51A00CA4D38 /* EventRowItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EventRowItem.swift; path = MuseNow/Table/EventRowItem.swift; sourceTree = "<group>"; };
 		803C5B211FBF622400BA9C6C /* TreeTableVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeTableVC.swift; sourceTree = "<group>"; };
 		803C5F4B1FA3DFBD002A1C11 /* MuseNow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MuseNow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		803C5F5D1FA3DFBE002A1C11 /* MuseNow WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MuseNow WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -788,6 +792,7 @@
 		803C5F421FA3DFBD002A1C11 = {
 			isa = PBXGroup;
 			children = (
+				80203C1C1FD5B51A00CA4D38 /* EventRowItem.swift */,
 				8004F70C1FA3EE2400F7ED94 /* Shared */,
 				8004F6C21FA3ED5E00F7ED94 /* ParGraph */,
 				803C5F4D1FA3DFBD002A1C11 /* MuseNow */,
@@ -864,13 +869,14 @@
 			isa = PBXGroup;
 			children = (
 				803C5B211FBF622400BA9C6C /* TreeTableVC.swift */,
+				80203C1A1FD5A5D400CA4D38 /* TreeTable+PhoneCrown.swift */,
 				80203C161FD47DA500CA4D38 /* TreeTableVC+KB.swift */,
 				80D483EB1FCB496800D28095 /* TreeTableVC+.swift */,
 				80A3E36D1FC0D51500195BD3 /* TreeNode.swift */,
 				806ACFE81FC624CB00220EB6 /* TreeCell.swift */,
 				8076435D1FACDB63001733C6 /* TreeTitleFaderCell.swift */,
 				80AD99881FCBA06A00BECC4A /* TreeTitleCell.swift */,
-				800C51B81FC221EF00904121 /* TreeBodyMarkCell.swift */,
+				800C51B81FC221EF00904121 /* TreeTitleMarkCell.swift */,
 				80D483E91FCB3BBD00D28095 /* TreeColorTitleCell.swift */,
 				8018E1A31FC36F8E00F4C0AC /* TreeColorTitleMarkCell.swift */,
 				800C51B61FC2213E00904121 /* TreeTimeTitleDaysCell.swift */,
@@ -1193,6 +1199,8 @@
 				8004F7081FA3ED5E00F7ED94 /* ParStr.swift in Sources */,
 				8004F6F21FA3ED5E00F7ED94 /* Node+connect.swift in Sources */,
 				8004F7A71FA3EE2400F7ED94 /* Settings.swift in Sources */,
+				80203C1B1FD5A5D400CA4D38 /* TreeTable+PhoneCrown.swift in Sources */,
+				80203C1D1FD5B51A00CA4D38 /* EventRowItem.swift in Sources */,
 				806ACFE91FC624CB00220EB6 /* TreeCell.swift in Sources */,
 				807643561FACBE55001733C6 /* Muse.swift in Sources */,
 				8004F7CD1FA3EE2400F7ED94 /* Session.swift in Sources */,
@@ -1201,7 +1209,7 @@
 				8004F79D1FA3EE2400F7ED94 /* FileMsg.swift in Sources */,
 				804D5A081FA3FC8B0025B724 /* TouchDialForce.swift in Sources */,
 				804D5A221FA3FCAA0025B724 /* EventTable+EditRow.swift in Sources */,
-				800C51B91FC221EF00904121 /* TreeBodyMarkCell.swift in Sources */,
+				800C51B91FC221EF00904121 /* TreeTitleMarkCell.swift in Sources */,
 				8004F6FC1FA3ED5E00F7ED94 /* NodeAnys.swift in Sources */,
 				8004F7C11FA3EE2400F7ED94 /* Image+context.swift in Sources */,
 				804D5A041FA3FC8B0025B724 /* Main+Text.swift in Sources */,

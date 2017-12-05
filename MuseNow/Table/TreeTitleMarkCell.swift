@@ -30,7 +30,8 @@ class TreeTitleMarkCell: TreeTitleCell {
         mark = ToggleCheck(frame:markFrame)
         mark.backgroundColor = .clear
         mark.layer.cornerRadius = innerH/4
-        mark.layer.borderWidth = 0.5
+        mark.layer.borderWidth = 1.0
+        mark.layer.borderColor = headColor.cgColor
         mark.layer.masksToBounds = true
         mark.setMark(treeNode.setting.isOn())
 
@@ -40,7 +41,7 @@ class TreeTitleMarkCell: TreeTitleCell {
     /**
      cell can be partially grayed out depending on number of children are set
      */
-    override func updateOnRatio() {
+    override func updateOnRatioOfChildrenMarked() {
         treeNode.updateOnRatioFromChildren()
         mark.setGray(treeNode.onRatio)
     }
@@ -78,37 +79,66 @@ class TreeTitleMarkCell: TreeTitleCell {
         mark.frame  = markFrame
     }
 
-    override func setCellColorStyle(_ colorStyle_:CellColorStyle) {
+    override func setParentChildOther(_ parentChild_:ParentChildOther) {
 
-        colorStyle = colorStyle_
+        parentChild = parentChild_
 
         var background = UIColor.black
-        var newAlpha = CGFloat(1.0)
-        var markBorder = UIColor.black
+        var border    = headColor
+        var newAlpha  = CGFloat(1.0)
 
-        switch colorStyle {
-        case .parent: background = headColor ; newAlpha = 1.0 ; markBorder = .gray
-        case .child:  background = cellColor ; newAlpha = 1.0 ; markBorder = .gray
-        case .other:  background = .black    ; newAlpha = 0.6 ; markBorder = .black
+        switch parentChild {
+        case .parent: background = headColor ; border = UIColor.gray
+        case .child:  background = cellColor
+        case .other:  background = .black ; newAlpha = 0.6
         }
         UIView.animate(withDuration: 0.25, animations: {
             self.bezel.backgroundColor = background
             self.bezel.alpha = newAlpha
+            self.bezel.layer.borderColor = border.cgColor
 
             self.mark.backgroundColor = background
-            self.mark.layer.borderColor = markBorder.cgColor
-            self.mark.alpha = newAlpha
+            self.mark.check.alpha = newAlpha*newAlpha // double alpha the check
+            self.mark.layer.borderColor = border.cgColor
         })
     }
+    override func setHighlight(_ isHighlight_:Bool, animated:Bool = true) {
 
-    override func touchCell(_ location: CGPoint) {
+        if isHighlight != isHighlight_ {
+            isHighlight = isHighlight_
 
-        if let tableVC = tableVC as? TreeTableVC {
-            tableVC.touchedCell = self
+            let index       = isHighlight ? 1 : 0
+            let borders     = [headColor.cgColor, UIColor.white.cgColor]
+
+            // set background from hierarchy depth
+            var background: UIColor!
+            switch parentChild {
+            case .parent: background = headColor
+            case .child: background  = cellColor
+            case .other: background  = .black
+            }
+            let backgrounds = [background.cgColor, background.cgColor]
+
+            if animated {
+                animateViews([bezel,mark], borders, backgrounds, index, duration: 0.25)
+            }
+            else {
+                bezel.layer.borderColor    = borders[index]
+                bezel.layer.backgroundColor = backgrounds[index]
+
+                mark.layer.borderColor     = borders[index]
+                mark.layer.backgroundColor = backgrounds[index]
+            }
         }
+        isSelected = isHighlight
+    }
+
+    override func touchCell(_ location: CGPoint, expand:Bool = true) {
+
+        (tableVC as? TreeTableVC)?.setTouchedCell(self)
 
         let toggleX = frame.size.width -  frame.size.height * 1.618
-        if colorStyle != .other,
+        if parentChild != .other,
             location.x > toggleX {
 
             let isOn = treeNode.toggle()

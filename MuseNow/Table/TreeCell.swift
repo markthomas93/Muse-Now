@@ -4,23 +4,24 @@
 import UIKit
 import EventKit
 
-public enum CellColorStyle { case parent, child, other }
+public enum ParentChildOther { case parent, child, other }
 
 class TreeCell: MuCell {
 
     var treeNode: TreeNode!
+    var autoExpand = true
+    
     var left: UIImageView!
     var bezel: UIView!
-
     var leftFrame  = CGRect.zero
     var bezelFrame = CGRect.zero
 
     let leftW   = CGFloat(24)   // width (and height) of left disclosure image
     let innerH  = CGFloat(36)   // inner height
     let marginW = CGFloat(8)    // margin between elements
-    let marginH = CGFloat(2)    //
+    let marginH = CGFloat(4)    //
 
-    var colorStyle = CellColorStyle.other
+    var parentChild = ParentChildOther.other
 
     convenience required init(coder decoder: NSCoder) {
         self.init(coder: decoder)
@@ -57,6 +58,7 @@ class TreeCell: MuCell {
         bezel.layer.cornerRadius = innerH/4
         bezel.layer.borderWidth = 1
         bezel.layer.masksToBounds = true
+        bezel.layer.borderColor = cellColor.cgColor
 
         contentView.addSubview(left)
         contentView.addSubview(bezel)
@@ -69,7 +71,7 @@ class TreeCell: MuCell {
     /**
      adjust display (such as a check mark) based on ratio of children that are set on
     */
-    func updateOnRatio() {
+    func updateOnRatioOfChildrenMarked() {
         // override
     }
     func updateLeft(animate:Bool) {
@@ -141,26 +143,54 @@ class TreeCell: MuCell {
         buildViews(size)
     }
 
-     func setCellColorStyle(_ colorStyle_:CellColorStyle) {
+    func setParentChildOther(_ parentChild_:ParentChildOther) {
 
-        colorStyle = colorStyle_
+        parentChild = parentChild_
+
         var background = UIColor.black
-        var newAlpha = CGFloat(1.0)
-        switch colorStyle {
-        case .parent: background = headColor ; newAlpha = 1.0
-        case .child: background  = cellColor ; newAlpha = 1.0
-        case .other: background  = .black    ; newAlpha = 0.6
+        var border    = headColor
+        var newAlpha  = CGFloat(1.0)
+
+        switch parentChild {
+        case .parent: background = headColor ; border = UIColor.gray
+        case .child:  background = cellColor ;
+        case .other:  background = .black ; newAlpha = 0.6 ;
         }
         UIView.animate(withDuration: 0.25, animations: {
             self.bezel.backgroundColor = background
             self.bezel.alpha = newAlpha
+            self.bezel.layer.borderColor = border.cgColor
         })
     }
+    override func setHighlight(_ isHighlight_:Bool, animated:Bool = true) {
 
-    override func touchCell(_ location: CGPoint) {
-        if let tableVC = tableVC as? TreeTableVC {
-            tableVC.touchedCell = self
+        if isHighlight != isHighlight_ {
+            isHighlight = isHighlight_
+
+            let index   = isHighlight ? 1 : 0
+            let borders = [headColor.cgColor, UIColor.white.cgColor]
+            var background: UIColor!
+            switch parentChild {
+            case .parent: background = headColor
+            case .child: background  = cellColor
+            case .other: background  = .black
+            }
+            let backgrounds = [background.cgColor, background.cgColor]
+
+            if animated {
+                animateViews([bezel], borders, backgrounds, index, duration: 0.25)
+            }
+            else {
+                bezel.layer.borderColor     = borders[index]
+                bezel.layer.backgroundColor = backgrounds[index]
+            }
         }
+        isSelected = isHighlight
+    }
+
+    override func touchCell(_ location: CGPoint, expand:Bool = true) {
+
+        //??(tableVC as? TreeTableVC)?.setTouchedCell(self)
 
         // when collapsing sibling, self may also get collapsed, so need to know original state to determine highlight
         let wasExpanded = treeNode.expanded
@@ -170,30 +200,37 @@ class TreeCell: MuCell {
         if treeNode.parent != nil {
             for sib in treeNode.parent.children {
                 if sib.expanded {
-                    sib.cell.touchFlipExpand(self)
+                    sib.cell.touchFlipExpand()
                     siblingCollapsing = true
                     break
                 }
             }
         }
         // expand self
-        if treeNode.children.count > 0,
+        if  treeNode.children.count > 0,
             wasExpanded == treeNode.expanded {
 
             if siblingCollapsing {
                 // wait until sibling has finshed collapasing before expanding self
                 let _ = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: {_ in
-                    self.touchFlipExpand(self)
+                   self.touchSelf(expand)
                 })
-                return
             }
             else {
-                return touchFlipExpand(self)
+                touchSelf(expand)
             }
         }
     }
-
-      func touchFlipExpand(_ focus:TreeCell) {
+    func touchSelf(_ expand:Bool) {
+        if expand {
+            touchFlipExpand()
+        }
+        else {
+            setHighlight(true, animated: true)
+        }
+    }
+    
+    func touchFlipExpand() {
 
         if treeNode.expanded == true {
             collapseAllTheWayDown()
@@ -202,7 +239,7 @@ class TreeCell: MuCell {
             treeNode.expanded = true
             updateLeft(animate:true)
         }
-        PagesVC.shared.treeTable.updateTouchCell(self,focus)
+        PagesVC.shared.treeTable.updateTouchCell(self)
     }
 
     /**

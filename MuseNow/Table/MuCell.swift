@@ -35,7 +35,7 @@ class MuCell: UITableViewCell {
             border.duration  = duration
             view.layer.add(border, forKey: "borders")
             view.layer.borderColor = borders[index]
- 
+            if backgrounds.count>0 {
             // animate background
             let background = CABasicAnimation(keyPath: "backgroundColor")
             background.fromValue = backgrounds[index^1]
@@ -43,15 +43,16 @@ class MuCell: UITableViewCell {
             background.duration  = duration
             view.layer.add(background, forKey: "background")
             view.layer.backgroundColor = backgrounds[index]
+            }
         }
     }
-    
+
 
     //  UITouches ----------------------------------------------
 
     var startTime = TimeInterval(0)
     
-    func touchCell(_ location: CGPoint) { } // print("\(#function) should override !!!") }
+    func touchCell(_ location: CGPoint, expand:Bool = true) { } // print("\(#function) should override !!!") }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) { //print(#function)
         

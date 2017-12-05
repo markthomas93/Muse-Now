@@ -14,7 +14,6 @@ class TreeEditWeekdayCell: TreeEditCell {
     convenience init(_ treeNode_: TreeNode!, _ tableVC_:UITableViewController) {
         self.init()
         tableVC = tableVC_
-        height = 64
         frame.size = CGSize(width:tableVC.view.frame.size.width, height:height)
         treeNode = treeNode_
         buildViews(frame.size)
@@ -67,10 +66,28 @@ class TreeEditWeekdayCell: TreeEditCell {
         }
     }
 
-  
+    override func setHighlight(_ isHighlight_:Bool, animated:Bool = true) {
+
+        if isHighlight != isHighlight_ {
+            isHighlight = isHighlight_
+
+            let index       = isHighlight ? 1 : 0
+            let borders     = [headColor.cgColor, UIColor.white.cgColor]
+            let backgrounds = [UIColor.black.cgColor, UIColor.white.cgColor]
+
+            if animated {
+                animateViews([bezel], borders, backgrounds, index, duration: 0.25)
+            }
+            else {
+                bezel.layer.borderColor    = borders[index]
+                bezel.layer.backgroundColor = backgrounds[index]
+            }
+        }
+        isSelected = isHighlight
+    }
     override func updateFrames(_ size:CGSize) {
 
-        let leftX = CGFloat(treeNode.level-2) * 2 * marginW
+        let leftX = CGFloat(treeNode.level-1) * 2 * marginW
         let leftY = marginH
 
         let bezelX = leftX + leftW + marginW
@@ -81,35 +98,34 @@ class TreeEditWeekdayCell: TreeEditCell {
         let weekW = ceil(bezelW / 7 * 2) / 2
         var weekX = CGFloat(0)
 
-        leftFrame  = CGRect(x: leftX,   y: leftY,  width: leftW,  height: leftW)
+        leftFrame  = CGRect(x:leftX, y:leftY, width:leftW, height:leftW)
 
         weekFrames.removeAll()
         for _ in 0..<7 {
 
-            let wframe = CGRect(x: weekX,   y: 0,  width: weekW,  height: bezelH)
+            let wframe = CGRect(x:weekX, y:0, width:weekW, height:bezelH)
             weekX = weekX + weekW
             weekFrames.append(wframe)
         }
-        bezelFrame = CGRect(x: bezelX,  y: bezelY, width: bezelW, height: bezelH)
+        bezelFrame = CGRect(x:bezelX,  y:bezelY, width:bezelW, height:bezelH)
     }
 
     override func updateViews() {
         
         super.updateViews()
-
     }
 
-    override func touchCell(_ point: CGPoint) {
+    override func touchCell(_ point: CGPoint, expand:Bool = true) {
 
-        if let tableVC = tableVC as? TreeTableVC {
-            tableVC.touchedCell = self
-        }
+        (tableVC as? TreeTableVC)?.setTouchedCell(self)
+        
         let location = CGPoint(x: point.x - bezelFrame.origin.x, y: point.y)
 
         for i in 0..<7 {
+
             if weekFrames[i].contains(location) {
 
-                if let node = treeNode as? TreeRoutineItemNode,
+                if  let node = treeNode as? TreeRoutineItemNode,
                     let item = node.routineItem {
 
                     // flip day optionset
@@ -127,7 +143,6 @@ class TreeEditWeekdayCell: TreeEditCell {
                         let cell = parent.cell as? TreeTimeTitleDaysCell {
 
                         cell.days.text = item.dowString
-
                     }
                     break
                 }

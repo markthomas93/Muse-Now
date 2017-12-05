@@ -7,7 +7,7 @@ import EventKit
 class TreeTableVC: UITableViewController {
     
     var cells : [String:MuCell] = [:]
-    var touchedCell: MuCell!
+    var touchedCell: TreeCell!
     var blockKeyboard = false       // block keyboard to prevent multiple scrolls
     let rowHeight = CGFloat(44)     // timeHeight * (1 + 1/phi2)
     var updating = false
@@ -32,6 +32,8 @@ class TreeTableVC: UITableViewController {
             TreeNodes.shared.renumber()
             tableView.reloadData()
         }
+        touchedCell?.setHighlight(false)
+        touchedCell = nil
     }
 
     func makeReachable() {
@@ -54,7 +56,7 @@ class TreeTableVC: UITableViewController {
             collapseBackToMain()
             makeReachable()
         }
-        
+        PhoneCrown.shared?.setDelegate(self)
         Anim.shared.animNow = .futrWheel
         Anim.shared.userDotAction()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
@@ -131,18 +133,19 @@ class TreeTableVC: UITableViewController {
         TreeNodes.shared.renumber()
     }
 
+    
+    func setTouchedCell(_ cell: TreeCell!) {
+        if touchedCell != nil,
+            touchedCell != cell {
 
-    func updateTouchCell(_ cell: TreeCell, _ focus: TreeCell) {
-
-        let oldTableY = tableView.contentOffset.y
-        // let oldCellY = focus.convert(cell.frame.origin, to: tableView).y
-
-        // old height of cells preceeding cell
-        let oldRow = focus.treeNode.row
-        var oldPreH = CGFloat(0)
-        for i in 0 ..< oldRow {
-            oldPreH += TreeNodes.shared.shownNodes[i]?.cell.height ?? 0
+            touchedCell.setHighlight(false)
         }
+        touchedCell = cell
+        touchedCell.setHighlight(true)
+    }
+
+
+    func updateTouchCell(_ cell: TreeCell) {
 
         // changed count
         let oldCount = TreeNodes.shared.shownNodes.count
@@ -152,11 +155,7 @@ class TreeTableVC: UITableViewController {
 
         // new height of cells preceeding cell
         let row = cell.treeNode.row
-        let newRow = focus.treeNode.row
-        var newPreH = CGFloat(0)
-        for i in 0 ..< newRow {
-            newPreH += TreeNodes.shared.shownNodes[i]?.cell.height ?? 0
-        }
+
         if delta > 0 {
             let indexPaths = (row+1 ... row+delta).map { IndexPath(row: $0, section: 0) }
             tableView.insertRows(at: indexPaths, with: .top)
@@ -168,17 +167,6 @@ class TreeTableVC: UITableViewController {
         else {
             tableView.reloadData()
         }
-        /* this attempt was too distracting, better to replace focus with a dual delete and add, if that is possible
-
-         keep the cell in same relative position of scoll view. Tends to drift down
-        let deltaPreH = newPreH - oldPreH
-        let newTableY = oldTableY + deltaPreH
-        printLog("▤ \(oldTableY) + (\(newPreH) - \(oldPreH)) => \(newTableY)")
-
-        UIView.animate(withDuration: 0.25, delay: 0.0, options: [.curveEaseInOut, .allowUserInteraction, .beginFromCurrentState],
-                       animations: {
-                        self.tableView.contentOffset.y = newTableY
-        })*/
-    }
+     }
     
 }

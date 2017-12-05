@@ -1,7 +1,8 @@
 
 import UIKit
 
-/** handle UITouches with overrides for position, delta, and singleTap
+/**
+ handle UITouches with overrides for position, delta, and singleTap
  */
 class TouchForce: UIViewForce {
     

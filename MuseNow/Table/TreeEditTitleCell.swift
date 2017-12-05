@@ -28,7 +28,7 @@ class TreeEditTitleCell: TreeEditCell {
 
         textField = UITextField(frame:textFrame)
         textField.delegate = self
-        textField.backgroundColor = .clear
+        textField.backgroundColor = cellColor
         textField.textColor = .white
         textField.tintColor = .white
         textField.font = UIFont(name: "Helvetica Neue", size: 32)!
@@ -39,6 +39,8 @@ class TreeEditTitleCell: TreeEditCell {
         textField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
         textField.keyboardAppearance = UIAccessibilityIsInvertColorsEnabled() ? .default : .dark
         textField.autocorrectionType = .no
+
+        // text clear button inside bezel
         textClear = UIImageView(frame:clearFrame)
         textClear.image = UIImage(named: "Icon-X-plus.png")
         textClear.isUserInteractionEnabled = false
@@ -57,7 +59,7 @@ class TreeEditTitleCell: TreeEditCell {
 
      override func updateFrames(_ size:CGSize) {
 
-        let leftX = CGFloat(treeNode.level-2) * 2 * marginW
+        let leftX = CGFloat(treeNode.level-1) * 2 * marginW
         let leftY = marginH
 
         let bezelX = leftX + leftW + marginW

@@ -83,11 +83,14 @@ class TreeNode {
         return depth+1
     }
 
+    func getParentChildOther() -> ParentChildOther {
+        if depth == 0, parent?.depth == 1 { return .child }
+        else if depth == 1, expanded      { return .parent }
+        else                              { return .other }
+    }
     func rehighlight() {
 
-        if depth == 0, parent?.depth == 1 { cell?.setCellColorStyle(.child) }
-        else if depth == 1, expanded      { cell?.setCellColorStyle(.parent) }
-        else                              { cell?.setCellColorStyle(.other) }
+        cell?.setParentChildOther(getParentChildOther())
 
         if expanded {
             for child in children {
@@ -174,7 +177,7 @@ class TreeNode {
             onRatio = isOn ? 1.0 : 0.0
             setting.setOn(onRatio > 0) // synch setting with onRatio
             updateMyChildren()
-            cell?.updateOnRatio()
+            cell?.updateOnRatioOfChildrenMarked()
             callback?(self)
         }
     }
@@ -185,8 +188,8 @@ class TreeNode {
         onRatio = isOn ? 1.0 : 0.0
         setting.setOn(onRatio > 0) // synch setting with onRatio
         updateMyChildren()
-        parent?.cell?.updateOnRatio()
-        cell?.updateOnRatio()
+        parent?.cell?.updateOnRatioOfChildrenMarked()
+        cell?.updateOnRatioOfChildrenMarked()
         callback?(self)
         return isOn
     }
@@ -198,7 +201,7 @@ class TreeNode {
      */
     func refreshNodeCells() {
         updateOnRatioFromChildren()
-        cell?.updateOnRatio()
+        cell?.updateOnRatioOfChildrenMarked()
         cell?.updateLeft(animate: false)
         for child in children {
             child.refreshNodeCells()

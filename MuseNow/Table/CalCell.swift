@@ -38,7 +38,7 @@ class CalCell: MuCell {
         
         // bezel for mark
         mark.layer.cornerRadius = innerH/4
-        mark.layer.borderWidth = 1
+        mark.layer.borderWidth = 1.0
         mark.layer.masksToBounds = true
         mark.setMark(cal.isOn)
         
@@ -50,7 +50,7 @@ class CalCell: MuCell {
         isHighlight = isHighlight_
         
         let index       = isHighlight ? 1 : 0
-        let borders     = [UIColor.black.cgColor, UIColor.white.cgColor]
+        let borders     = [headColor.cgColor, UIColor.white.cgColor]
         let backgrounds = [UIColor.black.cgColor, UIColor.black.cgColor]
         
         if animated {
@@ -67,7 +67,7 @@ class CalCell: MuCell {
         }
     }
     
-    override func touchCell(_ location: CGPoint) {
+    override func touchCell(_ location: CGPoint, expand:Bool = true) {
 
         let toggleX = frame.size.width -  frame.size.height*1.618
         if location.x > toggleX {

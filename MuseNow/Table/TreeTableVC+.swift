@@ -7,7 +7,7 @@ import EventKit
 extension TreeTableVC {
 
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-printLog("⿳ scrollViewDidScroll: \(self.tableView.contentOffset.y)")
+        //printLog("⿳ scrollViewDidScroll: \(self.tableView.contentOffset.y)")
     }
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -33,8 +33,20 @@ printLog("⿳ scrollViewDidScroll: \(self.tableView.contentOffset.y)")
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        let topRowsHeight =  TreeNodes.shared.root?.childRowsHeight() ?? 0
-        headerY = max(0,tableView.bounds.height - topRowsHeight)
+        var shownRowsHeight = CGFloat(0)
+        var shownChild = false
+        nodes: for node in TreeNodes.shared.shownNodes {
+            switch node?.getParentChildOther() {
+            case .child?: shownChild = true
+            default: if shownChild {
+                break nodes
+                }
+            }
+            if let cell = node?.cell {
+                shownRowsHeight += cell.height
+            }
+        }
+        headerY = max(0,tableView.bounds.height - shownRowsHeight)
          printLog("⿳ heightForHeaderInSection: \(headerY)")
         return headerY
     }
@@ -46,7 +58,7 @@ printLog("⿳ scrollViewDidScroll: \(self.tableView.contentOffset.y)")
                 shownRowsHeight += cell.height
             }
         }
-        let height = max(0,tableView.bounds.height - shownRowsHeight - 44)
+        let height = max(0,tableView.bounds.height - shownRowsHeight)
         return height
     }
 

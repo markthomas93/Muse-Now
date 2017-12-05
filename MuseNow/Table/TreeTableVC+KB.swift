@@ -23,7 +23,7 @@ extension TreeTableVC {
             let tableY  = tableView.convert(tableView.frame.origin, to: nil).y
             let scrollY = tableView.contentOffset.y + tableY
 
-            let cellH  = touchedCell.height + 44
+            let cellH  = touchedCell.height + 44 //?? explicit 44??
             let deltaY = cellY + cellH - keybY
 
             printLog ("▭ \(#function) \(cellY) + \(cellH) - \(keybY) => \(deltaY) ")

@@ -29,6 +29,8 @@ extension TreeEditTitleCell: UITextFieldDelegate {
 
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
 
+        (tableVC as? TreeTableVC)?.setTouchedCell(self)
+
         printLog ("▭ \(#function)")
         if textField.text != nil {
             textField.text = ""
@@ -38,6 +40,11 @@ extension TreeEditTitleCell: UITextFieldDelegate {
 
     func textFieldDidEndEditing(_ textField: UITextField)  {
 
+        if let parent = treeNode.parent,
+            let parentCell = parent.cell {
+            (tableVC as? TreeTableVC)?.setTouchedCell(parentCell)
+        }
+        
         printLog ("▭ \(#function)")
         textClear.isHidden = true
         if textField.text == nil || textField.text! == "" {
@@ -52,11 +59,11 @@ extension TreeEditTitleCell: UITextFieldDelegate {
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
          textField.resignFirstResponder()
-        if  let node = treeNode as? TreeRoutineItemNode,
-            let nodeParent = node.parent,
-            let parentCell = nodeParent.cell as? TreeTimeTitleDaysCell {
-                parentCell.touchCell(CGPoint.zero)
-        }
+//        if  let node = treeNode as? TreeRoutineItemNode,
+//            let nodeParent = node.parent,
+//            let parentCell = nodeParent.cell as? TreeTimeTitleDaysCell {
+//                //parentCell.touchCell(CGPoint.zero)
+//        }
         return true
     }
 
