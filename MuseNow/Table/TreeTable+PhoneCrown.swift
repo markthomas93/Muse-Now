@@ -20,6 +20,12 @@ extension TreeTableVC: PhoneCrownDelegate {
             })
             return true
         }
+//        if  let lastNode = TreeNodes.shared.shownNodes.last {
+//            let lastRect = tableView.rectForRow(at: IndexPath(row:lastNode.row, section:0))
+//            if tableView.bounds.contains(lastRect) {
+//                return true
+//            }
+//        }
         return false
     }
     func scrollToNearestTouch(_ cell:TreeCell!) {
@@ -30,8 +36,8 @@ extension TreeTableVC: PhoneCrownDelegate {
             let newPath = IndexPath(row:cell.treeNode.row,section:0)
             let newY = tableView.rectForRow(at:newPath).origin.y
             let cellY = cell.lastLocationInTable.y
-            //let cellH = cell.height
-            //let cellZ = cellY + cellH
+            let cellH = cell.height
+            let cellZ = cellY + cellH
             let deltaY = newY - cellY
             if deltaY < 0 {
                 let lastY = tableView.rectForRow(at: IndexPath(row:lastNode.row, section:0)).origin.y
@@ -43,7 +49,7 @@ extension TreeTableVC: PhoneCrownDelegate {
                 let tablZ = tablY+tablH
                 let shift = -deltaY - ((-deltaY + lastZ) - tablZ)
                 if shift > 44 {
-                    //print ("*** \(Int(deltaY)):\(Int(cellZ)) \(Int(lastZ)) \(Int(tablZ)) \(Int(shift))")
+                    print ("*** \(Int(deltaY)):\(Int(cellZ)) \(Int(lastZ)) \(Int(tablZ)) \(Int(shift))")
                     UIView.animate(withDuration: 0.25, animations: {
                         self.tableView.contentOffset.y -= shift
                     })
@@ -56,22 +62,24 @@ extension TreeTableVC: PhoneCrownDelegate {
      User force touches our double tapped on phoneCrowndouble
      */
     func phoneCrownToggle(_ isRight:Bool) { printLog ("⊛ TreeTableVC::\(#function)")
-        // only toggle cell
-        if isRight {
-            if let touchedCell = touchedCell as? TreeTitleMarkCell,
-                let treeNode = touchedCell.treeNode {
-
-                touchedCell.mark.setMark(treeNode.toggle())
-            }
+        // toggle mark on the right
+        if  isRight,
+            let touchedCell = touchedCell as? TreeTitleMarkCell,
+            let treeNode = touchedCell.treeNode {
+            touchedCell.mark.setMark(treeNode.toggle())
+            return
         }
-        else if let touchedCell = touchedCell as? TreeEditTitleCell {
-            if touchedCell.textField.isFirstResponder {
-                 touchedCell.textField.resignFirstResponder()
+        // toggle field left or right
+        if let touchedCell = touchedCell as? TreeEditTitleCell {
+            if  touchedCell.textField.isFirstResponder {
+                touchedCell.textField.resignFirstResponder()
             }
             else {
                 touchedCell.textField.becomeFirstResponder()
             }
+            return
         }
+        // expand otherwise
         else {
             touchedCell?.touchCell(CGPoint.zero)
         }

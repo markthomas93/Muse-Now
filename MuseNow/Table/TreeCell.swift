@@ -214,7 +214,7 @@ class TreeCell: MuCell {
         if treeNode.parent != nil {
             for sib in treeNode.parent.children {
                 if sib.expanded {
-                    sib.cell.touchFlipExpand(scrollNearest:false)
+                    sib.cell.touchFlipExpand()
                     siblingCollapsing = true
                     break
                 }
@@ -226,24 +226,32 @@ class TreeCell: MuCell {
     }
 
     func touchSelf(_ expandMe:Bool, withDelay:Bool) {
+
+        func touchAndScroll() {
+            if expandMe {  touchFlipExpand() }
+            else { setHighlight(.forceHigh) }
+            (tableVC as? TreeTableVC)?.scrollToNearestTouch(self)
+        }
+
+        // begin ------------
+
         if withDelay {
             let _ = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: {_ in
-                if expandMe { self.touchFlipExpand(scrollNearest:true) }
-                else { self.setHighlight(.forceHigh, animated: true) }
+                touchAndScroll()
             })
         }
         else {
-            if expandMe { touchFlipExpand(scrollNearest:true) }
-            else { setHighlight(.forceHigh, animated: true) }
+            touchAndScroll()
         }
     }
+
     /**
      Either collapse or expand treeNodes and update TreeTableVC
      - via: toucheCell while siblingCollapsing
      - via: toucheCell.touchSelf when not collapsed w siblings
      - Parameter scrollNearest: try to keep cell nearest touch location
      */
-     func touchFlipExpand(scrollNearest:Bool) {
+     func touchFlipExpand() {
 
         if let tableVC = tableVC as? TreeTableVC {
 
@@ -262,9 +270,6 @@ class TreeCell: MuCell {
                     tableVC.scrollToMakeVisibleCell(lastChildCell, node.row) {
                     return
                 }
-            }
-            if scrollNearest {
-                tableVC.scrollToNearestTouch(self)
             }
         }
     }

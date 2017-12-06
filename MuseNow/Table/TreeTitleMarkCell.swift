@@ -146,9 +146,7 @@ class TreeTitleMarkCell: TreeTitleCell {
         (tableVC as? TreeTableVC)?.setTouchedCell(self)
 
         let toggleX = frame.size.width -  frame.size.height * 1.618
-        if parentChild != .other,
-            location.x > toggleX {
-
+        if location.x > toggleX {
             let isOn = treeNode.toggle()
             mark.setMark(isOn)
         }
