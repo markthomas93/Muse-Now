@@ -129,6 +129,7 @@ class EventTableVC: UITableViewController, MuseTableDelegate {
                 timeCell = EventTimeCell()
                 let size = CGSize(width: view.frame.size.width, height: timeHeight)
                 timeCell.setCell(event:event,size)
+                timeCell.frame.size.width = view.frame.size.width
                 timeIndexPath = indexPath
             }
             return roundCorners(timeCell,indexPath)

@@ -25,6 +25,7 @@ class PhoneCrown: TouchForce {
     enum Direction: UInt8 { case unknown, past, future }
     var direction : Direction = .unknown
     var isRight = true
+    var lastX = CGFloat(0)
     
     convenience init (left:CGRect, right:CGRect,_ delegate_:PhoneCrownDelegate! ) {
 
@@ -45,7 +46,7 @@ class PhoneCrown: TouchForce {
 
     /**
     Each TableVC will use the phoneCrown to navigate up and down between cells. So, each will change the PhoneCrownDelegate.
-     - via: *TableVC.viewWillAppear()
+     - via: [Tree,Edit]TableVC.viewWillAppear()
      */
     func setDelegate(_ delegate_:PhoneCrownDelegate) {
         delegate = delegate_
@@ -133,7 +134,7 @@ class PhoneCrown: TouchForce {
         
         if !updating {
             updating = true
-            
+            lastX = pos.x + self.frame.origin.x
             twin?.beganSlave()
             delegate.phoneCrownUpdate()
             beganSlave()
@@ -155,6 +156,7 @@ class PhoneCrown: TouchForce {
     override func moved(_ pos: CGPoint,_ delta: CGPoint,_ time: TimeInterval) {
         if !updating {
             updating = true
+            lastX = pos.x + self.frame.origin.x
             twin?.movedSlave()
             updateDelta(delta)
             twin?.deltaY = deltaY
@@ -170,6 +172,7 @@ class PhoneCrown: TouchForce {
         
         if !updating {
             updating = true
+            lastX = pos.x + self.frame.origin.x
             twin?.endedSlave()
             endedSlave()
             updating = false
@@ -185,11 +188,16 @@ class PhoneCrown: TouchForce {
     // singleTap: toggle mark for current row
     
     override func singleTap(){
-        delegate.phoneCrownToggle(isRight)
+        printLog ("👆 PhoneCrown::\(#function)")
+        let myDistance = abs(lastX - center.x)
+        let twinDistance = abs(lastX - twin.center.x)
+        let sendRight = myDistance < twinDistance ? isRight : twin.isRight
+        delegate.phoneCrownToggle(sendRight)
     }
     
     override func forceTap(_ isForceOn: Bool) {
         if isForceOn {
+            printLog ("👆 PhoneCrown::\(#function)")
             singleTap()
         }
     }

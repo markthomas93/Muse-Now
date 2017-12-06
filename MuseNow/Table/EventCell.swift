@@ -41,33 +41,41 @@ class EventCell: MuCell {
         bezel.layer.borderWidth = 1
         bezel.layer.masksToBounds = true
         
-        setHighlight(false, animated:false)
+        setHighlight(.low, animated:false)
     }
 
-    override func setHighlight(_ isHighlight_:Bool, animated:Bool = true) {
-        
-        isHighlight = isHighlight_
-        
-        let index = isHighlight ? 1 : 0
-        let borders     = [cellColor.cgColor, UIColor.white.cgColor]
-        let backgrounds = [cellColor.cgColor, UIColor.black.cgColor]
+    override func setHighlight(_ highlighting_:Highlighting, animated:Bool = true) {
 
-        if animated {
-            animateViews([bezel,mark], borders, backgrounds, index, duration: 0.25)
+        if highlighting != highlighting_ {
+            
+            var index = 0
+            switch highlighting_ {
+            case .high,.forceHigh: highlighting = .high ; index = 1 ; isSelected = true
+            default:               highlighting = .low  ; index = 0 ; isSelected = false
+            }
+            let borders     = [cellColor.cgColor, UIColor.white.cgColor]
+            let backgrounds = [cellColor.cgColor, UIColor.black.cgColor]
+            
+            if animated {
+                animateViews([bezel,mark], borders, backgrounds, index, duration: 0.25)
+            }
+            else {
+                bezel.layer.borderColor     = borders[index]
+                mark.layer.borderColor      = borders[index]
+                bezel.layer.backgroundColor = backgrounds[index]
+                mark.layer.backgroundColor  = backgrounds[index]
+            }
         }
         else {
-            bezel.layer.borderColor     = borders[index]
-            mark.layer.borderColor      = borders[index]
-            bezel.layer.backgroundColor = backgrounds[index]
-            mark.layer.backgroundColor  = backgrounds[index]
-        }
-        if !isHighlight {
-            isSelected = false
+            switch highlighting {
+            case .high,.forceHigh: isSelected = true       
+            default:               isSelected = false
+            }
         }
     }
     
     
-    override func touchCell(_ location: CGPoint, expand:Bool = true) {
+    override func touchCell(_ location: CGPoint) {
 
         let toggleX = frame.size.width -  frame.size.height*1.618
         if location.x > toggleX {

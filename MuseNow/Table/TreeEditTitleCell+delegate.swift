@@ -42,7 +42,7 @@ extension TreeEditTitleCell: UITextFieldDelegate {
 
         if let parent = treeNode.parent,
             let parentCell = parent.cell {
-            (tableVC as? TreeTableVC)?.setTouchedCell(parentCell)
+           (tableVC as? TreeTableVC)?.setTouchedCell(parentCell)
         }
         
         printLog ("▭ \(#function)")
@@ -59,11 +59,6 @@ extension TreeEditTitleCell: UITextFieldDelegate {
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
          textField.resignFirstResponder()
-//        if  let node = treeNode as? TreeRoutineItemNode,
-//            let nodeParent = node.parent,
-//            let parentCell = nodeParent.cell as? TreeTimeTitleDaysCell {
-//                //parentCell.touchCell(CGPoint.zero)
-//        }
         return true
     }
 

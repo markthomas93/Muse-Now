@@ -9,11 +9,14 @@ class UIViewForce: UIView {
     var forceOnθ = CGFloat(5)
     var forceOffθ = CGFloat(2)
     var isForceOn = false
-    
+    var forceOnTime = TimeInterval(0) // last time for turned on
+    var forceOffTime = TimeInterval(0) // last time for turned off
+    var recoveryTime = TimeInterval(0.25) // prevent spurious double force taps
+
     // override by subclass
     func forceTap(_ isForceOn:Bool){}
 
-    func updateForce(_ force: CGFloat) {
+    func updateForce(_ force: CGFloat, _ timeStamp:TimeInterval) {
         
         if forceAble == .unknown {
             forceAble = UIApplication.shared.keyWindow?.rootViewController?.traitCollection.forceTouchCapability ?? .unknown
@@ -22,13 +25,20 @@ class UIViewForce: UIView {
             if isForceOn {
                 if force < forceOffθ {
                     isForceOn = false
-                    forceTap(isForceOn)
+                    forceOffTime = timeStamp
+                    forceTap(false)
                 }
             }
             else {
-                if force > forceOnθ {
+                let deltaTime = timeStamp - forceOffTime
+                if  deltaTime > recoveryTime,
+                    force > forceOnθ {
+
+                    printLog (String(format:"👆 \(#function):%.2f",deltaTime))
+
                     isForceOn = true
-                    forceTap(isForceOn)
+                    forceOnTime = timeStamp
+                    forceTap(true)
                 }
             }
             //print (String(format:"👆 \(#function):%.2f",force))

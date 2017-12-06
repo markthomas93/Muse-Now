@@ -60,12 +60,15 @@ class TreeTitleFaderCell: TreeTitleCell {
         bezelFrame = CGRect(x:bezelX, y:bezelY, width: bezelW, height: bezelH)
     }
 
-    override func setHighlight(_ isHighlight_:Bool, animated:Bool = true) {
+    override func setHighlight(_ highlighting_:Highlighting, animated:Bool = true) {
 
-        if isHighlight != isHighlight_ {
-            isHighlight = isHighlight_
+        if highlighting != highlighting_ {
 
-            let index       = isHighlight ? 1 : 0
+            var index = 0
+            switch highlighting_ {
+            case .high,.forceHigh: highlighting = .high ; index = 1 ; isSelected = true
+            default:               highlighting = .low  ; index = 0 ; isSelected = false
+            }
             let borders     = [headColor.cgColor, UIColor.white.cgColor]
             let backgrounds = [UIColor.black.cgColor, UIColor.black.cgColor]
 
@@ -77,7 +80,12 @@ class TreeTitleFaderCell: TreeTitleCell {
                 fader.layer.backgroundColor = backgrounds[index]
             }
         }
-        isSelected = isHighlight
+        else {
+            switch highlighting {
+            case .high,.forceHigh: isSelected = true
+            default:               isSelected = false
+            }
+        }
     }
 
     override func updateViews() {

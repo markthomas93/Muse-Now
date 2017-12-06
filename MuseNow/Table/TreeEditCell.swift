@@ -29,15 +29,18 @@ class TreeEditCell: TreeTitleCell {
         leftFrame  = CGRect(x: leftX,   y: leftY,  width: leftW,  height: leftW)
         bezelFrame = CGRect(x: bezelX,  y: bezelY, width: bezelW, height: bezelH)
     }
-    override func setHighlight(_ isHighlight_:Bool, animated:Bool = true) {
-
-        if isHighlight != isHighlight_ {
-            isHighlight = isHighlight_
-
-            let index       = isHighlight ? 1 : 0
-            let borders     = [headColor.cgColor, UIColor.white.cgColor]
+    override func setHighlight(_ highlighting_:Highlighting, animated:Bool = true) {
+        
+        if highlighting != highlighting_ {
+            
+            var index = 0
+            switch highlighting_ {
+            case .high,.forceHigh: highlighting = .high ; index = 1 ; isSelected = true
+            default:               highlighting = .low  ; index = 0 ; isSelected = false
+            }
+            let borders     = [headColor.cgColor,     UIColor.white.cgColor]
             let backgrounds = [UIColor.black.cgColor, UIColor.clear.cgColor]
-
+            
             if animated {
                 animateViews([bezel], borders, backgrounds, index, duration: 0.25)
             }
@@ -46,7 +49,12 @@ class TreeEditCell: TreeTitleCell {
                 bezel.layer.backgroundColor = backgrounds[index]
             }
         }
-        isSelected = isHighlight
+        else {
+            switch highlighting {
+            case .high,.forceHigh: isSelected = true       
+            default:               isSelected = false
+            }
+        }
     }
 
     override func updateViews() {

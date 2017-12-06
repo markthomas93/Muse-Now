@@ -44,7 +44,7 @@ extension EventTableVC {
     func nextMuCell(_ cell: MuCell) {
         
         clearPrevCell()
-        cell.setHighlight(true)
+        cell.setHighlight(.high)
         prevCell = cell
 
         // get next event for this hour
@@ -73,7 +73,7 @@ extension EventTableVC {
         if prevCell != cell {
             clearPrevCell()
         }
-        cell.setHighlight(true)
+        cell.setHighlight(.high)
         prevCell = cell
     }
     
@@ -84,7 +84,7 @@ extension EventTableVC {
         
         if prevCell != nil {
             
-            prevCell.setHighlight(false)
+            prevCell.setHighlight(.low)
             prevCell = nil
         }
     }

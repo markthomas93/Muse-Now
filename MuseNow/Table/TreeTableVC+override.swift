@@ -34,20 +34,15 @@ extension TreeTableVC {
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         var shownRowsHeight = CGFloat(0)
-        var shownChild = false
-        nodes: for node in TreeNodes.shared.shownNodes {
-            switch node?.getParentChildOther() {
-            case .child?: shownChild = true
-            default: if shownChild {
-                break nodes
-                }
-            }
+        for node in TreeNodes.shared.shownNodes {
             if let cell = node?.cell {
                 shownRowsHeight += cell.height
             }
         }
-        headerY = max(0,tableView.bounds.height - shownRowsHeight)
-         printLog("⿳ heightForHeaderInSection: \(headerY)")
+        shownRowsHeight += 44 //?? Kludge fixup after expanding and contracting -- scrolls beyond tableView.bounds
+        let middle = tableView.bounds.height / 2
+        headerY = max(middle,tableView.bounds.height - shownRowsHeight)
+        //printLog("⿳ heightForHeaderInSection: \(headerY)")
         return headerY
     }
 
@@ -58,7 +53,9 @@ extension TreeTableVC {
                 shownRowsHeight += cell.height
             }
         }
+        shownRowsHeight += 22 //?? Kludge fixup after expanding and contracting -- scrolls beyond tableView.bounds
         let height = max(0,tableView.bounds.height - shownRowsHeight)
+         //printLog("⿳ heightForFooterInSection: \(headerY)")
         return height
     }
 

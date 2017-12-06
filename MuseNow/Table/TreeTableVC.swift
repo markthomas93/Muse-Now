@@ -32,7 +32,7 @@ class TreeTableVC: UITableViewController {
             TreeNodes.shared.renumber()
             tableView.reloadData()
         }
-        touchedCell?.setHighlight(false)
+        touchedCell?.setHighlight(.low)
         touchedCell = nil
     }
 
@@ -43,23 +43,36 @@ class TreeTableVC: UITableViewController {
         let scrollY = max(0, height - maxChildHeight)
         let offsetY = tableView.contentOffset.y
         let deltaY =  headerY - scrollY
-        printLog("⿳ \(#function) \(offsetY): \(headerY) - \(scrollY) => \(deltaY)")
-        self.tableView.contentOffset.y = deltaY
+        printLog("▤ \(#function) \(offsetY): \(headerY) - \(scrollY) => \(deltaY)")
     }
 
     override func viewWillAppear(_ animated: Bool) {
         if show == nil {
             initTree()
-            makeReachable()
+            tableView.contentOffset.y = 0
+            //makeReachable()
         }
         else if Date().timeIntervalSince1970 - lastDisappearTime > 2 {
             collapseBackToMain()
-            makeReachable()
+            tableView.contentOffset.y = 0
+            //makeReachable()
         }
         PhoneCrown.shared?.setDelegate(self)
         Anim.shared.animNow = .futrWheel
         Anim.shared.userDotAction()
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow),
+                                               name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow),
+//                                               name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide),
+                                               name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)),
+//                                               name: .UITextInputCurrentInputModeDidChange, object: nil)
+
+
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -138,10 +151,10 @@ class TreeTableVC: UITableViewController {
         if touchedCell != nil,
             touchedCell != cell {
 
-            touchedCell.setHighlight(false)
+            touchedCell.setHighlight(.low)
         }
         touchedCell = cell
-        touchedCell.setHighlight(true)
+        touchedCell.setHighlight(.high)
     }
 
 
@@ -162,7 +175,7 @@ class TreeTableVC: UITableViewController {
         }
         else if delta < 0 {
             let indexPaths = (row+1 ... row-delta).map { IndexPath(row: $0, section: 0) }
-            tableView.deleteRows(at: indexPaths, with: .bottom)
+            tableView.deleteRows(at: indexPaths, with: .top)
         }
         else {
             tableView.reloadData()

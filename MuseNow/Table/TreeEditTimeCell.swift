@@ -25,7 +25,6 @@ class TreeEditTimeCell: TreeEditCell {
     convenience init(_ treeNode_: TreeNode!, _ tableVC_:UITableViewController) {
         self.init()
         tableVC = tableVC_
-        height = 64
         frame.size = CGSize(width:tableVC.view.frame.size.width, height:height)
         treeNode = treeNode_
         buildViews(frame.size)
@@ -92,13 +91,16 @@ class TreeEditTimeCell: TreeEditCell {
         let bezelH = height - marginH
         let bezelW = size.width - bezelX
 
+        let timeH   = CGFloat(64)
+        let timeY   = (height-timeH)/2
+        
         let btimeX  = CGFloat(0)
         let timeW  = bezelW/2
         let etimeX  = btimeX + timeW
 
         leftFrame     = CGRect(x: leftX,   y: leftY,  width: leftW,  height: leftW)
-        bgnTimeFrame  = CGRect(x: btimeX,  y: 0,      width: timeW,  height: bezelH)
-        endTimeFrame  = CGRect(x: etimeX,  y: 0,      width: timeW,  height: bezelH)
+        bgnTimeFrame  = CGRect(x: btimeX,  y: timeY,  width: timeW,  height: timeH)
+        endTimeFrame  = CGRect(x: etimeX,  y: timeY,  width: timeW,  height: timeH)
         arrowFrame    = CGRect(x: 0,       y: 0,      width: bezelW, height: bezelH)
         bezelFrame    = CGRect(x: bezelX,  y: bezelY, width: bezelW, height: bezelH)
     }

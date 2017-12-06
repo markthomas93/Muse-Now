@@ -4,16 +4,16 @@
 import UIKit
 
 class MuCell: UITableViewCell {
-    
     var event : MuEvent!
-    var isHighlight = false
+    enum Highlighting { case unknown, high, low, forceHigh, forceLow }
+    var highlighting = Highlighting.unknown
     var tableVC : UITableViewController!
     var height = CGFloat(44)
 
-    func setHighlight(_ isHighlight_:Bool, animated:Bool = true) {
+    func setHighlight(_ highlighting_:Highlighting, animated:Bool = true) {
         //assert("must override this")
     }
-   
+
     func animateBorderColor(_ view: UIView,_ frColor: CGColor,_ toColor: CGColor, duration: Double) {
         
         let animation:CABasicAnimation = CABasicAnimation(keyPath: "borderColor")
@@ -35,14 +35,15 @@ class MuCell: UITableViewCell {
             border.duration  = duration
             view.layer.add(border, forKey: "borders")
             view.layer.borderColor = borders[index]
-            if backgrounds.count>0 {
+
             // animate background
-            let background = CABasicAnimation(keyPath: "backgroundColor")
-            background.fromValue = backgrounds[index^1]
-            background.toValue   = backgrounds[index]
-            background.duration  = duration
-            view.layer.add(background, forKey: "background")
-            view.layer.backgroundColor = backgrounds[index]
+            if backgrounds.count>0 {
+                let background = CABasicAnimation(keyPath: "backgroundColor")
+                background.fromValue = backgrounds[index^1]
+                background.toValue   = backgrounds[index]
+                background.duration  = duration
+                view.layer.add(background, forKey: "background")
+                view.layer.backgroundColor = backgrounds[index]
             }
         }
     }
@@ -52,7 +53,7 @@ class MuCell: UITableViewCell {
 
     var startTime = TimeInterval(0)
     
-    func touchCell(_ location: CGPoint, expand:Bool = true) { } // print("\(#function) should override !!!") }
+    func touchCell(_ location: CGPoint) { } // print("\(#function) should override !!!") }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) { //print(#function)
         

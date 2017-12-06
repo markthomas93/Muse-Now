@@ -14,7 +14,7 @@ extension EventTableVC: PhoneCrownDelegate {
      - via: PhoneCrown.began
      - via: PhoneCrown.[moved ended].updateDelta.phoneCrownDeltaRow
      */
-    func phoneCrownUpdate() {  printLog ("⊛ TreeTableVC::\(#function)")
+    func phoneCrownUpdate() { 
         
             // prevCell is still showing
         if prevCell != nil && tableView.bounds.contains(prevCell.frame) {
@@ -65,7 +65,7 @@ extension EventTableVC: PhoneCrownDelegate {
      User moved crown
      - via: PhoneCrown.[moved ended].updateDelta
      */
-    func phoneCrownDeltaRow(_ deltaRow: Int,_ isRight:Bool) { printLog ("⊛ EventTableVC::\(#function):\(deltaRow)")
+    func phoneCrownDeltaRow(_ deltaRow: Int,_ isRight:Bool) { // printLog ("⊛ EventTableVC::\(#function):\(deltaRow)")
 
         anim.touchDialClockwise(deltaRow > 0)
         var nextOffset = tableView.contentOffset.y

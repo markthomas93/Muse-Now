@@ -66,15 +66,18 @@ class TreeEditWeekdayCell: TreeEditCell {
         }
     }
 
-    override func setHighlight(_ isHighlight_:Bool, animated:Bool = true) {
-
-        if isHighlight != isHighlight_ {
-            isHighlight = isHighlight_
-
-            let index       = isHighlight ? 1 : 0
+    override func setHighlight(_ highlighting_:Highlighting, animated:Bool = true) {
+        
+        if highlighting != highlighting_ {
+            
+            var index = 0
+            switch highlighting_ {
+            case .high,.forceHigh: highlighting = .high ; index = 1 ; isSelected = true
+            default:               highlighting = .low  ; index = 0 ; isSelected = false
+            }
             let borders     = [headColor.cgColor, UIColor.white.cgColor]
             let backgrounds = [UIColor.black.cgColor, UIColor.white.cgColor]
-
+            
             if animated {
                 animateViews([bezel], borders, backgrounds, index, duration: 0.25)
             }
@@ -83,8 +86,14 @@ class TreeEditWeekdayCell: TreeEditCell {
                 bezel.layer.backgroundColor = backgrounds[index]
             }
         }
-        isSelected = isHighlight
+        else {
+            switch highlighting {
+            case .high,.forceHigh: isSelected = true       
+            default:               isSelected = false
+            }
+        }
     }
+    
     override func updateFrames(_ size:CGSize) {
 
         let leftX = CGFloat(treeNode.level-1) * 2 * marginW
@@ -115,7 +124,7 @@ class TreeEditWeekdayCell: TreeEditCell {
         super.updateViews()
     }
 
-    override func touchCell(_ point: CGPoint, expand:Bool = true) {
+    override func touchCell(_ point: CGPoint) {
 
         (tableVC as? TreeTableVC)?.setTouchedCell(self)
         

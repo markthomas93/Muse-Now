@@ -22,6 +22,7 @@ func printLog(_ str: String) {
     //case NSLog(str)
 
     case
+    "👆", // tap action
     "⊛", // crown
     "▤", // TreeTableView
     "⧉", // sync files
@@ -49,7 +50,7 @@ func printLog(_ str: String) {
     "𝓡", // routine
     "🗣", // Say TTS
     "⟳", // life cycle
-    "👆", // tap action
+
     "✓", // actions
     "⎚", // scene animation
     "⚆", // wheel spoke animation

@@ -174,9 +174,10 @@
 		800C51B91FC221EF00904121 /* TreeTitleMarkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800C51B81FC221EF00904121 /* TreeTitleMarkCell.swift */; };
 		8018E1A41FC36F8E00F4C0AC /* TreeColorTitleMarkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8018E1A31FC36F8E00F4C0AC /* TreeColorTitleMarkCell.swift */; };
 		8018E1A61FC394FC00F4C0AC /* TreeEditTimeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8018E1A51FC394FB00F4C0AC /* TreeEditTimeCell.swift */; };
-		80203C171FD47DA500CA4D38 /* TreeTableVC+KB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80203C161FD47DA500CA4D38 /* TreeTableVC+KB.swift */; };
+		80203C171FD47DA500CA4D38 /* TreeTableVC+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80203C161FD47DA500CA4D38 /* TreeTableVC+Keyboard.swift */; };
 		80203C1B1FD5A5D400CA4D38 /* TreeTable+PhoneCrown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80203C1A1FD5A5D400CA4D38 /* TreeTable+PhoneCrown.swift */; };
 		80203C1D1FD5B51A00CA4D38 /* EventRowItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80203C1C1FD5B51A00CA4D38 /* EventRowItem.swift */; };
+		80203C1F1FD7854500CA4D38 /* TreeEditTimeCell+user.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80203C1E1FD7854500CA4D38 /* TreeEditTimeCell+user.swift */; };
 		803C5B231FBF82E000BA9C6C /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076435F1FACDBE6001733C6 /* Setting.swift */; };
 		803C5B241FBF9A2F00BA9C6C /* TreeTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803C5B211FBF622400BA9C6C /* TreeTableVC.swift */; };
 		803C5F5E1FA3DFBE002A1C11 /* MuseNow WatchKit App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 803C5F5D1FA3DFBE002A1C11 /* MuseNow WatchKit App.app */; };
@@ -207,8 +208,8 @@
 		804D5A2B1FA3FCAA0025B724 /* MuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A1A1FA3FCAA0025B724 /* MuCell.swift */; };
 		804D5A2C1FA3FCAA0025B724 /* TimeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A1B1FA3FCAA0025B724 /* TimeCell.swift */; };
 		804D5A2D1FA3FCAA0025B724 /* ToggleDot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A1C1FA3FCAA0025B724 /* ToggleDot.swift */; };
-		806ACFD71FC5E1D500220EB6 /* TreeEditTimeCell+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806ACFD61FC5E1D500220EB6 /* TreeEditTimeCell+.swift */; };
-		806ACFD91FC5E39A00220EB6 /* TreeEditTitleCell+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806ACFD81FC5E39900220EB6 /* TreeEditTitleCell+.swift */; };
+		806ACFD71FC5E1D500220EB6 /* TreeEditTimeCell+delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806ACFD61FC5E1D500220EB6 /* TreeEditTimeCell+delegate.swift */; };
+		806ACFD91FC5E39A00220EB6 /* TreeEditTitleCell+delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806ACFD81FC5E39900220EB6 /* TreeEditTitleCell+delegate.swift */; };
 		806ACFDB1FC5FC9300220EB6 /* TreeEditTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806ACFDA1FC5FC9300220EB6 /* TreeEditTitleCell.swift */; };
 		806ACFDF1FC60C1C00220EB6 /* TreeEditColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806ACFDD1FC60C1B00220EB6 /* TreeEditColorCell.swift */; };
 		806ACFE21FC60D7100220EB6 /* TreeEditWeekdCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806ACFE01FC60D7000220EB6 /* TreeEditWeekdCell.swift */; };
@@ -230,7 +231,7 @@
 		80A3E36E1FC0D51500195BD3 /* TreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A3E36D1FC0D51500195BD3 /* TreeNode.swift */; };
 		80AD99891FCBA06B00BECC4A /* TreeTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AD99881FCBA06A00BECC4A /* TreeTitleCell.swift */; };
 		80D483EA1FCB3BBD00D28095 /* TreeColorTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D483E91FCB3BBD00D28095 /* TreeColorTitleCell.swift */; };
-		80D483EC1FCB496800D28095 /* TreeTableVC+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D483EB1FCB496800D28095 /* TreeTableVC+.swift */; };
+		80D483EC1FCB496800D28095 /* TreeTableVC+override.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D483EB1FCB496800D28095 /* TreeTableVC+override.swift */; };
 		80F26DBC1FBA07E100C26973 /* Routine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F26DBB1FBA07E100C26973 /* Routine.swift */; };
 		80F26DBD1FBA07E100C26973 /* Routine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F26DBB1FBA07E100C26973 /* Routine.swift */; };
 		80F26DBF1FBA110300C26973 /* Routine.par in Resources */ = {isa = PBXBuildFile; fileRef = 80F26DBE1FBA110300C26973 /* Routine.par */; };
@@ -400,9 +401,10 @@
 		80203C111FCDC63900CA4D38 /* ParStr+Compare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ParStr+Compare.swift"; sourceTree = "<group>"; };
 		80203C121FCDC63900CA4D38 /* ParStr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParStr.swift; sourceTree = "<group>"; };
 		80203C131FCDC63900CA4D38 /* ParWords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParWords.swift; sourceTree = "<group>"; };
-		80203C161FD47DA500CA4D38 /* TreeTableVC+KB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TreeTableVC+KB.swift"; sourceTree = "<group>"; };
+		80203C161FD47DA500CA4D38 /* TreeTableVC+Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TreeTableVC+Keyboard.swift"; sourceTree = "<group>"; };
 		80203C1A1FD5A5D400CA4D38 /* TreeTable+PhoneCrown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TreeTable+PhoneCrown.swift"; sourceTree = "<group>"; };
 		80203C1C1FD5B51A00CA4D38 /* EventRowItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EventRowItem.swift; path = MuseNow/Table/EventRowItem.swift; sourceTree = "<group>"; };
+		80203C1E1FD7854500CA4D38 /* TreeEditTimeCell+user.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TreeEditTimeCell+user.swift"; sourceTree = "<group>"; };
 		803C5B211FBF622400BA9C6C /* TreeTableVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeTableVC.swift; sourceTree = "<group>"; };
 		803C5F4B1FA3DFBD002A1C11 /* MuseNow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MuseNow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		803C5F5D1FA3DFBE002A1C11 /* MuseNow WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MuseNow WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -436,8 +438,8 @@
 		804D5A1A1FA3FCAA0025B724 /* MuCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuCell.swift; sourceTree = "<group>"; };
 		804D5A1B1FA3FCAA0025B724 /* TimeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeCell.swift; sourceTree = "<group>"; };
 		804D5A1C1FA3FCAA0025B724 /* ToggleDot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleDot.swift; sourceTree = "<group>"; };
-		806ACFD61FC5E1D500220EB6 /* TreeEditTimeCell+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TreeEditTimeCell+.swift"; sourceTree = "<group>"; };
-		806ACFD81FC5E39900220EB6 /* TreeEditTitleCell+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TreeEditTitleCell+.swift"; sourceTree = "<group>"; };
+		806ACFD61FC5E1D500220EB6 /* TreeEditTimeCell+delegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TreeEditTimeCell+delegate.swift"; sourceTree = "<group>"; };
+		806ACFD81FC5E39900220EB6 /* TreeEditTitleCell+delegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TreeEditTitleCell+delegate.swift"; sourceTree = "<group>"; };
 		806ACFDA1FC5FC9300220EB6 /* TreeEditTitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeEditTitleCell.swift; sourceTree = "<group>"; };
 		806ACFDD1FC60C1B00220EB6 /* TreeEditColorCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeEditColorCell.swift; sourceTree = "<group>"; };
 		806ACFE01FC60D7000220EB6 /* TreeEditWeekdCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeEditWeekdCell.swift; sourceTree = "<group>"; };
@@ -458,7 +460,7 @@
 		80CE545E1FA3E0C7005C4D96 /* MuseNow WatchKit App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "MuseNow WatchKit App.entitlements"; sourceTree = "<group>"; };
 		80CE545F1FA3E0CE005C4D96 /* MuseNow WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "MuseNow WatchKit Extension.entitlements"; sourceTree = "<group>"; };
 		80D483E91FCB3BBD00D28095 /* TreeColorTitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeColorTitleCell.swift; sourceTree = "<group>"; };
-		80D483EB1FCB496800D28095 /* TreeTableVC+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TreeTableVC+.swift"; sourceTree = "<group>"; };
+		80D483EB1FCB496800D28095 /* TreeTableVC+override.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TreeTableVC+override.swift"; sourceTree = "<group>"; };
 		80F26DBB1FBA07E100C26973 /* Routine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Routine.swift; path = Routine/Routine.swift; sourceTree = "<group>"; };
 		80F26DBE1FBA110300C26973 /* Routine.par */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; path = Routine.par; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -870,8 +872,8 @@
 			children = (
 				803C5B211FBF622400BA9C6C /* TreeTableVC.swift */,
 				80203C1A1FD5A5D400CA4D38 /* TreeTable+PhoneCrown.swift */,
-				80203C161FD47DA500CA4D38 /* TreeTableVC+KB.swift */,
-				80D483EB1FCB496800D28095 /* TreeTableVC+.swift */,
+				80203C161FD47DA500CA4D38 /* TreeTableVC+Keyboard.swift */,
+				80D483EB1FCB496800D28095 /* TreeTableVC+override.swift */,
 				80A3E36D1FC0D51500195BD3 /* TreeNode.swift */,
 				806ACFE81FC624CB00220EB6 /* TreeCell.swift */,
 				8076435D1FACDB63001733C6 /* TreeTitleFaderCell.swift */,
@@ -883,9 +885,10 @@
 				806ACFE41FC60EA900220EB6 /* TreeEditCell.swift */,
 				806ACFDD1FC60C1B00220EB6 /* TreeEditColorCell.swift */,
 				8018E1A51FC394FB00F4C0AC /* TreeEditTimeCell.swift */,
-				806ACFD61FC5E1D500220EB6 /* TreeEditTimeCell+.swift */,
+				806ACFD61FC5E1D500220EB6 /* TreeEditTimeCell+delegate.swift */,
+				80203C1E1FD7854500CA4D38 /* TreeEditTimeCell+user.swift */,
 				806ACFDA1FC5FC9300220EB6 /* TreeEditTitleCell.swift */,
-				806ACFD81FC5E39900220EB6 /* TreeEditTitleCell+.swift */,
+				806ACFD81FC5E39900220EB6 /* TreeEditTitleCell+delegate.swift */,
 				806ACFE01FC60D7000220EB6 /* TreeEditWeekdCell.swift */,
 				804D5A0C1FA3FCAA0025B724 /* CalCell.swift */,
 				804D5A101FA3FCAA0025B724 /* EventCell.swift */,
@@ -1100,11 +1103,12 @@
 				8004F7B51FA3EE2400F7ED94 /* Say.swift in Sources */,
 				8004F7C91FA3EE2400F7ED94 /* Texture.swift in Sources */,
 				8004F6F41FA3ED5E00F7ED94 /* Node+find.swift in Sources */,
-				80203C171FD47DA500CA4D38 /* TreeTableVC+KB.swift in Sources */,
+				80203C171FD47DA500CA4D38 /* TreeTableVC+Keyboard.swift in Sources */,
 				8004F6E41FA3ED5E00F7ED94 /* Visitor.swift in Sources */,
-				806ACFD71FC5E1D500220EB6 /* TreeEditTimeCell+.swift in Sources */,
+				806ACFD71FC5E1D500220EB6 /* TreeEditTimeCell+delegate.swift in Sources */,
 				804D5A011FA3FC8B0025B724 /* AppDelegate.swift in Sources */,
 				8004F76D1FA3EE2400F7ED94 /* Anim.swift in Sources */,
+				80203C1F1FD7854500CA4D38 /* TreeEditTimeCell+user.swift in Sources */,
 				8004F7B11FA3EE2400F7ED94 /* Record.swift in Sources */,
 				8018E1A41FC36F8E00F4C0AC /* TreeColorTitleMarkCell.swift in Sources */,
 				8004F7D11FA3EE2400F7ED94 /* Transcribe+SWM.swift in Sources */,
@@ -1129,7 +1133,7 @@
 				8004F79F1FA3EE2400F7ED94 /* FileSync.swift in Sources */,
 				807643581FACBE55001733C6 /* MuseFound.swift in Sources */,
 				804D5A091FA3FC8B0025B724 /* TouchForce.swift in Sources */,
-				80D483EC1FCB496800D28095 /* TreeTableVC+.swift in Sources */,
+				80D483EC1FCB496800D28095 /* TreeTableVC+override.swift in Sources */,
 				8004F7B91FA3EE2400F7ED94 /* SayItem.swift in Sources */,
 				8018E1A61FC394FC00F4C0AC /* TreeEditTimeCell.swift in Sources */,
 				804D5A2B1FA3FCAA0025B724 /* MuCell.swift in Sources */,
@@ -1170,7 +1174,7 @@
 				8004F7631FA3EE2400F7ED94 /* TouchMove.swift in Sources */,
 				804D5A021FA3FC8B0025B724 /* ColorCell.swift in Sources */,
 				8076435E1FACDB63001733C6 /* TreeTitleFaderCell.swift in Sources */,
-				806ACFD91FC5E39A00220EB6 /* TreeEditTitleCell+.swift in Sources */,
+				806ACFD91FC5E39A00220EB6 /* TreeEditTitleCell+delegate.swift in Sources */,
 				8004F75F1FA3EE2400F7ED94 /* Taps.swift in Sources */,
 				804D5A211FA3FCAA0025B724 /* EventCell.swift in Sources */,
 				8004F70A1FA3ED5E00F7ED94 /* ParWords.swift in Sources */,

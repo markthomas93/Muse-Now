@@ -30,7 +30,7 @@ class TouchForce: UIViewForce {
         began(beganPos,beganTime)
         
         isForceOn = false
-        updateForce((touches.first?.force)!)
+        updateForce((touches.first?.force)!,beganTime)
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -38,7 +38,7 @@ class TouchForce: UIViewForce {
         movedPos = (touches.first?.location(in: self))!
         let delta = CGPoint(x: movedPos.x - beganPos.x, y: movedPos.y - beganPos.y)
         moved(movedPos, delta, movedTime)
-        updateForce((touches.first?.force)!)
+        updateForce((touches.first?.force)!, movedTime)
     }
     
     // for both touchesEnded and touchesCancelled
@@ -49,8 +49,11 @@ class TouchForce: UIViewForce {
         let delta = CGPoint(x: movedPos.x - beganPos.x, y: movedPos.y - beganPos.y)
         ended(movedPos, delta, endedTime)
 
-        let deltaTime = endedTime - beganTime
-        if deltaTime < tapDuration {
+        // only single tap if force has not alread forceTap
+        let deltaTapTime = endedTime - beganTime
+        let deltaForceTime = endedTime - forceOnTime
+        if deltaTapTime < tapDuration,
+            deltaForceTime > tapDuration {
             // make sure that the user was not scrolling
             let deltaPos = CGPoint(x:movedPos.x - beganPos.x, y: movedPos.y - beganPos.y)
             let distance = sqrt(deltaPos.x*deltaPos.x + deltaPos.y*deltaPos.y)
@@ -58,7 +61,7 @@ class TouchForce: UIViewForce {
                 singleTap()
             }
         }
-        updateForce((touches.first?.force)!)
+        updateForce((touches.first?.force)!, endedTime)
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {

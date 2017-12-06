@@ -20,7 +20,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MuseNow/Table/TreeTitleCell.swift"
-            timestampString = "534185333.220176"
+            timestampString = "534233619.173757"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "26"
@@ -84,7 +84,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shared/Actions/Actions.swift"
-            timestampString = "534185333.220595"
+            timestampString = "534233619.174169"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "264"
@@ -211,11 +211,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MuseNow/Table/TreeTableVC.swift"
-            timestampString = "534185333.220861"
+            timestampString = "534233619.174432"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "138"
-            endingLineNumber = "138"
+            startingLineNumber = "151"
+            endingLineNumber = "151"
             landmarkName = "setTouchedCell(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -226,29 +226,29 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MuseNow/Table/TreeTableVC+.swift"
-            timestampString = "534185333.221412"
+            filePath = "MuseNow/Classes/PhoneCrown.swift"
+            timestampString = "534233619.174702"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "42"
-            endingLineNumber = "42"
-            landmarkName = "tableView(_:heightForHeaderInSection:)"
+            startingLineNumber = "195"
+            endingLineNumber = "195"
+            landmarkName = "singleTap()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MuseNow/Table/TreeCell.swift"
-            timestampString = "534185333.221642"
+            filePath = "MuseNow/Table/TreeTableVC+KB.swift"
+            timestampString = "534213988.192876"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "167"
-            endingLineNumber = "167"
-            landmarkName = "setHighlight(_:animated:)"
+            startingLineNumber = "15"
+            endingLineNumber = "15"
+            landmarkName = "keyboardWillShow(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -259,13 +259,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MuseNow/Table/TreeTable+PhoneCrown.swift"
-            timestampString = "534185333.221865"
+            timestampString = "534233619.174909"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "47"
-            endingLineNumber = "47"
-            landmarkName = "highlightNextCell(_:)"
-            landmarkType = "9">
+            startingLineNumber = "60"
+            endingLineNumber = "60"
+            landmarkName = "phoneCrownToggle(_:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -274,13 +274,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MuseNow/Table/TreeCell.swift"
-            timestampString = "534185333.222066"
+            filePath = "MuseNow/Classes/TouchForce.swift"
+            timestampString = "534233619.175433"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "225"
-            endingLineNumber = "225"
-            landmarkName = "touchSelf(_:)"
+            startingLineNumber = "61"
+            endingLineNumber = "61"
+            landmarkName = "touchesDone(_:_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -291,12 +291,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MuseNow/Table/TreeCell.swift"
-            timestampString = "534185333.222116"
+            timestampString = "534233619.175622"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "196"
-            endingLineNumber = "196"
-            landmarkName = "touchCell(_:expand:)"
+            startingLineNumber = "260"
+            endingLineNumber = "260"
+            landmarkName = "touchFlipExpand(scrollNearest:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

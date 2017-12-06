@@ -102,14 +102,17 @@ class TreeTitleMarkCell: TreeTitleCell {
             self.mark.layer.borderColor = border.cgColor
         })
     }
-    override func setHighlight(_ isHighlight_:Bool, animated:Bool = true) {
-
-        if isHighlight != isHighlight_ {
-            isHighlight = isHighlight_
-
-            let index       = isHighlight ? 1 : 0
+    override func setHighlight(_ highlighting_:Highlighting, animated:Bool = true) {
+        
+        if highlighting != highlighting_ {
+            
+            var index = 0
+            switch highlighting_ {
+            case .high,.forceHigh: highlighting = .high ; index = 1 ; isSelected = true
+            default:               highlighting = .low  ; index = 0 ; isSelected = false
+            }
             let borders     = [headColor.cgColor, UIColor.white.cgColor]
-
+            
             // set background from hierarchy depth
             var background: UIColor!
             switch parentChild {
@@ -118,22 +121,27 @@ class TreeTitleMarkCell: TreeTitleCell {
             case .other: background  = .black
             }
             let backgrounds = [background.cgColor, background.cgColor]
-
+            
             if animated {
                 animateViews([bezel,mark], borders, backgrounds, index, duration: 0.25)
             }
             else {
                 bezel.layer.borderColor    = borders[index]
                 bezel.layer.backgroundColor = backgrounds[index]
-
+                
                 mark.layer.borderColor     = borders[index]
                 mark.layer.backgroundColor = backgrounds[index]
             }
         }
-        isSelected = isHighlight
+        else {
+            switch highlighting {
+            case .high,.forceHigh: isSelected = true
+            default:               isSelected = false
+            }
+        }
     }
-
-    override func touchCell(_ location: CGPoint, expand:Bool = true) {
+    
+    override func touchCell(_ location: CGPoint) {
 
         (tableVC as? TreeTableVC)?.setTouchedCell(self)
 

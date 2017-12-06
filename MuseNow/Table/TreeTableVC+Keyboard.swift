@@ -9,9 +9,9 @@ import Foundation
 import UIKit
 extension TreeTableVC {
 
+
     @objc func keyboardWillShow(_ notification: Notification) {
-        if
-            !blockKeyboard,
+        if !blockKeyboard,
             let touchedCell = touchedCell,
             let frameVal: NSValue = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue,
             let tableView = tableView {
@@ -23,7 +23,7 @@ extension TreeTableVC {
             let tableY  = tableView.convert(tableView.frame.origin, to: nil).y
             let scrollY = tableView.contentOffset.y + tableY
 
-            let cellH  = touchedCell.height + 44 //?? explicit 44??
+            let cellH  = touchedCell.height
             let deltaY = cellY + cellH - keybY
 
             printLog ("▭ \(#function) \(cellY) + \(cellH) - \(keybY) => \(deltaY) ")
@@ -36,5 +36,17 @@ extension TreeTableVC {
             })
         }
     }
+    @objc func keyboardWillHide(_ notification: Notification) {
+        if touchedCell?.treeNode?.parent?.expanded == true {
+            if  let lastSiblingNode = touchedCell?.treeNode?.parent?.children.last,
+                let lastSiblingCell = lastSiblingNode.cell {
+
+                let _ = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: {_ in
+                    self.scrollToMakeVisibleCell(lastSiblingCell,lastSiblingNode.row)
+                })
+            }
+        }
+    }
+
 
 }

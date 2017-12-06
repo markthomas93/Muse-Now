@@ -22,6 +22,7 @@ class TreeCell: MuCell {
     let marginH = CGFloat(4)    //
 
     var parentChild = ParentChildOther.other
+    var lastLocationInTable = CGPoint.zero
 
     convenience required init(coder decoder: NSCoder) {
         self.init(coder: decoder)
@@ -143,8 +144,14 @@ class TreeCell: MuCell {
         buildViews(size)
     }
 
+    /**
+    While renumbering, highlight the currently selected parent and children
+     to set it apart for the other cells, which are slightly dimmed.
+     - note: renumbering currently conflicts with collapsing siblings,
+     which is why the TouchCell event will set highlighting to forceHigh
+     */
     func setParentChildOther(_ parentChild_:ParentChildOther) {
-
+    
         parentChild = parentChild_
 
         var background = UIColor.black
@@ -162,12 +169,15 @@ class TreeCell: MuCell {
             self.bezel.layer.borderColor = border.cgColor
         })
     }
-    override func setHighlight(_ isHighlight_:Bool, animated:Bool = true) {
+    override func setHighlight(_ highlighting_:Highlighting, animated:Bool = true) {
 
-        if isHighlight != isHighlight_ {
-            isHighlight = isHighlight_
-
-            let index   = isHighlight ? 1 : 0
+        if highlighting != highlighting_ {
+            
+            var index = 0
+            switch highlighting_ {
+            case .high,.forceHigh: highlighting = .high ; index = 1 ; isSelected = true
+            default:               highlighting = .low  ; index = 0 ; isSelected = false
+            }
             let borders = [headColor.cgColor, UIColor.white.cgColor]
             var background: UIColor!
             switch parentChild {
@@ -176,7 +186,7 @@ class TreeCell: MuCell {
             case .other: background  = .black
             }
             let backgrounds = [background.cgColor, background.cgColor]
-
+            
             if animated {
                 animateViews([bezel], borders, backgrounds, index, duration: 0.25)
             }
@@ -185,61 +195,78 @@ class TreeCell: MuCell {
                 bezel.layer.backgroundColor = backgrounds[index]
             }
         }
-        isSelected = isHighlight
+        else {
+            switch highlighting {
+            case .high,.forceHigh: isSelected = true
+            default:               isSelected = false
+            }
+        }
     }
 
-    override func touchCell(_ location: CGPoint, expand:Bool = true) {
-
-        //??(tableVC as? TreeTableVC)?.setTouchedCell(self)
+    override func touchCell(_ location: CGPoint) {
 
         // when collapsing sibling, self may also get collapsed, so need to know original state to determine highlight
         let wasExpanded = treeNode.expanded
-
-        // collapse siblings
         var siblingCollapsing = false
+        if let row = treeNode?.row {
+            lastLocationInTable = tableVC.tableView.rectForRow(at: IndexPath(row:row, section:0)).origin
+        }
         if treeNode.parent != nil {
             for sib in treeNode.parent.children {
                 if sib.expanded {
-                    sib.cell.touchFlipExpand()
+                    sib.cell.touchFlipExpand(scrollNearest:false)
                     siblingCollapsing = true
                     break
                 }
             }
         }
-        // expand self
-        if  treeNode.children.count > 0,
-            wasExpanded == treeNode.expanded {
+        // expand me when I have children and status wasn't change by collapsing siblings
+        let expandMe = (treeNode.children.count > 0 && wasExpanded == treeNode.expanded)
+        touchSelf(expandMe, withDelay: siblingCollapsing)
+    }
 
-            if siblingCollapsing {
-                // wait until sibling has finshed collapasing before expanding self
-                let _ = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: {_ in
-                   self.touchSelf(expand)
-                })
+    func touchSelf(_ expandMe:Bool, withDelay:Bool) {
+        if withDelay {
+            let _ = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: {_ in
+                if expandMe { self.touchFlipExpand(scrollNearest:true) }
+                else { self.setHighlight(.forceHigh, animated: true) }
+            })
+        }
+        else {
+            if expandMe { touchFlipExpand(scrollNearest:true) }
+            else { setHighlight(.forceHigh, animated: true) }
+        }
+    }
+    /**
+     Either collapse or expand treeNodes and update TreeTableVC
+     - via: toucheCell while siblingCollapsing
+     - via: toucheCell.touchSelf when not collapsed w siblings
+     - Parameter scrollNearest: try to keep cell nearest touch location
+     */
+     func touchFlipExpand(scrollNearest:Bool) {
+
+        if let tableVC = tableVC as? TreeTableVC {
+
+            if treeNode.expanded == true {
+                collapseAllTheWayDown()
+                tableVC.updateTouchCell(self)
             }
             else {
-                touchSelf(expand)
+                treeNode.expanded = true
+                updateLeft(animate:true)
+                tableVC.updateTouchCell(self)
+
+                // scroll show the next node after last child
+                if  let node = treeNode?.children.last,
+                    let lastChildCell = node.cell,
+                    tableVC.scrollToMakeVisibleCell(lastChildCell, node.row) {
+                    return
+                }
+            }
+            if scrollNearest {
+                tableVC.scrollToNearestTouch(self)
             }
         }
-    }
-    func touchSelf(_ expand:Bool) {
-        if expand {
-            touchFlipExpand()
-        }
-        else {
-            setHighlight(true, animated: true)
-        }
-    }
-    
-    func touchFlipExpand() {
-
-        if treeNode.expanded == true {
-            collapseAllTheWayDown()
-        }
-        else {
-            treeNode.expanded = true
-            updateLeft(animate:true)
-        }
-        PagesVC.shared.treeTable.updateTouchCell(self)
     }
 
     /**

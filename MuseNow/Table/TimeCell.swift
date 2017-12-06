@@ -43,26 +43,34 @@ class EventTimeCell: MuCell {
         time.layer.borderWidth = 1
         time.layer.masksToBounds = true
         
-        setHighlight(false, animated:false)
+        setHighlight(.low, animated:false)
         
         contentView.addSubview(time)
     }
     
-    override func setHighlight(_ isHighlight_:Bool, animated:Bool = true) {
-        
-        isHighlight = isHighlight_
-        
-        let fromColor = isHighlight ?  UIColor.darkGray.cgColor :  UIColor.white.cgColor
-        let toColor   = isHighlight ?  UIColor.white.cgColor :  UIColor.darkGray.cgColor
-        
-        if animated {
-            animateBorderColor(time,   fromColor, toColor, duration: 0.25)
+    override func setHighlight(_ highlighting_:Highlighting, animated:Bool = true) {
+
+        if highlighting != highlighting_ {
+
+            switch highlighting_ {
+            case .high,.forceHigh: highlighting = .high ; isSelected = true
+            default:               highlighting = .low  ; isSelected = false
+            }
+            let fromColor = highlighting == .high ?  UIColor.darkGray.cgColor :  UIColor.white.cgColor
+            let toColor   = highlighting == .high ?  UIColor.white.cgColor    :  UIColor.darkGray.cgColor
+
+            if animated {
+                animateBorderColor(time,   fromColor, toColor, duration: 0.25)
+            }
+            else {
+                time.layer.borderColor    = toColor
+            }
         }
         else {
-            time.layer.borderColor    = toColor
-        }
-        if !isHighlight {
-            isSelected = false
+            switch highlighting {
+            case .high,.forceHigh: isSelected = true       
+            default:               isSelected = false
+            }
         }
     }
 }
