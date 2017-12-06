@@ -80,7 +80,7 @@ class EventTableVC: UITableViewController, MuseTableDelegate {
         tableView.reloadRows(at: paths!, with: UITableViewRowAnimation.automatic)
         tableView.endUpdates()
     }
-    
+
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard let header = view as? UITableViewHeaderFooterView else { return }
 

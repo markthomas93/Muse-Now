@@ -36,46 +36,40 @@ class TreeTableVC: UITableViewController {
         touchedCell = nil
     }
 
-    func makeReachable() {
-
-        let maxChildHeight = TreeNodes.shared.maxExpandedChildHeight()
-        let height = tableView.frame.size.height
-        let scrollY = max(0, height - maxChildHeight)
-        let offsetY = tableView.contentOffset.y
-        let deltaY =  headerY - scrollY
-        printLog("▤ \(#function) \(offsetY): \(headerY) - \(scrollY) => \(deltaY)")
-    }
-
     override func viewWillAppear(_ animated: Bool) {
         if show == nil {
             initTree()
             tableView.contentOffset.y = 0
-            //makeReachable()
         }
         else if Date().timeIntervalSince1970 - lastDisappearTime > 2 {
             collapseBackToMain()
             tableView.contentOffset.y = 0
-            //makeReachable()
         }
+
+        // phone crown will now navigate hierarcht
         PhoneCrown.shared?.setDelegate(self)
+
+        // animate dial to show whole week
         Anim.shared.animNow = .futrWheel
         Anim.shared.userDotAction()
+
+        // set observers for keyboard appearing so can scroll cell above keyboard
+
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow),
                                                name: NSNotification.Name.UIKeyboardWillShow, object: nil)
 
-//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow),
-//                                               name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
-
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide),
                                                name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-
-//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)),
-//                                               name: .UITextInputCurrentInputModeDidChange, object: nil)
-
-
+        // switch to emoji keyboard should trigger UIKeyboardWillChangeFrame, but fails in iOS 11
+        //
+        //        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow),
+        //                                               name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
+        //        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)),
+        //                                               name: .UITextInputCurrentInputModeDidChange, object: nil)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
+        
         super.viewWillDisappear(true)
         lastDisappearTime = Date().timeIntervalSince1970
         NotificationCenter.default.removeObserver(self)
@@ -114,7 +108,7 @@ class TreeTableVC: UITableViewController {
                 cell.setColor(rgb)
             }
             for item in catalog[category]! {
-                let node = TreeRoutineItemNode(.timeTitleDays, catNode, item, self)
+                let _ = TreeRoutineItemNode(.timeTitleDays, catNode, item, self)
             }
         }
          // show | hide - Reminders, Memos

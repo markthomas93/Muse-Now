@@ -7,7 +7,7 @@ import EventKit
 extension TreeTableVC {
 
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        //printLog("⿳ scrollViewDidScroll: \(self.tableView.contentOffset.y)")
+        //printLog("⿳ scrollY: \(Int(self.tableView.contentOffset.y))")
     }
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -47,16 +47,7 @@ extension TreeTableVC {
     }
 
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        var shownRowsHeight = CGFloat(0)
-        for node in TreeNodes.shared.shownNodes {
-            if let cell = node?.cell {
-                shownRowsHeight += cell.height
-            }
-        }
-        shownRowsHeight += 22 //?? Kludge fixup after expanding and contracting -- scrolls beyond tableView.bounds
-        let height = max(0,tableView.bounds.height - shownRowsHeight)
-         //printLog("⿳ heightForFooterInSection: \(headerY)")
-        return height
+        return 8
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

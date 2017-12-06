@@ -15,6 +15,7 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
     var eventTable: EventTableVC!
     var panelY = CGFloat(0)
 
+
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -24,7 +25,8 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
         pageVC = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: optionsDict)
         pageVC.dataSource = self
         pageVC.view!.frame = CGRect(x:0, y:marginY, width: view.frame.size.width, height: panelY-marginY)
-        
+        pageVC.view.backgroundColor = .clear
+
         for view in pageVC.view.subviews {
             if view is UIScrollView {
                 scrollView = view as! UIScrollView
@@ -48,7 +50,7 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
         view.addSubview(pageVC.view)
         pageVC!.didMove(toParentViewController: self)
     }
-   
+
     func setBorder(_ vc:UIViewController, radius: CGFloat, width: CGFloat) {
         vc.view.frame = CGRect(x:2,y:0,width:self.view.frame.size.width-4,height:  panelY - 40)
         vc.view.layer.cornerRadius = radius

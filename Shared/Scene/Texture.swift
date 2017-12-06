@@ -9,25 +9,26 @@ class Texture {
 
     static var nowHubIndex = 0
 
-    /// create lookup table texture to animate,
-    /// where each row is a single point within an animation
-    ///
-    /// - Parameter frames: number of frames for anmation (240)
-    /// - Parameter width:  width of palette (24*7 + 4) + 2 // rim and hub
-    /// - Parameter days:   number of rotations (7)
-    /// - Parameter hours:  number of hours/rotations (24)
-    /// - Parameter dots:   each hour which may have marks
-    ///
-    /// - spokeDown     0 ..< 7     spoke down fade out center
-    /// - spokeUp       7 ..< 14    end of single spoke back up
-    /// - spokeFan     14 ..< 38    fan out 24 spokes for all hours
-    /// - eachHour     38 ..< 206   each hour's spoke w fading contrail
-    /// - wheelSpoke  206 ..< 213   main hour fade in wheel
-    /// - wheelFade   213 ..< 220   dimm wheel to show only spokeUp
-    /// - animEnd     220 ..< 240   end of animate (4 seconds)
-    ///
-    /// - these are indices into a palette created by makePal.
+    /**
+     Create lookup table texture to animate,
+     where each row is a single point within an animation
 
+     - Parameter frames: number of frames for anmation (240)
+     - Parameter width:  width of palette (24*7 + 4) + 2 // rim and hub
+     - Parameter days:   number of rotations (7)
+     - Parameter hours:  number of hours/rotations (24)
+     - Parameter dots:   each hour which may have marks
+
+     - spokeDown     0 ..< 7     spoke down fade out center
+     - spokeUp       7 ..< 14    end of single spoke back up
+     - spokeFan     14 ..< 38    fan out 24 spokes for all hours
+     - eachHour     38 ..< 206   each hour's spoke w fading contrail
+     - wheelSpoke  206 ..< 213   main hour fade in wheel
+     - wheelFade   213 ..< 220   dimm wheel to show only spokeUp
+     - animEnd     220 ..< 240   end of animate (4 seconds)
+
+     - these are indices into a palette created by makePal.
+     */
     static func makeAnim(_ frames: Int, _ width: Int, _ days: Int, _ hours: Int, _ dots: [Dot] ) -> Data {
 
         nowHubIndex = (38*width + hours*days)*4 // when recording overlay a red dot
@@ -39,15 +40,16 @@ class Texture {
             return data
         }
 
-        /// last two palette entries show active events for that hour
-        /// - Parameter bytes: palette to fill
-        /// - Parameter jj_: index into palette
-        /// - Parameter hub: hour contains marked event
-        /// - Parameter rim: hour contains unmarked event
-        
-        func fillHubRim(_ bytes: UnsafeMutablePointer<UInt8>, _ jj_:Int, hub:UInt8, rim:UInt8) -> Int {
+        /**
+         Last two palette entries show active events for that hour
+         - Parameter bytes: palette to fill
+         - Parameter jjj: index into palette
+         - Parameter hub: hour contains marked event
+         - Parameter rim: hour contains unmarked event
+         */
+        func fillHubRim(_ bytes: UnsafeMutablePointer<UInt8>, _ jjj:Int, hub:UInt8, rim:UInt8) -> Int {
             
-            var jj = jj_
+            var jj = jjj
             bytes[jj] = rim; bytes[jj+1]=0; bytes[jj+2]=0; bytes[jj+3]=255;  jj += 4  //rim
             bytes[jj] = hub; bytes[jj+1]=0; bytes[jj+2]=0; bytes[jj+3]=255;  jj += 4  //hub
             return jj
@@ -59,7 +61,7 @@ class Texture {
             var jj = Int(0)
             
             // animStart = 0,  // start of animation (spoke is shown up for current hour)
-            
+
             // spokeDown  0 ..< 7,  // spoke down fade out center
             
             for dayi in 0 ..< days {
@@ -206,13 +208,14 @@ class Texture {
         //printData(data, frames, days, hours, 0)
         return data
     }
-    /// inverse of makeAnim, show spoke for current hour and spiral inward towards a mark in the future.
-    /// To render a complication, but since complications can be rendered in the GPU while app is in background
-    /// this palette is totally useless.
-    ///
-    /// Keep around, if you decide to prerender all 168 posible countdowns as static images.
-    /// Otherwise, delete.
+    /**
+     Inverse of makeAnim, show spoke for current hour and spiral inward towards a mark in the future.
+     To render a complication, but since complications can be rendered in the GPU while app is in background
+     this palette is totally useless.
 
+     - note: Keep around, if you decide to prerender all 168 posible countdowns as static images.
+     Otherwise, delete.
+     */
     static func makeCountDown(_ width:Int, _ days: Int, _ hours: Int) -> Data {
 
         var frames = days * hours
@@ -223,12 +226,13 @@ class Texture {
             return data
         }
 
-        /// last two palette entries show active events for that hour
-        /// - Parameter bytes: palette to fill
-        /// - Parameter jj_: index into palette
-        /// - Parameter hub: hour contains marked event
-        /// - Parameter rim: hour contains unmarked event
-
+        /**
+         Last two palette entries show active events for that hour
+         - Parameter bytes: palette to fill
+         - Parameter jj_: index into palette
+         - Parameter hub: hour contains marked event
+         - Parameter rim: hour contains unmarked event
+         */
         func fillHubRim(_ bytes: UnsafeMutablePointer<UInt8>, _ jj_:Int, hub:UInt8, rim:UInt8) -> Int {
 
             var jj = jj_
@@ -299,12 +303,13 @@ class Texture {
         }
     }
 
-    /// Create palette rows
-    /// - Parameter width: 24*7 + 2; 168 hours for week plus hub and rim
-    /// - Parameter height: 3 rows: rainbow, mono, event
-    /// - Parameter dots:  (-168...168) for past and future week dots
-    /// - Parameter recHub:  true if coloring hub red for recording
-
+    /**
+     Create palette rows
+     - Parameter width: 24*7 + 2; 168 hours for week plus hub and rim
+     - Parameter height: 3 rows: rainbow, mono, event
+     - Parameter dots:  (-168...168) for past and future week dots
+     - Parameter recHub:  true if coloring hub red for recording
+     */
     static func makePal(_ width: Int,_ height:Int, _ dots: [Dot], recHub:Bool = false ) -> Data {
 
         let rgbaSize = 4 // for rgba values 0...255
@@ -368,20 +373,20 @@ class Texture {
         }
         return data
     }
-    /// Create a series of dots that spiral inward
-    /// - Parameter days:       number of full rotations
-    /// - Parameter hour:      number of dots per rotation
-    /// - Parameter size:      size of texture
-    /// - Parameter lineWidth:  size of clipping mask border line
-    /// - Parameter dotFactor:  shrink the dot, 1.0: biggest dots are touching
-    /// - Parameter maskFactor: should be smaller than dotFactor to clip jaggies
-    /// - note: returns Output:[dialTex,maskTex]
-    /// - dialTex: each dot is a pure color used as an index
-    /// - maskTex: mask for dialTex to allow for antialised border
-    
-    static func makeDialMask(_ days:Int, hour:Int, _ size:CGSize, lineWidth: CGFloat, dotFactor: CGFloat, maskFactor: CGFloat) -> [SKTexture?] {
+    /**
+     Create a series of dots that spiral inward
+     - Parameter days:       number of full rotations
+     - Parameter hour:      number of dots per rotation
+     - Parameter size:      size of texture
+     - Parameter lineWidth:  size of clipping mask border line
+     - Parameter dotFactor:  shrink the dot, 1.0: biggest dots are touching
+     - Parameter maskFactor: should be smaller than dotFactor to clip jaggies
+     - note: Returns Output:[dialTex,maskTex]
+     - dialTex: each dot is a pure color used as an index
+     - maskTex: mask for dialTex to allow for antialised border
+     */
+    static func makeDialMask(_ days:Int, hour:Int, _ size:CGSize, margin:CGFloat, lineWidth: CGFloat, dotFactor: CGFloat, maskFactor: CGFloat) -> [SKTexture?] {
         
-        let margin = CGFloat(8) // iPHone X margin at bottom?
         let center = CGPoint(x: size.width / 2, y: size.height / 2)
         let radius =  min(size.width, size.height)/2 - margin
         var dialMask : [SKTexture] = []
@@ -482,17 +487,18 @@ class Texture {
         return dialMask
     }
 
-    /// Create a series of dots that spiral inward
-    /// - Parameter days:       number of full rotations
-    /// - Parameter hour:      number of dots per rotation
-    /// - Parameter size:      size of texture
-    /// - Parameter lineWidth:  size of clipping mask border line
-    /// - Parameter dotFactor:  shrink the dot, 1.0: biggest dots are touching
-    /// - Parameter maskFactor: should be smaller than dotFactor to clip jaggies
-    /// - note: returns Output:[dialTex,maskTex]
-    /// - dialTex: each dot is a pure color used as an index
-    /// - maskTex: mask for dialTex to allow for antialised border
-
+    /**
+     Create a series of dots that spiral inward
+     - Parameter days:       number of full rotations
+     - Parameter hour:      number of dots per rotation
+     - Parameter size:      size of texture
+     - Parameter lineWidth:  size of clipping mask border line
+     - Parameter dotFactor:  shrink the dot, 1.0: biggest dots are touching
+     - Parameter maskFactor: should be smaller than dotFactor to clip jaggies
+     - note: returns Output:[dialTex,maskTex]
+     - dialTex: each dot is a pure color used as an index
+     - maskTex: mask for dialTex to allow for antialised border
+     */
     static func makeComplication(_ days:Int,_ size:CGSize, lineWidth: CGFloat, maskFactor: CGFloat, margin: CGFloat) -> [SKTexture] {
 
         let center = CGPoint(x: size.width / 2, y: size.height / 2)

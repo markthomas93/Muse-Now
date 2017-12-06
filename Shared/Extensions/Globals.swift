@@ -22,13 +22,12 @@ func printLog(_ str: String) {
     //case NSLog(str)
 
     case
-    "👆", // tap action
+    "◰",  // view layout
     "⊛", // crown
     "▤", // TreeTableView
-    "⧉", // sync files
+
     "⌘", // doAction
     "▭", // textfield
-
     "⿳", // menu
 
     "🔈", // Audio
@@ -38,7 +37,8 @@ func printLog(_ str: String) {
         print(MuDate.getHourMinSecMsec() + ": " + str)
         
     case
-
+    "⧉", // sync files
+    "👆", // tap action
     "📅", // EkNotification
 
     "✺", // complication

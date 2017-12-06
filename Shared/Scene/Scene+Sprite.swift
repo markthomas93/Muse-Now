@@ -10,15 +10,19 @@ extension Scene {
 
     func makeIcon() {
         #if false
-            // capture images of texture for creating a viewable icon
-            var dbgMask = Texture.makeDialMask(5 , hour:0, CGSize(width:512,height:512), lineWidth:0.5, dotFactor: 0.33, maskFactor: 0.50) as! [SKTexture]
-            let img0 = dbgMask[0].cgImage()
-            let img1 = dbgMask[1].cgImage()
+        // capture images of texture for creating a viewable icon
+        // let size = CGSize(width:512,height:512)
+        //var dbgMask = Texture.makeDialMask(5, hour:0, size, margin:8, lineWidth:0.50, dotFactor: 0.33, maskFactor: 0.50) as! [SKTexture]
+        let size =  CGSize(width:1024,height:1024) // CGSize(width:512,height:512)
+        var dbgMask = Texture.makeDialMask(7, hour:0, size, margin:40,lineWidth:0.25, dotFactor: 0.62, maskFactor: 0.50) as! [SKTexture]
+        let img0 = dbgMask[0].cgImage()
+        let img1 = dbgMask[1].cgImage()
+        print("yo")
         #endif
     }
     func initSprite() {
         complications = Texture.makeComplication(dayHour.days, size, lineWidth:0.125, maskFactor:0.90, margin:16)
-        dialMask = Texture.makeDialMask(dayHour.days, hour:0, size, lineWidth:0.25, dotFactor: 0.62, maskFactor: 0.50) as! [SKTexture]
+        dialMask = Texture.makeDialMask(dayHour.days, hour:0, size, margin:8, lineWidth:0.25, dotFactor: 0.62, maskFactor: 0.50) as! [SKTexture]
         sprite = SKSpriteNode(texture: dialMask[0], color: UIColor.black, size:size)
         sprite.position = CGPoint(x:center.x, y:center.y)
 

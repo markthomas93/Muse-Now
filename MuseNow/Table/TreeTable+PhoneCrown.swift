@@ -5,55 +5,79 @@ import UIKit
 extension TreeTableVC: PhoneCrownDelegate {
     @discardableResult
     func scrollToMakeVisibleCell(_ cell:MuCell!,_ index:Int) -> Bool {
-        let row = min(index+1,TreeNodes.shared.shownNodes.count-1)
+
+        func logScroll(_ cellY:CGFloat,_ cellH:CGFloat,_ tablY:CGFloat,_ tablH:CGFloat,_ deltaY:CGFloat) {
+            let scrollY = self.tableView.contentOffset.y
+            let cellZ = cellY+cellH
+            let tablZ = tablY+tablH
+            printLog (String(format:"⊛ NearestTouch H:%i S:%i C:%i_%i T:%i_%i %i⟶",
+                             Int(headerY),
+                             Int(scrollY),
+                             Int(cellY), Int(cellZ),
+                             Int(tablY), Int(tablZ),
+                             Int(deltaY)))
+        }
+
+
+
+        let row = min(index,TreeNodes.shared.shownNodes.count-1)
         let indexPath = IndexPath(row: row, section: 0)
         let cellRect = tableView.rectForRow(at: indexPath)
+
         if !tableView.bounds.contains(cellRect) {
+
             let cellY = cellRect.origin.y
             let cellH = cellRect.size.height
             let tablY = tableView.bounds.origin.y
             let tablH = tableView.bounds.size.height
-
             let deltaY = cellY < tablY ? cellY - tablY  : (cellY+cellH) - (tablY+tablH)
+
+         // logScroll(cellY,cellH,tablY,tablH,deltaY)
+
             UIView.animate(withDuration: 0.25, animations: {
                 self.tableView.contentOffset.y += deltaY
             })
             return true
         }
-//        if  let lastNode = TreeNodes.shared.shownNodes.last {
-//            let lastRect = tableView.rectForRow(at: IndexPath(row:lastNode.row, section:0))
-//            if tableView.bounds.contains(lastRect) {
-//                return true
-//            }
-//        }
         return false
     }
     func scrollToNearestTouch(_ cell:TreeCell!) {
 
-        if  let lastNode = TreeNodes.shared.shownNodes.last,
-            let lastCell = lastNode.cell {
+
+        func logScroll(_ lastY:CGFloat,_ lastZ:CGFloat,_ tablY:CGFloat,_ tablZ:CGFloat,_ shift:CGFloat) {
 
             let newPath = IndexPath(row:cell.treeNode.row,section:0)
             let newY = tableView.rectForRow(at:newPath).origin.y
             let cellY = cell.lastLocationInTable.y
-            let cellH = cell.height
-            let cellZ = cellY + cellH
+            let cellZ = cellY+cell.height
             let deltaY = newY - cellY
-            if deltaY < 0 {
-                let lastY = tableView.rectForRow(at: IndexPath(row:lastNode.row, section:0)).origin.y
-                let lastH = lastCell.height
-                let lastZ = lastY+lastH
+            let scrollY = tableView.contentOffset.y
+            printLog (String(format:"⊛ NearestTouch S:%i C:%i_%i L:%i_%i T:%i_%i %i⟶%i",
+                             Int(scrollY),
+                             Int(cellY), Int(cellZ),
+                             Int(lastY), Int(lastZ),
+                             Int(tablY), Int(tablZ),
+                             Int(deltaY),Int(shift)))
+        }
+        
+        if  let lastNode = TreeNodes.shared.shownNodes.last,
+            let lastCell = lastNode.cell {
 
-                let tablY = tableView.bounds.origin.y
-                let tablH = tableView.bounds.size.height
-                let tablZ = tablY+tablH
-                let shift = -deltaY - ((-deltaY + lastZ) - tablZ)
-                if shift > 44 {
-                    print ("*** \(Int(deltaY)):\(Int(cellZ)) \(Int(lastZ)) \(Int(tablZ)) \(Int(shift))")
-                    UIView.animate(withDuration: 0.25, animations: {
-                        self.tableView.contentOffset.y -= shift
-                    })
-                }
+            let lastY = tableView.rectForRow(at: IndexPath(row:lastNode.row, section:0)).origin.y
+            let lastH = lastCell.height
+            let lastZ = lastY+lastH
+
+            let tablY = tableView.bounds.origin.y
+            let tablH = tableView.bounds.size.height
+            let tablZ = tablY + tablH
+            let shift = lastZ - tablZ
+
+            // logScroll(lastY, lastZ, tablY, tablZ, shift)
+
+            if shift < 0 {
+                UIView.animate(withDuration: 0.25, animations: {
+                    self.tableView.contentOffset.y = 0 // += shift
+                })
             }
         }
     }

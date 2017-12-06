@@ -188,7 +188,6 @@
 		804D5A011FA3FC8B0025B724 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D59F71FA3FC8B0025B724 /* AppDelegate.swift */; };
 		804D5A021FA3FC8B0025B724 /* ColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D59F81FA3FC8B0025B724 /* ColorCell.swift */; };
 		804D5A031FA3FC8B0025B724 /* Fader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D59F91FA3FC8B0025B724 /* Fader.swift */; };
-		804D5A041FA3FC8B0025B724 /* Main+Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D59FA1FA3FC8B0025B724 /* Main+Text.swift */; };
 		804D5A051FA3FC8B0025B724 /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D59FB1FA3FC8B0025B724 /* MainVC.swift */; };
 		804D5A061FA3FC8B0025B724 /* PagesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D59FC1FA3FC8B0025B724 /* PagesVC.swift */; };
 		804D5A071FA3FC8B0025B724 /* PhoneCrown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D59FD1FA3FC8B0025B724 /* PhoneCrown.swift */; };
@@ -1216,7 +1215,6 @@
 				800C51B91FC221EF00904121 /* TreeTitleMarkCell.swift in Sources */,
 				8004F6FC1FA3ED5E00F7ED94 /* NodeAnys.swift in Sources */,
 				8004F7C11FA3EE2400F7ED94 /* Image+context.swift in Sources */,
-				804D5A041FA3FC8B0025B724 /* Main+Text.swift in Sources */,
 				80AD99891FCBA06B00BECC4A /* TreeTitleCell.swift in Sources */,
 				8004F6F61FA3ED5E00F7ED94 /* Node+print.swift in Sources */,
 				804D5A2A1FA3FCAA0025B724 /* EventTableVC.swift in Sources */,

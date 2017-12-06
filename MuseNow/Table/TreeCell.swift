@@ -264,10 +264,10 @@ class TreeCell: MuCell {
                 updateLeft(animate:true)
                 tableVC.updateTouchCell(self)
 
-                // scroll show the next node after last child
+                // scroll show the next node after last child (+1)
                 if  let node = treeNode?.children.last,
                     let lastChildCell = node.cell,
-                    tableVC.scrollToMakeVisibleCell(lastChildCell, node.row) {
+                    tableVC.scrollToMakeVisibleCell(lastChildCell, node.row + 1) {
                     return
                 }
             }
