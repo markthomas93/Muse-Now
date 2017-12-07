@@ -30,6 +30,8 @@ extension TreeEditTitleCell: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
 
         (tableVC as? TreeTableVC)?.setTouchedCell(self)
+        
+         textField.keyboardAppearance =  UIAccessibilityIsInvertColorsEnabled() ? .default : .dark
 
         printLog ("▭ \(#function)")
         if textField.text != nil {

@@ -8,12 +8,12 @@ class TreeEditCell: TreeTitleCell {
     }
 
     convenience init(_ treeNode_: TreeNode!, _ tableVC_:UITableViewController) {
+
         self.init()
         tableVC = tableVC_
         frame.size = CGSize(width:tableVC.view.frame.size.width, height:height)
         treeNode = treeNode_
         buildViews(frame.size)
-
     }
 
       override func updateFrames(_ size:CGSize) {

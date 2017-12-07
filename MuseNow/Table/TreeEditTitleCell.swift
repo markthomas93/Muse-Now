@@ -37,7 +37,7 @@ class TreeEditTitleCell: TreeEditCell {
         textField.textAlignment = .center
         textField.clearButtonMode = .whileEditing
         textField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
-        textField.keyboardAppearance = UIAccessibilityIsInvertColorsEnabled() ? .default : .dark
+        textField.keyboardAppearance =  UIAccessibilityIsInvertColorsEnabled() ? .default : .dark
         textField.autocorrectionType = .no
 
         // text clear button inside bezel

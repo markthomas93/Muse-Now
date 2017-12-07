@@ -205,6 +205,8 @@ class TreeCell: MuCell {
 
     override func touchCell(_ location: CGPoint) {
 
+        (tableVC as? TreeTableVC)?.setTouchedCell(self)
+
         // when collapsing sibling, self may also get collapsed, so need to know original state to determine highlight
         let wasExpanded = treeNode.expanded
         var siblingCollapsing = false

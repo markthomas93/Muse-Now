@@ -64,6 +64,8 @@ class MainVC: UIViewController {
         skView.frame = skViewFrame
         phoneCrown.frame = crownLeftFrame
         phoneCrown.twin.frame = crownRightFrame
+
+        pagesVC.updateFrames()
     }
 
 

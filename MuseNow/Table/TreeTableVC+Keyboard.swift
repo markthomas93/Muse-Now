@@ -11,6 +11,7 @@ extension TreeTableVC {
 
 
     @objc func keyboardWillShow(_ notification: Notification) {
+
         if !blockKeyboard,
             let touchedCell = touchedCell,
             let frameVal: NSValue = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue,

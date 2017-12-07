@@ -112,6 +112,7 @@ class TreeTableVC: UITableViewController {
             }
         }
          // show | hide - Reminders, Memos
+
         let _   = TreeActNode(show,"Reminders", showSet, ShowSet.reminder.rawValue, .showReminder, .hideReminder, self)
         let _   = TreeActNode(show,"Memos", showSet, ShowSet.memo.rawValue, .showMemo, .hideMemo, self)
 
@@ -142,7 +143,8 @@ class TreeTableVC: UITableViewController {
 
     
     func setTouchedCell(_ cell: TreeCell!) {
-        if touchedCell != nil,
+
+        if  touchedCell != nil,
             touchedCell != cell {
 
             touchedCell.setHighlight(.low)
