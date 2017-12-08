@@ -28,6 +28,8 @@ class MainVC: UIViewController {
 
     let dialSize = CGSize(width: 172, height: 172)
 
+    private var mainFrame = CGRect.zero
+    private var pagesFrame = CGRect.zero
     private var panelFrame = CGRect.zero
     private var touchFrame = CGRect.zero
     private var skViewFrame = CGRect.zero
@@ -36,68 +38,75 @@ class MainVC: UIViewController {
 
     private var observer: NSKeyValueObservation?
 
-    func makeFrames() {
+    func updateFrames(_ size:CGSize) {
 
-        let viewY = CGFloat(8)
-        let viewW = self.view.frame.size.width
-        let viewH = self.view.frame.size.height - viewY
-        let dialW = dialSize.width
-        let dialH = dialSize.height
-        let margin = CGFloat(16)
+
+        let height = size.height
+        let width  = size.width
+        let portrait = height > width
+
+        let viewY  = CGFloat(portrait ? 8 : 0)
+        let viewH  = height - viewY
+        let dialW  = dialSize.width
+        let dialH  = dialSize.height
+        let margin = CGFloat(portrait ? 16 : 0)
         let panelY = viewH - dialH - margin // start of touch panel
-        let crownW = (viewW - dialW)/2
-        let xR = viewW - crownW
+        let crownW = (width - dialW)/2
+        let crownR = width - crownW
+        let panelH = dialH + margin
+        let pagesH = height - panelH
 
-        panelFrame = CGRect(x:0, y:panelY, width: viewW, height: dialH + margin)
-        touchFrame = CGRect(x:0,y:0, width:dialW, height:dialH)
-        skViewFrame = CGRect(x:crownW, y:0, width: dialW, height: dialH)
-        crownLeftFrame  = CGRect(x: 0,  y:0, width:crownW, height: dialH)
-        crownRightFrame = CGRect(x: xR, y:0, width:crownW, height: dialH)
-        pagesVC.panelY = panelY
-        view.frame.origin.y = viewY
+        mainFrame       = CGRect(x: 0,      y:viewY,  width: width,  height: height)
+        pagesFrame      = CGRect(x: 0,      y:0,      width: width,  height: pagesH)
+        panelFrame      = CGRect(x: 0,      y:panelY, width: width,  height: panelH)
+
+        touchFrame      = CGRect(x: 0,      y:0,      width: dialW,  height: dialH)
+        skViewFrame     = CGRect(x: crownW, y:0,      width: dialW,  height: dialH)
+        crownLeftFrame  = CGRect(x: 0,      y:0,      width: crownW, height: dialH)
+        crownRightFrame = CGRect(x: crownR, y:0,      width: crownW, height: dialH)
     }
 
-    func updateFrames() {
-        makeFrames()
-        touchForce.frame = touchFrame
-        panel.frame = panelFrame
-        skView.frame = skViewFrame
-        phoneCrown.frame = crownLeftFrame
-        phoneCrown.twin.frame = crownRightFrame
+    func updateViews(_ size:CGSize) {
 
-        pagesVC.updateFrames()
+        updateFrames(size)
+
+        view.frame            = mainFrame
+        touchForce.frame      = touchFrame
+        panel.frame           = panelFrame
+        skView.frame          = skViewFrame
+        phoneCrown.frame      = crownLeftFrame
+        phoneCrown.twin.frame = crownRightFrame
+        phoneCrown.initialize()
+        phoneCrown.twin.initialize()
+        
+        pagesVC.updateViews(pagesFrame.size)
     }
 
 
     override func viewDidLoad() {
         
         super.viewDidLoad()
-
-        printLog("◰ \(type(of: self)) \(view.bounds) ")
-        observer = view.layer.observe(\.bounds) { object, _ in
-            print(object.bounds)
-        }
+        // Muse.shared.testScript() // for future use of ParGraph
 
         // stay dark in invert mode
         view.accessibilityIgnoresInvertColors = true
-
-        // Muse.shared.testScript() // for future use of ParGraph
-
-        makeFrames()
-
-
-        view.addSubview(pagesVC.view)
-        
-        panel.frame = panelFrame
-        scene = Scene(size: dialSize)
-        
         view.backgroundColor = .black
-        panel.backgroundColor = .black
+
+        // some views not yet initialized, so only update frames
+        updateFrames(view.bounds.size)
+        pagesVC.updateFrames(pagesFrame.size)
         
+        view.frame = mainFrame
+        view.addSubview(pagesVC.view)
+
+        panel.frame = panelFrame
+        panel.backgroundColor = .black
+        scene = Scene(size: dialSize)
+
         // dial scene
         
         anim.table = pagesVC.eventTable
-        touchDial = TouchDial(dialSize, pagesVC.eventTable)
+        touchDial  = TouchDial(dialSize, pagesVC.eventTable)
         touchForce = TouchDialForce(frame: touchFrame)
         touchForce.touchDial = touchDial
         
@@ -127,13 +136,25 @@ class MainVC: UIViewController {
         panel.addSubview(skView)
         panel.addSubview(phoneCrown)
         panel.addSubview(phoneCrown.twin)
+
+        // when screen autorotates or added as a panel on iPad, accomadate resize
+        observer = view.layer.observe(\.bounds) { object, _ in
+            self.updateViews(object.bounds.size)
+            printLog("▣ \(object.bounds.size)")
+        }
     }
  
     func setBorder(_ v:UIView) {
+        
         v.layer.cornerRadius = 16
         v.layer.borderColor = headColor.cgColor
         v.layer.borderWidth = 1
         v.layer.masksToBounds = true
+    }
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+
+        printLog("▣ MainVC \(size)")
+        super.viewWillTransition(to: size, with: coordinator)
     }
 
     override func viewDidAppear(_ animated: Bool) { printLog("⟳ \(#function)")

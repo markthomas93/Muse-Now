@@ -13,31 +13,33 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
     
     var treeTable: TreeTableVC!
     var eventTable: EventTableVC!
-    var panelY = CGFloat(0)
 
     var pageFrame = CGRect.zero
     var childFrame = CGRect.zero
 
-    func makeFrames() {
-        
+    func updateFrames(_ size:CGSize) {
+
         let marginY = CGFloat(36)
-        pageFrame = CGRect(x:0, y:marginY, width: view.frame.size.width, height: panelY-marginY)
-        childFrame = CGRect(x:2,y:0,width:self.view.frame.size.width-4,height:panelY - 40)
+        let width  = size.width
+        let height = size.height
+        pageFrame  = CGRect(x:0, y:marginY, width: width,   height: height - marginY)
+        childFrame = CGRect(x:2, y:0,       width: width-4, height: height - 40)
     }
 
-    func updateFrames() {
+    func updateViews(_ size:CGSize) {
 
-        makeFrames()
-
-        pageVC.view?.frame = pageFrame
-        treeTable.view?.frame = childFrame
-        eventTable.view?.frame = childFrame
+        updateFrames(size)
+        treeTable.updateViews(size.width)
+        //view.frame = pageFrame
+        //pageVC.view?.frame = pageFrame
+        //treeTable.tableView?.frame = childFrame
+        //eventTable.tableView?.frame = childFrame
+        
     }
 
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        makeFrames()
         let optionsDict = [UIPageViewControllerOptionInterPageSpacingKey : 20]
 
         pageVC = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: optionsDict)
@@ -53,8 +55,9 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
         }
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        treeTable  = storyboard.instantiateViewController(withIdentifier: "TreeTable")  as! TreeTableVC
         eventTable = storyboard.instantiateViewController(withIdentifier: "EventTable") as! EventTableVC
+        treeTable  = storyboard.instantiateViewController(withIdentifier: "TreeTable")  as! TreeTableVC
+
         setBorder(treeTable,  radius:  8, width: 0)
         setBorder(eventTable, radius: 16, width: 0)
         
@@ -73,6 +76,7 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
     }
 
     func setBorder(_ vc:UIViewController, radius: CGFloat, width: CGFloat) {
+
         vc.view.layer.cornerRadius = radius
         vc.view.layer.borderColor = headColor.cgColor
         vc.view.layer.borderWidth = width

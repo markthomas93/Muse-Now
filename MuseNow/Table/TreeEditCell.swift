@@ -11,24 +11,34 @@ class TreeEditCell: TreeTitleCell {
 
         self.init()
         tableVC = tableVC_
-        frame.size = CGSize(width:tableVC.view.frame.size.width, height:height)
         treeNode = treeNode_
-        buildViews(frame.size)
+        let width = tableVC.view.frame.size.width
+        frame.size = CGSize(width:width, height:height)
+        buildViews(width)
     }
 
-      override func updateFrames(_ size:CGSize) {
+//      override func updateFrames(_ width:CGFloat) {
+//
+//        let leftX = CGFloat(treeNode.level-1) * 2 * marginW
+//        let leftY = marginH
+//
+//        let bezelX = leftX + leftW + marginW
+//        let bezelY = marginH / 2
+//        let bezelH = height - marginH
+//        let bezelW = width - bezelX
+//
+//        cellFrame  = CGRect(x: 0,       y: 0,      width: width,  height: height)
+//        leftFrame  = CGRect(x: leftX,   y: leftY,  width: leftW,  height: leftW)
+//        bezelFrame = CGRect(x: bezelX,  y: bezelY, width: bezelW, height: bezelH)
+//    }
+//    override func updateViews(_ width:CGFloat) {
+//
+//        updateFrames(width)
+//        self.frame = cellFrame
+//        left.frame = leftFrame
+//        bezelFrame = bezelFrame
+//    }
 
-        let leftX = CGFloat(treeNode.level-1) * 2 * marginW
-        let leftY = marginH
-
-        let bezelX = leftX + leftW + marginW
-        let bezelY = marginH / 2
-        let bezelH = height - marginH
-        let bezelW = size.width - bezelX
-
-        leftFrame  = CGRect(x: leftX,   y: leftY,  width: leftW,  height: leftW)
-        bezelFrame = CGRect(x: bezelX,  y: bezelY, width: bezelW, height: bezelH)
-    }
     override func setHighlight(_ highlighting_:Highlighting, animated:Bool = true) {
         
         if highlighting != highlighting_ {
@@ -56,13 +66,6 @@ class TreeEditCell: TreeTitleCell {
             }
         }
     }
-
-    override func updateViews() {
-        
-        super.updateViews()
-
-    }
-
  }
 
 

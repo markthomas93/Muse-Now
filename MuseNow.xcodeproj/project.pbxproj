@@ -205,7 +205,7 @@
 		804D5A291FA3FCAA0025B724 /* EventTable+Update.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A181FA3FCAA0025B724 /* EventTable+Update.swift */; };
 		804D5A2A1FA3FCAA0025B724 /* EventTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A191FA3FCAA0025B724 /* EventTableVC.swift */; };
 		804D5A2B1FA3FCAA0025B724 /* MuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A1A1FA3FCAA0025B724 /* MuCell.swift */; };
-		804D5A2C1FA3FCAA0025B724 /* TimeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A1B1FA3FCAA0025B724 /* TimeCell.swift */; };
+		804D5A2C1FA3FCAA0025B724 /* EventTimeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A1B1FA3FCAA0025B724 /* EventTimeCell.swift */; };
 		804D5A2D1FA3FCAA0025B724 /* ToggleDot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A1C1FA3FCAA0025B724 /* ToggleDot.swift */; };
 		806ACFD71FC5E1D500220EB6 /* TreeEditTimeCell+delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806ACFD61FC5E1D500220EB6 /* TreeEditTimeCell+delegate.swift */; };
 		806ACFD91FC5E39A00220EB6 /* TreeEditTitleCell+delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806ACFD81FC5E39900220EB6 /* TreeEditTitleCell+delegate.swift */; };
@@ -435,7 +435,7 @@
 		804D5A181FA3FCAA0025B724 /* EventTable+Update.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EventTable+Update.swift"; sourceTree = "<group>"; };
 		804D5A191FA3FCAA0025B724 /* EventTableVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventTableVC.swift; sourceTree = "<group>"; };
 		804D5A1A1FA3FCAA0025B724 /* MuCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuCell.swift; sourceTree = "<group>"; };
-		804D5A1B1FA3FCAA0025B724 /* TimeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeCell.swift; sourceTree = "<group>"; };
+		804D5A1B1FA3FCAA0025B724 /* EventTimeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventTimeCell.swift; sourceTree = "<group>"; };
 		804D5A1C1FA3FCAA0025B724 /* ToggleDot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleDot.swift; sourceTree = "<group>"; };
 		806ACFD61FC5E1D500220EB6 /* TreeEditTimeCell+delegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TreeEditTimeCell+delegate.swift"; sourceTree = "<group>"; };
 		806ACFD81FC5E39900220EB6 /* TreeEditTitleCell+delegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TreeEditTitleCell+delegate.swift"; sourceTree = "<group>"; };
@@ -901,7 +901,7 @@
 				804D5A181FA3FCAA0025B724 /* EventTable+Update.swift */,
 				804D5A191FA3FCAA0025B724 /* EventTableVC.swift */,
 				804D5A1A1FA3FCAA0025B724 /* MuCell.swift */,
-				804D5A1B1FA3FCAA0025B724 /* TimeCell.swift */,
+				804D5A1B1FA3FCAA0025B724 /* EventTimeCell.swift */,
 				804D5A1C1FA3FCAA0025B724 /* ToggleDot.swift */,
 			);
 			path = Table;
@@ -1190,7 +1190,7 @@
 				806ACFDB1FC5FC9300220EB6 /* TreeEditTitleCell.swift in Sources */,
 				8004F7931FA3EE2400F7ED94 /* String+regex.swift in Sources */,
 				8004F7B71FA3EE2400F7ED94 /* SayCache.swift in Sources */,
-				804D5A2C1FA3FCAA0025B724 /* TimeCell.swift in Sources */,
+				804D5A2C1FA3FCAA0025B724 /* EventTimeCell.swift in Sources */,
 				8004F7751FA3EE2400F7ED94 /* Dots+Say.swift in Sources */,
 				8004F7061FA3ED5E00F7ED94 /* ParStr+Compare.swift in Sources */,
 				8004F78D1FA3EE2400F7ED94 /* Dictionary+FileManager.swift in Sources */,

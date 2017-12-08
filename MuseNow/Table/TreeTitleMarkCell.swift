@@ -16,15 +16,16 @@ class TreeTitleMarkCell: TreeTitleCell {
     convenience init(_ treeNode_: TreeNode!, _ tableVC_:UITableViewController) {
         self.init()
         tableVC = tableVC_
-        frame.size = CGSize(width:tableVC.view.frame.size.width, height:height)
         treeNode = treeNode_
-        buildViews(frame.size)
+        let width = tableVC.view.frame.size.width
+        frame.size = CGSize(width:width, height:height)
+        buildViews(width)
     }
 
-    override func buildViews(_ size: CGSize) {
+    override func buildViews(_ width: CGFloat) {
 
-        super.buildViews(size)
-        updateFrames(size)
+        super.buildViews(width)
+        updateFrames(width)
 
         // bezel for mark
         mark = ToggleCheck(frame:markFrame)
@@ -45,35 +46,38 @@ class TreeTitleMarkCell: TreeTitleCell {
         treeNode.updateOnRatioFromChildren()
         mark.setGray(treeNode.onRatio)
     }
-    override func updateFrames(_ size:CGSize) {
+
+    override func updateFrames(_ width:CGFloat) {
 
         let markW = height
 
         let leftX = CGFloat(treeNode.level-1) * 2 * marginW
-        let leftY = (size.height - leftW) / 2
+        let leftY = (height - leftW) / 2
 
         let bezelX = leftX + leftW + marginW
         let bezelY = marginH / 2
         let bezelH = height - marginH
 
-        let markX = size.width - markW
+        let markX = width - markW
         let markY = bezelY
         let markH = bezelH
 
-        let bezelW = size.width - markW - marginH - bezelX
+        let bezelW = width - markW - marginH - bezelX
         let titleW = bezelW - marginW
 
-        leftFrame  = CGRect(x:leftX, y:leftY, width: leftW, height: leftW)
-        titleFrame = CGRect(x:marginW, y:0, width: titleW, height: bezelH)
-        bezelFrame = CGRect(x:bezelX, y:bezelY, width: bezelW, height: bezelH)
-        markFrame  = CGRect(x:markX,  y:markY,  width: markW , height: markH)
+        cellFrame  = CGRect(x:0,       y:0,      width: width,  height: height)
+        leftFrame  = CGRect(x:leftX,   y:leftY,  width: leftW,  height: leftW)
+        titleFrame = CGRect(x:marginW, y:0,      width: titleW, height: bezelH)
+        bezelFrame = CGRect(x:bezelX,  y:bezelY, width: bezelW, height: bezelH)
+        markFrame  = CGRect(x:markX,   y:markY,  width: markW , height: markH)
     }
 
-    override func updateViews() {
+    override func updateViews(_ width:CGFloat) {
 
-        let size = PagesVC.shared.treeTable.view.frame.size
-        updateFrames(size)
+        updateFrames(width)
 
+        self.frame = cellFrame
+        left.frame = leftFrame
         title.frame = titleFrame
         bezel.frame = bezelFrame
         mark.frame  = markFrame

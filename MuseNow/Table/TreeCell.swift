@@ -13,6 +13,7 @@ class TreeCell: MuCell {
     
     var left: UIImageView!
     var bezel: UIView!
+    var cellFrame = CGRect.zero
     var leftFrame  = CGRect.zero
     var bezelFrame = CGRect.zero
 
@@ -31,14 +32,15 @@ class TreeCell: MuCell {
     convenience init(_ treeNode_: TreeNode!, _ tableVC_:UITableViewController) {
         self.init()
         tableVC = tableVC_
-        frame.size = CGSize(width:tableVC.view.frame.size.width, height:height)
+        frame.size = cellFrame.size
         treeNode = treeNode_
-        buildViews(frame.size)
+        buildViews(frame.size.width)
     }
     
-    func buildViews(_ size:CGSize) {
+    func buildViews(_ width:CGFloat) {
 
-        updateFrames(size)
+        updateFrames(width)
+        frame = cellFrame
 
         selectionStyle = .none
         contentView.backgroundColor = .black
@@ -69,9 +71,22 @@ class TreeCell: MuCell {
 
         bezel.frame = bezelFrame
     }
-    /**
-     adjust display (such as a check mark) based on ratio of children that are set on
-    */
+    
+    func updateFrames(_ width:CGFloat) {
+
+        cellFrame  = CGRect(x:0, y:0, width: width, height: height)
+        bezelFrame = cellFrame
+    }
+
+    func updateViews(_ width:CGFloat) {
+
+        updateFrames(width)
+
+        frame = cellFrame
+        bezel.frame = bezelFrame
+    }
+
+    /// adjust display (such as a check mark) based on ratio of children that are set on
     func updateOnRatioOfChildrenMarked() {
         // override
     }
@@ -122,27 +137,6 @@ class TreeCell: MuCell {
         }
     }
 
-    func updateFrames(_ size:CGSize) {
-
-        let leftX = CGFloat(treeNode.level-1) * 2 * marginW
-        let leftY = (size.height - leftW) / 2
-
-        let bezelX = leftX + leftW + marginW
-        let bezelY = marginH / 2
-        let bezelH = size.height - 2*marginH
-
-        let bezelW = size.width - marginW - bezelX
-
-        leftFrame  = CGRect(x:leftX, y:leftY, width: leftW, height: leftW)
-        bezelFrame = CGRect(x:bezelX, y:bezelY, width: bezelW, height: bezelH)
-       }
-
-    func updateViews() {
-
-        let size = PagesVC.shared.treeTable.view.frame.size
-        updateFrames(size)
-        buildViews(size)
-    }
 
     /**
     While renumbering, highlight the currently selected parent and children

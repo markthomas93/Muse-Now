@@ -22,6 +22,7 @@ func printLog(_ str: String) {
     //case NSLog(str)
 
     case
+    "▣",  // observe main window bounds
     "◰",  // view layout
     "⊛", // crown
     "▤", // TreeTableView

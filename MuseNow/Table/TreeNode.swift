@@ -88,6 +88,14 @@ class TreeNode {
         else if depth == 1, expanded      { return .parent }
         else                              { return .other }
     }
+    
+    func updateViews(_ width:CGFloat) {
+        cell?.updateViews(width)
+        for child in children {
+            child.updateViews(width)
+        }
+    }
+
     func rehighlight() {
 
         cell?.setParentChildOther(getParentChildOther())

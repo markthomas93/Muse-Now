@@ -14,9 +14,10 @@ class TreeEditWeekdayCell: TreeEditCell {
     convenience init(_ treeNode_: TreeNode!, _ tableVC_:UITableViewController) {
         self.init()
         tableVC = tableVC_
-        frame.size = CGSize(width:tableVC.view.frame.size.width, height:height)
         treeNode = treeNode_
-        buildViews(frame.size)
+        let width = tableVC.view.frame.size.width
+        frame.size = CGSize(width:width, height:height)
+        buildViews(width)
     }
 
     func setLabel(_ label:UILabel!, isOn:Bool) {
@@ -47,9 +48,9 @@ class TreeEditWeekdayCell: TreeEditCell {
         return label
     }
 
-    override func buildViews(_ size: CGSize) {
+    override func buildViews(_ width: CGFloat) {
         
-        super.buildViews(size)
+        super.buildViews(width)
 
         if let node = treeNode as? TreeRoutineItemNode,
             let item = node.routineItem {
@@ -66,35 +67,7 @@ class TreeEditWeekdayCell: TreeEditCell {
         }
     }
 
-    override func setHighlight(_ highlighting_:Highlighting, animated:Bool = true) {
-        
-        if highlighting != highlighting_ {
-            
-            var index = 0
-            switch highlighting_ {
-            case .high,.forceHigh: highlighting = .high ; index = 1 ; isSelected = true
-            default:               highlighting = .low  ; index = 0 ; isSelected = false
-            }
-            let borders     = [headColor.cgColor, UIColor.white.cgColor]
-            let backgrounds = [UIColor.black.cgColor, UIColor.white.cgColor]
-            
-            if animated {
-                animateViews([bezel], borders, backgrounds, index, duration: 0.25)
-            }
-            else {
-                bezel.layer.borderColor    = borders[index]
-                bezel.layer.backgroundColor = backgrounds[index]
-            }
-        }
-        else {
-            switch highlighting {
-            case .high,.forceHigh: isSelected = true       
-            default:               isSelected = false
-            }
-        }
-    }
-    
-    override func updateFrames(_ size:CGSize) {
+    override func updateFrames(_ width:CGFloat) {
 
         let leftX = CGFloat(treeNode.level-1) * 2 * marginW
         let leftY = marginH
@@ -102,12 +75,13 @@ class TreeEditWeekdayCell: TreeEditCell {
         let bezelX = leftX + leftW + marginW
         let bezelY = marginH / 2
         let bezelH = height - marginH
-        let bezelW = size.width - bezelX
+        let bezelW = width - bezelX
 
         let weekW = ceil(bezelW / 7 * 2) / 2
         var weekX = CGFloat(0)
 
-        leftFrame  = CGRect(x:leftX, y:leftY, width:leftW, height:leftW)
+        cellFrame  = CGRect(x: 0,     y: 0,     width: width, height: height)
+        leftFrame  = CGRect(x: leftX, y: leftY, width: leftW, height: leftW)
 
         weekFrames.removeAll()
         for _ in 0..<7 {
@@ -119,9 +93,48 @@ class TreeEditWeekdayCell: TreeEditCell {
         bezelFrame = CGRect(x:bezelX,  y:bezelY, width:bezelW, height:bezelH)
     }
 
-    override func updateViews() {
+    override func updateViews(_ width:CGFloat) {
         
-        super.updateViews()
+        updateFrames(width)
+
+        self.frame = cellFrame
+        left.frame = leftFrame
+        bezel.frame = bezelFrame
+        
+        // update each label
+        for i in 0 ..< 7 {
+            let frame = weekFrames[i]
+            let day = weekdays[i]
+            day.frame = frame
+        }
+    }
+
+    override func setHighlight(_ highlighting_:Highlighting, animated:Bool = true) {
+
+        if highlighting != highlighting_ {
+
+            var index = 0
+            switch highlighting_ {
+            case .high,.forceHigh: highlighting = .high ; index = 1 ; isSelected = true
+            default:               highlighting = .low  ; index = 0 ; isSelected = false
+            }
+            let borders     = [headColor.cgColor, UIColor.white.cgColor]
+            let backgrounds = [UIColor.black.cgColor, UIColor.white.cgColor]
+
+            if animated {
+                animateViews([bezel], borders, backgrounds, index, duration: 0.25)
+            }
+            else {
+                bezel.layer.borderColor    = borders[index]
+                bezel.layer.backgroundColor = backgrounds[index]
+            }
+        }
+        else {
+            switch highlighting {
+            case .high,.forceHigh: isSelected = true
+            default:               isSelected = false
+            }
+        }
     }
 
     override func touchCell(_ point: CGPoint) {

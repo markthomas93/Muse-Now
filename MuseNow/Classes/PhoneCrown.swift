@@ -33,12 +33,12 @@ class PhoneCrown: TouchForce {
 
         PhoneCrown.shared = self // this is a departure from normal Singleton init
 
-        initialize(frame)
+        initialize()
         delegate = delegate_
         isRight = false
 
         twin = PhoneCrown(frame: right)
-        twin.initialize(right)
+        twin.initialize()
         twin.delegate = delegate_
         twin.isRight = true
         twin.twin = self
@@ -57,7 +57,7 @@ class PhoneCrown: TouchForce {
 
 
 
-    func initialize(_ frame: CGRect) {
+    func initialize() {
         
         backgroundColor = UIColor.black
         

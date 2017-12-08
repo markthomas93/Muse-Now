@@ -16,17 +16,17 @@ class TreeTitleCell: TreeCell {
     convenience init(_ treeNode_: TreeNode!, _ tableVC_:UITableViewController) {
         self.init()
         tableVC = tableVC_
-        frame.size = CGSize(width:tableVC.view.frame.size.width, height:height)
         treeNode = treeNode_
-        buildViews(frame.size)
+        let width = tableVC.view.frame.size.width
+        frame.size = CGSize(width:width, height:height)
+        buildViews(width)
     }
 
-    override func buildViews(_ size:CGSize) {
+    override func buildViews(_ width:CGFloat) {
 
-        super.buildViews(size)
-
-        self.frame.size = size
-        updateFrames(size)
+        super.buildViews(width)
+        updateFrames(width)
+        self.frame = cellFrame
 
         // title
         title = UILabel(frame:titleFrame)
@@ -41,28 +41,32 @@ class TreeTitleCell: TreeCell {
         bezel.addSubview(title)
     }
 
-    override func updateFrames(_ size:CGSize) {
+    override func updateFrames(_ width:CGFloat) {
 
         let leftX = CGFloat(treeNode.level-1) * 2 * marginW
-        let leftY = (size.height - leftW) / 2
+        let leftY = (height - leftW) / 2
 
         let bezelX = leftX + leftW + marginW
         let bezelY = marginH / 2
         let bezelH = height - marginH
 
-        let bezelW = size.width - marginW - bezelX
+        let bezelW = width - marginW - bezelX
         let titleW = bezelW - marginW
 
-        leftFrame  = CGRect(x:leftX, y:leftY, width: leftW, height: leftW)
-        titleFrame = CGRect(x:marginW, y:0, width: titleW, height: bezelH)
-        bezelFrame = CGRect(x:bezelX, y:bezelY, width: bezelW, height: bezelH)
+        cellFrame  = CGRect(x:0,       y:0,      width: width,  height: height)
+        leftFrame  = CGRect(x:leftX,   y:leftY,  width: leftW,  height: leftW)
+        titleFrame = CGRect(x:marginW, y:0,      width: titleW, height: bezelH)
+        bezelFrame = CGRect(x:bezelX,  y:bezelY, width: bezelW, height: bezelH)
     }
 
-    override func updateViews() {
+    override func updateViews(_ width:CGFloat) {
 
-        let size = PagesVC.shared.treeTable.view.frame.size
-        updateFrames(size)
-        buildViews(size)
+        updateFrames(width)
+
+        self.frame = cellFrame
+        leftFrame = leftFrame
+        title.frame = titleFrame
+        bezel.frame = bezelFrame
     }
 
 }

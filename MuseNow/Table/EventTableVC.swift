@@ -125,8 +125,8 @@ class EventTableVC: UITableViewController, MuseTableDelegate {
         switch (event?.type)! {
             
         case .time:
-            if timeCell == nil {
-                timeCell = EventTimeCell()
+            timeCell = tableView.dequeueReusableCell(withIdentifier: "EventTimeCell")! as! EventTimeCell
+            if let event = event {
                 let size = CGSize(width: view.frame.size.width, height: timeHeight)
                 timeCell.setCell(event:event,size)
                 timeCell.frame.size.width = view.frame.size.width

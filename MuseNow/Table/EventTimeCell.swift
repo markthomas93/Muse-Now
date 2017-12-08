@@ -4,31 +4,21 @@ import UIKit
 
 class EventTimeCell: MuCell {
     
-    var time: UILabel!
+
+    @IBOutlet weak var time: UILabel!
     let rowHeight = CGFloat(44)
     let sectionHeight = CGFloat(36)
     
     func setCell(event event_: MuEvent!, _ size: CGSize) {
-    
+
         selectionStyle = UITableViewCellSelectionStyle.none
         event = event_ // not really needed
-        
-        backgroundColor = cellColor
-        contentView.backgroundColor = cellColor
-        contentView.frame.size = size
-        
+
         // time hour:Min
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "h:mm a"
         let hourStr = dateFormatter.string(from: Date())
-        
-        let timeWidth = size.width / 2
-        let timeFrame = CGRect(x:(size.width - timeWidth) / 2,
-                               y:(size.height - sectionHeight) / 2,
-                               width: timeWidth,
-                               height: sectionHeight)
-        time = UILabel(frame:timeFrame)
-        
+
         time.text = hourStr
         time.textColor = .white
         time.backgroundColor = .black
@@ -38,14 +28,14 @@ class EventTimeCell: MuCell {
         time.textAlignment = .center
         
         // bezel for time
-        time.layer.cornerRadius = sectionHeight/2
+        time.layer.cornerRadius = time.frame.height/2
         time.layer.borderColor = headColor.cgColor
         time.layer.borderWidth = 1
         time.layer.masksToBounds = true
-        
+
+
         setHighlight(.low, animated:false)
-        
-        contentView.addSubview(time)
+
     }
     
     override func setHighlight(_ highlighting_:Highlighting, animated:Bool = true) {

@@ -25,14 +25,16 @@ class TreeEditTimeCell: TreeEditCell {
     convenience init(_ treeNode_: TreeNode!, _ tableVC_:UITableViewController) {
         self.init()
         tableVC = tableVC_
-        frame.size = CGSize(width:tableVC.view.frame.size.width, height:height)
         treeNode = treeNode_
-        buildViews(frame.size)
+        let width = tableVC.view.frame.size.width
+        frame.size = CGSize(width:width, height:height)
+        buildViews(width)
     }
 
-    override func buildViews(_ size: CGSize) {
+    override func buildViews(_ width: CGFloat) {
         
-        super.buildViews(size)
+        super.buildViews(width)
+
         // start hour:Min
         bgnTimePicker = UIPickerView(frame:bgnTimeFrame)
         bgnTimePicker.delegate = self
@@ -81,7 +83,7 @@ class TreeEditTimeCell: TreeEditCell {
     }
 
   
-    override func updateFrames(_ size:CGSize) {
+    override func updateFrames(_ width:CGFloat) {
 
         let leftX = CGFloat(treeNode.level-1) * 2 * marginW
         let leftY = marginH
@@ -89,7 +91,7 @@ class TreeEditTimeCell: TreeEditCell {
         let bezelX = leftX + leftW + marginW
         let bezelY = marginH / 2
         let bezelH = height - marginH
-        let bezelW = size.width - bezelX
+        let bezelW = width - bezelX
 
         let timeH   = CGFloat(64)
         let timeY   = (height-timeH)/2
@@ -98,6 +100,7 @@ class TreeEditTimeCell: TreeEditCell {
         let timeW  = bezelW/2
         let etimeX  = btimeX + timeW
 
+        cellFrame     = CGRect(x: 0,       y: 0,      width: width,  height: height)
         leftFrame     = CGRect(x: leftX,   y: leftY,  width: leftW,  height: leftW)
         bgnTimeFrame  = CGRect(x: btimeX,  y: timeY,  width: timeW,  height: timeH)
         endTimeFrame  = CGRect(x: etimeX,  y: timeY,  width: timeW,  height: timeH)
@@ -106,9 +109,17 @@ class TreeEditTimeCell: TreeEditCell {
     }
 
  
-    override func updateViews() {
+    override func updateViews(_ width:CGFloat) {
         
-        super.updateViews()
+        updateFrames(width)
+        self.frame          = cellFrame
+        left.frame          = leftFrame
+        bgnTimePicker.frame = bgnTimeFrame
+        bgnLabel.frame      = bgnTimeFrame
+        endTimePicker.frame = endTimeFrame
+        endLabel.frame      = endTimeFrame
+        arrowLabel.frame    = arrowFrame
+        bezel.frame         = bezelFrame
 
     }
 

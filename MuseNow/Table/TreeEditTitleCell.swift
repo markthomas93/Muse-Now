@@ -17,14 +17,15 @@ class TreeEditTitleCell: TreeEditCell {
     convenience init(_ treeNode_: TreeNode!, _ tableVC_:UITableViewController) {
         self.init()
         tableVC = tableVC_
-        frame.size = CGSize(width:tableVC.view.frame.size.width, height:height)
         treeNode = treeNode_
-        buildViews(frame.size)
+        let width = tableVC.view.frame.size.width
+        frame.size = CGSize(width:width, height:height)
+        buildViews(width)
     }
 
-    override func buildViews(_ size: CGSize) {
+    override func buildViews(_ width:CGFloat) {
         
-        super.buildViews(size)
+        super.buildViews(width)
 
         textField = UITextField(frame:textFrame)
         textField.delegate = self
@@ -57,7 +58,7 @@ class TreeEditTitleCell: TreeEditCell {
      }
 
 
-     override func updateFrames(_ size:CGSize) {
+     override func updateFrames(_ width:CGFloat) {
 
         let leftX = CGFloat(treeNode.level-1) * 2 * marginW
         let leftY = marginH
@@ -65,21 +66,28 @@ class TreeEditTitleCell: TreeEditCell {
         let bezelX = leftX + leftW + marginW
         let bezelY = marginH / 2
         let bezelH = height - marginH
-        let bezelW = size.width - bezelX
+        let bezelW = width - bezelX
 
         let clearH = CGFloat(22)
         let clearX = bezelW - clearH - marginW
         let clearY = (bezelH-clearH)/2
 
+        cellFrame  = CGRect(x: 0,       y: 0,      width: width,  height: height)
         leftFrame  = CGRect(x: leftX,   y: leftY,  width: leftW,  height: leftW)
         textFrame  = CGRect(x: 0,       y: 0,      width: bezelW, height: bezelH)
         clearFrame = CGRect(x: clearX,  y: clearY, width: clearH, height: clearH)
         bezelFrame = CGRect(x: bezelX,  y: bezelY, width: bezelW, height: bezelH)
     }
 
-    override func updateViews() {
+    override func updateViews(_ width:CGFloat) {
         
-        super.updateViews()
+        updateFrames(width)
+
+        self.frame = cellFrame
+        left.frame = leftFrame
+        textField.frame = textFrame
+        textClear.frame = clearFrame
+        bezel.frame = bezelFrame
 
     }
 

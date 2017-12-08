@@ -9,21 +9,10 @@ class TreeTimeTitleDaysCell: TreeTitleCell {
     var time:  UILabel! // time of day to begin
     var days:  UILabel! // days of week
 
-//    var timeBzl: UIView! // time bezel
-//    var titleBzl: UIView! // title bezel
-//    var daysBzl: UIView! // days bezel
-
     var timeFrame  = CGRect.zero
     var daysFrame  = CGRect.zero
-//    var timeBzlFrame = CGRect.zero
-//    var titleBzlFrame = CGRect.zero
-//    var daysBzlFrame = CGRect.zero
-
     let timeW  = CGFloat(48)
     let daysW  = CGFloat(64)
-
-//    enum EditType { case none, time, title, days }
-//    var editType = EditType.none
 
     var child: TreeRoutineItemNode!
 
@@ -35,13 +24,13 @@ class TreeTimeTitleDaysCell: TreeTitleCell {
         
         self.init()
         treeNode = treeNode_
-        buildViews(size)
+        buildViews(size.width)
     }
 
 
-    override func buildViews(_ size: CGSize) {
+    override func buildViews(_ width:CGFloat)  {
 
-        super.buildViews(size)
+        super.buildViews(width)
 
         if let node = treeNode as? TreeRoutineItemNode,
             let item = node.routineItem {
@@ -51,21 +40,6 @@ class TreeTimeTitleDaysCell: TreeTitleCell {
             time.backgroundColor = .clear
             time.text = item.bgnTimeStr
             time.textColor = .white
-
-//            timeBzl = UIView(frame:timeBzlFrame)
-//            timeBzl.backgroundColor = .clear
-//            timeBzl.isUserInteractionEnabled = false
-//            timeBzl.layer.cornerRadius = innerH/4
-//            timeBzl.layer.borderWidth = 0.5
-//            timeBzl.layer.borderColor = UIColor.clear.cgColor
-
-
-//            titleBzl = UIView(frame:titleBzlFrame)
-//            titleBzl.backgroundColor = .clear
-//            titleBzl.isUserInteractionEnabled = false
-//            titleBzl.layer.cornerRadius = innerH/4
-//            titleBzl.layer.borderWidth = 0.5
-//            titleBzl.layer.borderColor = UIColor.clear.cgColor
 
 
             // days of week
@@ -78,20 +52,9 @@ class TreeTimeTitleDaysCell: TreeTitleCell {
             days.layer.borderWidth = 0.5
             days.layer.borderColor = UIColor.clear.cgColor
 
-//            daysBzl = UIView(frame:daysBzlFrame)
-//            daysBzl.backgroundColor = .clear
-//            daysBzl.isUserInteractionEnabled = false
-//            daysBzl.layer.cornerRadius = innerH/4
-//            daysBzl.layer.borderWidth = 0.5
-//            daysBzl.layer.borderColor = UIColor.clear.cgColor
-
-
             // view hierarchy
             bezel.addSubview(time)
             bezel.addSubview(days)
-//            bezel.addSubview(timeBzl)
-//            bezel.addSubview(titleBzl)
-//            bezel.addSubview(daysBzl)
 
             // add edit children
 
@@ -107,15 +70,15 @@ class TreeTimeTitleDaysCell: TreeTitleCell {
         }
     }
 
-     override func updateFrames(_ size:CGSize) {
+     override func updateFrames(_ width:CGFloat) {
 
         let leftX = CGFloat(treeNode.level-1) * 2 * marginW
-        let leftY = (size.height - leftW) / 2
+        let leftY = (height - leftW) / 2
 
         let bezelX = leftX + leftW + marginW
         let bezelY = marginH / 2
         let bezelH = height - marginH
-        let bezelW = size.width - bezelX
+        let bezelW = width - bezelX
 
         let timeX  = marginW
         let timeY  = bezelY + marginH/2
@@ -130,58 +93,26 @@ class TreeTimeTitleDaysCell: TreeTitleCell {
         let daysY = bezelY + marginH/2
         let daysH = bezelH - marginH
 
-//        let edgeMargin = CGFloat(2) // preven bezel from truncating inner bezel
-//        let bzlY = CGFloat(8)
-//        let bzlH = height - 2*bzlY
-//        let timeBX = edgeMargin
-//        let timeBW = timeW + marginW - edgeMargin
-//        let titleBX = titleX - marginW
-//        let titleBW = titleW + marginW
-//        let daysBX = daysX - marginW
-//        let daysBW = daysW + marginW - edgeMargin
-
+        cellFrame  = CGRect(x: 0,      y: 0,      width: width,  height: height)
         leftFrame  = CGRect(x: leftX,  y: leftY,  width: leftW,  height: leftW)
         timeFrame  = CGRect(x: timeX,  y: timeY,  width: timeW,  height: timeH)
         titleFrame = CGRect(x: titleX, y: titleY, width: titleW, height: titleH)
         daysFrame  = CGRect(x: daysX,  y: daysY,  width: daysW , height: daysH)
         bezelFrame = CGRect(x: bezelX, y: bezelY, width: bezelW, height: bezelH)
-
-//        timeBzlFrame  = CGRect(x: timeBX,  y: bzlY,  width: timeBW,  height: bzlH)
-//        titleBzlFrame = CGRect(x: titleBX, y: bzlY,  width: titleBW, height: bzlH)
-//        daysBzlFrame  = CGRect(x: daysBX,  y: bzlY,  width: daysBW , height: bzlH)
     }
 
-    override func updateViews() {
+    override func updateViews(_ width:CGFloat) {
         
-        super.updateViews()
+        updateFrames(width)
+        
+        self.frame = cellFrame
+        left.frame = leftFrame
         time.frame = timeFrame
+        title.frame = titleFrame
         days.frame = daysFrame
+        bezel.frame = bezelFrame
     }
 
-//    /**
-//     */
-//    override func setParentChildOther(_ parentChild_:ParentChildOther) {
-//        super.setParentChildOther(parentChild_)
-//        setInnerBezel(.none, .clear)
-//    }
-//
-//    func setInnerBezel(_ type:EditType,_ color: UIColor) {
-//
-//        switch type {
-//        case .time:     timeBzl.layer.borderColor  = color.cgColor
-//        case .title:    titleBzl.layer.borderColor = color.cgColor
-//        case .days:     daysBzl.layer.borderColor  = color.cgColor
-//        case .none:
-//
-//            timeBzl.layer.borderColor  = color.cgColor
-//            titleBzl.layer.borderColor = color.cgColor
-//            daysBzl.layer.borderColor  = color.cgColor
-//        }
-//        if type == .title,
-//            let child = treeNode.children.first?.cell as? TreeEditTitleCell {
-//                child.textField.becomeFirstResponder()
-//        }
-//    }
 }
 
 
