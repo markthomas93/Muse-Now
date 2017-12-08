@@ -78,7 +78,8 @@ class MainVC: UIViewController {
         phoneCrown.twin.frame = crownRightFrame
         phoneCrown.initialize()
         phoneCrown.twin.initialize()
-        
+        phoneCrown.setNeedsDisplay()
+        phoneCrown.twin.setNeedsDisplay()
         pagesVC.updateViews(pagesFrame.size)
     }
 
@@ -143,7 +144,7 @@ class MainVC: UIViewController {
             printLog("▣ \(object.bounds.size)")
         }
     }
- 
+
     func setBorder(_ v:UIView) {
         
         v.layer.cornerRadius = 16

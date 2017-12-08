@@ -18,23 +18,20 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
     var childFrame = CGRect.zero
 
     func updateFrames(_ size:CGSize) {
-
-        let marginY = CGFloat(36)
         let width  = size.width
         let height = size.height
-        pageFrame  = CGRect(x:0, y:marginY, width: width,   height: height - marginY)
-        childFrame = CGRect(x:2, y:0,       width: width-4, height: height - 40)
+        let isPad = UIDevice.current.userInterfaceIdiom == .pad
+        let isPanel = isPad && width < height/2
+        let pageY   = CGFloat(isPanel ? 0 : isPad ? 18 : 36)
+        let marginY = CGFloat(36)
+
+        pageFrame  = CGRect(x:0, y:pageY, width: width,   height: height - marginY)
+        childFrame = CGRect(x:2, y:0,     width: width-4, height: height - 40)
     }
 
     func updateViews(_ size:CGSize) {
 
-        updateFrames(size)
         treeTable.updateViews(size.width)
-        //view.frame = pageFrame
-        //pageVC.view?.frame = pageFrame
-        //treeTable.tableView?.frame = childFrame
-        //eventTable.tableView?.frame = childFrame
-        
     }
 
     override func viewDidLoad() {

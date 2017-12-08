@@ -75,9 +75,7 @@ class TreeTableVC: UITableViewController {
         NotificationCenter.default.removeObserver(self)
         Actions.shared.doRefresh(true)
     }
-//    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-//        TreeNodes.shared.root.updateViews(size.width)
-//    }
+
     func updateViews(_ width:CGFloat) {
         let adjustWidth = width > 800 ? width - 44 : width
         TreeNodes.shared.root.updateViews(adjustWidth)

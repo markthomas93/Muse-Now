@@ -9,6 +9,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        //application.windows.first?.backgroundColor = .black
+
+
         return true
     }
 
@@ -20,11 +23,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) { printLog("⟳☎︎ \(#function)")
         
-        Active.shared.startActive()
-         printLog("◰ \(type(of: self)) \(UIScreen.main.bounds) ")
-        observer = UIScreen.main.observe(\.bounds) { [weak self] object, change in
-            printLog("◰ \(type(of: self)) \(object) \(change)")
-        }
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) { printLog("⟳☎︎ \(#function)")
