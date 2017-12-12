@@ -25,15 +25,15 @@ class Marks: FileSync {
     
 
     // file was sent from other device
-    override func receiveFile(_ data:Data, _ fileTime_: TimeInterval, completion: @escaping () -> Void) {
-        
-        let fileTime = trunc(fileTime_)
+    override func receiveFile(_ data:Data, _ updateTime: TimeInterval, completion: @escaping () -> Void) {
 
-        printLog ("✓ Marks::\(#function) fileTime:\(fileTime) -> memoryTime:\(memoryTime)")
+        let deltaTime = memoryTime - updateTime
 
-        if memoryTime < fileTime {
+        printLog ("✓ Marks::\(#function) memory->update time: \(memoryTime)->\(updateTime) 𝚫\(deltaTime)")
+
+        if deltaTime > 0 {
             
-            memoryTime = fileTime
+            memoryTime = updateTime
             let dataItems = NSKeyedUnarchiver.unarchiveObject(with:data as Data) as! [Mark]
             updateMarks(dataItems)
             updateArchive()
@@ -51,8 +51,8 @@ class Marks: FileSync {
         idMark = items.reduce(into: [String: Mark]()) { $0[$1.eventId] = $1 }
 
         let fileTime = self.getFileTime()
-        printLog ("⧉ Marks::\(#function) items:\(items.count) fileTime:\(fileTime) -> memoryTime:\(memoryTime)")
-        self.memoryTime = fileTime
+        printLog ("⧉ Marks::\(#function) items:\(items.count) memory->file time:\(memoryTime) -> \(fileTime)")
+        memoryTime = fileTime
     }
     
     func updateAct(_ act: DoAction, _ event: MuEvent!) {
@@ -64,24 +64,16 @@ class Marks: FileSync {
             switch act {
             
             case .markOn:
-                 event.mark = true
 
-                if let mark = idMark[event.eventId] {
-                    mark.isOn = true
-                }
-                else {
-                    idMark[event.eventId] = Mark(event)
-                }
+                event.mark = true
+                if let mark = idMark[event.eventId] { mark.isOn = true }
+                else        { idMark[event.eventId] = Mark(event) }
+
             case .markOff:
 
                 event.mark = false
-
-                if let mark = idMark[event.eventId] {
-                    mark.isOn = false
-                }
-                else {
-                    idMark[event.eventId] = Mark(event)
-                }
+                if let mark = idMark[event.eventId] { mark.isOn = false }
+                else        { idMark[event.eventId] = Mark(event) }
 
             case .markClearAll:
                 
@@ -92,9 +84,13 @@ class Marks: FileSync {
         }
        updateArchive()
     }
+    
     func updateArchive() {
 
-        archiveArray(Array(idMark.values), Date().timeIntervalSince1970)
+        let updateTime = Date().timeIntervalSince1970
+        printLog ("✓ Marks::\(#function) time:\(updateTime)")
+
+        archiveArray(Array(idMark.values), updateTime)
     }
 
 

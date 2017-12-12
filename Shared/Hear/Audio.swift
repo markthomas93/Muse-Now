@@ -23,10 +23,13 @@
         catch {  print("\(#function) Error:\(error)") }
 
     }
-    func finishPlaybackSession() { printLog("🔈 \(#function)")
+    func finishPlaybackSession() {
 
         if let audioPlayer = audioPlayer,
             audioPlayer.isPlaying {
+
+            printLog("🔈 \(#function)")
+            
             audioPlayer.stop()
 
             do { try self.audioSession.setActive(false, with: .notifyOthersOnDeactivation) }

@@ -74,17 +74,17 @@ class Cals: FileSync {
     
 
     /// file was sent from other device
-    override func receiveFile(_ data:Data, _ fileTime_: TimeInterval, completion: @escaping () -> Void) {
+    override func receiveFile(_ data:Data, _ updateTime: TimeInterval, completion: @escaping () -> Void) {
+
+        var deltaTime = updateTime - updateTime
+
+        printLog ("⧉ Cals::\(#function) memory->update time: \(memoryTime)->\(updateTime)  𝚫\(deltaTime)")
         
-        let fileTime = trunc(fileTime_)
-        
-        printLog ("⧉ Cals::\(#function) fileTime:\(fileTime) -> memoryTime:\(memoryTime)")
-        
-        if memoryTime < fileTime {
-            memoryTime = fileTime
+        if deltaTime > 0 {
+            memoryTime = updateTime
             cals = NSKeyedUnarchiver.unarchiveObject(with:data as Data) as! [Cal]
             cals.sort { $0.calId < $1.calId }
-            archiveArray(cals,fileTime)
+            archiveArray(cals,updateTime)
             completion()
         }
     }

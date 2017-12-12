@@ -2,7 +2,6 @@
 
 import UIKit
 
-
 let headColor = UIColor(red: 0.15, green: 0.15, blue: 0.15, alpha: 1.0)
 let cellColor = UIColor(red: 0.08, green: 0.08, blue: 0.08, alpha: 1.0)
 let textColor = UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1.0)
@@ -22,35 +21,45 @@ func printLog(_ str: String) {
     //case NSLog(str)
 
     case
-    "▣",  // observe main window bounds
-    "◰",  // view layout
+    "▣", // observe main window bounds
+    "🔈", // Audio
+    "🎧", // Hear Via
+    "∿",  // audio recorder
+
+    "⧉", // sync files
+    "📅", // EkNotification
+     "⌘", // doAction
+
+    "←", // session receiving
+    "↔︎", // session activation state
+    "→": // session sending
+
+        print(MuDate.getHourMinSecMsec() + ": " + str)
+        
+    case
+
+    "◰", // view layout
     "⊛", // crown
     "▤", // TreeTableView
 
-    "⌘", // doAction
+
     "▭", // textfield
     "⿳", // menu
 
     "🔈", // Audio
     "🎧", // Hear Via
-    "∿": // audio recorder
+    "∿",  // audio recorder
 
-        print(MuDate.getHourMinSecMsec() + ": " + str)
-        
-    case
-    "⧉", // sync files
+    "🗣", // Say TTS
+    "⟳", // life cycle
     "👆", // tap action
-    "📅", // EkNotification
+
 
     "✺", // complication
-    "←", // session receiving
-    "↔︎", // session activation state
-    "→", // session sending
 
     "𐂷", // tree cell
     "𝓡", // routine
-    "🗣", // Say TTS
-    "⟳", // life cycle
+
 
     "✓", // actions
     "⎚", // scene animation

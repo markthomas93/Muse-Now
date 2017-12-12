@@ -16,42 +16,46 @@ class FileSync: NSObject {
         printLog ("⧉ \(#function) Expected Override !!!")
     }
 
-    func archiveArray(_ root: [Any], _ fileTime:TimeInterval) {
-        
-        printLog ("⧉ archive:\(fileName) count:\(root.count) memoryTime:\(memoryTime) -> fileTime:\(fileTime)")
-        
-        do {
-            let data = NSKeyedArchiver.archivedData(withRootObject:root)    
-            let url = FileManager.documentUrlFile(fileName)
-            try data.write(to:url)
-            //TODO setup before write
-            var fileAttributes = try FileManager.default.attributesOfItem(atPath:url.path)
-            fileAttributes[FileAttributeKey.creationDate] =  Date(timeIntervalSince1970:fileTime)
-            try FileManager.default.setAttributes(fileAttributes, ofItemAtPath: url.path)
-            memoryTime = fileTime
-        }
-        catch {
-            print(error)
+    func archiveArray(_ root: [Any], _ updateTime:TimeInterval) {
+
+        let deltaTime = updateTime - memoryTime
+        printLog ("⧉ archive:\(fileName) count:\(root.count) memory->update time: \(memoryTime)->\(updateTime) 𝚫\(deltaTime)")
+        if deltaTime > 0 {
+            do {
+                let data = NSKeyedArchiver.archivedData(withRootObject:root)
+                let url = FileManager.documentUrlFile(fileName)
+                try data.write(to:url)
+                //TODO setup before write
+                var fileAttributes = try FileManager.default.attributesOfItem(atPath:url.path)
+                fileAttributes[FileAttributeKey.creationDate] =  Date(timeIntervalSince1970:updateTime)
+                try FileManager.default.setAttributes(fileAttributes, ofItemAtPath: url.path)
+                memoryTime = updateTime
+            }
+            catch {
+                print(error)
+            }
         }
     }
     
-    func archiveDict(_ root: [String:Any], _ fileTime:TimeInterval) {
-        
-        //printLog ("⧉ archive:\(fileName) count:\(root.count) memoryTime:\(memoryTime) -> fileTime:\(fileTime)")
-        
-        do {
+    func archiveDict(_ root: [String:Any], _ updateTime:TimeInterval) {
 
-            let data = NSKeyedArchiver.archivedData(withRootObject:root)
-            let url = FileManager.documentUrlFile(fileName)
-            try data.write(to:url)
-            //TODO setup before write
-            var fileAttributes = try FileManager.default.attributesOfItem(atPath:url.path)
-            fileAttributes[FileAttributeKey.creationDate] =  Date(timeIntervalSince1970:fileTime)
-            try FileManager.default.setAttributes(fileAttributes, ofItemAtPath: url.path)
-            memoryTime = fileTime
-        }
-        catch {
-            print(error)
+        let deltaTime = updateTime - memoryTime
+        printLog ("⧉ archive:\(fileName) count:\(root.count) memory->update time: \(memoryTime)->\(updateTime)  𝚫\(deltaTime)")
+        if deltaTime > 0 {
+            do {
+
+                let data = NSKeyedArchiver.archivedData(withRootObject:root)
+                let url = FileManager.documentUrlFile(fileName)
+                try data.write(to:url)
+                //TODO setup before write
+                var fileAttributes = try FileManager.default.attributesOfItem(atPath:url.path)
+                fileAttributes[FileAttributeKey.creationDate] =  Date(timeIntervalSince1970:updateTime)
+                try FileManager.default.setAttributes(fileAttributes, ofItemAtPath: url.path)
+                memoryTime = updateTime
+            }
+            catch {
+                print(error)
+            }
         }
     }
     
@@ -134,7 +138,7 @@ class FileSync: NSObject {
         do {
             let fileAttributes = try FileManager.default.attributesOfItem(atPath:url.path)
             let fileDate = (fileAttributes[FileAttributeKey.creationDate] as? NSDate)!
-            let fileTime = trunc(fileDate.timeIntervalSince1970)
+            let fileTime = fileDate.timeIntervalSince1970
             //printLog ("⧉ \(#function) \(fileTime)")
             return fileTime
         }
@@ -152,8 +156,8 @@ class FileSync: NSObject {
     }
     func sendGetFile(_ fileTime_: TimeInterval) {
         
-        let fileTime = trunc(fileTime_)
-        //printLog ("⧉ \(#function) fileName:\(fileName) memoryTime:\(memoryTime) fileTime:\(fileTime)")
+        let fileTime = fileTime_
+        printLog ("⧉ \(#function) fileName:\(fileName) memoryTime:\(memoryTime) fileTime:\(fileTime)")
         
         session.sendMsg([
             "class"     : "FileMsg",
@@ -164,28 +168,30 @@ class FileSync: NSObject {
     /** Compare local fileTime with other device, send if newer
       - via: Session+Message
      */
-    func recvSyncFile(_ syncTime_: TimeInterval) {
+    func recvSyncFile(_ updateTime_: TimeInterval) {
         
         let fileTime = getFileTime()
-        let syncTime = trunc(syncTime_)
+        let updateTime = updateTime_
+
+        if fileTime != memoryTime {
+            printLog ("⧉ \(#function) fileName:\(fileName) (\(memoryTime) != \(fileTime)) !!!!!!!!!!")
+        }
+
+         printLog ("⧉ \(#function) fileName:\(fileName) (mem,file)->update (\(memoryTime),\(fileTime)) -> \(updateTime)")
         
-        // let arrow = syncTime < fileTime ? ">" :
-        // /**/        syncTime > fileTime ? "<" : "="
-        // printLog ("⧉ \(#function) fileName:\(fileName) fileTime:\(fileTime) \(arrow) syncTime:\(syncTime)")
-        
-        if      syncTime < fileTime { sendPostFile() }
-        else if syncTime > fileTime { sendGetFile(fileTime) }
-        else                        { /* already in sync */ }
+        if      updateTime < fileTime { sendPostFile() }
+        else if memoryTime > fileTime { sendGetFile(fileTime) }
+        else                          { /* already in sync */ }
     }
     
     func sendSyncFile() {
         
-        //printLog ("⧉ \(#function) fileName:\(fileName) memoryTime:\(memoryTime)")
+        printLog ("⧉ \(#function) fileName:\(fileName) memoryTime:\(memoryTime)")
         
         session.sendMsg([
-            "class"    : "FileMsg",
-            "syncFile" : fileName,
-            "fileTime" : memoryTime])
+            "class"      : "FileMsg",
+            "syncFile"   : fileName,
+            "updateTime" : memoryTime])
     }
     
     /**

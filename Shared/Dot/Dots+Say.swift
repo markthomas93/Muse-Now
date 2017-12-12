@@ -2,10 +2,11 @@
 import UIKit
 
 extension Dots {
-    
-    
-    /// while scanning, announce a dot's first marked event
-    /// - via: Scene.update.scanning
+
+    /**
+     while scanning, announce a dot's first marked event
+     - via: Scene.update.scanning
+     */
     
     func sayFirstMark(_ index: Int, _ clockwise: Bool) -> MuEvent! {
         
@@ -18,8 +19,10 @@ extension Dots {
         return nil
     }
     
-    /// after first event, announce a dot's next marked occurring event
-    /// - via: Scene.update.marking
+    /**
+     after first event, announce a dot's next marked occurring event
+     - via: Scene.update.marking
+     */
     
     func sayNextMark(_ index: Int, _ clockwise: Bool) -> MuEvent! {
         

@@ -44,11 +44,12 @@ extension EventTableVC {
         }
     }
     
-    /// Callback when table content offset has changed
-    /// - via: direct user interaction with table
-    /// - via: animating offset via PhoneCrown, or TouchDial.
-    /// So, only update touchDial, when user is dragging table directly
-
+    /**
+     Callback when table content offset has changed
+     - via: direct user interaction with table
+     - via: animating offset via PhoneCrown, or TouchDial.
+     So, only update touchDial, when user is dragging table directly
+     */
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if isDragging {
             let time = getNearestTimeForOffsetY(scrollView.contentOffset.y)
@@ -58,7 +59,7 @@ extension EventTableVC {
     
     func getNearestTimeForOffsetY(_ offsetY: CGFloat) -> TimeInterval {
         
-        let midY = max(0,offsetY + tableView.frame.size.height/2)
+        let midY = max(0,offsetY)
 
         // approximate middle of times and positions and search from there
         let starti = max(0,Int((offsetY / tableView.contentSize.height) * CGFloat(rowItems.count)))

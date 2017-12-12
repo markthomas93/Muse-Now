@@ -18,7 +18,7 @@ extension EventTableVC: PhoneCrownDelegate {
         
             // prevCell is still showing
         if prevCell != nil && tableView.bounds.contains(prevCell.frame) {
-            //print("??B \(#function)  event:\(prevCell.event.title)")
+            print("??B \(#function)  event:\(prevCell.event.title)")
             return // contine from where you left off
         }
         
@@ -30,7 +30,7 @@ extension EventTableVC: PhoneCrownDelegate {
                 if let cell = tableView.cellForRow(at: indexPath) {
                     if cell is MuCell {
                         let museCell = (cell as! MuCell)
-                        //print("??D \(#function) indexPath:\(indexPath) event:\(museCell.event.title)")
+                        print("??D \(#function) indexPath:\(indexPath) event:\(museCell.event.title)")
                         nextMuCell(museCell)
                     }
                      prevIndexPath = indexPath
@@ -40,7 +40,7 @@ extension EventTableVC: PhoneCrownDelegate {
             // while scrolling, middle path may still be offscreen, so manually update
             let height = tableView.frame.size.height
             let centerY = tableView.contentOffset.y + height/2
-            //print("??EE \(#function) centerY:\(centerY)")
+            print("??EE \(#function) centerY:\(centerY)")
             
             for pathi in paths {
                 if let cell = tableView.cellForRow(at: pathi) {
@@ -68,8 +68,9 @@ extension EventTableVC: PhoneCrownDelegate {
     func phoneCrownDeltaRow(_ deltaRow: Int,_ isRight:Bool) { // printLog ("⊛ EventTableVC::\(#function):\(deltaRow)")
 
         anim.touchDialClockwise(deltaRow > 0)
+
         var nextOffset = tableView.contentOffset.y
-        
+
         // is still selected and visible?
         if prevCell != nil &&
             prevIndexPath != nil &&

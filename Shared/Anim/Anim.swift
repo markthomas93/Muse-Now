@@ -88,8 +88,6 @@ class Anim {
     var finishTimer = Timer()
     var finishDuration = TimeInterval(3.0)
 
-
-    
     /// while animating paused, get a dot index, in which to mark
     func getIndexForMark() -> Int {
         

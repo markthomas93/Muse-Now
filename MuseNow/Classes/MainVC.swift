@@ -40,25 +40,27 @@ class MainVC: UIViewController {
 
     func updateFrames(_ size:CGSize) {
 
-
         let height = size.height
         let width  = size.width
-        let portrait = height > width
+        let statusH = UIApplication.shared.statusBarFrame.height
 
-        let viewY  = CGFloat(portrait ? 8 : 0)
-        let viewH  = height - viewY
+        let isPad = UIDevice.current.userInterfaceIdiom == .pad
+        let isPanel = isPad && width < height/2 // is panel inside ipad app
+        let isPortrait = height > width // is portrait mode
+        let viewY   = CGFloat(isPanel ? 0 : isPad ? 18 : isPortrait ? statusH : 0)
+        let viewH   = height - viewY
+
         let dialW  = dialSize.width
         let dialH  = dialSize.height
-        let margin = CGFloat(portrait ? 16 : 0)
-        let panelY = viewH - dialH - margin // start of touch panel
+        let bottomH = view.safeAreaInsets.bottom
+        let panelY = viewH - dialH - bottomH // start of touch panel
         let crownW = (width - dialW)/2
         let crownR = width - crownW
-        let panelH = dialH + margin
-        let pagesH = height - panelH
+        let pagesH = height - dialH - viewY
 
         mainFrame       = CGRect(x: 0,      y:viewY,  width: width,  height: height)
         pagesFrame      = CGRect(x: 0,      y:0,      width: width,  height: pagesH)
-        panelFrame      = CGRect(x: 0,      y:panelY, width: width,  height: panelH)
+        panelFrame      = CGRect(x: 0,      y:panelY, width: width,  height: dialH)
 
         touchFrame      = CGRect(x: 0,      y:0,      width: dialW,  height: dialH)
         skViewFrame     = CGRect(x: crownW, y:0,      width: dialW,  height: dialH)
@@ -141,7 +143,8 @@ class MainVC: UIViewController {
         // when screen autorotates or added as a panel on iPad, accomadate resize
         observer = view.layer.observe(\.bounds) { object, _ in
             self.updateViews(object.bounds.size)
-            printLog("▣ \(object.bounds.size)")
+            TreeNodes.shared.root.updateViews(object.bounds.size.width)
+            printLog("▣ observer:\(object.bounds.size)")
         }
     }
 

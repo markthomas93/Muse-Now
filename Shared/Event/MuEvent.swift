@@ -33,9 +33,8 @@ open class MuEvent: NSObject, NSCoding {
     var endTime  = TimeInterval(0) // endTime
     var rgb      = UInt32(0)
     var alarm    = false
-    var mark     = false // only used by MuseNow, not part of EventKit
     var coord    = CLLocationCoordinate2DMake(0,0)
-    // var recurs  = false
+    var mark     = false // only used by MuseNow, not part of EventKit
 
     required public init?(coder decoder: NSCoder) {
         super.init()

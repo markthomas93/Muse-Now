@@ -9,15 +9,14 @@ extension EventTableVC {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //print("\(#function)")
         
-        if let cell = tableView.cellForRow(at: indexPath) as? MuCell {
-            if cell != prevCell {
-                
-                if let event = cell.event, event.type == .memo, event.title == "Memo" {
-                    print("✏ stt:\(event.sttApple) ✏ swm:\(event.sttSwm)")
-                }
-                nextMuCell(cell)
-                prevIndexPath = indexPath
+        if let cell = tableView.cellForRow(at: indexPath) as? MuCell,
+            cell != prevCell {
+            
+            if let event = cell.event, event.type == .memo, event.title == "Memo" {
+                print("✏ stt:\(event.sttApple) ✏ swm:\(event.sttSwm)")
             }
+            nextMuCell(cell)
+            prevIndexPath = indexPath
         }
     }
     

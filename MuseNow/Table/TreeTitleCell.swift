@@ -50,7 +50,7 @@ class TreeTitleCell: TreeCell {
         let bezelY = marginH / 2
         let bezelH = height - marginH
 
-        let bezelW = width - marginW - bezelX
+        let bezelW = width - bezelX
         let titleW = bezelW - marginW
 
         cellFrame  = CGRect(x:0,       y:0,      width: width,  height: height)

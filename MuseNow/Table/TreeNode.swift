@@ -46,6 +46,7 @@ class TreeNodes {
 enum TreeNodeType { case
     unknown,
     title,
+    infoApprove,
     titleFader,
     titleMark,
     colorTitle,
@@ -121,6 +122,7 @@ class TreeNode {
         type = type_
         switch type {
         case .title:            cell = TreeTitleCell(self, tableVC_)
+        case .infoApprove:      cell = TreeInfoApproveCell(self, tableVC_)
         case .titleFader:       cell = TreeTitleFaderCell(self, tableVC_)
         case .titleMark:        cell = TreeTitleMarkCell(self, tableVC_)
         case .colorTitle:       cell = TreeColorTitleCell(self, tableVC_)
@@ -293,10 +295,20 @@ class TreeActNode: TreeNode {
     }
 }
 
+class TreeInfoNode: TreeNode {
+    init (_ parent_:TreeNode!,_ title_:String, height:CGFloat,_ tableVC_:UITableViewController) {
+        super.init(.infoApprove, parent_, Setting(set:1,member:1,title_),tableVC_)
+        if let cell = cell as? TreeInfoApproveCell {
+            cell.height = height
+            cell.updateViews(cell.frame.size.width)
+        }
+
+    }
+}
+
 class TreeRoutineCategoryNode: TreeNode {
     init (_ parent_:TreeNode!,_ title_:String,_ tableVC_:UITableViewController) {
         super.init(.colorTitle, parent_, Setting(set:0,member:1,title_), tableVC_)
-        
     }
 }
 class TreeRoutineItemNode: TreeNode {

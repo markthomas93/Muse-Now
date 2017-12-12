@@ -39,7 +39,7 @@ class Memos: FileSync {
 
     override func receiveFile(_ data:Data, _ fileTime_: TimeInterval, completion: @escaping () -> Void) {
         
-        let fileTime = trunc(fileTime_)
+        let fileTime = fileTime_
         
         printLog ("⧉ Memos::\(#function) fileTime:\(fileTime) -> memoryTime:\(memoryTime)")
         
@@ -56,7 +56,7 @@ class Memos: FileSync {
     
     func clearAll() {
         items.removeAll()
-        let removeTime = trunc(Date().timeIntervalSince1970)
+        let removeTime = Date().timeIntervalSince1970
         archiveArray(items, removeTime)
         removeAllDocPrefix("Memo_")
     }
@@ -65,20 +65,34 @@ class Memos: FileSync {
         //TODO remove items that are older than 1 week
     }
 
+    /**
+     - via: recordAudioFinish >> MuEvents.addEvent >> Actions.doAddEvent
+     */
     func addEvent(_ event:MuEvent) {
-        printLog ("⧉ Memos::addEvent:\(event.eventId)")
+
         items.append(event)
         memoryTime = Date().timeIntervalSince1970
+        printLog ("⧉ Memos::addEvent:\(event.eventId) memoryTime:\(memoryTime)")
         archiveArray(items,memoryTime)
     }
+
+    /**
+     - via: recordAudioFinish >> MuEvents.addEvent >> Actions.doAddEvent
+     - via: recordAudioFinish >>  Actions.doUpdateEvent
+     - via: say.transcribe >> Transcribe.shared.appleSttUrl >> Actions.doUpdateEvent
+     */
 
     func archive() {
+        memoryTime = Date().timeIntervalSince1970
+        printLog ("⧉ Memos::archive memoryTime:\(memoryTime)")
         archiveArray(items,memoryTime)
     }
 
-    /// convert audio to text
-    /// - parameter event: MuEvent captures result
-    /// - parameter recName: name to concatenate to documents URL
+    /**
+     convert audio to text
+     - parameter event: MuEvent captures result
+     - parameter recName: name to concatenate to documents URL
+     */
     class func doTranscribe(_ event:MuEvent,_ recName:String, isSender:Bool) {
 
         #if os(iOS)

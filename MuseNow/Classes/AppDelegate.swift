@@ -5,26 +5,21 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    var didStopActive = false // prevent multiple calls to startActive()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
-        //application.windows.first?.backgroundColor = .black
-
-
         return true
     }
-
     func applicationWillResignActive(_ application: UIApplication) { printLog("⟳☎︎ \(#function)")
         Active.shared.stopActive()
+        didStopActive = true
     }
-
-    private var observer: NSKeyValueObservation?
-
     func applicationDidBecomeActive(_ application: UIApplication) { printLog("⟳☎︎ \(#function)")
-        
+        if didStopActive {
+            didStopActive = false
+            Active.shared.startActive()
+        }
     }
-
     func applicationDidEnterBackground(_ application: UIApplication) { printLog("⟳☎︎ \(#function)")
     }
     func applicationWillEnterForeground(_ application: UIApplication) { printLog("⟳☎︎ \(#function)")

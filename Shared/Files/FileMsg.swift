@@ -19,15 +19,15 @@ class FileMsg:  NSObject {
         let setn = Settings.shared
 
         if // other device has updated a file, such as Memos.plist, Marks.plist
-            let postFile = msg["postFile"] as? String,
-            let fileTime = msg["fileTime"] as? TimeInterval,
-            let data     = msg["data"] as? Data {
+            let postFile   = msg["postFile"] as? String,
+            let updateTime = msg["updateTime"] as? TimeInterval,
+            let data       = msg["data"] as? Data {
             
             switch postFile {
-            case memos.fileName: memos.receiveFile(data, fileTime) { anim.addClosure(title:"postFile memos") { Actions.shared.doRefresh(false) } }
-            case marks.fileName: marks.receiveFile(data, fileTime) { anim.addClosure(title:"postFile marks") { MuEvents.shared.applyMarks(); Actions.shared.doRefresh(false) } }
-            case cals.fileName:  cals.receiveFile(data,  fileTime) { anim.addClosure(title:"postFile cals") { Actions.shared.doRefresh(false) } }
-            case setn.fileName:  setn.receiveFile(data,  fileTime) { anim.addClosure(title:"postFile setn") { Actions.shared.doRefresh(false) } }
+            case memos.fileName: memos.receiveFile(data, updateTime) { anim.addClosure(title:"postFile memos") { Actions.shared.doRefresh(false) } }
+            case marks.fileName: marks.receiveFile(data, updateTime) { anim.addClosure(title:"postFile marks") { MuEvents.shared.applyMarks(); Actions.shared.doRefresh(false) } }
+            case cals.fileName:  cals.receiveFile(data,  updateTime) { anim.addClosure(title:"postFile cals") { Actions.shared.doRefresh(false) } }
+            case setn.fileName:  setn.receiveFile(data,  updateTime) { anim.addClosure(title:"postFile setn") { Actions.shared.doRefresh(false) } }
             default: break
             }
         }
@@ -46,13 +46,13 @@ class FileMsg:  NSObject {
 
         else if // determine which device's file is more recent
             let syncFile = msg["syncFile"] as? String,
-            let fileTime = msg["fileTime"] as? TimeInterval{
+            let updateTime = msg["updateTime"] as? TimeInterval{
             
             switch syncFile {
-            case marks.fileName: anim.addClosure(title:"syncFile marks") { marks.recvSyncFile(fileTime) }
-            case memos.fileName: anim.addClosure(title:"syncFile memos") { memos.recvSyncFile(fileTime) }
-            case cals.fileName:  anim.addClosure(title:"syncFile cals") { cals.recvSyncFile(fileTime) }
-            case setn.fileName:  anim.addClosure(title:"syncFile setn") { setn.recvSyncFile(fileTime) }
+            case marks.fileName: anim.addClosure(title:"syncFile marks") { marks.recvSyncFile(updateTime) }
+            case memos.fileName: anim.addClosure(title:"syncFile memos") { memos.recvSyncFile(updateTime) }
+            case cals.fileName:  anim.addClosure(title:"syncFile cals") { cals.recvSyncFile(updateTime) }
+            case setn.fileName:  anim.addClosure(title:"syncFile setn") { setn.recvSyncFile(updateTime) }
             default: break
             }
         }

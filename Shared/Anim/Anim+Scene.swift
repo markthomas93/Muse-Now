@@ -61,9 +61,7 @@ extension Anim {
 
         // user manually changed current dotNow
         if lastFrame * sceneFrame < 0 {
-
             say.sayFuturePast(animNow.rawValue > 0)
-            
         }
             /*
              approaching now, so going in opposite direction, where
@@ -109,9 +107,11 @@ extension Anim {
      1) say next marked dot for that hour or
      2) resume scanning animation
      */
+
     func marking() {
         
-        if say.sayItem == nil {
+        if !say.isSaying {
+
             let index = getDotIndex()
             if let event = dots.sayNextMark(index, dots.isClockwise) {
                 table?.scrollSceneEvent(event) // only on phone, not watch

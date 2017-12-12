@@ -30,6 +30,8 @@ extension Dots {
         case   167: dotNow = delta > 0 ?  0.0 :  166.0
         case  -167: dotNow = delta < 0 ?  0.0 : -166.0
         default:    dotNow += delta
+        if      dotNow >  167 { dotNow = 0 }
+        else if dotNow < -167 { dotNow = 0 }
         }
         return dotNow != 0
     }

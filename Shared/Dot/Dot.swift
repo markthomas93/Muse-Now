@@ -173,7 +173,7 @@ class Dot {
     }
     // get next mark that starts on this hour
     func getNextMark(_ isClockwise: Bool) -> MuEvent! {
-        
+
         if events.count > 0 {
             if isClockwise {
                 if eventi < events.count-1 {
@@ -334,9 +334,11 @@ class Dot {
         eventi = -1
     }
     
-    /// events are presorted by bgnTime before insertion.
-    /// so, can simply insert at index 0
-    /// reset say index
+    /**
+    Events are presorted by bgnTime before insertion.
+    so, can simply insert at index 0
+    reset say index
+ */
     func insertEvent(_ event: MuEvent, _ elapse: TimeInterval) {
         
         if elapse0 > elapse {
@@ -352,8 +354,10 @@ class Dot {
         events.append(event)
     }
     
-    /// move event's position within same dot, such as a timeCell.event that changes every minute
-    /// - via: Dots.updateTime(event:)
+    /**
+    move event's position within same dot, such as a timeCell.event that changes every minute
+     - via: Dots.updateTime(event:)
+ */
     func moveEvent(_ event: MuEvent) {
         for i in 0 ..< events.count {
             if events[i].eventId == event.eventId {
@@ -398,8 +402,9 @@ class Dot {
         }
     }
 
-    /* toggle mark on/off for existing events or add a new mark for empty dot
-     /// - via: Scene.markAction
+    /**
+     Toggle mark on/off for existing events or add a new mark for empty dot
+      - via: Scene.markAction
      */
     @discardableResult
     func setMark(_ mark: Bool, _ markEvent:MuEvent!) -> MuEvent! {
@@ -416,7 +421,7 @@ class Dot {
                     eventi = 0
                     for event in events {
                         if event.eventId == markEvent.eventId {
-                            event.mark = mark
+                            event.mark = mark 
                             return event
                         }
                         eventi += 1

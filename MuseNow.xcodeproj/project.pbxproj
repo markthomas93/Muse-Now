@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		80016D9F1FDEEA7000505E7A /* BubbleText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80016D9E1FDEEA7000505E7A /* BubbleText.swift */; };
 		8004F6171FA3EB0100F7ED94 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8004F6101FA3EB0100F7ED94 /* Assets.xcassets */; };
 		8004F6181FA3EB0100F7ED94 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8004F6121FA3EB0100F7ED94 /* LaunchScreen.storyboard */; };
 		8004F6191FA3EB0100F7ED94 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8004F6141FA3EB0100F7ED94 /* Main.storyboard */; };
@@ -206,6 +207,7 @@
 		804D5A2B1FA3FCAA0025B724 /* MuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A1A1FA3FCAA0025B724 /* MuCell.swift */; };
 		804D5A2C1FA3FCAA0025B724 /* EventTimeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A1B1FA3FCAA0025B724 /* EventTimeCell.swift */; };
 		804D5A2D1FA3FCAA0025B724 /* ToggleDot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A1C1FA3FCAA0025B724 /* ToggleDot.swift */; };
+		805357B51FDB3798002ED302 /* TreeInfoApproveCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805357B41FDB3798002ED302 /* TreeInfoApproveCell.swift */; };
 		806ACFD71FC5E1D500220EB6 /* TreeEditTimeCell+delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806ACFD61FC5E1D500220EB6 /* TreeEditTimeCell+delegate.swift */; };
 		806ACFD91FC5E39A00220EB6 /* TreeEditTitleCell+delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806ACFD81FC5E39900220EB6 /* TreeEditTitleCell+delegate.swift */; };
 		806ACFDB1FC5FC9300220EB6 /* TreeEditTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806ACFDA1FC5FC9300220EB6 /* TreeEditTitleCell.swift */; };
@@ -280,6 +282,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		80016D9E1FDEEA7000505E7A /* BubbleText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleText.swift; sourceTree = "<group>"; };
 		8004F60E1FA3EB0100F7ED94 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = MuseNow/Info.plist; sourceTree = SOURCE_ROOT; };
 		8004F60F1FA3EB0100F7ED94 /* MuseNow.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; name = MuseNow.entitlements; path = MuseNow/MuseNow.entitlements; sourceTree = SOURCE_ROOT; };
 		8004F6101FA3EB0100F7ED94 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = MuseNow/Assets.xcassets; sourceTree = SOURCE_ROOT; };
@@ -402,7 +405,7 @@
 		80203C131FCDC63900CA4D38 /* ParWords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParWords.swift; sourceTree = "<group>"; };
 		80203C161FD47DA500CA4D38 /* TreeTableVC+Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TreeTableVC+Keyboard.swift"; sourceTree = "<group>"; };
 		80203C1A1FD5A5D400CA4D38 /* TreeTable+PhoneCrown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TreeTable+PhoneCrown.swift"; sourceTree = "<group>"; };
-		80203C1C1FD5B51A00CA4D38 /* EventRowItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EventRowItem.swift; path = MuseNow/Table/EventRowItem.swift; sourceTree = "<group>"; };
+		80203C1C1FD5B51A00CA4D38 /* EventRowItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventRowItem.swift; sourceTree = "<group>"; };
 		80203C1E1FD7854500CA4D38 /* TreeEditTimeCell+user.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TreeEditTimeCell+user.swift"; sourceTree = "<group>"; };
 		803C5B211FBF622400BA9C6C /* TreeTableVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeTableVC.swift; sourceTree = "<group>"; };
 		803C5F4B1FA3DFBD002A1C11 /* MuseNow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MuseNow.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -437,6 +440,7 @@
 		804D5A1A1FA3FCAA0025B724 /* MuCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuCell.swift; sourceTree = "<group>"; };
 		804D5A1B1FA3FCAA0025B724 /* EventTimeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventTimeCell.swift; sourceTree = "<group>"; };
 		804D5A1C1FA3FCAA0025B724 /* ToggleDot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleDot.swift; sourceTree = "<group>"; };
+		805357B41FDB3798002ED302 /* TreeInfoApproveCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeInfoApproveCell.swift; sourceTree = "<group>"; };
 		806ACFD61FC5E1D500220EB6 /* TreeEditTimeCell+delegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TreeEditTimeCell+delegate.swift"; sourceTree = "<group>"; };
 		806ACFD81FC5E39900220EB6 /* TreeEditTitleCell+delegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TreeEditTitleCell+delegate.swift"; sourceTree = "<group>"; };
 		806ACFDA1FC5FC9300220EB6 /* TreeEditTitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeEditTitleCell.swift; sourceTree = "<group>"; };
@@ -794,7 +798,6 @@
 		803C5F421FA3DFBD002A1C11 = {
 			isa = PBXGroup;
 			children = (
-				80203C1C1FD5B51A00CA4D38 /* EventRowItem.swift */,
 				8004F70C1FA3EE2400F7ED94 /* Shared */,
 				803C5F4D1FA3DFBD002A1C11 /* MuseNow */,
 				803C5F611FA3DFBE002A1C11 /* MuseNow WatchKit App */,
@@ -859,6 +862,7 @@
 				804D59F91FA3FC8B0025B724 /* Fader.swift */,
 				804D59FA1FA3FC8B0025B724 /* Main+Text.swift */,
 				804D59FB1FA3FC8B0025B724 /* MainVC.swift */,
+				80016D9E1FDEEA7000505E7A /* BubbleText.swift */,
 				804D59FC1FA3FC8B0025B724 /* PagesVC.swift */,
 				804D59FD1FA3FC8B0025B724 /* PhoneCrown.swift */,
 				804D59FE1FA3FC8B0025B724 /* TouchDialForce.swift */,
@@ -881,6 +885,7 @@
 				80AD99881FCBA06A00BECC4A /* TreeTitleCell.swift */,
 				800C51B81FC221EF00904121 /* TreeTitleMarkCell.swift */,
 				80D483E91FCB3BBD00D28095 /* TreeColorTitleCell.swift */,
+				805357B41FDB3798002ED302 /* TreeInfoApproveCell.swift */,
 				8018E1A31FC36F8E00F4C0AC /* TreeColorTitleMarkCell.swift */,
 				800C51B61FC2213E00904121 /* TreeTimeTitleDaysCell.swift */,
 				806ACFE41FC60EA900220EB6 /* TreeEditCell.swift */,
@@ -893,6 +898,7 @@
 				806ACFE01FC60D7000220EB6 /* TreeEditWeekdCell.swift */,
 				804D5A0C1FA3FCAA0025B724 /* CalCell.swift */,
 				804D5A101FA3FCAA0025B724 /* EventCell.swift */,
+				80203C1C1FD5B51A00CA4D38 /* EventRowItem.swift */,
 				804D5A111FA3FCAA0025B724 /* EventTable+EditRow.swift */,
 				804D5A121FA3FCAA0025B724 /* EventTable+EventCell.swift */,
 				804D5A131FA3FCAA0025B724 /* EventTable+MuEvent.swift */,
@@ -1146,6 +1152,7 @@
 				806ACFDF1FC60C1C00220EB6 /* TreeEditColorCell.swift in Sources */,
 				809E55631FB4C6A700974CB7 /* Audio.swift in Sources */,
 				8004F77B1FA3EE2400F7ED94 /* MuDate.swift in Sources */,
+				805357B51FDB3798002ED302 /* TreeInfoApproveCell.swift in Sources */,
 				8004F7971FA3EE2400F7ED94 /* View+roundCorners.swift in Sources */,
 				800C51B71FC2213F00904121 /* TreeTimeTitleDaysCell.swift in Sources */,
 				8004F7611FA3EE2400F7ED94 /* TouchDial.swift in Sources */,
@@ -1186,6 +1193,7 @@
 				8004F7CF1FA3EE2400F7ED94 /* Transcribe+Apple.swift in Sources */,
 				806ACFE21FC60D7100220EB6 /* TreeEditWeekdCell.swift in Sources */,
 				8004F77F1FA3EE2400F7ED94 /* MuEvent.swift in Sources */,
+				80016D9F1FDEEA7000505E7A /* BubbleText.swift in Sources */,
 				8004F75D1FA3EE2400F7ED94 /* Motion.swift in Sources */,
 				8004F7CB1FA3EE2400F7ED94 /* Session+Message.swift in Sources */,
 				804D5A281FA3FCAA0025B724 /* EventTable+TimeCell.swift in Sources */,

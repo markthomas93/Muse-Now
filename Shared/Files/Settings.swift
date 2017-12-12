@@ -35,7 +35,7 @@ class Settings: FileSync {
     
     override func receiveFile(_ data:Data, _ fileTime_: TimeInterval, completion: @escaping () -> Void) {
         
-        let fileTime = trunc(fileTime_)
+        let fileTime = fileTime_
         
         printLog ("⧉ Settings::\(#function) fileTime:\(fileTime) -> memoryTime:\(memoryTime)")
         

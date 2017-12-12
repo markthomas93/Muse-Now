@@ -16,13 +16,13 @@ class EventTableVC: UITableViewController, MuseTableDelegate {
     var sectionDate   = [Date]()            // edit select update
     var sectionTitles = [String]()          // update
    
-    var rowItemId      = [String:EventRowItem]()  // scroll crown select update
-    var rowItems      = [EventRowItem]()        // for timeCell and contentOffset.y updates
-    var timeRowi     = Int(0)              // position of TimeCell in rowEventY array
-    var timeCell      : EventTimeCell!      // cell shows current time, keep changing its position
-    var cellTimer     = Timer()             // 1 minute time to change timeCell label and maybe position
+    var rowItemId = [String:EventRowItem]()  // scroll crown select update
+    var rowItems  = [EventRowItem]()        // for timeCell and contentOffset.y updates
+    var timeRowi  = Int(0)              // position of TimeCell in rowEventY array
+    var timeCell  : EventTimeCell!      // cell shows current time, keep changing its position
+    var cellTimer = Timer()             // 1 minute time to change timeCell label and maybe position
 
-    var sayTimer        = Timer()           // delay saying anything while navigating
+    var sayTimer   = Timer()           // delay saying anything while navigating
     
 
     let cal = Calendar.current as NSCalendar
@@ -36,7 +36,8 @@ class EventTableVC: UITableViewController, MuseTableDelegate {
     
     var scrollingEvent: MuEvent!            // EventTable+MuEvent: prevent duplicate scrollDialEvent
     var updating = false
-
+    var tableHeaderH = CGFloat(0)
+    var tableFooterH = CGFloat(0)
 
     override func viewWillAppear(_ animated: Bool) {
          PhoneCrown.shared?.setDelegate(self)
@@ -45,7 +46,29 @@ class EventTableVC: UITableViewController, MuseTableDelegate {
     override func numberOfSections(in tableView: UITableView) -> Int {
         return sectionDate.count
     }
-    
+
+
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        if tableView.tableHeaderView == nil {
+            tableHeaderH = tableView.bounds.height / 2
+            let headerFrame = CGRect(x:0,y:0,width:tableView.bounds.width,height:tableHeaderH)
+            let headerView = UIView(frame:headerFrame)
+            headerView.backgroundColor = .clear
+            headerView.setNeedsUpdateConstraints()
+            headerView.updateConstraintsIfNeeded()
+            self.tableView.tableHeaderView = headerView
+        }
+        if tableView.tableFooterView == nil {
+            tableFooterH = tableView.bounds.height / 2 - rowHeight
+            let footerFrame = CGRect(x:0,y:0,width:tableView.bounds.width,height:tableFooterH)
+            let footerView = UIView(frame:footerFrame)
+            footerView.backgroundColor = .clear
+            footerView.setNeedsUpdateConstraints()
+            footerView.updateConstraintsIfNeeded()
+            self.tableView.tableFooterView = footerView
+        }
+    }
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if section < sectionDate.count {

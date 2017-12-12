@@ -52,13 +52,19 @@ class MuEvents {
 
         // often, more than one notification comes in a batch, so defer multiple refreshes
         refreshTimer.invalidate()
-        refreshTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false, block: {_ in 
+        refreshTimer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false, block: {_ in
             self.markCalendarAdditions()
         })
     }
 
+    /**
+     After Notification, mark any events that were added or changed
+     - via: EkNotification
+     */
     func markCalendarAdditions () {
+
         getRealEvents([.calendar,.reminder]) { ekEvents, ekReminds, memos, routine in
+
             for nowEvents in [ekEvents,ekReminds] {
                 for event in nowEvents {
                     // new event added
@@ -243,9 +249,13 @@ class MuEvents {
         }
     }
     
-    
+    /**
+     -via: Actions.doAddEvent
+    */
     func addEvent(_ event:MuEvent) {
+
         events.append(event)
+
         if event.type == .memo {
             memos.addEvent(event)
         }

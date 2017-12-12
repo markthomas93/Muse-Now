@@ -32,14 +32,14 @@ extension EventTableVC {
         // if duplicate event is still on screeen
         if scrollingEventIsVisible(event) { return }
         
-        let height = tableView.frame.size.height
+        //let height = tableView.frame.size.height
         
         if let rowItem = rowItemId[event.eventId] {
 
             scrollingEvent = event
             
             //print("\(#function): \(event.title) posY:\(posY)")
-            let scrollY = rowItem.posY - height/2 - rowHeight/2
+            let scrollY = rowItem.posY // - rowHeight/2 // - tableHeaderH
             UIView.animate(withDuration: 0.5, delay: 0.0, options: [.curveEaseInOut, .allowUserInteraction, .beginFromCurrentState],
                            animations: {
                             self.tableView.contentOffset.y = scrollY
@@ -65,9 +65,10 @@ extension EventTableVC {
         return false
     }
 
-    /// reposition table with event in center
-    /// - via: Anim.touchDialPan
-    
+    /**
+        reposition table with event in center
+        - via: Anim.touchDialPan
+    */
     func scrollDialEvent(_ event: MuEvent,_ delta: Int) {
         
         if scrollingEventIsVisible(event) { return }
@@ -75,16 +76,14 @@ extension EventTableVC {
             //print("", terminator:"˚")
             return
         }
-        
-        let height = tableView.frame.size.height
 
         if let rowItem = rowItemId[event.eventId] {
             
             scrollingEvent = event
             
-            let scrollY = rowItem.posY - height/2 - rowHeight/2
+            let scrollY = rowItem.posY - rowHeight/2
             
-            // print ("--> \(#function): \(event.title) scrollY:\(scrollY) delta:\(delta)")
+            //print ("--> \(#function): \(event.title) scrollY:\(scrollY) delta:\(delta)")
             
             UIView.animate(withDuration: 0.5, delay: 0.0,  options: [.curveEaseInOut, .allowUserInteraction, .beginFromCurrentState],
                            animations: {

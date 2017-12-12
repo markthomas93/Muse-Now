@@ -77,7 +77,11 @@ class TreeTableVC: UITableViewController {
     }
 
     func updateViews(_ width:CGFloat) {
-        let adjustWidth = width > 800 ? width - 44 : width
+
+        let isPad = UIDevice.current.userInterfaceIdiom == .pad
+        //let isPanel = isPad && width < height/2 // is panel inside ipad app
+
+        let adjustWidth = isPad ? width - 44 : width
         TreeNodes.shared.root.updateViews(adjustWidth)
     }
 
@@ -100,10 +104,19 @@ class TreeTableVC: UITableViewController {
                 }
             }
         }
+        let _   = TreeActNode(show,"Reminders", showSet, ShowSet.reminder.rawValue, .showReminder, .hideReminder, self)
 
         // show | hide - Routine
 
-        let routine = TreeActNode(show,"Routine", showSet, ShowSet.routine.rawValue, .showRoutine, .hideRoutine, self)
+        let routine = TreeActNode(show,"Weekly Routine (preview)", showSet, ShowSet.routine.rawValue, .showRoutine, .hideRoutine, self)
+
+        let routineInfo =
+            """
+            This preview will show your weekly routine on the clock face. \n
+            You can edit times, titles, and days of the week, but not categories or colors. \n
+            A more customizable version will be available for purchase in an upcoming release.
+            """
+        let _ = TreeInfoNode(routine, routineInfo, height:128, self)
         
         let catalog = Routine.shared.catalog
         for category in Routine.shared.categories {
@@ -116,10 +129,21 @@ class TreeTableVC: UITableViewController {
                 let _ = TreeRoutineItemNode(.timeTitleDays, catNode, item, self)
             }
         }
-         // show | hide - Reminders, Memos
+         // show | hide - Memos
 
-        let _   = TreeActNode(show,"Reminders", showSet, ShowSet.reminder.rawValue, .showReminder, .hideReminder, self)
-        let _   = TreeActNode(show,"Memos", showSet, ShowSet.memo.rawValue, .showMemo, .hideMemo, self)
+        let memos  = TreeActNode(show,"Memos (experimental)", showSet, ShowSet.memo.rawValue, .showMemo, .hideMemo, self)
+        let memoInfo = """
+            This experiment allows you to record audio memos, which are converted to text.
+
+            To record: \
+            On Apple Watch, rotate away and back again, like throttling a motorcycle and lower your wrist to stop. \
+            On iPhone, tilt device away and back again to record. Repeat that motion stop. \
+            Or simply triple-tap on the dial to record and stop.
+
+            All your recordings are privately saved in your iTunes folder. We don't have a copy and never will. \
+            We will provide a button to automatically erase these files. Or, you can manually copy from your iTunes folder.
+            """
+        let _ = TreeInfoNode( memos, memoInfo, height: 256, self)
 
         // say | skip
 
@@ -140,6 +164,9 @@ class TreeTableVC: UITableViewController {
 
         let dial = TreeNode(.title, root, Setting(set:1,member:1,"Dial"), self)
         let _ =  TreeDialColorNode(dial, "Color", self)
+
+        // go
+        //let _ = TreeNode(.title, root, Setting(set:1,member:1,"•"), self)
 
         // setup table cells from current state of hierary
         root!.refreshNodeCells()
@@ -172,11 +199,11 @@ class TreeTableVC: UITableViewController {
 
         if delta > 0 {
             let indexPaths = (row+1 ... row+delta).map { IndexPath(row: $0, section: 0) }
-            tableView.insertRows(at: indexPaths, with: .top)
+            tableView.insertRows(at: indexPaths, with: .none)
         }
         else if delta < 0 {
             let indexPaths = (row+1 ... row-delta).map { IndexPath(row: $0, section: 0) }
-            tableView.deleteRows(at: indexPaths, with: .top)
+            tableView.deleteRows(at: indexPaths, with: .none)
         }
         else {
             tableView.reloadData()

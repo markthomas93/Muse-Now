@@ -101,6 +101,11 @@ class TreeCell: MuCell {
 
             switch treeNode.type {
 
+            case .infoApprove:
+
+                alphaNext = 1.0
+                break
+
             case .unknown,
                  .title,
                  .titleMark,

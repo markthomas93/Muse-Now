@@ -27,6 +27,7 @@ class TreeColorTitleCell: TreeTitleCell {
 
         super.buildViews(width)
         color = UIImageView(frame:colorFrame)
+        
         bezel.addSubview(color)
     }
 

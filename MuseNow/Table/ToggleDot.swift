@@ -42,8 +42,10 @@ class ToggleDot: UIView {
 
 class ToggleCheck: UIView {
     
+    enum MarkType { case none, dash, check, question }
     var check : UIImageView!
     var event : MuEvent!
+    var mark = MarkType.none
     
     override init(frame:CGRect) {
         super.init(frame:frame)

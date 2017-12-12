@@ -7,6 +7,7 @@
 //
 import Foundation
 import UIKit
+
 extension TreeTableVC {
 
 
@@ -22,7 +23,7 @@ extension TreeTableVC {
             let keybY   = tableView.convert(frameVal.cgRectValue.origin, to: nil).y
             let cellY   = tableView.convert(touchedCell.frame.origin, to: nil).y
             let tableY  = tableView.convert(tableView.frame.origin, to: nil).y
-            let scrollY = tableView.contentOffset.y + tableY
+            let scrollY = tableView.contentOffset.y + tableY - headerY
 
             let cellH  = touchedCell.height
             let deltaY = cellY + cellH - keybY

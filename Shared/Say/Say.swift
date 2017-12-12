@@ -50,8 +50,8 @@
     weak var txtTimer : Timer?
     
     var sayCache = SayCache()
-    var sayItem: SayItem?
-    var sayItemBlank = SayItem()
+    var sayItem: SayItem!
+    var isSaying = false
     
     override init() {
         super.init()
@@ -112,8 +112,11 @@
             for phrase in phrases {
                 if sayingNow.phrase == phrase {
                     clearTimers()
-                    if saySet.rawValue > 0 { synth.stopSpeaking(at: .immediate) }
-                    else       { actions.doSetTitle("") }
+                    if saySet.rawValue > 0 {
+                        synth.stopSpeaking(at: .immediate)
+                        isSaying = false ; printLog("🗣 \(#function) isSaying:\(self.isSaying)")
+                    }
+                    else { actions.doSetTitle("") }
                     return
                 }
             }
@@ -130,8 +133,8 @@
         clearTimers()
         actions.doSetTitle("")
         synth.stopSpeaking(at: .immediate)
+        isSaying = false ; printLog("🗣 \(#function) isSaying:\(self.isSaying)")
         Audio.shared.finishPlaybackSession()
-        sayItem = nil
     }
     
     
@@ -163,22 +166,24 @@
         case .phraseEventTitle: newItem(0.03,  2.00, [.phraseEventTitle, .phraseEventTime])
         case .phraseDotTime:    newItem(2.01,  4.00, [.phraseDotTime,    .phraseTimeNow,     .phraseEventTime])
         case .phraseDirection:  newItem(0.05, never, [])
-        case .phraseSlider:     newItem(0.01,  8.00, [])
+        case .phraseSlider:     newItem(0.10,  0.20, [.phraseSlider])
         }
     }
 
     /**
      Set timer to execute item based on its delay time
      */
-    func nextItem(_ item:SayItem) {
+    func waitItem(_ item:SayItem) { //  printLog("🗣 \(#function) getNext event:\(item.event?.title ?? "nil") phrase:\(item.phrase)")
 
-        printLog("🗣 \(#function) getNext event:\(item.event?.title ?? "nil") phrase:\(item.phrase)")
-        let timeNow = Date().timeIntervalSince1970
-        let deltaTime = max(0.01, item.delay - timeNow)
-        sayItem = sayItemBlank
-        if deltaTime > 0.2 {
-            do  { try audioSession.setActive(false, with: .notifyOthersOnDeactivation) } catch {}
+         let deltaTime = max(0.01, item.delay - Date().timeIntervalSince1970)
+        if deltaTime < 0.2 {
+            isSaying = true ; printLog("🗣 \(#function) isSaying:\(self.isSaying)")
         }
+        else {
+            do {try audioSession.setActive(false, with: .notifyOthersOnDeactivation)}
+            catch{}
+        }
+
         // item.log("say timer > \(String(format:"%.2f",deltaTime)) ")
         sayTimer = Timer.scheduledTimer(withTimeInterval: deltaTime, repeats: false, block: {_ in
             self.clearTimers()
@@ -188,10 +193,11 @@
     }
 
     func updateSpeech() {
-        if sayItem != nil { return  printLog("🗣 \(#function) sayItem != nil ") }
-        else if let item = sayCache.popNext() { doItem(item) }
-        else if let item = sayCache.getNext() { nextItem(item) }
-        else { printLog("🗣 \(#function) continue") }
+
+        if      let item = sayCache.popNext() { execItem(item) }
+        else if let item = sayCache.getNext() { waitItem(item) }
+        else                                  { isSaying = false }
+        printLog("🗣 \(#function) isSaying:\(isSaying)")
     }
 
     func playMemo(_ item: SayItem) -> Bool {
@@ -203,11 +209,13 @@
             let url = FileManager.documentUrlFile(item.spoken)
             if !Audio.shared.playUrl(url: url) {
                 self.sayItem = nil
+                self.isSaying = false ; printLog("🗣 \(#function) isSaying:\(self.isSaying)")
             }
             return true
         }
         return false
     }
+
     func playSay(_ item: SayItem) -> Bool {
 
         if item.spoken != "" && Hear.shared.canPlay() {
@@ -219,16 +227,17 @@
         return false
     }
 
-    func doItem(_ item: SayItem) { printLog("🗣 \(#function) sayItem:\(item.title)" )
+    func execItem(_ item: SayItem) { //printLog("🗣 \(#function) sayItem:\(item.title)" )
 
         clearTimers()
         actions.doSetTitle(item.title)
         sayItem = item
+        isSaying = true
 
         func txtLocal() {
             txtTimer?.invalidate()
             txtTimer = Timer.scheduledTimer(withTimeInterval: itemDuration, repeats: false, block: {_ in
-                 printLog("🗣 \(#function) timeout")
+               printLog("🗣 \(#function) timeout \"\(self.sayItem?.title ?? "")\"")
                 self.clearTimers()
                 self.sayItem = nil
                 self.actions.doSetTitle("")
@@ -268,8 +277,7 @@
         actions.doSetTitle("")
         clearTimers()
         sayItem = nil
-        self.updateSpeech()
-
+        updateSpeech()
     }
     
     // When finished, clear title, and setup next in line
