@@ -138,7 +138,7 @@ class Hear {
  
         default: break
         }
-        Settings.shared.updateArchive()
+        Settings.shared.settingsFromMemory()
         updateRoute()
         if isSender {
             Session.shared.sendMsg(["class"   : "HearSet",

@@ -13,7 +13,24 @@ let Phi⁻⁴ = CGFloat(0.145898034)
 
 let Pi = Double.pi
 let Pi2 = Double.pi*2 // Swift 3.1 deprecated M_PI, but has problem with CGFloat.pi
+let Infi = Double.greatestFiniteMagnitude // infinity
 
+func delay(_ delay:Double, closure:@escaping ()->()) {
+    let when = DispatchTime.now() + delay
+    DispatchQueue.main.asyncAfter(deadline: when, execute: closure)
+}
+extension String {
+    /**
+     Truncates the string to the specified length number of characters and appends an optional trailing string if longer.
+     - Parameter length: Desired maximum lengths of a string
+     - Parameter trailing: A 'String' that will be appended after the truncation.
+
+     - Returns: 'String' object.
+     */
+    func trunc(length: Int, trailing: String = "…") -> String {
+        return (self.count > length) ? self.prefix(length) + trailing : self
+    }
+}
 func printLog(_ str: String) {
     
     switch str.substring(to: 1) {
@@ -21,10 +38,6 @@ func printLog(_ str: String) {
     //case NSLog(str)
 
     case
-    "▣", // observe main window bounds
-    "🔈", // Audio
-    "🎧", // Hear Via
-    "∿",  // audio recorder
 
     "⧉", // sync files
     "📅", // EkNotification
@@ -38,28 +51,26 @@ func printLog(_ str: String) {
         
     case
 
-    "◰", // view layout
-    "⊛", // crown
-    "▤", // TreeTableView
 
-
-    "▭", // textfield
-    "⿳", // menu
-
+    "🗣", // Say TTS
     "🔈", // Audio
     "🎧", // Hear Via
     "∿",  // audio recorder
 
-    "🗣", // Say TTS
-    "⟳", // life cycle
+     "⟳", // life cycle
+    "▣", // observe main window bounds
+    "◰", // view layout
+    "⊛", // crown
+    "▤", // TreeTableView
+
+    "▭", // textfield
+    "⿳", // menu
+
     "👆", // tap action
 
-
     "✺", // complication
-
     "𐂷", // tree cell
     "𝓡", // routine
-
 
     "✓", // actions
     "⎚", // scene animation
@@ -67,7 +78,6 @@ func printLog(_ str: String) {
 
     "⊕", // motion
     "𐆄", // execute closure during animation pause
-    "⿳", // menu
     "🎞", // texture
     "⚇", // dot
     "✏": // Transcribe

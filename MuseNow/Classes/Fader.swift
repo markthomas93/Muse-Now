@@ -73,7 +73,7 @@ class Fader: TouchForce {
     override func began(_ pos: CGPoint,_ time: TimeInterval) {
         
         updateBegan?()
-        Say.shared.updateDialog(nil, .phraseSlider, spoken:"fader", title:"fader")
+        Say.shared.updateDialog(nil, .phraseSlider, spoken:"fader", title:"fader", via:#function)
         updatePos(pos)
      }
     

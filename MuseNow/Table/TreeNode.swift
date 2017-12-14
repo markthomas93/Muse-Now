@@ -278,7 +278,7 @@ class TreeDialColorNode: TreeNode {
             cell.fader.updateValue = { value in
                 Actions.shared.dialColor(value, isSender: true)
                 let phrase = String(format:"%.2f",value)
-                Say.shared.updateDialog(nil, .phraseSlider, spoken:phrase, title:phrase)
+                Say.shared.updateDialog(nil, .phraseSlider, spoken:phrase, title:phrase, via:#function)
             }
         }
     }

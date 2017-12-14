@@ -37,9 +37,9 @@ class MuEvents {
             self.idEvents = self.events.reduce(into: [String: MuEvent]()) { $0[$1.eventId] = $1 }
             self.sortTimeEventsStart()
             self.applyMarks()
-            self.marks.synchronize()
-            self.memos.synchronize()
-            Cals.shared.synchronize()
+            self.marks.sendSyncFile()
+            self.memos.sendSyncFile()
+            Cals.shared.sendSyncFile()
             completion()
         }
         NotificationCenter.default.removeObserver(self)
@@ -53,7 +53,7 @@ class MuEvents {
         // often, more than one notification comes in a batch, so defer multiple refreshes
         refreshTimer.invalidate()
         refreshTimer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false, block: {_ in
-            self.markCalendarAdditions()
+            Anim.shared.addClosure(title:"markCalendarAdditions") { self.markCalendarAdditions() }
         })
     }
 
@@ -61,7 +61,7 @@ class MuEvents {
      After Notification, mark any events that were added or changed
      - via: EkNotification
      */
-    func markCalendarAdditions () {
+    func markCalendarAdditions() {
 
         getRealEvents([.calendar,.reminder]) { ekEvents, ekReminds, memos, routine in
 
@@ -77,6 +77,7 @@ class MuEvents {
                     }
                 }
             }
+             Marks.shared.sendSyncFile() // with outer device
             Actions.shared.doAction(.refresh)
         }
     }
@@ -188,23 +189,14 @@ class MuEvents {
             
             let ekCals = Cals.shared.ekCals
             let idCal = Cals.shared.idCal
-            var routineCals = [EKCalendar]() //  = ekVals.filter {  $0.title.hasPrefix("Routine") }
-            var otherCals = [EKCalendar]() // = ekVals.filter { !$0.title.hasPrefix("Routine") }
+            var cals = [EKCalendar]()
             for ekCal in ekCals {
                 if let cali = idCal[ekCal.calendarIdentifier], cali.isOn {
-                    if ekCal.title.hasPrefix("Routine") { routineCals.append(ekCal) }
-                    else                                { otherCals.append(ekCal ) }
+                    cals.append(ekCal)
                 }
             }
-            
-            if routineCals.count > 0 {
-                let pred = store.predicateForEvents(withStart: bgnTime!, end: endTime!, calendars:routineCals)
-                for event in store.events(matching: pred) {
-                    events.append(MuEvent(event,.routine))
-                }
-            }
-            if otherCals.count > 0 {
-                let pred = store.predicateForEvents(withStart: bgnTime!, end: endTime!, calendars:otherCals)
+            if cals.count > 0 {
+                let pred = store.predicateForEvents(withStart: bgnTime!, end: endTime!, calendars:cals)
                 let ekEvents = store.events(matching: pred)
                 
                 for ekEvent in ekEvents {
@@ -257,7 +249,7 @@ class MuEvents {
         events.append(event)
 
         if event.type == .memo {
-            memos.addEvent(event)
+            memos.addMemoEvent(event)
         }
         events.sort { lhs, rhs in
             return "\(lhs.bgnTime)"+lhs.eventId < "\(rhs.bgnTime)"+rhs.eventId // lhs.bgnTime < rhs.bgnTime
@@ -282,7 +274,6 @@ class MuEvents {
             index += 1
         }
     }
-    
 
     /// fake events used for testing
     func updateFakeEvents(_ completion: @escaping () -> Void) -> Void {
@@ -292,15 +283,17 @@ class MuEvents {
             self.events.removeAll()
             self.events = events_
             self.sortTimeEventsStart()
-            self.marks.synchronize()
-            self.memos.synchronize()
-            Cals.shared.synchronize()
+            self.marks.sendSyncFile()
+            self.memos.sendSyncFile()
+            Cals.shared.sendSyncFile()
             completion()
         }
     }
     
-    /// After retrieving events and reminders
-    /// add a timer event, sort, and start timeEventTimer
+    /**
+     After retrieving events and reminders,
+     add a timer event, sort, and start timeEventTimer
+     */
     func sortTimeEventsStart() {
         if timeEvent == nil {
             timeEvent = MuEvent(.time, "Time")

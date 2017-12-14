@@ -7,9 +7,10 @@ import MobileCoreServices
 
 class FileMsg:  NSObject {
 
-    /// Other device sent a file.
-    /// - note: File handing can cause a noticeable delay. So, attach handling to end of dial animation, which has a natural pause.
-
+    /**
+    Other device sent a file.
+     - note: File handing can cause a noticeable delay. So, attach handling to end of dial animation, which has a natural pause.
+     */
     class func parseMsg(_ msg: [String : Any]) {
         
         let memos = Memos.shared
@@ -19,15 +20,15 @@ class FileMsg:  NSObject {
         let setn = Settings.shared
 
         if // other device has updated a file, such as Memos.plist, Marks.plist
-            let postFile   = msg["postFile"] as? String,
-            let updateTime = msg["updateTime"] as? TimeInterval,
-            let data       = msg["data"] as? Data {
+            let postFile = msg["postFile"] as? String,
+            let fileTime = msg["fileTime"] as? TimeInterval,
+            let data     = msg["data"] as? Data {
             
             switch postFile {
-            case memos.fileName: memos.receiveFile(data, updateTime) { anim.addClosure(title:"postFile memos") { Actions.shared.doRefresh(false) } }
-            case marks.fileName: marks.receiveFile(data, updateTime) { anim.addClosure(title:"postFile marks") { MuEvents.shared.applyMarks(); Actions.shared.doRefresh(false) } }
-            case cals.fileName:  cals.receiveFile(data,  updateTime) { anim.addClosure(title:"postFile cals") { Actions.shared.doRefresh(false) } }
-            case setn.fileName:  setn.receiveFile(data,  updateTime) { anim.addClosure(title:"postFile setn") { Actions.shared.doRefresh(false) } }
+            case memos.fileName: memos.receiveFile(data, fileTime)
+            case marks.fileName: marks.receiveFile(data, fileTime)
+            case cals.fileName:  cals.receiveFile(data,  fileTime)
+            case setn.fileName:  setn.receiveFile(data,  fileTime)
             default: break
             }
         }
@@ -37,7 +38,7 @@ class FileMsg:  NSObject {
             
             switch getFile {
             case memos.fileName: anim.addClosure(title:"getFile memos") { memos.sendPostFile() }
-            case marks.fileName: anim.addClosure(title:"getFile marks")  { marks.sendPostFile() }
+            case marks.fileName: anim.addClosure(title:"getFile marks") { marks.sendPostFile() }
             case cals.fileName:  anim.addClosure(title:"getFile cals")  { cals.sendPostFile() }
             case setn.fileName:  anim.addClosure(title:"getFile setn")  { setn.sendPostFile() }
             default: break
@@ -46,13 +47,13 @@ class FileMsg:  NSObject {
 
         else if // determine which device's file is more recent
             let syncFile = msg["syncFile"] as? String,
-            let updateTime = msg["updateTime"] as? TimeInterval{
+            let fileTime = msg["fileTime"] as? TimeInterval{
             
             switch syncFile {
-            case marks.fileName: anim.addClosure(title:"syncFile marks") { marks.recvSyncFile(updateTime) }
-            case memos.fileName: anim.addClosure(title:"syncFile memos") { memos.recvSyncFile(updateTime) }
-            case cals.fileName:  anim.addClosure(title:"syncFile cals") { cals.recvSyncFile(updateTime) }
-            case setn.fileName:  anim.addClosure(title:"syncFile setn") { setn.recvSyncFile(updateTime) }
+            case marks.fileName: anim.addClosure(title:"syncFile marks") { marks.recvSyncFile(fileTime) }
+            case memos.fileName: anim.addClosure(title:"syncFile memos") { memos.recvSyncFile(fileTime) }
+            case cals.fileName:  anim.addClosure(title:"syncFile cals") { cals.recvSyncFile(fileTime) }
+            case setn.fileName:  anim.addClosure(title:"syncFile setn") { setn.recvSyncFile(fileTime) }
             default: break
             }
         }

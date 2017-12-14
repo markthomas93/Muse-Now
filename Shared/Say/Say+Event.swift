@@ -23,7 +23,7 @@ extension Say {
 
             // wasy .sayTimeNow
             let title = isFuture ? "future" : "past"
-            updateDialog(nil, .phraseDirection, spoken:title, title:title)
+            updateDialog(nil, .phraseDirection, spoken:title, title:title, via:#function)
         }
     }
         
@@ -33,8 +33,8 @@ extension Say {
      - Scene.touchDialPan ⟶ Dots+Action.updateViaPan
      - Scene+action.crownAction ⟶ Dots+Action.crownNextEventOrHour
      */
-    func sayDotEvent(_ event: MuEvent!, isTouching:Bool) {
-        
+    func sayDotEvent(_ event: MuEvent!, isTouching:Bool, via:String) {
+        printLog("🗣 sayDotEvent(via:\(via)) .\(event.type)")
         switch event.type {
         case .time: sayCurrentTime(event, isTouching) // announce time
         case .memo: sayRecording(event)    // play recording
@@ -58,13 +58,13 @@ extension Say {
             // announce day of week for position in dial (ignored if duplicate)
             dateFormatter.dateFormat = "EEEE"
             let txt = dateFormatter.string(from:Date())
-            updateDialog(event, .phraseDayOfWeek, spoken:txt, title:txt)
+            updateDialog(event, .phraseDayOfWeek, spoken:txt, title:txt, via:#function)
 
             // announce curren time
             dateFormatter.dateFormat = "h:mm a"
             let spoken = "Now " + dateFormatter.string(from:Date())
             let title = isTouching ? "" : "Muse Now"
-            updateDialog(event, .phraseTimeNow, spoken:spoken, title:title)
+            updateDialog(event, .phraseTimeNow, spoken:spoken, title:title, via:#function)
         }
     }
 
@@ -76,7 +76,7 @@ extension Say {
 
         if canSay(.memo) {
 
-            updateDialog(event, .phraseMemo, spoken:event.eventId, title:event.title)
+            updateDialog(event, .phraseMemo, spoken:event.eventId, title:event.title, via:#function)
 
             if canSay(.time /*.sayTimeUntil*/) {
 
@@ -84,7 +84,7 @@ extension Say {
                 let prefix = timeNow < event.bgnTime ? "in " : ""
                 let suffix = timeNow < event.bgnTime ? "" : " ago"
                 let elapse = prefix + MuDate.elapseTime(event.bgnTime) + suffix
-                updateDialog(event, .phraseEventTime, spoken:elapse, title:elapse)
+                updateDialog(event, .phraseEventTime, spoken:elapse, title:elapse, via:#function)
 
             }
         }
@@ -98,7 +98,7 @@ extension Say {
 
         if canSay(.event) {
 
-            updateDialog(event, .phraseEventTitle, spoken:event.title, title:event.title)
+            updateDialog(event, .phraseEventTitle, spoken:event.title, title:event.title, via:#function)
 
             if canSay(.time /*.sayEventTime*/) {
 
@@ -107,7 +107,7 @@ extension Say {
                 let suffix = timeNow < event.bgnTime ? "" : " ago"
                 let elapse = prefix + MuDate.elapseTime(event.bgnTime) + suffix
 
-                updateDialog(event, .phraseEventTime, spoken:elapse, title:elapse)
+                updateDialog(event, .phraseEventTime, spoken:elapse, title:elapse, via:#function)
             }
         }
     }
@@ -120,7 +120,8 @@ extension Say {
 
         if canSay(.event) {
 
-            updateDialog(event, .phraseEventTitle, spoken:event.title, title:event.title)
+            updateDialog(event, .phraseEventTitle, spoken:event.title, title:event.title, via:#function)
+
             if canSay(.time /*.sayEventTime*/) {
 
                 let timeNow = Date().timeIntervalSince1970
@@ -130,7 +131,7 @@ extension Say {
                 let date = Date(timeIntervalSince1970:event.bgnTime)
                 let title = dateFormatter.string(from:date)
                 let spoken = prefix + title
-                updateDialog(event, .phraseEventTime,  spoken:spoken,   title:title)
+                updateDialog(event, .phraseEventTime,  spoken:spoken,   title:title, via:#function)
             }
         }
     }
@@ -145,11 +146,11 @@ extension Say {
 
             // .sayDayOfWeek
             let dow  = dayHour.getDowSpeak()
-            updateDialog(event, .phraseDayOfWeek, spoken:dow, title:dow)
+            updateDialog(event, .phraseDayOfWeek, spoken:dow, title:dow, via:#function)
 
             // .sayTimeHour
             let hour = dayHour.getHourSpeak()
-            updateDialog(event, .phraseDotTime, spoken:hour, title:hour)
+            updateDialog(event, .phraseDotTime, spoken:hour, title:hour, via:#function)
         }
     }
 

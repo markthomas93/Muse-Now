@@ -35,7 +35,7 @@ extension Dots {
                     Haptic.play(.click)
                     // wait for 1/4 second linger on that hour
                     feedbackTimer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats:false, block: { _ in 
-                        self.say.sayDotEvent(event, isTouching: true)
+                        self.say.sayDotEvent(event, isTouching: true, via:#function)
                         })
                     return
                 }
@@ -43,7 +43,7 @@ extension Dots {
         }
         if isNewDay {
             let txt  = dayHour.getDowSpeak()
-            say.updateDialog(event, .phraseDayOfWeek, spoken:txt, title:txt)
+            say.updateDialog(event, .phraseDayOfWeek, spoken:txt, title:txt, via:#function)
         }
         else if flipFuture {
             say.sayFuturePast(isFuture)

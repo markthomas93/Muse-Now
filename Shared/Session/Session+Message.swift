@@ -11,7 +11,8 @@ extension Session {
      */
     func sendMsg(_ msg: [String : Any]) { printLog("→ \(#function) " + dumpDict(msg))
         let _ = sendMessage( msg, errorHandler: { error in
-            printLog("→ \(#function) error:\(error.localizedDescription)")
+            // if cannot sent to live app, then cache it for later
+            self.cacheMsg(msg) // printLog("→ \(#function) error:\(error.localizedDescription)")
         })
     }
     
@@ -43,8 +44,8 @@ extension Session {
             }
         #endif
         if // request from watch to transcribe event
-            let eventData = msg["event"] as? Data,
-            let recName   = msg["recName"] as? String,
+            let eventData = msg["recEvent"] as? Data,
+            let recName   = msg["recName"]  as? String,
             let event = NSKeyedUnarchiver.unarchiveObject(with:eventData) as? MuEvent  {
 
             Memos.doTranscribe(event, recName, isSender: false)
@@ -190,7 +191,7 @@ extension Session {
         let keys = dict.keys
         for key in keys {
             let lead = firstTime ? "[" : ", " ; firstTime = false
-            let datakeys : Set<String> = ["data","addEvent","updateEvent", "memoEvent"]
+            let datakeys : Set<String> = ["data","addEvent","updateEvent", "recEvent"]
             let val = datakeys.contains(key) ? "<data>" : "\(dict[key] ?? "")"
             result += lead + key + ":" + val
         }

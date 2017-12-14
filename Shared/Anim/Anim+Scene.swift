@@ -40,23 +40,19 @@ extension Anim {
         default:            sceneFrame = dotFrame(dots.dotNow)
         }
     }
-
+    
     /// Increment sceneFrame and reset to zero when reaching the end of sequence
-
+    
+    func scanDot() -> Bool {
+        let index = getDotIndex()
+        if let event = dots.sayFirstMark(index, dots.isClockwise) {
+            table?.scrollSceneEvent(event) // only on phone, not watch
+            return true
+        }
+        return false
+    }
     func scanning() {
 
-        @discardableResult
-        func scanDot() -> Bool {
-            let index = getDotIndex()
-            if let event = dots.sayFirstMark(index, dots.isClockwise) {
-                if let table = table {
-                    table.scrollSceneEvent(event) // only on phone, not watch
-                }
-                return true
-            }
-            return false
-        }
-        
         sceneFrame += dots.isClockwise ?  1 : -1
 
         // user manually changed current dotNow
@@ -84,7 +80,7 @@ extension Anim {
             else if // if crossing the rubicon, then clear out title
                 abs(lastFrame) > spokeFan {
                 
-                say.updateDialog(nil, .phraseBlank, spoken: "", title: "")
+                say.updateDialog(nil, .phraseBlank, spoken: "", title: "", via:#function)
             }
         }
             // finish animation
@@ -95,7 +91,6 @@ extension Anim {
         else if
             abs(sceneFrame) >= Anidex.spokeFan.rawValue,
             abs(sceneFrame) <= Anidex.eachHour.rawValue {
-            
             if scanDot() {
                 animNow = animNow.rawValue > 0 ? .futrMark : .pastMark
             }
@@ -420,7 +415,16 @@ extension Anim {
             case   fade ..< pause2:  sceneFrame = spokeWheel
             case pause2 ..< fold:    sceneFrame = foldFrameIn()
             case   fold ..< pause3: sceneFrame = Anidex.animEnd.rawValue
-            case pause3 ..< Float.infinity:  sceneFrame = spokeFan ; animNow = .futrScan
+            case pause3 ..< Float.infinity:
+
+                sceneFrame = spokeFan
+
+                if scanDot() { // pause on current hour
+                    animNow = animNow.rawValue > 0 ? .futrMark : .pastMark
+                }
+                else { // continue to next hour
+                    animNow = .futrScan
+                }
             default: break
             }
         }

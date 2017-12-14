@@ -27,38 +27,19 @@ class Memos: FileSync {
             self.items = dataItems.filter { $0.bgnTime >= lastWeekSecs }
             
             self.items.sort { "\($0.bgnTime)"+$0.eventId < "\($1.bgnTime)"+$1.eventId }
-            let fileTime = self.getFileTime()
 
             //printLog ("⧉ Memos::\(#function) items:\(self.items.count) fileTime:\(fileTime) -> memoryTime:\(self.memoryTime) ")
-            self.memoryTime = fileTime
             completion(self.items)
-        }
-    }
-    
-    // file was sent from other device
-
-    override func receiveFile(_ data:Data, _ fileTime_: TimeInterval, completion: @escaping () -> Void) {
-        
-        let fileTime = fileTime_
-        
-        printLog ("⧉ Memos::\(#function) fileTime:\(fileTime) -> memoryTime:\(memoryTime)")
-        
-        if memoryTime < fileTime {
-            memoryTime = fileTime
-            let recvItems = NSKeyedUnarchiver.unarchiveObject(with:data as Data) as! [MuEvent]
-            archiveArray(recvItems,memoryTime)
-            items.removeAll()
-            items = recvItems
-            completion()
         }
     }
     
     
     func clearAll() {
-        items.removeAll()
-        let removeTime = Date().timeIntervalSince1970
-        archiveArray(items, removeTime)
-        removeAllDocPrefix("Memo_")
+
+        if archiveArray([], Date().timeIntervalSince1970) {
+             items.removeAll()
+            removeAllDocPrefix("Memo_")
+        }
     }
     
     func purgeStale(_ staleItems:[MuEvent]) {
@@ -66,26 +47,29 @@ class Memos: FileSync {
     }
 
     /**
-     - via: recordAudioFinish >> MuEvents.addEvent >> Actions.doAddEvent
+     |   memos.addEvent
+     |        MuEvents.shared.addEvent
+     |            Actions.doAddEvent
+     |                Record.recordAudioFinish -> see updateMemoArchive
      */
-    func addEvent(_ event:MuEvent) {
-
+    func addMemoEvent(_ event:MuEvent) {
         items.append(event)
-        memoryTime = Date().timeIntervalSince1970
-        printLog ("⧉ Memos::addEvent:\(event.eventId) memoryTime:\(memoryTime)")
-        archiveArray(items,memoryTime)
+        let _ = archiveArray(items,Date().timeIntervalSince1970)
     }
 
     /**
-     - via: recordAudioFinish >> MuEvents.addEvent >> Actions.doAddEvent
-     - via: recordAudioFinish >>  Actions.doUpdateEvent
-     - via: say.transcribe >> Transcribe.shared.appleSttUrl >> Actions.doUpdateEvent
+     |    Actions.doUpdateEvent
+     |        Transcribe.shared.appleSttFile
+     |            #ios:Memos.doTranscribe
+     |                Record.recordAudioFinish -> see addMemoEvent
+     |                   Record.finishRecording
+     |                        Record.startRecording.audioTimer({})
+     |                        Record.startRecording.recordAudioAction({})
+     |            #watchOS:Session.parseTranscribe
      */
 
-    func archive() {
-        memoryTime = Date().timeIntervalSince1970
-        printLog ("⧉ Memos::archive memoryTime:\(memoryTime)")
-        archiveArray(items,memoryTime)
+    func updateMemoArchive() {
+        let _ = archiveArray(items,Date().timeIntervalSince1970)
     }
 
     /**
@@ -105,9 +89,9 @@ class Memos: FileSync {
         #elseif os(watchOS)
             if isSender {
                 Session.shared.sendMsg(
-                    [ "class"   : "Transcribe",
-                      "event"   : NSKeyedArchiver.archivedData(withRootObject:event),
-                      "recName" : recName])
+                    [ "class"    : "Transcribe",
+                      "recEvent" : NSKeyedArchiver.archivedData(withRootObject:event),
+                      "recName"  : recName])
             }
         #endif
     }

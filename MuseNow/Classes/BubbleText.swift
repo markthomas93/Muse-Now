@@ -11,11 +11,6 @@ import UIKit
 
 class MuDrawBubble: UIView {
 
-    /* example:
-     * MuDrawBubble* bubble = [[MuDrawBubble.alloc initWithSize:CGSizeMake(192, 64) radius:32. fromView:_menuPearl] retain];
-     * [self.window addSubview:bubble];
-     */
-
     var fromFrame = CGRect.zero
     var bubbleFrame = CGRect.zero
     var cornerRadius: CGFloat = 0.0

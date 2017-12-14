@@ -73,26 +73,13 @@ class Cals: FileSync {
     // File -------------------------------------------------
     
 
-    /// file was sent from other device
-    override func receiveFile(_ data:Data, _ updateTime: TimeInterval, completion: @escaping () -> Void) {
+  
+    func updateCalsArchive() {
 
-        var deltaTime = updateTime - updateTime
-
-        printLog ("⧉ Cals::\(#function) memory->update time: \(memoryTime)->\(updateTime)  𝚫\(deltaTime)")
-        
-        if deltaTime > 0 {
-            memoryTime = updateTime
-            cals = NSKeyedUnarchiver.unarchiveObject(with:data as Data) as! [Cal]
-            cals.sort { $0.calId < $1.calId }
-            archiveArray(cals,updateTime)
-            completion()
+        if archiveArray(cals,Date().timeIntervalSince1970) {
+            Actions.shared.doRefresh(/*isSender*/false)
+            sendSyncFile()
         }
-    }
-
-    func updateArchive() {
-        archiveArray(cals,Date().timeIntervalSince1970)
-        Actions.shared.doRefresh(/*isSender*/false)
-        sendSyncFile()
     }
 
     /// find and update event Marker
@@ -100,7 +87,7 @@ class Cals: FileSync {
         for cali in cals {
             if cali?.calId == calId {
                 cali!.isOn = isOn
-                updateArchive()
+                updateCalsArchive()
                 return
             }
         }

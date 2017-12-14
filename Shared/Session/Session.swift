@@ -48,10 +48,10 @@ class Session: NSObject, WCSessionDelegate {
     // changing watches
     #if os(iOS)
     func sessionDidBecomeInactive(_ session: WCSession) {
-        printLog("↔︎ \(#function) - changing watches?")
+        //printLog("↔︎ \(#function) - changing watches?")
     }
     func sessionDidDeactivate(_ session: WCSession) {
-        printLog("↔︎ \(#function) - changing watches?")
+        //printLog("↔︎ \(#function) - changing watches?")
         session.activate()
         Actions.shared.doAction(.refresh)
     }
@@ -64,10 +64,15 @@ class Session: NSObject, WCSessionDelegate {
 extension Session {
     
     // Sender
-    func cacheMsg(_ message: [String : Any]) {
+    func cacheMsg(_ msg: [String : Any]) {
         if let session = validSession {
-            do { try session.updateApplicationContext(message) }
-            catch let error { printLog("→ \(#function) error:\(error)") }
+            do {
+                try session.updateApplicationContext(msg)
+                printLog("→ \(#function) " + dumpDict(msg))
+            }
+            catch let error {
+                printLog("→ \(#function) error:\(error)")
+            }
         }
         else {
             printLog("→ \(#function) invalid session")
@@ -171,7 +176,7 @@ extension Session {
             }
         }
         else {
-            printLog("⧉ ← \(#function) could not move file:\(fileName)")
+            printLog("⧉ ← \(#function) could NOT move file:\(fileName) !!!")
         }
     }
     

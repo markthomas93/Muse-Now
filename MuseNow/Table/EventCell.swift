@@ -86,10 +86,10 @@ class EventCell: MuCell {
             let index = Dots.shared.gotoEvent(event)
             Actions.shared.doAction(act, event, index, isSender: true)
         }
-        else if event.type == .memo {
-
-            Say.shared.sayDotEvent(event, isTouching: true)
-        }
+//        else if event.type == .memo {
+//
+//            Say.shared.sayDotEvent(event, isTouching: true, via:#function)
+//        }
         Anim.shared.touchDialGotoTime(event.bgnTime)
     }
 

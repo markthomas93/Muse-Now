@@ -5,7 +5,7 @@ import UIKit
  */
 class SayCache {
     
-    var sayPhrase  : [SayPhrase:SayItem] = [:]
+    var sayPhrase : [SayPhrase : SayItem] = [:]
     var sayQueue : [SayItem] = []
     
     /**
@@ -44,11 +44,26 @@ class SayCache {
             addNewItemToQueue()
         }
     }
-    
+
+    func clearTransientPhrases() {
+
+        for item in sayQueue {
+            if item.decay < Infi {
+                if sayPhrase[item.phrase] == item {
+                    sayPhrase.removeValue(forKey: item.phrase)
+                }
+                sayQueue.removeObject(item)
+                break
+            }
+        }
+    }
     func clearPhrases(_ phrases: [SayPhrase]) {
         for phrase in phrases {
             for item in sayQueue {
                 if item.phrase == phrase {
+                    if sayPhrase[item.phrase] == item {
+                        sayPhrase.removeValue(forKey: item.phrase)
+                    }
                     sayQueue.removeObject(item)
                     break
                 }

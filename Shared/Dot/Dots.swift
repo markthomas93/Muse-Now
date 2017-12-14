@@ -173,6 +173,13 @@ class Dots {
             }
         }
     }
+
+    class func getIndexForTime(_ time:TimeInterval) -> Int {
+        let thisHour = MuDate.relativeHour(0).timeIntervalSince1970
+        let hour = Float((time - thisHour)/3600)
+        return Int(hour)
+    }
+
     /**
      find closest dot and event within that dot to input dotTime
      - via: findEvent

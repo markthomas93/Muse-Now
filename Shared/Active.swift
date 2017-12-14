@@ -50,14 +50,23 @@ class Active {
             // delay restart to handle menuOptions
             restartTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: {_ in
                 self.minuteTimerTick()
+                self.anim.addClosure(title: "send sync", { self.sendSyncRequest()})
             })
         }
         else {
             minuteTimerTick()
+            anim.addClosure(title: "send sync", { self.sendSyncRequest()})
         }
         anim.gotoStartupAnim()
     }
-    
+    func sendSyncRequest() {
+
+        Settings.shared.sendSyncFile()
+        MuEvents.shared.marks.sendSyncFile()
+        MuEvents.shared.memos.sendSyncFile()
+        Cals.shared.sendSyncFile()
+    }
+
     /**
      Stop animation and recording, when:
      1) Watch: user lowers wrist
@@ -70,7 +79,7 @@ class Active {
         minuteTimer.invalidate()
         activateAudioTimer.invalidate()
 
-        Say.shared.cancelSpeech()
+        Say.shared.cancelSpeech() ;  printLog("🗣 \(#function)")
         stopTime = Date().timeIntervalSince1970
         anim.shutdownAnimation() 
 

@@ -13,7 +13,7 @@ extension Dots {
         if let event = getDot(index).getFirstMark(clockwise) {
             
             dayHour.setIndexForEvent(event)
-            say.sayDotEvent(event, isTouching:false)
+            say.sayDotEvent(event, isTouching:false, via:#function)
             return event
         }
         return nil
@@ -31,12 +31,11 @@ extension Dots {
             if let event = getDot(index).getNextMark(clockwise) {
                 
                 dayHour.setIndexForEvent(event)
-                say.sayDotEvent(event, isTouching:false)
+                say.sayDotEvent(event, isTouching:false, via:#function)
                 return event
             }
         }
         return nil
     }
-    
     
 }

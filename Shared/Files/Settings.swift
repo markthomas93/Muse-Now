@@ -20,53 +20,35 @@ class Settings: FileSync {
             self.root.removeAll()
             self.root = root
 
-            let fileTime = self.getFileTime()
-            if root.count == 0 {
-                self.updateArchive()
-            }
-            else {
-                self.updateFromArchive()
-                self.memoryTime = fileTime
-            }
-            printLog ("⧉ Settings::\(#function) show:\(Show.shared.showSet.rawValue) saySet:\(Say.shared.saySet.rawValue) hearSet:\(Hear.shared.hearSet.rawValue) fileTime:\(fileTime) -> memoryTime:\(self.memoryTime)")
+            if root.count == 0  { self.settingsFromMemory() }
+            else                { self.settingsFromRoot() }
+
+            printLog ("⧉ Settings::\(#function) show:\(Show.shared.showSet.rawValue) saySet:\(Say.shared.saySet.rawValue) hearSet:\(Hear.shared.hearSet.rawValue)")
             completion()
         }
     }
-    
-    override func receiveFile(_ data:Data, _ fileTime_: TimeInterval, completion: @escaping () -> Void) {
-        
-        let fileTime = fileTime_
-        
-        printLog ("⧉ Settings::\(#function) fileTime:\(fileTime) -> memoryTime:\(memoryTime)")
-        
-        if memoryTime < fileTime {
-            
-            memoryTime = fileTime
-            if let newDict = NSKeyedUnarchiver.unarchiveObject(with:data as Data) as? [String:Any] {
-                root.removeAll()
-                root = newDict
-                archiveDict(root, fileTime)
-                updateFromArchive()
-            }
-            completion()
-        }
-    }
-    
+
     func updateColor(_ value: Any) {
 
         root["dialColor"] = value as! Float
-        archiveDict(root,Date().timeIntervalSince1970)
+        let _ = archiveDict(root,Date().timeIntervalSince1970)
     }
-    
-    func updateArchive() {
+
+    /**
+        When initializing for the first time, no files yet exist, so read from default values in memory
+     */
+    func settingsFromMemory() { printLog ("⧉ Settings::\(#function)")
         root["showSet"]   = Show.shared.showSet.rawValue
         root["hearSet"]   = Hear.shared.hearSet.rawValue
         root["saySet"]    = Say.shared.saySet.rawValue
         root["dialColor"] = Actions.shared.scene?.uFade?.floatValue ?? 0
-        archiveDict(root,Date().timeIntervalSince1970)
+        let _ = archiveDict(root,Date().timeIntervalSince1970)
     }
 
-    func updateFromArchive() {
+    /**
+     After first time, values were saved to file, so read from default values from root value
+     */
+    func settingsFromRoot() { printLog ("⧉ Settings::\(#function)")
         if let value   = root["dialColor"] as? Float { Actions.shared.dialColor(value, isSender:false) }
         if let saySet  = root["saySet"]    as? Int   { Say.shared.saySet   = SaySet(rawValue:saySet) }
         if let hearSet = root["hearSet"]   as? Int   { Hear.shared.hearSet = HearSet(rawValue:hearSet) }

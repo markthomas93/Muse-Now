@@ -27,8 +27,8 @@ public enum DoAction : Int { case
     dialColor,
 
     showEvents, showAlarms, showMarks,showTime,
-    markOn, markOff, markClearAll,
-    memoClearAll,
+    markOn, markOff,
+    memoClearAll, markClearAll,
     noteAdd, noteRemove,
     //chimeOff, chimeLow, chimeMedium, chimeHigh, chimeOn,
     debugOn, debugOff,
@@ -119,7 +119,7 @@ class Actions {
                     Crown.shared.updateCrown()
                 #endif
             }
-             Settings.shared.synchronize()
+             Settings.shared.sendSyncFile()
         }
         
         if isSender {
@@ -155,7 +155,7 @@ class Actions {
         tableDelegate?.updateTable(MuEvents.shared.events)
         scene.updateSceneFinish()
         if event.type == .memo {
-            Memos.shared.archive()
+            Memos.shared.updateMemoArchive()
         }
         if isSender {
             let data = NSKeyedArchiver.archivedData(withRootObject:event)
@@ -331,7 +331,7 @@ class Actions {
         case .noteRemove:   dot.removeEvent(event)
         case .markOn:       markEvent = dot.setMark(true, event)
         case .markOff:      markEvent = dot.setMark(false, event)
-        case .markClearAll: Dots.shared.hideEventsWith(type:.mark)
+        case .markClearAll: break //!!!! Dots.shared.hideEventsWith(type:.mark)
         case .memoClearAll: Dots.shared.hideEventsWith(type:.memo)
         default: break
         }

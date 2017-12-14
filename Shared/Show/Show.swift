@@ -52,7 +52,7 @@ class Show {
 
         default: break
         }
-        Settings.shared.updateArchive()
+        Settings.shared.settingsFromMemory()
         Actions.shared.doRefresh(/*isSender*/false)
 
         if isSender {

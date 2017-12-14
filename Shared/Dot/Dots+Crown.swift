@@ -101,7 +101,7 @@ extension Dots {
             }
             else {
                 Say.shared.cancelSpeech()
-                Say.shared.sayDotEvent(event, isTouching: true)
+                Say.shared.sayDotEvent(event, isTouching: true, via:#function)
                 return logCrown("another event:\(event.title)")
             }
         }
@@ -110,14 +110,13 @@ extension Dots {
                 if let event =  getDot(Int(dotNow)).getFirstEventForThisHour(isClockwise, nextFuture, dotPrev) {
                     if event.type == .time {
                         Anim.shared.fanOutToDotNow(duration:0.5)
-                        //Anim.shared.userDotAction(/*flipTense*/false, dur:0.5)
                         Say.shared.cancelSpeech()
                         return logCrown("time")
                     }
                     else {
                         Say.shared.cancelSpeech()
                         Anim.shared.fanOutToDotNow(duration:0.25)
-                        Say.shared.sayDotEvent(event, isTouching: true)
+                        Say.shared.sayDotEvent(event, isTouching: true, via:#function)
                         Actions.shared.sendAction(.gotoEvent, event, event.bgnTime)
                         return logCrown("new hour event:\(event.title)")
                     }

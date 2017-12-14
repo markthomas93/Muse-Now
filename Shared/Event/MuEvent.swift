@@ -10,7 +10,6 @@ public enum EventType: String { case
     ekreminder  = "ekreminder", // Apple Reminders
     note        = "note",
     memo        = "memo",
-    mark        = "mark",
     time        = "time"
 }
 
@@ -76,7 +75,7 @@ open class MuEvent: NSObject, NSCoding {
     }
     func makeEventId(_ ekEvent: EKEvent! = nil) -> String {
         if  let ekEvent = ekEvent,
-            let identifier = ekEvent.eventIdentifier {
+            let identifier = ekEvent.calendarItemExternalIdentifier {
             return "\(identifier)"
         }
         else {
@@ -92,7 +91,7 @@ open class MuEvent: NSObject, NSCoding {
         bgnTime  = ((reminder.startDateComponents as NSDateComponents?)?.date)!.timeIntervalSince1970
         endTime  = ((reminder.dueDateComponents as NSDateComponents?)?.date)!.timeIntervalSince1970
         rgb      = MuColor.colorFrom(cgColor:reminder.calendar.cgColor)
-        eventId  = reminder.calendarItemIdentifier // makeEventId()
+        eventId  = reminder.calendarItemExternalIdentifier // makeEventId()
     }
     
     convenience init(_ event: EKEvent, _ type_: EventType = .ekevent) {
@@ -105,7 +104,7 @@ open class MuEvent: NSObject, NSCoding {
         endTime = event.isAllDay ? bgnTime : event.endDate.timeIntervalSince1970
         notes   = event.notes ?? ""
         rgb     = MuColor.colorFrom(event: event, type)
-        eventId = makeEventId(event)
+        eventId = event.calendarItemExternalIdentifier
 
         // recurs   = evnt.recurrenceRules!.count > 0 ? true : false
         // location = evnt.location
@@ -176,19 +175,7 @@ open class MuEvent: NSObject, NSCoding {
         eventId = makeEventId() // always last
     }
     
-    convenience init(mark mark_:Mark) {
-        
-        self.init()
-        type    = .mark
-        title   = "Mark"
-        bgnTime = mark_.bgnTime
-        endTime = bgnTime
-        rgb     = MuColor.makeTypeColor(.white)
-        mark    = mark_.isOn
-        eventId = makeEventId() // always last
-    }
-    
-    convenience init(_ type_: EventType, _ title_: String, bDay: Int, _ bHour: Int, _ bMin: Int, eDay: Int, _ eHour: Int, _ eMin: Int, _ color_: TypeColor) {
+     convenience init(_ type_: EventType, _ title_: String, bDay: Int, _ bHour: Int, _ bMin: Int, eDay: Int, _ eHour: Int, _ eMin: Int, _ color_: TypeColor) {
         
         self.init()
         type        = type_

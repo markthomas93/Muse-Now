@@ -12,35 +12,41 @@
     var audioPlayer: AVAudioPlayer!
     var audioSession = AVAudioSession.sharedInstance()
     var sayVolume = Float(0.5)
+    var finished: ((Bool)->())? = nil
+
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        audioPlayer.stop()
+        audioPlayer.prepareToPlay()
+        finished?(true)
+        finished = nil
+    }
+
 
     func startPlaybackSession() { printLog("🔈 \(#function)")
+        audioPlayer?.stop()
         do {
             // AVAudioSessionCategoryPlayAndRecord will play back only small ear speaker
             // try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord, with: [.allowBluetoothA2DP,.interruptSpokenAudioAndMixWithOthers] )
             // try audioSession.setCategory(AVAudioSessionCategoryPlayback, with: [.allowBluetoothA2DP,.interruptSpokenAudioAndMixWithOthers] )
+            try audioSession.setActive(false)
             try audioSession.setCategory(AVAudioSessionCategorySoloAmbient, with: [.allowBluetoothA2DP,.interruptSpokenAudioAndMixWithOthers] )
         }
-        catch {  print("\(#function) Error:\(error)") }
+        catch { /*printLog("🔈 !!! \(#function) Error:\(error)")*/ }
 
     }
     func finishPlaybackSession() {
 
-        if let audioPlayer = audioPlayer,
-            audioPlayer.isPlaying {
-
-            printLog("🔈 \(#function)")
-            
+        if  audioPlayer?.isPlaying == true { printLog("🔈 \(#function)")
             audioPlayer.stop()
 
             do { try self.audioSession.setActive(false, with: .notifyOthersOnDeactivation) }
             catch { print("🔈\(#function) Error:\(error)")}
         }
-
         actions.doSetTitle("")
     }
 
 
-    func playUrl(url:URL) -> Bool {
+    func playUrl(url:URL,_ completion: @escaping (Bool) -> Void) {
 
         startPlaybackSession()
 
@@ -49,12 +55,12 @@
             audioPlayer.setVolume(1.0, fadeDuration: 0.1)
             audioPlayer.delegate = self
             audioPlayer.play()
+            finished = completion
         }
         catch {
             printLog("🔈 \(#function) error")
-            return false
+            completion(false)
         }
-        return true
     }
 
  }

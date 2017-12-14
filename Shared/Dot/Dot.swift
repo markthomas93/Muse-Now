@@ -433,11 +433,6 @@ class Dot {
                 return sayEvent
             }
         }
-            // user requested adding a mark on an empty dot
-        else if mark {
-            let event = MuEvent(.mark,"+")
-            return addNote(event)
-        }
         return nil
     }
     

@@ -9,6 +9,7 @@ class SayItem: NSObject {
     var decay = TimeInterval(0)
     var spoken  = ""
     var title   = ""
+
     
     convenience init (_ event_: MuEvent!, _ phrase_: SayPhrase, _ delay_:TimeInterval, _ decay_:TimeInterval, _ spoken_:String, _ title_:String) {
         self.init()
@@ -17,7 +18,7 @@ class SayItem: NSObject {
 
         let timeNow = Date().timeIntervalSince1970
         delay  = timeNow + delay_      // equatable
-        decay  = timeNow + decay_
+        decay  = decay_ == Infi ? Infi : timeNow + decay_
 
         spoken = spoken_
         title  = title_
@@ -36,7 +37,10 @@ class SayItem: NSObject {
         return String(format:"%7.3f ", min(88888888,delta))
     }
     
-    
+
+    func shortTitle () -> String {
+         return "\"\((event?.title ?? "").trunc(length:20))\""
+    }
     func log(_ str: String) {
 
         func dump() -> String {

@@ -91,6 +91,7 @@ extension Transcribe {
         return nearestFound
     }
 
+
     func appleSttUrl(_ url: URL, _ completion: @escaping (_ found: MuseFound) -> Void) {
 
         var museFound = MuseFound("Memo",nil,Int.max)
@@ -122,18 +123,18 @@ extension Transcribe {
     }
 
     func appleSttFile(_ recName: String, _ event:MuEvent! = nil)  {
-
+        
         let docURL = FileManager.documentUrlFile(recName)
         //print ("✏ \(#function) url:\(docURL)")
         appleSttUrl(docURL) { matchFound in
-            if let _ = matchFound.str {
-                if let event = event {
-                    event.title = matchFound.str
-                    event.sttApple = matchFound.str
-                }
-                Muse.shared.execFound(matchFound, event)
-                Actions.shared.doUpdateEvent(event, isSender:true)
+            if  let _ = matchFound.str,
+                let event = event {
+
+                event.title = matchFound.str
+                event.sttApple = matchFound.str
             }
+            Muse.shared.execFound(matchFound, event)
+            Actions.shared.doUpdateEvent(event, isSender:true)
         }
     }
 
