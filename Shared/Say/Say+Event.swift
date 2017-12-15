@@ -34,7 +34,7 @@ extension Say {
      - Scene+action.crownAction ⟶ Dots+Action.crownNextEventOrHour
      */
     func sayDotEvent(_ event: MuEvent!, isTouching:Bool, via:String) {
-        printLog("🗣 sayDotEvent(via:\(via)) .\(event.type)")
+        Log("🗣 sayDotEvent(via:\(via)) .\(event.type)")
         switch event.type {
         case .time: sayCurrentTime(event, isTouching) // announce time
         case .memo: sayRecording(event)    // play recording

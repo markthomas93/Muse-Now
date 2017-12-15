@@ -83,7 +83,7 @@ extension EventTableVC {
                 }
                 lastMovedRowItem = rowItems[rowi]
                 // section header in
-                printLog("⌛️ timeRowi:\(timeRowi) rowi:\(rowi)")
+                Log("⌛️ timeRowi:\(timeRowi) rowi:\(rowi)")
                 rowItems[rowi].posY -= timeHeight
                 count += 1
             }

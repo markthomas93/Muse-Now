@@ -59,7 +59,7 @@ import Foundation
 
         static var shared = Transcribe()
         func appleBufferResult(_ txt: String) {
-            printLog("✏ \(#function)(\(txt)")
+            Log("✏ \(#function)(\(txt)")
             Actions.shared.doSetTitle(txt)
         }
         func transcribe(_ item:SayItem) {

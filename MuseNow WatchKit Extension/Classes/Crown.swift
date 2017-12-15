@@ -34,7 +34,7 @@ class Crown: NSObject, WKCrownDelegate {
         let rotateNext = rotationalDelta * factor
         let crownNext  = crownPrev + rotateNext
         // crownSpeed = (crownSequencer?.rotationsPerSecond)!
-       // printLog (String(format:"⊛ elapse: %.1f  crown: %.3f -> %.3f  rotate: %.3f -> %.3f", elapsedTime, crownPrev, crownNext, rotatePrev, rotateNext))
+       // Log (String(format:"⊛ elapse: %.1f  crown: %.3f -> %.3f  rotate: %.3f -> %.3f", elapsedTime, crownPrev, crownNext, rotatePrev, rotateNext))
         if floor(crownPrev) != floor(crownNext) {
             
             let delta = Float(crownPrev < crownNext ? 1 : -1)

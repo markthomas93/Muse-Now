@@ -41,7 +41,7 @@ class Record: NSObject, CLLocationManagerDelegate {
 
     func recordAudioAction() {
         
-        printLog("∿ \(#function)")
+        Log("∿ \(#function)")
         
         if isRecording {
             finishRecording()
@@ -54,17 +54,17 @@ class Record: NSObject, CLLocationManagerDelegate {
         }
     }
 
-    func activateAudio() { printLog("∿∿∿ \(#function)")
+    func activateAudio() { Log("∿∿∿ \(#function)")
 
         do {
             try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
             try audioSession.setActive(true)
          }
-        catch { printLog("∿∿∿ \(#function) !!! catch") }
+        catch { Log("∿∿∿ \(#function) !!! catch") }
     }
-    func deactivateAudio() { printLog("∿∿∿ \(#function)")
+    func deactivateAudio() { Log("∿∿∿ \(#function)")
         do { try audioSession.setActive(false) }
-        catch { printLog("∿∿∿ \(#function) !!! catch") }
+        catch { Log("∿∿∿ \(#function) !!! catch") }
     }
 
      /**
@@ -104,13 +104,13 @@ class Record: NSObject, CLLocationManagerDelegate {
         let queue = DispatchQueue(label: "com.muse.recordAudio", attributes: .concurrent, target: .main)
         let group = DispatchGroup()
 
-        printLog("∿∿∿ \(#function)")
+        Log("∿∿∿ \(#function)")
 
          // prepare recording
         group.enter()
         queue.async (group: group) {
             prepareRecording() {
-                 printLog("∿ prepareRecording() done")
+                 Log("∿ prepareRecording() done")
                 group.leave()
             }
         }
@@ -118,7 +118,7 @@ class Record: NSObject, CLLocationManagerDelegate {
         group.enter()
         queue.async (group: group) {
             animateRecording {
-                 printLog("∿ \(#function)")
+                 Log("∿ \(#function)")
                 group.leave()
             }
         }
@@ -126,19 +126,19 @@ class Record: NSObject, CLLocationManagerDelegate {
         group.enter()
         queue.async (group: group) {
              Location.shared.requestLocation() {
-                printLog("∿ Location done")
+                Log("∿ Location done")
                 group.leave()
             }
         }
         // events + reminders done
         group.notify(queue: queue, execute: {
-            printLog("∿∿∿ startRecording() done")
+            Log("∿∿∿ startRecording() done")
             startRecording()
         })
     }
 
 
-    func stopRecording() -> Bool { printLog("∿∿∿ \(#function)")
+    func stopRecording() -> Bool { Log("∿∿∿ \(#function)")
 
         let wasRecording = isRecording
         if isRecording {
@@ -150,7 +150,7 @@ class Record: NSObject, CLLocationManagerDelegate {
         return wasRecording
     }
 
-    @objc func cancelRecording() { printLog("∿∿∿ \(#function)")
+    @objc func cancelRecording() { Log("∿∿∿ \(#function)")
         if stopRecording() {
             audioRecorder?.deleteRecording()
         }
@@ -161,7 +161,7 @@ class Record: NSObject, CLLocationManagerDelegate {
      - user tapped or twisted device
      - audioTimer fired after recDur seconds
      */
-    @objc func finishRecording() {  printLog("∿∿∿ \(#function)")
+    @objc func finishRecording() {  Log("∿∿∿ \(#function)")
 
         if !stopRecording() { return }
         Anim.shared.gotoRecordSpoke(on: false)
@@ -169,7 +169,7 @@ class Record: NSObject, CLLocationManagerDelegate {
         if let groupURL = groupURL {
 
             if FileManager.getFileSize(groupURL) < 26000 { // ignore zero duration recordings
-                printLog("∿ filesize < 26000 for groupURL:\(recName)")
+                Log("∿ filesize < 26000 for groupURL:\(recName)")
             }
             else {
                 // Move  file to documents directory so that WatchConnectivity can transfer it.
@@ -180,13 +180,13 @@ class Record: NSObject, CLLocationManagerDelegate {
                 if  let _ = try? FileManager().moveItem(at:groupURL, to:docURL) {
                     #if os(watchOS)
                         if !Session.shared.transferFile(docURL, metadata:metaData) {
-                            printLog("∿ \(#function) Failed !!! could not transfer file \n   to:\(docURL)")
+                            Log("∿ \(#function) Failed !!! could not transfer file \n   to:\(docURL)")
                         }
                     #endif
-                    printLog("∿ \(#function): \(recName)")
+                    Log("∿ \(#function): \(recName)")
                 }
                 else {
-                    printLog("∿ \(#function) Failed !!! \n   from:\(groupURL) \n   to:\(docURL)")
+                    Log("∿ \(#function) Failed !!! \n   from:\(groupURL) \n   to:\(docURL)")
                 }
                 recordAudioFinish()
             }

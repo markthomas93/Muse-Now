@@ -167,7 +167,7 @@ class Actions {
         }
     }
     
-    func doToggleMark() { //printLog("✓ \(#function)")
+    func doToggleMark() { //Log("✓ \(#function)")
         
         Active.shared.startMenuTime()
         let dots = Dots.shared
@@ -239,7 +239,7 @@ class Actions {
      */
     func doAction(_ act: DoAction, _ event:MuEvent! = nil, _ index:Int = 0, isSender:Bool = false) {
         
-        printLog("⌘ \(#function):\(act) event:\(event?.title ?? "nil")")
+        Log("⌘ \(#function):\(act) event:\(event?.title ?? "nil")")
         
         switch act {
         case  // show
@@ -292,7 +292,7 @@ class Actions {
      */
     func parseString(_ str: String, _ event: MuEvent!,_ index: Int, isSender:Bool) {
         
-        printLog("⌘ \(#function):\(str)")
+        Log("⌘ \(#function):\(str)")
         
         let loStr = str.lowercased()
         
@@ -312,7 +312,7 @@ class Actions {
      */
     func markAction(_ act:DoAction, _ event:MuEvent!, _ index: Int, _ isSender:Bool) {
         
-        printLog("✓ \(#function) \(act) \(event != nil ? event.title : "nil") isSender:\(isSender)")
+        Log("✓ \(#function) \(act) \(event != nil ? event.title : "nil") isSender:\(isSender)")
         
         let dot = Dots.shared.getDot(index)
         

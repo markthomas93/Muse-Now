@@ -144,7 +144,7 @@ class MainVC: UIViewController {
         observer = view.layer.observe(\.bounds) { object, _ in
             self.updateViews(object.bounds.size)
             TreeNodes.shared.root.updateViews(object.bounds.size.width)
-            printLog("▣ observer:\(object.bounds.size)")
+            Log("▣ observer:\(object.bounds.size)")
         }
     }
 
@@ -157,11 +157,11 @@ class MainVC: UIViewController {
     }
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
 
-        printLog("▣ MainVC \(size)")
+        Log("▣ MainVC \(size)")
         super.viewWillTransition(to: size, with: coordinator)
     }
 
-    override func viewDidAppear(_ animated: Bool) { printLog("⟳ \(#function)")
+    override func viewDidAppear(_ animated: Bool) { Log("⟳ \(#function)")
         active.startActive()
     }
     

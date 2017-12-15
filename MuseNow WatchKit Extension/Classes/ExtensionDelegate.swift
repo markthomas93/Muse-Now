@@ -11,27 +11,27 @@ import ClockKit
 
 class ExtensionDelegate: NSObject, WKExtensionDelegate {
 
-    func applicationDidFinishLaunching() { printLog("⟳⌚︎ \(#function)")
+    func applicationDidFinishLaunching() { Log("⟳⌚︎ \(#function)")
         let _ = Timer.scheduledTimer(withTimeInterval: 5, repeats: false, block: {_ in
             Complicated.shared.reloadTimelines()
         })
     }
 
-    func applicationWillEnterForeground()  {  printLog("⟳⌚︎ \(#function)")
+    func applicationWillEnterForeground()  {  Log("⟳⌚︎ \(#function)")
     }
 
-    func applicationDidEnterBackground()  { printLog("⟳⌚︎ \(#function)")
+    func applicationDidEnterBackground()  { Log("⟳⌚︎ \(#function)")
     }
 
-    func applicationDidBecomeActive() {  printLog("⟳⌚︎ \(#function)")
+    func applicationDidBecomeActive() {  Log("⟳⌚︎ \(#function)")
         // both becomming active and unactive, bug?
     }
 
-    func applicationWillResignActive() {  printLog("⟳⌚︎ \(#function)")
+    func applicationWillResignActive() {  Log("⟳⌚︎ \(#function)")
         // menus or other interruptions
     }
 
-    func handle(_ backgroundTasks: Set<WKRefreshBackgroundTask>) {  printLog("⟳⌚︎ \(#function)")
+    func handle(_ backgroundTasks: Set<WKRefreshBackgroundTask>) {  Log("⟳⌚︎ \(#function)")
 
         for task in backgroundTasks {
 
@@ -39,7 +39,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
 
             case let task as WKApplicationRefreshBackgroundTask:
 
-                printLog("⟳✺ \(#function) type:\(task.classForCoder)")
+                Log("⟳✺ \(#function) type:\(task.classForCoder)")
                 Complicated.shared.extendTimelines()
 
 //            case let t as WKSnapshotRefreshBackgroundTask:
@@ -47,7 +47,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
 //            case let t as  WKURLSessionRefreshBackgroundTask:
 
             default:
-                printLog("⟳✺ \(#function) type:\(task.classForCoder)")
+                Log("⟳✺ \(#function) type:\(task.classForCoder)")
             }
              task.setTaskCompletedWithSnapshot(false)
         }

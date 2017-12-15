@@ -18,7 +18,7 @@ class TouchDial: TouchMove {
         table = delegate_
     }
 
-    override func doBegin(_ pos: CGPoint,_ timeStamp: TimeInterval) { //printLog("👆 \(#function) tapCount:\(taps.tapCount)")
+    override func doBegin(_ pos: CGPoint,_ timeStamp: TimeInterval) { //Log("👆 \(#function) tapCount:\(taps.tapCount)")
 
         anim.touchDialDown()
         taps.tapping(timeStamp)
@@ -64,7 +64,7 @@ class TouchDial: TouchMove {
         let isFuture = anim.animNow.rawValue > 0
         let flipFuture = isFuture != wasFuture
 
-        //printLog("👆 \(#function) degree:\(trunc(next˚)) isSlow:\(isSlow)")
+        //Log("👆 \(#function) degree:\(trunc(next˚)) isSlow:\(isSlow)")
 
         // save for comparison next time
         lastPanT = timestamp

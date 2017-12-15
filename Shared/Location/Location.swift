@@ -19,11 +19,11 @@ class Location: NSObject, CLLocationManagerDelegate {
      func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
             locationNow = location
-            printLog("📍 update: \(location)")
+            Log("📍 update: \(location)")
         }
     }
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        printLog("📍 error: \(error)")
+        Log("📍 error: \(error)")
     }
     func requestLocation(_ completion: @escaping () -> ()) {
         

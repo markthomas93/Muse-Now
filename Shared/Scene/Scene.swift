@@ -55,7 +55,7 @@ class Scene: SKScene  {
     
     override func sceneDidLoad() {
         
-        printLog("⎚ \(#function)")
+        Log("⎚ \(#function)")
         anim.scene = self
         center = CGPoint(x: size.width/2, y: size.height/2)
         radius =  min(size.width, size.height)/2
@@ -68,7 +68,7 @@ class Scene: SKScene  {
     /// - via: Active.checkForNewHour
     /// - via: (WatchCon EventVC).ActionDelegate.doRefresh
 
-    func pauseScene() { printLog("⎚ \(#function)")
+    func pauseScene() { Log("⎚ \(#function)")
         //??? isPaused = true 
         say.cancelSpeech()
     }
@@ -77,7 +77,7 @@ class Scene: SKScene  {
     /// - via: Actions.doAddEvent
     /// - via: Actions.doUpdateEvent
 
-    func updateSceneFinish() { printLog("⎚ \(#function)")
+    func updateSceneFinish() { Log("⎚ \(#function)")
         
         dayHour.updateTime() // set reference for current hour and day
         dots.updateDotEvents(muEvents.events)  //??? attempted
@@ -89,7 +89,7 @@ class Scene: SKScene  {
 
      /// - via: Action.refresh -> updateSceneFinish
      /// - via: Scene+Marks.markAction
-    func updateTextures () { //printLog("⎚ \(#function)")
+    func updateTextures () { //Log("⎚ \(#function)")
         
         updatePalTex()
         updateAniTex()

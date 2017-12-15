@@ -28,11 +28,12 @@ class Memos: FileSync {
             
             self.items.sort { "\($0.bgnTime)"+$0.eventId < "\($1.bgnTime)"+$1.eventId }
 
-            //printLog ("⧉ Memos::\(#function) items:\(self.items.count) fileTime:\(fileTime) -> memoryTime:\(self.memoryTime) ")
+            //Log ("⧉ Memos::\(#function) items:\(self.items.count) fileTime:\(fileTime) -> memoryTime:\(self.memoryTime) ")
             completion(self.items)
         }
     }
     
+
     
     func clearAll() {
 

@@ -87,7 +87,7 @@ extension Transcribe {
             }
         }
         log += "     ✏ \(nearestFound.str!)"
-        printLog(log)
+        Log(log)
         return nearestFound
     }
 

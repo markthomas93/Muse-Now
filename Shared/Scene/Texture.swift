@@ -36,7 +36,7 @@ class Texture {
         var data = Data(count: frames * width * 4)
         let fill = width - (days * hours)
         if fill < 0 {
-            printLog("🎞 makeAnim width:\(width) < days:\(days) * hours:\(hours)")
+            Log("🎞 makeAnim width:\(width) < days:\(days) * hours:\(hours)")
             return data
         }
 
@@ -222,7 +222,7 @@ class Texture {
         var data = Data(count: frames * width * 4)
         let fill = width - (days * hours)
         if fill < 0 {
-            printLog("🎞 makeCountDown width:\(width) < days:\(days) * hours:\(hours)")
+            Log("🎞 makeCountDown width:\(width) < days:\(days) * hours:\(hours)")
             return data
         }
 

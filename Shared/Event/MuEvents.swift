@@ -48,7 +48,7 @@ class MuEvents {
     
     @objc private func EkNotification(notification: NSNotification) {
 
-        printLog("📅 notification:\(notification.name.rawValue)")
+        Log("📅 notification:\(notification.name.rawValue)")
 
         // often, more than one notification comes in a batch, so defer multiple refreshes
         refreshTimer.invalidate()

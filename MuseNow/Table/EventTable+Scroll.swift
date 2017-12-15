@@ -7,7 +7,7 @@ var dragEndBegin = TimeInterval(0)
 
 extension EventTableVC {
     
-    override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) { //printLog("⿳ \(#function) ")
+    override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) { //Log("⿳ \(#function) ")
         
         let time = getNearestTimeForOffsetY(scrollView.contentOffset.y)
         anim.scrollingGotoTime(time, duration: 0.125)
@@ -16,7 +16,7 @@ extension EventTableVC {
     
     override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         let time = getNearestTimeForOffsetY(scrollView.contentOffset.y)
-        printLog("⿳ \(#function)")
+        Log("⿳ \(#function)")
         anim.scrollingGotoTime(time, duration:0.06)
         isDragging = false
     }
@@ -37,7 +37,7 @@ extension EventTableVC {
             let p2 =  0.30489632
             let p3 =  2.098846
             let predictedDuration = p0 * (vy * (vy * p1 + p2) + p3)
-            //printLog("⿳ \(#function) velocity:\(velocity) predicted:\(predictedDuration)")
+            //Log("⿳ \(#function) velocity:\(velocity) predicted:\(predictedDuration)")
             
             let time = getNearestTimeForOffsetY(nextOffsetY)
             anim.scrollingGotoTime(time, duration: predictedDuration)

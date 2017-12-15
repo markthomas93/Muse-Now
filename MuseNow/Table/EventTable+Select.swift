@@ -61,7 +61,7 @@ extension EventTableVC {
         }
         anim.touchDialGotoTime(cell.event!.bgnTime)
 
-        //printLog("⿳ \(#function): \(cell.event.title)")
+        //Log("⿳ \(#function): \(cell.event.title)")
     }
     
     

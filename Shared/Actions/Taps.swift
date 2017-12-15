@@ -28,7 +28,7 @@ class Taps {
         //let deltaTime = lastTime == 0 ? 0 : timeStamp - lastTime
         tapCount = lastTime == 0 ? 1 : tapCount + 1
         lastTime = timeStamp
-        //printLog("👆 \(#function) tapCount:\(tapCount) deltaTime:\(deltaTime)")
+        //Log("👆 \(#function) tapCount:\(tapCount) deltaTime:\(deltaTime)")
 
         switch tapCount {
         case 1: wasPausing = anim.pauseAnimation()
@@ -44,7 +44,7 @@ class Taps {
         wasPausing = false
     }
 
-    @objc func finishTaps() {// printLog("👆 \(#function) tapCount:\(tapCount)")
+    @objc func finishTaps() {// Log("👆 \(#function) tapCount:\(tapCount)")
         
         switch tapCount {
         case 1: if wasPausing {anim.resumeScan()}  // if was paused then unpause

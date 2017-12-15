@@ -26,7 +26,7 @@ class Motion: NSObject {
 
     func printGravity(_ title:String, _ motion:CMDeviceMotion) {
 
-        printLog(String(format: "⊕ \(title): %5.2f %5.2f %5.2f",
+        Log(String(format: "⊕ \(title): %5.2f %5.2f %5.2f",
                         motion.gravity.x,
                         motion.gravity.y,
                         motion.gravity.z))
@@ -34,7 +34,7 @@ class Motion: NSObject {
 
     func printRotationRate(_ title:String, _ motion:CMDeviceMotion) {
 
-        printLog(String(format: "⊕ \(title): %5.2f %5.2f %5.2f",
+        Log(String(format: "⊕ \(title): %5.2f %5.2f %5.2f",
                         motion.rotationRate.x,
                         motion.rotationRate.y,
                         motion.rotationRate.z))
@@ -114,7 +114,7 @@ class Motion: NSObject {
     
     func startMotion() {
 
-        if manager.isAccelerometerAvailable { printLog("⊕ Motion::\(#function)" )
+        if manager.isAccelerometerAvailable { Log("⊕ Motion::\(#function)" )
 
             motionTimer.invalidate()
             firstSample = true
@@ -141,7 +141,7 @@ class Motion: NSObject {
                     }
                 }
                 else if let error = error {
-                    printLog("⊕ Motion::\(#function) error:\(error.localizedDescription)" )
+                    Log("⊕ Motion::\(#function) error:\(error.localizedDescription)" )
                 }
             }
         }
@@ -152,7 +152,7 @@ class Motion: NSObject {
             motionTimer = Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false, block: {_ in
                 // self.manager.stopDeviceMotionUpdates()
                 // self.manager.stopAccelerometerUpdates()
-                 printLog("⊕ Motion::\(#function)" )
+                 Log("⊕ Motion::\(#function)" )
             })
         }
     }

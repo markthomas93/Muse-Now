@@ -126,7 +126,7 @@ class TreeCell: MuCell {
                 transform = CGAffineTransform(rotationAngle: angle)
                 alphaNext = treeNode.expanded ? 1.0 : 0.25
             }
-            //printLog ("𐂷 \(treeNode.setting?.title ?? "unknown") \(treeNode.type):\(expandable) ")
+            //Log ("𐂷 \(treeNode.setting?.title ?? "unknown") \(treeNode.type):\(expandable) ")
         }
 
         if animate {

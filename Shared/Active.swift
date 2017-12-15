@@ -31,7 +31,7 @@ class Active {
      2) Watch: return from Menu
      3) Watch+Phone: screen will reappear
      */
-    func startActive() { printLog("⟳ \(#function) recording:\(Record.shared.isRecording)")
+    func startActive() { Log("⟳ \(#function) recording:\(Record.shared.isRecording)")
 
         throttleTimer.invalidate()
         Motion.shared.startMotion()
@@ -73,13 +73,13 @@ class Active {
      2) Watch: user force touches Menu
      3) Watch+Phone: timeout of screen display
      */
-    func stopActive() { printLog("⟳ \(#function) recording:\(Record.shared.isRecording)")
+    func stopActive() { Log("⟳ \(#function) recording:\(Record.shared.isRecording)")
 
         restartTimer.invalidate()
         minuteTimer.invalidate()
         activateAudioTimer.invalidate()
 
-        Say.shared.cancelSpeech() ;  printLog("🗣 \(#function)")
+        Say.shared.cancelSpeech() ;  Log("🗣 \(#function)")
         stopTime = Date().timeIntervalSince1970
         anim.shutdownAnimation() 
 
@@ -103,7 +103,7 @@ class Active {
      - via motion.bang()
      - via actionDelegate
      */
-    func startMenuTime() { //printLog("⟳ \(#function)")
+    func startMenuTime() { //Log("⟳ \(#function)")
         restartTimer.invalidate()
         anim.animNow = .futrPause
         anim.actionTime = Date().timeIntervalSince1970
@@ -114,7 +114,7 @@ class Active {
      for .time event, update title every minute
      - via cellTimerTick
      */
-    func scheduleMinuteTimer() { //printLog("⟳ \(#function)")
+    func scheduleMinuteTimer() { //Log("⟳ \(#function)")
         
         let comps = (Calendar.current as NSCalendar).components([.second], from: Date())
         var nextMinute = TimeInterval(60 - comps.second!) + 0.02 // add a little over one frames at 60 fps
@@ -141,11 +141,11 @@ class Active {
             let thisMinute = trunc(timeNow/60)*60
             let thisHour = trunc(timeNow/HourSecs)*HourSecs
             
-            if lastMinute != thisMinute { // printLog("⟳ \(#function) lastMin:\(lastMinute) thisMin:\(thisMinute)")
+            if lastMinute != thisMinute { // Log("⟳ \(#function) lastMin:\(lastMinute) thisMin:\(thisMinute)")
                 lastMinute = thisMinute
                 actions.doMinuteTimerTick()
             }
-            if lastHour != thisHour {  // printLog("⟳ \(#function) lastHour:\(lastHour) thisHour:\(thisHour)")
+            if lastHour != thisHour {  // Log("⟳ \(#function) lastHour:\(lastHour) thisHour:\(thisHour)")
                 lastHour = thisHour
                 actions.doRefresh(/*isSender*/false) // will set isPaused = true, after update
             }
@@ -153,7 +153,7 @@ class Active {
             isChecking = false
         }
         else {
-            printLog("⟳ \(#function) duplicate")
+            Log("⟳ \(#function) duplicate")
         }
     }
 }

@@ -37,7 +37,7 @@ extension Anim {
              .futrMark: execClosure(closure) // no need to wait while pausing
             
         default:        closures.append(closure)
-        /**/            printLog("𐆄 \(#function)")
+        /**/            Log("𐆄 \(#function)")
         }
     }
 
@@ -46,7 +46,7 @@ extension Anim {
         closures.append(Closure("recording", closure_))
     }
 
-    func execClosure(_ closure: Closure) { printLog("𐆄 \(#function)(\(closure.title)")
+    func execClosure(_ closure: Closure) { Log("𐆄 \(#function)(\(closure.title)")
         closure.closure?()
     }
     

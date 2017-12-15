@@ -65,7 +65,7 @@ extension EventTableVC: PhoneCrownDelegate {
      User moved crown
      - via: PhoneCrown.[moved ended].updateDelta
      */
-    func phoneCrownDeltaRow(_ deltaRow: Int,_ isRight:Bool) { // printLog ("⊛ EventTableVC::\(#function):\(deltaRow)")
+    func phoneCrownDeltaRow(_ deltaRow: Int,_ isRight:Bool) { // Log ("⊛ EventTableVC::\(#function):\(deltaRow)")
 
         anim.touchDialClockwise(deltaRow > 0)
 
@@ -104,7 +104,7 @@ extension EventTableVC: PhoneCrownDelegate {
             }
             let nextIndexPath = IndexPath(row: nextRow, section: nextSec)
             if let cell = tableView.cellForRow(at: nextIndexPath) {
-                // printLog("⿳ \(#function) centerY:\(nextOffset)")
+                // Log("⿳ \(#function) centerY:\(nextOffset)")
                 prevIndexPath = tableView.indexPath(for: cell)!
                 nextMuCell(cell as! MuCell)
 

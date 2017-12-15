@@ -20,7 +20,7 @@ extension MuEvent { // calendar, reminder
         case EKAuthorizationStatus.notDetermined:   requestAccessToEvents(type: type)
         case EKAuthorizationStatus.authorized:      loadEvents(type: type)
         case EKAuthorizationStatus.restricted, EKAuthorizationStatus.denied:
-            printLog("\(#function) type:\(type) denied !!!")
+            Log("\(#function) type:\(type) denied !!!")
         }
     }
     
@@ -38,7 +38,7 @@ extension MuEvent { // calendar, reminder
                 }
             } else {
                 DispatchQueue.main.async  {
-                     printLog("\(#function) type:\(type) needs permission !!!")
+                     Log("\(#function) type:\(type) needs permission !!!")
                     //self.needPermission(type: type)
                     
                 }

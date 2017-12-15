@@ -23,7 +23,7 @@ class WatchCon: WKInterfaceController {
 
     // life cycle  -------------------------------------
 
-    override func awake(withContext context: Any?) { printLog("⟳ \(#function) context:\(context ?? "nil")")
+    override func awake(withContext context: Any?) { Log("⟳ \(#function) context:\(context ?? "nil")")
         //Muse.shared.testScript()
         let ext = WKExtension.shared()
         ext.isAutorotating = true
@@ -35,19 +35,19 @@ class WatchCon: WKInterfaceController {
         WKExtension.shared().scheduleBackgroundRefresh(withPreferredDate: nextMinute, userInfo:nil, scheduledCompletion: {_ in})
     }
     
-    override func willActivate() { printLog("⟳ \(#function)")
+    override func willActivate() { Log("⟳ \(#function)")
         
         active.startActive()
         crown.crown.focus()
     }
 
-    override func didAppear() { printLog("⟳ \(#function)")
+    override func didAppear() { Log("⟳ \(#function)")
     }
 
-    override func willDisappear() { printLog("⟳ \(#function)")
+    override func willDisappear() { Log("⟳ \(#function)")
     }
 
-    override func didDeactivate() { printLog("⟳ \(#function))")
+    override func didDeactivate() { Log("⟳ \(#function))")
         active.stopActive()
     }
 
@@ -55,7 +55,7 @@ class WatchCon: WKInterfaceController {
     /// - via: WatchCon.awake
     func initScene() {
 
-        printLog("⟳ \(#function)")
+        Log("⟳ \(#function)")
 
         let w = roundf(Float(self.contentFrame.size.width  / 4)) * 8
         size = CGSize(width:CGFloat(w), height:CGFloat(w))
@@ -115,22 +115,22 @@ class WatchCon: WKInterfaceController {
 
     // menu actions  -------------------------------------
     
-    @IBAction func menuMarkAction() { printLog("✓ \(#function)")
+    @IBAction func menuMarkAction() { Log("✓ \(#function)")
         active.startMenuTime()
         actions.markAction(.markOn, /*event*/ nil, anim.getIndexForMark(), /*isSender*/ true)
     }
     
-    @IBAction func menuClearAction() { printLog("✓ \(#function)")
+    @IBAction func menuClearAction() { Log("✓ \(#function)")
         active.startMenuTime()
         actions.markAction(.markOff, /*event*/ nil, anim.getIndexForMark(), /*isSender*/ true)
     }
     
-    @IBAction func menuMenuAction() { printLog("⿳ \(#function)")
+    @IBAction func menuMenuAction() { Log("⿳ \(#function)")
         active.startMenuTime()
         WatchMenu.shared.recordMenu()
     }
 
-    @IBAction func tap1Action(_ sender: Any) { printLog("👆\(#function)")
+    @IBAction func tap1Action(_ sender: Any) { Log("👆\(#function)")
 
         let timeStamp = Date().timeIntervalSinceReferenceDate
         Taps.shared.tapping(timeStamp)

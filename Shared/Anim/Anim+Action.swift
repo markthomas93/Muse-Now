@@ -53,13 +53,13 @@ extension Anim {
         case .startup, .shutdown:                                   startupTime  = 0
         }
         actionTime  = Date().timeIntervalSince1970
-        //printLog(String(format: "⎚ userDotAction dot Prev,Now: %g,%g  %@⟶%@  tense:%@", prev,now,"\(animPrev)","\(animNow)","\(flipTense)"))
+        //Log(String(format: "⎚ userDotAction dot Prev,Now: %g,%g  %@⟶%@  tense:%@", prev,now,"\(animPrev)","\(animNow)","\(flipTense)"))
     }
     
     // pause ------------------------------------------
 
     @discardableResult
-    func pauseAnimation() -> Bool { printLog ("⎚ \(#function) animNow:\(animNow)")
+    func pauseAnimation() -> Bool { Log ("⎚ \(#function) animNow:\(animNow)")
         Say.shared.clearAll() //???
         finishTimer.invalidate()
         let wasPausing = (animNow == .futrPause || animNow == .pastPause)
@@ -148,11 +148,11 @@ extension Anim {
         fanOutTime = 0
         dots.dotPrev = dots.dotNow
         
-        //printLog(String(format: "⎚ \(#function) frame:%.1f dotPrevNow:%.1f,%.1f \(animNow)", sceneFrame, dots.dotPrev, dots.dotNow))
+        //Log(String(format: "⎚ \(#function) frame:%.1f dotPrevNow:%.1f,%.1f \(animNow)", sceneFrame, dots.dotPrev, dots.dotNow))
     }
 
  
-    func shutdownAnimation() {  printLog("⎚⎚ \(#function)")
+    func shutdownAnimation() {  Log("⎚⎚ \(#function)")
         finishTimer.invalidate()
         dots.selectTime(Date().timeIntervalSince1970)
         dots.dotNow = 0.1
@@ -164,7 +164,7 @@ extension Anim {
      }
 
 
-    func gotoRecordSpoke(on:Bool) { printLog("⎚  gotoRecordSpoke(on:\(on))")
+    func gotoRecordSpoke(on:Bool) { Log("⎚  gotoRecordSpoke(on:\(on))")
 
         finishTimer.invalidate()
         closures.removeAll()
@@ -204,7 +204,7 @@ extension Anim {
 
             fanOutDur = duration
             fanOutTime = 0
-            //printLog(String(format: "⎚ \(#function) frame:%.1f dotPrevNow:%.1f,%.1f \(animNow)", sceneFrame, dots.dotPrev, dots.dotNow))
+            //Log(String(format: "⎚ \(#function) frame:%.1f dotPrevNow:%.1f,%.1f \(animNow)", sceneFrame, dots.dotPrev, dots.dotNow))
         }
     }
 
@@ -216,7 +216,7 @@ extension Anim {
         
         dots.dotPrev = dots.dotNow //
         if clockwise != dots.isClockwise {
-            //printLog ("\(#function) isClockwise:\(dots.isClockwise) -> \(clockwise)")
+            //Log ("\(#function) isClockwise:\(dots.isClockwise) -> \(clockwise)")
             dots.isClockwise = clockwise
         }
     }

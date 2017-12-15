@@ -22,7 +22,7 @@
     }
 
 
-    func startPlaybackSession() { printLog("🔈 \(#function)")
+    func startPlaybackSession() { Log("🔈 \(#function)")
         audioPlayer?.stop()
         do {
             // AVAudioSessionCategoryPlayAndRecord will play back only small ear speaker
@@ -31,12 +31,12 @@
             try audioSession.setActive(false)
             try audioSession.setCategory(AVAudioSessionCategorySoloAmbient, with: [.allowBluetoothA2DP,.interruptSpokenAudioAndMixWithOthers] )
         }
-        catch { /*printLog("🔈 !!! \(#function) Error:\(error)")*/ }
+        catch { /*Log("🔈 !!! \(#function) Error:\(error)")*/ }
 
     }
     func finishPlaybackSession() {
 
-        if  audioPlayer?.isPlaying == true { printLog("🔈 \(#function)")
+        if  audioPlayer?.isPlaying == true { Log("🔈 \(#function)")
             audioPlayer.stop()
 
             do { try self.audioSession.setActive(false, with: .notifyOthersOnDeactivation) }
@@ -58,7 +58,7 @@
             finished = completion
         }
         catch {
-            printLog("🔈 \(#function) error")
+            Log("🔈 \(#function) error")
             completion(false)
         }
     }

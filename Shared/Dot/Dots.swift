@@ -156,14 +156,14 @@ class Dots {
     }
 
     /// scene.updateSceneFinish()
-    func updateDotEvents(_ events: [MuEvent] ) {  //printLog("⚇ \(#function)")
+    func updateDotEvents(_ events: [MuEvent] ) {  //Log("⚇ \(#function)")
         
         initPastFuture()
         
         for event in events {
             var (bgnIndex, endIndex, elapseMin) = getBgnEndElapsed(event)
             if event.type == .time {
-                printLog("⚇ \(#function) timeEvent bgnIndex:\(bgnIndex) endIndex:\(endIndex) elapseMin:\(elapseMin)")
+                Log("⚇ \(#function) timeEvent bgnIndex:\(bgnIndex) endIndex:\(endIndex) elapseMin:\(elapseMin)")
             }
             if endIndex >= bgnIndex {
                 for i in bgnIndex ... endIndex {

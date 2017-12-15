@@ -16,7 +16,7 @@ extension MuEvents {
       - via: MuEvents::updateEvents
       - via: Session::parseMsg(Msg["addFile":"Marks.plist",...])
      */
-    func applyMarks() { printLog ("✓ \(#function)")
+    func applyMarks() { Log ("✓ \(#function)")
         
         if marks.idMark.count > 0 {
 

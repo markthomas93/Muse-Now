@@ -23,7 +23,7 @@ class Settings: FileSync {
             if root.count == 0  { self.settingsFromMemory() }
             else                { self.settingsFromRoot() }
 
-            printLog ("⧉ Settings::\(#function) show:\(Show.shared.showSet.rawValue) saySet:\(Say.shared.saySet.rawValue) hearSet:\(Hear.shared.hearSet.rawValue)")
+            Log ("⧉ Settings::\(#function) show:\(Show.shared.showSet.rawValue) saySet:\(Say.shared.saySet.rawValue) hearSet:\(Hear.shared.hearSet.rawValue)")
             completion()
         }
     }
@@ -37,7 +37,7 @@ class Settings: FileSync {
     /**
         When initializing for the first time, no files yet exist, so read from default values in memory
      */
-    func settingsFromMemory() { printLog ("⧉ Settings::\(#function)")
+    func settingsFromMemory() { Log ("⧉ Settings::\(#function)")
         root["showSet"]   = Show.shared.showSet.rawValue
         root["hearSet"]   = Hear.shared.hearSet.rawValue
         root["saySet"]    = Say.shared.saySet.rawValue
@@ -48,7 +48,7 @@ class Settings: FileSync {
     /**
      After first time, values were saved to file, so read from default values from root value
      */
-    func settingsFromRoot() { printLog ("⧉ Settings::\(#function)")
+    func settingsFromRoot() { Log ("⧉ Settings::\(#function)")
         if let value   = root["dialColor"] as? Float { Actions.shared.dialColor(value, isSender:false) }
         if let saySet  = root["saySet"]    as? Int   { Say.shared.saySet   = SaySet(rawValue:saySet) }
         if let hearSet = root["hearSet"]   as? Int   { Hear.shared.hearSet = HearSet(rawValue:hearSet) }

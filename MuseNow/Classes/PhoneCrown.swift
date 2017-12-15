@@ -82,7 +82,7 @@ class PhoneCrown: TouchForce {
         if dimmed   { UIColor.darkGray.set() }
         else        { UIColor.white.set() }
         
-        //printLog (String(format:"deltaY: %.1f mod %.1f -> divOfs: %.1f", deltaY, maxOffset, divOfs))
+        //Log (String(format:"deltaY: %.1f mod %.1f -> divOfs: %.1f", deltaY, maxOffset, divOfs))
         for groove in 0 ..< grooves {
             
             let groveY = grooveH * CGFloat(groove*2) + crownOffset.y + offsetY
@@ -119,7 +119,7 @@ class PhoneCrown: TouchForce {
                 deltaYY = deltaY
                 return
             }
-            //printLog ("\(#function) deltaY:\(deltaY) deltaYY:\(deltaYY) row:\(prevDeltaRow) -> \(nextDeltaRow)")
+            //Log ("\(#function) deltaY:\(deltaY) deltaYY:\(deltaYY) row:\(prevDeltaRow) -> \(nextDeltaRow)")
             
             delegate.phoneCrownDeltaRow(deltaCell, isRight)
             Haptic.play(.click)
@@ -188,7 +188,7 @@ class PhoneCrown: TouchForce {
     // singleTap: toggle mark for current row
     
     override func singleTap(){
-        printLog ("👆 PhoneCrown::\(#function)")
+        Log ("👆 PhoneCrown::\(#function)")
         let myDistance = abs(lastX - center.x)
         let twinDistance = abs(lastX - twin.center.x)
         let sendRight = myDistance < twinDistance ? isRight : twin.isRight
@@ -197,7 +197,7 @@ class PhoneCrown: TouchForce {
     
     override func forceTap(_ isForceOn: Bool) {
         if isForceOn {
-            printLog ("👆 PhoneCrown::\(#function)")
+            Log ("👆 PhoneCrown::\(#function)")
             singleTap()
         }
     }

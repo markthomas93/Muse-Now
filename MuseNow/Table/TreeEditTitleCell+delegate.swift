@@ -33,7 +33,7 @@ extension TreeEditTitleCell: UITextFieldDelegate {
         
          textField.keyboardAppearance =  UIAccessibilityIsInvertColorsEnabled() ? .default : .dark
 
-        printLog ("▭ \(#function)")
+        Log ("▭ \(#function)")
         if textField.text != nil {
             textField.text = ""
         }
@@ -47,7 +47,7 @@ extension TreeEditTitleCell: UITextFieldDelegate {
            (tableVC as? TreeTableVC)?.setTouchedCell(parentCell)
         }
         
-        printLog ("▭ \(#function)")
+        Log ("▭ \(#function)")
         textClear.isHidden = true
         if textField.text == nil || textField.text! == "" {
             textField.text = prevText
@@ -66,7 +66,7 @@ extension TreeEditTitleCell: UITextFieldDelegate {
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
 
-        printLog ("▭ \(#function)")
+        Log ("▭ \(#function)")
         if let node = treeNode as? TreeRoutineItemNode {
             prevText = node.routineItem.title
             textField.text = prevText

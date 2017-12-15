@@ -24,7 +24,7 @@ class Hear {
 
         listenForNotifications()
         updateRoute()
-        printLog("🎧 route: \(route)")
+        Log("🎧 route: \(route)")
     }
 
     func listenForNotifications() {
@@ -35,7 +35,7 @@ class Hear {
 
         updateReason(notification)
         updateRoute()
-        printLog("🎧 \(#function) route: \(route) reason: \(reason)  ")
+        Log("🎧 \(#function) route: \(route) reason: \(reason)  ")
     }
 
     func updateReason(_ notification: Notification) {
@@ -44,7 +44,7 @@ class Hear {
             let userInfo = notification.userInfo,
             let reasonNum = userInfo[AVAudioSessionRouteChangeReasonKey] as? NSNumber,
             let reasonUint = AVAudioSessionRouteChangeReason(rawValue: reasonNum.uintValue)
-            else { printLog("🎧 unknown updateReason notification:\(notification)") ; return }
+            else { Log("🎧 unknown updateReason notification:\(notification)") ; return }
         
         switch reasonUint {
         case .oldDeviceUnavailable:     reason = "Unavailable "
@@ -64,7 +64,7 @@ class Hear {
         hearSet = hearSet_
         let oldRoute = route
         updateRoute()
-        printLog("🎧 \(#function) \(oldRoute) ⟶ \(route)")
+        Log("🎧 \(#function) \(oldRoute) ⟶ \(route)")
     }
 
   

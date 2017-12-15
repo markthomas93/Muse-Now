@@ -10,7 +10,7 @@ extension TreeTableVC: PhoneCrownDelegate {
             let scrollY = self.tableView.contentOffset.y
             let cellZ = cellY+cellH
             let tablZ = tablY+tablH
-            printLog (String(format:"⊛ NearestTouch H:%i S:%i C:%i_%i T:%i_%i %i⟶",
+            Log (String(format:"⊛ NearestTouch H:%i S:%i C:%i_%i T:%i_%i %i⟶",
                              Int(headerY),
                              Int(scrollY),
                              Int(cellY), Int(cellZ),
@@ -52,7 +52,7 @@ extension TreeTableVC: PhoneCrownDelegate {
             let cellZ = cellY+cell.height
             let deltaY = newY - cellY
             let scrollY = tableView.contentOffset.y
-            printLog (String(format:"⊛ NearestTouch S:%i C:%i_%i L:%i_%i T:%i_%i %i⟶%i",
+            Log (String(format:"⊛ NearestTouch S:%i C:%i_%i L:%i_%i T:%i_%i %i⟶%i",
                              Int(scrollY),
                              Int(cellY), Int(cellZ),
                              Int(lastY), Int(lastZ),
@@ -85,7 +85,7 @@ extension TreeTableVC: PhoneCrownDelegate {
     /**
      User force touches our double tapped on phoneCrowndouble
      */
-    func phoneCrownToggle(_ isRight:Bool) { printLog ("⊛ TreeTableVC::\(#function)")
+    func phoneCrownToggle(_ isRight:Bool) { Log ("⊛ TreeTableVC::\(#function)")
         // toggle mark on the right
         if  isRight,
             let touchedCell = touchedCell as? TreeTitleMarkCell,
@@ -111,14 +111,14 @@ extension TreeTableVC: PhoneCrownDelegate {
 
 
     /// User touched phone crown, not needed for TreeTable
-    func phoneCrownUpdate() { //printLog ("⊛ TreeTableVC::\(#function)")
+    func phoneCrownUpdate() { //Log ("⊛ TreeTableVC::\(#function)")
     }
 
     /**
      User moved phone crown
      - via: PhoneCrown.[moved ended].updateDelta
      */
-    func phoneCrownDeltaRow(_ deltaRow: Int,_ isRight:Bool) { // printLog ("⊛ TreeTableVC::\(#function):\(deltaRow)")
+    func phoneCrownDeltaRow(_ deltaRow: Int,_ isRight:Bool) { // Log ("⊛ TreeTableVC::\(#function):\(deltaRow)")
 
         let shownNodes = TreeNodes.shared.shownNodes
 

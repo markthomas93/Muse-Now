@@ -62,7 +62,7 @@ extension Dots {
             getDot(Int(dotStart)).resetIndex()
         }
         dotNow = dotStart
-        //printLog (String(format: "⚇ \(#function) dotNow:%.1f  isClockise:\(isClockwise)",dotNow), terminator:" ")
+        //Log (String(format: "⚇ \(#function) dotNow:%.1f  isClockise:\(isClockwise)",dotNow), terminator:" ")
     }
 
 

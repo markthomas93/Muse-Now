@@ -144,7 +144,7 @@ class Routine {
             let dayOfWeek = DaysOfWeek(rawValue: 1 << (6 - weekday))
 
             // let daylabel = ["sun","mon","tue","wed","thu","fri","sat"]
-            // printLog("𝓡 \(day),\(daylabel[weekday]): " +  MuDate.dateToString(dayDate!.timeIntervalSince1970, "MM-dd HH:mm"))
+            // Log("𝓡 \(day),\(daylabel[weekday]): " +  MuDate.dateToString(dayDate!.timeIntervalSince1970, "MM-dd HH:mm"))
 
             for item in items {
                 
@@ -156,7 +156,7 @@ class Routine {
                     let event   = MuEvent(routine:item,bgnTime,rgb != nil ? rgb! : 0xffffff)
                     events.append(event)
 
-                    // printLog("𝓡 event: " +
+                    // Log("𝓡 event: " +
                     // MuDate.dateToString(event.bgnTime, "MM-dd HH:mm") + " to " +
                     //      MuDate.dateToString(event.endTime, "HH:mm") + "    " +
                     //      event.title)

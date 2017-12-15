@@ -34,7 +34,7 @@ class UIViewForce: UIView {
                 if  deltaTime > recoveryTime,
                     force > forceOnθ {
 
-                    printLog (String(format:"👆 \(#function):%.2f",deltaTime))
+                    Log (String(format:"👆 \(#function):%.2f",deltaTime))
 
                     isForceOn = true
                     forceOnTime = timeStamp

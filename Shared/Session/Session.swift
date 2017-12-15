@@ -28,11 +28,11 @@ class Session: NSObject, WCSessionDelegate {
 
     func session(_ session_: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
         if let error = error {
-            printLog("↔︎ \(#function) error: \(error.localizedDescription)")
+            Log("↔︎ \(#function) error: \(error.localizedDescription)")
             return
         }
         else {
-            printLog("↔︎ \(#function) state:\(activationState)")
+            Log("↔︎ \(#function) state:\(activationState)")
             self.session = session_
         }
     }
@@ -48,10 +48,10 @@ class Session: NSObject, WCSessionDelegate {
     // changing watches
     #if os(iOS)
     func sessionDidBecomeInactive(_ session: WCSession) {
-        //printLog("↔︎ \(#function) - changing watches?")
+        //Log("↔︎ \(#function) - changing watches?")
     }
     func sessionDidDeactivate(_ session: WCSession) {
-        //printLog("↔︎ \(#function) - changing watches?")
+        //Log("↔︎ \(#function) - changing watches?")
         session.activate()
         Actions.shared.doAction(.refresh)
     }
@@ -68,14 +68,14 @@ extension Session {
         if let session = validSession {
             do {
                 try session.updateApplicationContext(msg)
-                printLog("→ \(#function) " + dumpDict(msg))
+                Log("→ \(#function) " + dumpDict(msg))
             }
             catch let error {
-                printLog("→ \(#function) error:\(error)")
+                Log("→ \(#function) error:\(error)")
             }
         }
         else {
-            printLog("→ \(#function) invalid session")
+            Log("→ \(#function) invalid session")
         }
     }
     
@@ -84,7 +84,7 @@ extension Session {
     func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String : Any]) {
         
         DispatchQueue.main.async {
-            printLog("← didReceiveApplicationContext: " + self.dumpDict(applicationContext) )
+            Log("← didReceiveApplicationContext: " + self.dumpDict(applicationContext) )
             self.parseMsg(applicationContext)
         }
     }
@@ -109,7 +109,7 @@ extension Session {
     func session(_ session: WCSession, didReceiveUserInfo userInfo: [String : Any] = [:]) {
         
         DispatchQueue.main.async {
-            printLog("← session didReceiveUserInfo:\(userInfo)")
+            Log("← session didReceiveUserInfo:\(userInfo)")
         }
     }
     
@@ -133,15 +133,15 @@ extension Session {
     
     func session(_ session: WCSession, didFinish fileTransfer: WCSessionFileTransfer, error: Error?) {
         if error != nil {
-            printLog("→ \(#function) Error:\(error!)")
+            Log("→ \(#function) Error:\(error!)")
         }
         else {
             let metadata = fileTransfer.file.metadata
             if let fileName = metadata?["fileName"] {
-                printLog("→ \(#function) transferred file:\(fileName)")
+                Log("→ \(#function) transferred file:\(fileName)")
             }
             else {
-                printLog("→ \(#function) success!")
+                Log("→ \(#function) success!")
             }
             
         }
@@ -157,11 +157,11 @@ extension Session {
             if let fileName = metadata["fileName"] {
                 let fileStr = fileName as! String
                 moveFileToDoc(srcURL, fileStr,  metadata["fileDate"]  as? TimeInterval ?? TimeInterval(0))
-                printLog("⧉ ← \(#function) srcURL:\(srcURL) fileStr:\(fileStr)")
+                Log("⧉ ← \(#function) srcURL:\(srcURL) fileStr:\(fileStr)")
             }
         }
         else  {
-            printLog("⧉ ←\(#function) unknown metadata for file:\(file)")
+            Log("⧉ ←\(#function) unknown metadata for file:\(file)")
         }
     }
     
@@ -172,11 +172,11 @@ extension Session {
                 //setFileDate(time, dstURL)
             }
             DispatchQueue.main.async {
-                printLog("⧉ ← \(#function) moved file:\(fileName)")
+                Log("⧉ ← \(#function) moved file:\(fileName)")
             }
         }
         else {
-            printLog("⧉ ← \(#function) could NOT move file:\(fileName) !!!")
+            Log("⧉ ← \(#function) could NOT move file:\(fileName) !!!")
         }
     }
     
@@ -210,7 +210,7 @@ extension Session {
     func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
         
         DispatchQueue.main.async {
-            printLog("← didReceiveMessage: " + self.dumpDict(message))
+            Log("← didReceiveMessage: " + self.dumpDict(message))
             self.parseMsg(message)
         }
         replyHandler(["reply":"yo"])
@@ -219,7 +219,7 @@ extension Session {
     func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
         
         DispatchQueue.main.async {
-            printLog("← didReceiveMessage: " + self.dumpDict(message))
+            Log("← didReceiveMessage: " + self.dumpDict(message))
             self.parseMsg(message)
         }
     }

@@ -100,7 +100,7 @@
         return strActs
     }
 
-    func clearAll() {  printLog("🗣 \(#function)")
+    func clearAll() {  Log("🗣 \(#function)")
         cancelSpeech() // clears timers
         Audio.shared.finishPlaybackSession()
         sayCache.clearAll()
@@ -159,7 +159,7 @@
 
         clearTimers()
         clearTransientPhrases()
-        isSaying = false ; printLog("🗣 \(#function) isSaying:\(self.isSaying) 🚦")
+        isSaying = false ; Log("🗣 \(#function) isSaying:\(self.isSaying) 🚦")
     }
     
     
@@ -183,7 +183,7 @@
 
         // begin ------------------------------------------------
 
-        printLog("🗣 updateDialog(via:\(via)) \"\((event?.title ?? "").trunc(length:20))\" .\(phrase)")
+        Log("🗣 updateDialog(via:\(via)) \"\((event?.title ?? "").trunc(length:20))\" .\(phrase)")
 
         switch phrase {
         case .phraseBlank:      newItem(0.00,  0.05, [.phraseBlank], immediate: true)
@@ -199,12 +199,12 @@
     }
 
     func updateSpeech(via:String) {
-        printLog("🗣 updateSpeech(via:\(via))")
+        Log("🗣 updateSpeech(via:\(via))")
         // text, speed, and memos will clear sayItem when done
         if sayItem == nil {
             if      let item = sayCache.popNext() { return execItem(item) }
             else if let item = sayCache.getNext() { return waitItem(item) }
-            else { isSaying = false ; printLog("🗣 updateSpeech(via:\(via) isSaying:\(isSaying)  🚦") }
+            else { isSaying = false ; Log("🗣 updateSpeech(via:\(via) isSaying:\(isSaying)  🚦") }
         }
     }
 
@@ -220,11 +220,11 @@
         else if deltaTime < 1.0 {
             isSaying = true
         }
-        printLog("🗣 \(#function) wait:\(deltaTime) \(item.shortTitle()) .\(item.phrase) \(isSaying ? "🚦" : "")")
+        Log("🗣 \(#function) wait:\(deltaTime) \(item.shortTitle()) .\(item.phrase) \(isSaying ? "🚦" : "")")
 
         // item.log("say timer > \(String(format:"%.2f",deltaTime)) ")
         sayTimer = Timer.scheduledTimer(withTimeInterval: deltaTime, repeats: false, block: {_ in
-            printLog("🗣 \(#function) fired! \(item.shortTitle()) .\(item.phrase)")
+            Log("🗣 \(#function) fired! \(item.shortTitle()) .\(item.phrase)")
             self.clearTimers()
             self.updateSpeech(via:#function)
         })
@@ -233,7 +233,7 @@
 
     func execItem(_ item: SayItem) {
 
-        isSaying = true ; printLog("🗣 \(#function)  \(item.shortTitle()) .\(item.phrase) isSaying:\(self.isSaying) 🛑")
+        isSaying = true ; Log("🗣 \(#function)  \(item.shortTitle()) .\(item.phrase) isSaying:\(self.isSaying) 🛑")
 
         clearTimers()
         actions.doSetTitle(item.title)
@@ -242,9 +242,9 @@
         func txtLocal() {
             txtTimer?.invalidate()
             txtTimer = nil
-            printLog("🗣 \(#function) before  \(itemDuration) ⏱ anim:\(Anim.shared.animNow)" )
+            Log("🗣 \(#function) before  \(itemDuration) ⏱ anim:\(Anim.shared.animNow)" )
             txtTimer = Timer.scheduledTimer(withTimeInterval: itemDuration, repeats: false, block: {_ in
-                printLog("🗣 \(#function) timeout  \(item.shortTitle()) .\(item.phrase)  ⏱ anim:\(Anim.shared.animNow)")
+                Log("🗣 \(#function) timeout  \(item.shortTitle()) .\(item.phrase)  ⏱ anim:\(Anim.shared.animNow)")
                 self.clearTimers()
                 self.sayItem = nil
                 self.actions.doSetTitle("")
@@ -255,7 +255,7 @@
         func playSay(_ item: SayItem) -> Bool {
 
             if item.spoken != "" && Hear.shared.canPlay() {
-                printLog("🗣 \(#function) sayItem:\(item.title)" )
+                Log("🗣 \(#function) sayItem:\(item.title)" )
                 self.clearTimers()
                 synth.speak(UtterItem(item, sayVolume))
                 return true
@@ -287,7 +287,7 @@
     // AVSpeechSynthesizerDelegate ---------------------------------
     
     // When finished, clear title, and setup next in line
-    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) { printLog("🗣 speechSynthesizer didFinish ")
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) { Log("🗣 speechSynthesizer didFinish ")
 
         //let utter = utterance as! UtterItem ; utter.item?.log( "<<< finish")
 
@@ -298,7 +298,7 @@
     }
     
     // When finished, clear title, and setup next in line
-    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) { printLog("🗣 speechSynthesizer <<< cancel >>>")
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) { Log("🗣 speechSynthesizer <<< cancel >>>")
         
         // let utter = utterance as! UtterItem ; utter.item?.log( "<<< cancel")
         actions.doSetTitle("")

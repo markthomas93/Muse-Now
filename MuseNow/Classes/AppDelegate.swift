@@ -10,21 +10,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         return true
     }
-    func applicationWillResignActive(_ application: UIApplication) { printLog("⟳☎︎ \(#function)")
+    func applicationWillResignActive(_ application: UIApplication) { Log("⟳☎︎ \(#function)")
         Active.shared.stopActive()
         didStopActive = true
     }
-    func applicationDidBecomeActive(_ application: UIApplication) { printLog("⟳☎︎ \(#function)")
+    func applicationDidBecomeActive(_ application: UIApplication) { Log("⟳☎︎ \(#function)")
         if didStopActive {
             didStopActive = false
             Active.shared.startActive()
         }
     }
-    func applicationDidEnterBackground(_ application: UIApplication) { printLog("⟳☎︎ \(#function)")
+    func applicationDidEnterBackground(_ application: UIApplication) { Log("⟳☎︎ \(#function)")
     }
-    func applicationWillEnterForeground(_ application: UIApplication) { printLog("⟳☎︎ \(#function)")
+    func applicationWillEnterForeground(_ application: UIApplication) { Log("⟳☎︎ \(#function)")
     }
-    func applicationWillTerminate(_ application: UIApplication) { printLog("⟳☎︎ \(#function)")
+    func applicationWillTerminate(_ application: UIApplication) { Log("⟳☎︎ \(#function)")
     }
 }
 

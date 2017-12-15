@@ -30,23 +30,25 @@ class FileSync: NSObject {
 
         let deltaTime = fileTime - memoryTime
         if deltaTime > 0 {
-            printLog ("⧉ saveData  \(fileName) \(memoryTime)⟶\(fileTime) 𝚫\(deltaTime)")
-            do {
-                let url = FileManager.documentUrlFile(fileName)
-                try data.write(to:url)
-                //TODO setup before write
-                var fileAttributes = try FileManager.default.attributesOfItem(atPath:url.path)
-                fileAttributes[FileAttributeKey.creationDate] =  Date(timeIntervalSince1970:fileTime)
-                try FileManager.default.setAttributes(fileAttributes, ofItemAtPath: url.path)
-                memoryTime = fileTime
-                return true
+            Log ("⧉ saveData \(fileName) \(memoryTime)⟶\(fileTime) 𝚫\(deltaTime)")
+            DispatchQueue.global(qos: .userInitiated).async {
+                do {
+                    let url = FileManager.documentUrlFile(self.fileName)
+                    try data.write(to:url)
+                    //TODO setup before write
+                    var fileAttributes = try FileManager.default.attributesOfItem(atPath:url.path)
+                    fileAttributes[FileAttributeKey.creationDate] =  Date(timeIntervalSince1970:fileTime)
+                    try FileManager.default.setAttributes(fileAttributes, ofItemAtPath: url.path)
+                    self.memoryTime = fileTime
+                }
+                catch {
+                    print(error)
+                }
             }
-            catch {
-                print(error)
-            }
+            return true
         }
         else {
-            printLog ("⧉ saveData \(fileName) No Change 𝚫\(deltaTime)")
+            Log ("⧉ saveData \(fileName) No Change 𝚫\(deltaTime)")
         }
         return false
     }
@@ -55,7 +57,7 @@ class FileSync: NSObject {
     func archiveArray(_ root: [Any], _ updateTime:TimeInterval) -> Bool {
 
         let deltaTime = updateTime - memoryTime
-        //printLog ("⧉ archive:\(fileName) count:\(root.count) memory⟶update time: \(memoryTime)⟶\(updateTime) 𝚫\(deltaTime)")
+        //Log ("⧉ archive:\(fileName) count:\(root.count) memory⟶update time: \(memoryTime)⟶\(updateTime) 𝚫\(deltaTime)")
         if deltaTime > 0 {
             let data = NSKeyedArchiver.archivedData(withRootObject:root)
             return saveData(data,updateTime)
@@ -66,7 +68,7 @@ class FileSync: NSObject {
     func archiveDict(_ root: [String:Any], _ updateTime:TimeInterval) -> Bool {
 
         let deltaTime = updateTime - memoryTime
-        //printLog ("⧉ archiveDict:\(fileName) count:\(root.count) memory⟶update time: \(memoryTime)⟶\(updateTime)  𝚫\(deltaTime)")
+        //Log ("⧉ archiveDict:\(fileName) count:\(root.count) memory⟶update time: \(memoryTime)⟶\(updateTime)  𝚫\(deltaTime)")
         if deltaTime > 0 {
             let data = NSKeyedArchiver.archivedData(withRootObject:root)
             return saveData(data,updateTime)
@@ -80,12 +82,12 @@ class FileSync: NSObject {
         
         if  let data = NSData(contentsOf: url),
             let array = NSKeyedUnarchiver.unarchiveObject(with:data as Data) as? [Any] {
-            memoryTime = getFileTime() //?? 
-            printLog ("⧉ unarchiveArray:\(fileName) memoryTime:\(memoryTime) count:\(array.count)")
+            memoryTime = getFileTime() //??
+            Log ("⧉ unarchiveArray:\(fileName) memoryTime:\(memoryTime) count:\(array.count)")
             completion(array)
         }
         else {
-            printLog ("⧉ unarchiveArray:\(fileName) count:0")
+            Log ("⧉ unarchiveArray:\(fileName) count:0")
             completion([])
         }
     }
@@ -98,11 +100,11 @@ class FileSync: NSObject {
         if  let data = NSData(contentsOf: url),
             let dict = NSKeyedUnarchiver.unarchiveObject(with:data as Data) as? [String:Any] {
             memoryTime = getFileTime()
-            printLog ("⧉ unarchiveDict:\(fileName)  memoryTime:\(memoryTime) count:\(dict.count)") ; //printLog("⧉ unarchiveDict url:\(url)") //!!!
+            Log ("⧉ unarchiveDict:\(fileName)  memoryTime:\(memoryTime) count:\(dict.count)") ; //Log("⧉ unarchiveDict url:\(url)") //!!!
             completion(dict)
         }
         else {
-            //printLog ("⧉ unarchiveDict:\(fileName) count:0")
+            //Log ("⧉ unarchiveDict:\(fileName) count:0")
             completion([:])
         }
     }
@@ -114,7 +116,7 @@ class FileSync: NSObject {
         
         if fileTime > 0 {
 
-            printLog ("⧉ \(#function) fileName:\(fileName) fileTime:\(fileTime) ")
+            Log ("⧉ \(#function) fileName:\(fileName) fileTime:\(fileTime) ")
 
             let url = FileManager.documentUrlFile(fileName)
             if let data = NSData(contentsOf: url) {
@@ -154,7 +156,7 @@ class FileSync: NSObject {
             let fileAttributes = try FileManager.default.attributesOfItem(atPath:url.path)
             let fileDate = (fileAttributes[FileAttributeKey.creationDate] as? NSDate)!
             let fileTime = fileDate.timeIntervalSince1970
-            //printLog ("⧉ \(#function) \(fileTime)")
+            //Log ("⧉ \(#function) \(fileTime)")
             return fileTime
         }
         catch let err as NSError {
@@ -164,14 +166,14 @@ class FileSync: NSObject {
             }
             else {
                 // some unknown error, so print it out
-                printLog ("⧉ \(#function) error code:\(err.code) reason:\(err.localizedFailureReason ?? "Oops")")
+                Log ("⧉ \(#function) error code:\(err.code) reason:\(err.localizedFailureReason ?? "Oops")")
             }
         }
         return 0
     }
     func sendGetFile() {
 
-        printLog ("⧉ \(#function) fileName:\(fileName) memoryTime:\(memoryTime)")
+        Log ("⧉ \(#function) fileName:\(fileName) memoryTime:\(memoryTime)")
         
         session.sendMsg([
             "class"     : "FileMsg",
@@ -186,7 +188,7 @@ class FileSync: NSObject {
 
         let deltaTime = updateTime - memoryTime
 
-         printLog ("⧉ \(#function) fileName:\(fileName) \(memoryTime)⟺\(updateTime) 𝚫\(deltaTime)")
+         Log ("⧉ \(#function) fileName:\(fileName) \(memoryTime)⟺\(updateTime) 𝚫\(deltaTime)")
         
         if      deltaTime < 0 { sendPostFile() }
         else if deltaTime > 0 { sendGetFile() }
@@ -196,7 +198,7 @@ class FileSync: NSObject {
     func sendSyncFile() {
 
         memoryTime = getFileTime()
-        printLog ("⧉ \(#function) fileName:\(fileName) memoryTime:\(memoryTime)⟺???")
+        Log ("⧉ \(#function) fileName:\(fileName) memoryTime:\(memoryTime)⟺???")
         session.sendMsg([
             "class"      : "FileMsg",
             "syncFile"   : fileName,

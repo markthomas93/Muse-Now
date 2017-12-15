@@ -75,7 +75,7 @@ class EventTableVC: UITableViewController, MuseTableDelegate {
             
             let date = sectionDate[section]
             let count = dateEvents[date]!.count
-            //printLog("⿳ section:\(section) rows:\(count)")
+            //Log("⿳ section:\(section) rows:\(count)")
             return count
         }
         return 0

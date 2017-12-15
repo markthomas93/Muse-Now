@@ -28,12 +28,12 @@ extension TreeTableVC {
             let cellH  = touchedCell.height
             let deltaY = cellY + cellH - keybY
 
-            printLog ("▭ \(#function) \(cellY) + \(cellH) - \(keybY) => \(deltaY) ")
+            Log ("▭ \(#function) \(cellY) + \(cellH) - \(keybY) => \(deltaY) ")
             UIView.animate(withDuration: 0.5, delay: 0.0, options:.curveEaseInOut, animations: {
                 tableView.contentOffset.y = scrollY + deltaY
             }, completion:{ _ in
                 let cellY = touchedCell.convert(touchedCell.frame.origin, to: nil).y
-                printLog ("▭ \(#function) \(cellY)")
+                Log ("▭ \(#function) \(cellY)")
                 self.blockKeyboard = false
             })
         }

@@ -53,7 +53,7 @@ class SayItem: NSObject {
         }
        
 //        let leftStr = str.padding(toLength: 26, withPad: " ", startingAt: 0)
-//        printLog("🗣 \(relative(Date().timeIntervalSince1970)) \(leftStr) \(dump())")
+//        Log("🗣 \(relative(Date().timeIntervalSince1970)) \(leftStr) \(dump())")
     }
     
 }

@@ -131,9 +131,9 @@ extension Anim {
 
         if wheelTime==0 {
             wheelTime = timeNow
-            //let prevSceneFrame = sceneFrame // for printLog
+            //let prevSceneFrame = sceneFrame // for Log
             sceneFrame = Float(animNow.rawValue > 0 ?  spokeFan : -spokeFan)
-            //printLog("⚆ \(#function)   sceneFrame:\(prevSceneFrame) -> \(sceneFrame) ")
+            //Log("⚆ \(#function)   sceneFrame:\(prevSceneFrame) -> \(sceneFrame) ")
             return
         }
         else {
@@ -170,7 +170,7 @@ extension Anim {
         let elapseRatio = Float(elapsedTime/recSpokeDur)
         let invertRatio = 1.0 - min(1,elapseRatio)
 
-        //printLog("⚆ elapse:\(elapseRatio), invert:\(invertRatio) current:\(timeNow) finishTime:\(finishTime)")
+        //Log("⚆ elapse:\(elapseRatio), invert:\(invertRatio) current:\(timeNow) finishTime:\(finishTime)")
 
         if elapseRatio <= 1.0 {
 
@@ -181,7 +181,7 @@ extension Anim {
             let deltaFade = recSpokeFade - 0.5
             let fade = invertRatio * deltaFade + 0.5
             scene.uFade?.floatValue = fade
-            printLog("⚆ fade:\(fade)")
+            Log("⚆ fade:\(fade)")
         }
         else {
             if elapsedTime < 2.0 {
@@ -233,19 +233,19 @@ extension Anim {
                     ?  spokeWheel + elapseRatio*2
                     : -spokeWheel - elapseRatio*2
                 
-                 //printLog(String(format:"⚆ %.2f,%.1f",elapseRatio,sceneFrame))
+                 //Log(String(format:"⚆ %.2f,%.1f",elapseRatio,sceneFrame))
             }
             else if elapseRatio >= 1 {
                 animNow = animNow.rawValue > 0 ? .futrPause : .pastPause
                 pausing()
-                 //printLog(String(format:"⚆ %.2f,%.1f",elapseRatio,sceneFrame))
+                 //Log(String(format:"⚆ %.2f,%.1f",elapseRatio,sceneFrame))
             }
             else {
                 let frameElapsed = min(1.0,timeNow - timePrev)
                 let fps = Float(1/max(1/120.0,frameElapsed))
                 let timeRemain = Float(spokeDur - elapsedTime)
                 animOut(timeRemain, fps)
-                //printLog(String(format:"⚆ %.2f,%.1f",elapseRatio,sceneFrame))
+                //Log(String(format:"⚆ %.2f,%.1f",elapseRatio,sceneFrame))
             }
         }
     }
@@ -324,7 +324,7 @@ extension Anim {
         else {
             sceneFrame += increment
         }
-         //printLog(String(format:"⚆ animOut %.1f⟶%.1f xScale:%.0f dotNow:%.1f (%.1f / %.2f / %.1f) -> %.1f", sceneFrame,nextFrame,xScale,dots.dotNow, distance,timeRemain,fps, increment))
+         //Log(String(format:"⚆ animOut %.1f⟶%.1f xScale:%.0f dotNow:%.1f (%.1f / %.2f / %.1f) -> %.1f", sceneFrame,nextFrame,xScale,dots.dotNow, distance,timeRemain,fps, increment))
     }
     func gotoRecFinish() {
 
@@ -334,7 +334,7 @@ extension Anim {
         animNow = .recFinish
         userDotAction()
     }
-    func recFinishAnim() {  printLog("⚆ \(#function) sceneFrame:\(sceneFrame))")
+    func recFinishAnim() {  Log("⚆ \(#function) sceneFrame:\(sceneFrame))")
 
         if finishTime == 0 {
             finishTime = timeNow
@@ -352,7 +352,7 @@ extension Anim {
             let deltaFade = recSpokeFade - 0.5
             let fade = elapseRatio * deltaFade + 0.5
             scene.uFade?.floatValue = fade
-            //printLog("⚆. fade:\(fade)")
+            //Log("⚆. fade:\(fade)")
         }
         else {
             scene.uFade?.floatValue = recSpokeFade
@@ -360,7 +360,7 @@ extension Anim {
         }
     }
 
-    func shutdownAnim() { printLog("⚆ \(#function)   sceneFrame:\(sceneFrame) ")
+    func shutdownAnim() { Log("⚆ \(#function)   sceneFrame:\(sceneFrame) ")
     }
 
     func gotoStartupAnim() {
@@ -370,7 +370,7 @@ extension Anim {
         animNow = .startup
     }
 
-    func startupAnim() {   //printLog(String(format:"⚆ %.1f",sceneFrame))
+    func startupAnim() {   //Log(String(format:"⚆ %.1f",sceneFrame))
         
         if startupTime==0 {
             startupTime = timeNow

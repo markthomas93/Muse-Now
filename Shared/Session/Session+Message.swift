@@ -9,10 +9,10 @@ extension Session {
      Send message to other device
      - via: Record.(recordMenu).setAction
      */
-    func sendMsg(_ msg: [String : Any]) { printLog("→ \(#function) " + dumpDict(msg))
+    func sendMsg(_ msg: [String : Any]) { Log("→ \(#function) " + dumpDict(msg))
         let _ = sendMessage( msg, errorHandler: { error in
             // if cannot sent to live app, then cache it for later
-            self.cacheMsg(msg) // printLog("→ \(#function) error:\(error.localizedDescription)")
+            self.cacheMsg(msg) // Log("→ \(#function) error:\(error.localizedDescription)")
         })
     }
     
@@ -24,7 +24,7 @@ extension Session {
 
         #if os(iOS)
 
-            printLog("↔︎ \(#function) " + dumpDict(msg))
+            Log("↔︎ \(#function) " + dumpDict(msg))
 
             if let status = msg["status"] as? String {
                 let transcribe = Transcribe.shared
@@ -114,7 +114,7 @@ extension Session {
         if  let calId = msg["calId"] as? String,
             let isOn  = msg["isOn"]  as? Bool {
 
-            //printLog ("⧖ Cals::\(#function) calId:\(calId) isOn:\(isOn)")
+            //Log ("⧖ Cals::\(#function) calId:\(calId) isOn:\(isOn)")
             Cals.shared.updateMark(calId,isOn)
         }
     }

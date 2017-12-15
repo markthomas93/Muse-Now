@@ -15,12 +15,12 @@ class Complicated {
     var nextUpdateTime = TimeInterval(0)
     var complicationTimer = Timer() // for forground updates
 
-    func reloadTimelines() {  printLog("✺ reloadTimelines")
+    func reloadTimelines() {  Log("✺ reloadTimelines")
         complicationTimer.invalidate()
         let server = CLKComplicationServer.sharedInstance()
         if let complications = server.activeComplications {
             for complication in complications {
-                printLog("✺ \(#function) reloadTimelines complication:\(complication.family.rawValue)")
+                Log("✺ \(#function) reloadTimelines complication:\(complication.family.rawValue)")
                 server.reloadTimeline(for:complication)
             }
         }
@@ -28,12 +28,12 @@ class Complicated {
         self.scheduleNextUpdate(date)
     }
 
-    func extendTimelines() { printLog("✺ extendTimelines")
+    func extendTimelines() { Log("✺ extendTimelines")
 
         let server = CLKComplicationServer.sharedInstance()
         if let complications = server.activeComplications {
             for complication in complications {
-                printLog("✺ \(#function) complication:\(complication.family.rawValue)")
+                Log("✺ \(#function) complication:\(complication.family.rawValue)")
                 server.extendTimeline(for:complication)
             }
         }
@@ -41,21 +41,21 @@ class Complicated {
         self.scheduleNextUpdate(date)
     }
 
-    func scheduleNextUpdate(_ date: Date) {  printLog("✺⟳ \(#function) next: \(date)")
+    func scheduleNextUpdate(_ date: Date) {  Log("✺⟳ \(#function) next: \(date)")
 
         complicationTimer.invalidate()
 
         // if in foreground
         complicationTimer = Timer(fire: date, interval: 0, repeats: false, block:{_ in
             self.extendTimelines()
-            printLog("✺⟳ \(#function) fired: \(date)")
+            Log("✺⟳ \(#function) fired: \(date)")
             //let date = MuDate.relativeMinute(2)
         })
 
         // otherwise in background
         WKExtension.shared().scheduleBackgroundRefresh(withPreferredDate: date, userInfo:nil, scheduledCompletion: { error in
             if let error = error {
-                printLog("✺⟳ \(#function) error: \(error)")
+                Log("✺⟳ \(#function) error: \(error)")
             }
         })
     }
@@ -150,7 +150,7 @@ class Complication: NSObject, CLKComplicationDataSource {
         bgnDate = MuDate.dateToString(bgnTime , "EEEE h:mm")
         endDate = MuDate.dateToString(endTime , "EEEE h:mm")
 
-        printLog("✺ \(#function) family:\(complication.family.rawValue)")
+        Log("✺ \(#function) family:\(complication.family.rawValue)")
 
         switch complication.family {
 
@@ -216,7 +216,7 @@ class Complication: NSObject, CLKComplicationDataSource {
     func getCurrentTimelineEntry(for complication: CLKComplication, withHandler handler: @escaping (CLKComplicationTimelineEntry?) -> Void) {
 
         let hour0 = MuDate.relativeHour(0)
-        printLog("✺ getCurrentTimelineEntry date:\(hour0)")
+        Log("✺ getCurrentTimelineEntry date:\(hour0)")
 
         var entry: CLKComplicationTimelineEntry!
 
@@ -230,7 +230,7 @@ class Complication: NSObject, CLKComplicationDataSource {
     }
 
     func getTimelineEntries(for complication: CLKComplication, before date: Date, limit: Int, withHandler handler: @escaping ([CLKComplicationTimelineEntry]?) -> Void) {
-        //printLog("✺ \(#function) limit:\(limit)")
+        //Log("✺ \(#function) limit:\(limit)")
         handler(nil)
     }
 
@@ -245,7 +245,7 @@ class Complication: NSObject, CLKComplicationDataSource {
             if nextDate.timeIntervalSince(date) > 0,
                 let template = getTemplate(for: complication, hour: hour)  {
 
-                printLog("✺ getTimelineEntries after date:\(date)")
+                Log("✺ getTimelineEntries after date:\(date)")
                 entries.append(CLKComplicationTimelineEntry.init(date: nextDate, complicationTemplate: template))
             }
         }

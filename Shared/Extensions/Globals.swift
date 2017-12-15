@@ -31,17 +31,22 @@ extension String {
         return (self.count > length) ? self.prefix(length) + trailing : self
     }
 }
-func printLog(_ str: String) {
-    
+
+func Log(_ str: String) {
+    assert(DebugLog(str))
+}
+
+func DebugLog(_ str: String) -> Bool {
+
     switch str.substring(to: 1) {
         
-    //case NSLog(str)
+        //case NSLog(str)
 
     case
 
     "⧉", // sync files
     "📅", // EkNotification
-     "⌘", // doAction
+    "⌘", // doAction
 
     "←", // session receiving
     "↔︎", // session activation state
@@ -57,7 +62,7 @@ func printLog(_ str: String) {
     "🎧", // Hear Via
     "∿",  // audio recorder
 
-     "⟳", // life cycle
+    "⟳", // life cycle
     "▣", // observe main window bounds
     "◰", // view layout
     "⊛", // crown
@@ -84,6 +89,6 @@ func printLog(_ str: String) {
         break
     default: break
     }
-
+    return true
 }
 

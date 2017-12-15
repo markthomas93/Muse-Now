@@ -15,7 +15,7 @@ class WatchMenu {
      Menu of STT, hand stroked chars, popular commands
      - via WatchCon.menuAction
      */
-    func recordMenu() {  printLog("∿ \(#function)")
+    func recordMenu() {  Log("∿ \(#function)")
 
         //let index = Anim.shared.getIndexForNote()
         let root = WKExtension.shared().rootInterfaceController!
@@ -31,7 +31,7 @@ class WatchMenu {
         }
     }
 
-    func recordMenuFinish(_ inputText:String,_ index: Int) { printLog("∿ \(#function)")
+    func recordMenuFinish(_ inputText:String,_ index: Int) { Log("∿ \(#function)")
         Actions.shared.parseString(inputText, /*event*/ nil, index, isSender:true)
         //Crown.shared.updateCrown()
     }
