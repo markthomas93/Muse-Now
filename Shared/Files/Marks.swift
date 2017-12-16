@@ -22,16 +22,7 @@ class Marks: FileSync {
         }
     }
     
-      override func receiveFile(_ data:Data, _ updateTime: TimeInterval) {
-
-        if saveData(data, updateTime) {
-            Anim.shared.addClosure(title:"doRefresh(false)") {
-                Actions.shared.doRefresh(false)
-            }
-        }
-    }
-
-    func updateMarks(_ dataItems:[Mark]) {
+     func updateMarks(_ dataItems:[Mark]) {
 
         let weekSecs: TimeInterval = (7*24+1)*60*60 // 168+1 hours as seconds
         let lastWeekSecs = Date().timeIntervalSince1970 - weekSecs

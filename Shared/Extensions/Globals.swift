@@ -32,6 +32,10 @@ extension String {
     }
 }
 
+func Log(_ block:@escaping (()->(String))) {
+    assert(DebugLog(block()))
+}
+
 func Log(_ str: String) {
     assert(DebugLog(str))
 }
@@ -44,18 +48,18 @@ func DebugLog(_ str: String) -> Bool {
 
     case
 
-    "⧉", // sync files
     "📅", // EkNotification
-    "⌘", // doAction
-
-    "←", // session receiving
-    "↔︎", // session activation state
-    "→": // session sending
+    "▤", // TreeTableView
+    "⿳": // menu
 
         print(MuDate.getHourMinSecMsec() + ": " + str)
         
     case
-
+    "⧉", // sync files
+    "←", // session receiving
+    "↔︎", // session activation state
+    "→", // session sending
+    "⌘", // doAction
 
     "🗣", // Say TTS
     "🔈", // Audio
@@ -66,10 +70,8 @@ func DebugLog(_ str: String) -> Bool {
     "▣", // observe main window bounds
     "◰", // view layout
     "⊛", // crown
-    "▤", // TreeTableView
 
     "▭", // textfield
-    "⿳", // menu
 
     "👆", // tap action
 

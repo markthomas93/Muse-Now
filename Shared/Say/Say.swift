@@ -28,7 +28,7 @@
     
     static let shared = Say()
 
-    var saySet = SaySet([.event, .time])
+    var saySet = SaySet([.memo,.event, .time])
     var sayVolume = Float(1.0)
 
     #if os(watchOS)

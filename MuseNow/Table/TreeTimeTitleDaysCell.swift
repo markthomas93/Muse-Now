@@ -111,6 +111,7 @@ class TreeTimeTitleDaysCell: TreeTitleCell {
         title.frame = titleFrame
         days.frame = daysFrame
         bezel.frame = bezelFrame
+    
     }
 
 }

@@ -4,6 +4,7 @@
 import UIKit
 
 class MuCell: UITableViewCell {
+    
     var event : MuEvent!
     enum Highlighting { case unknown, high, low, forceHigh, forceLow }
     var highlighting = Highlighting.unknown

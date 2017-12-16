@@ -56,7 +56,7 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
             You can edit times, titles, and days of the week, but not categories or colors. \n
             A more customizable version will be available for purchase in an upcoming release.
             """
-        let _ = BubbleText(helpText, from:dotBezel, in:view)
+        let _ = BubbleTextCover(helpText, from:dotBezel, in: view, on: view)
     }
 
     override func viewDidAppear(_ animated: Bool) {

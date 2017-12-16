@@ -57,7 +57,17 @@ enum TreeNodeType { case
     editWeekday,
     editColor
 }
-
+/**
+ Optional info disclosure upon first expand
+ - noInfo: do not show "i" icon
+ - newInfo: white icon, auto show info on expand
+ - oldInfo: gray icon, only show when touching icon
+ */
+enum ShowInfo { case
+    noInfo,
+    newInfo,
+    oldInfo
+}
 class TreeNode {
 
     var type = TreeNodeType.titleMark
@@ -66,11 +76,13 @@ class TreeNode {
     var depth = 0 // how deep do children go
     var level = 0
     var expanded = false
-    var setting: Setting!
+    var setting: TreeSetting!
     var cell: TreeCell!
     var any: Any! // may contain Cal
     var row = -1
     var onRatio = CGFloat(1.0)
+    var showInfo = ShowInfo.noInfo
+    var treeInfo: TreeInfo!
 
     @discardableResult func renumber() -> Int {
         depth = 0
@@ -109,17 +121,17 @@ class TreeNode {
     }
     var callback: ((TreeNode) -> ())?
 
-    init (_ type_:TreeNodeType, _ parent_:TreeNode!,_ setting_: Setting,_ tableVC_:UITableViewController) {
+    init (_ type_:TreeNodeType, _ parent_:TreeNode!,_ setting_: TreeSetting,_ tableVC_:UITableViewController) {
 
         parent = parent_
         setting = setting_
+        type = type_
 
         if let parent = parent {
             level = parent.level+1
             parent.children.append(self)
         }
 
-        type = type_
         switch type {
         case .title:            cell = TreeTitleCell(self, tableVC_)
         case .infoApprove:      cell = TreeInfoApproveCell(self, tableVC_)
@@ -135,6 +147,7 @@ class TreeNode {
         case .unknown:          cell = TreeEditColorCell(self, tableVC_)
         }
     }
+
     func updateCallback() {
         callback?(self)
     }
@@ -204,7 +217,7 @@ class TreeNode {
         return isOn
     }
 
-     /**
+    /**
      After building hierarchy
      - refresh left arrows to show if any children
      - refresh grayed check to show how many checked children
@@ -230,98 +243,5 @@ class TreeNode {
     func parentChildRowsHeight() -> CGFloat {
         return cell?.height ?? 0 + childRowsHeight()
     }
-}
-
-class TreeCalendarNode: TreeNode {
-
-    init (_ parent_:TreeNode!,_ title_:String, _ cal:Cal!,_ tableVC_:UITableViewController) {
-
-        super.init(.colorTitleMark, parent_, Setting(set:1,member:1,title_), tableVC_)
-
-        if let cell = cell as? TreeColorTitleMarkCell {
-            cell.setColor(cal.color)
-        }
-        any = cal.calId // any makes a copy of Cal, so use calID, instead
-        callback = { treeNode in
-
-            if let calId = treeNode.any as? String,
-                let cal = Cals.shared.idCal[calId],
-                let isOn = treeNode.setting?.isOn() {
-                cal.updateMark(isOn)
-            }
-        }
-    }
-}
-class TreeDialColorNode: TreeNode {
-
-    init (_ parent_:TreeNode!,_ title_:String,_ tableVC_:UITableViewController) {
-
-        super.init(.titleFader, parent_, Setting(set:0,member:1,title_),tableVC_)
-
-        if let cell = cell as? TreeTitleFaderCell {
-
-            // intialize fader
-            if let value = Settings.shared.root["dialColor"] as? Float{
-                cell.fader.setValue(value)
-            }
-            // callback when starting fade, so freeze scrolling
-            cell.fader.updateBegan = {
-                cell.tableVC?.tableView.isScrollEnabled = false
-                PagesVC.shared.scrollView?.isScrollEnabled = false
-            }
-            // callback when ending fade, so free scrolling
-            cell.fader.updateEnded = {
-                cell.tableVC?.tableView.isScrollEnabled = true
-                PagesVC.shared.scrollView?.isScrollEnabled = true
-            }
-            // callback to set dial color
-            cell.fader.updateValue = { value in
-                Actions.shared.dialColor(value, isSender: true)
-                let phrase = String(format:"%.2f",value)
-                Say.shared.updateDialog(nil, .phraseSlider, spoken:phrase, title:phrase, via:#function)
-            }
-        }
-    }
-}
-
-class TreeActNode: TreeNode {
-    init (_ parent_:TreeNode!,_ title_:String, _ set:Int, _ member: Int,_ onAct:DoAction,_ offAct:DoAction,_ tableVC_:UITableViewController) {
-        super.init(.titleMark, parent_, Setting(set:set,member:member,title_),tableVC_)
-
-        // callback to set action message based on isOn()
-        callback = { treeNode in
-            Actions.shared.doAction(treeNode.setting.isOn() ? onAct : offAct )
-        }
-    }
-}
-
-class TreeInfoNode: TreeNode {
-    init (_ parent_:TreeNode!,_ title_:String, height:CGFloat,_ tableVC_:UITableViewController) {
-        super.init(.infoApprove, parent_, Setting(set:1,member:1,title_),tableVC_)
-        if let cell = cell as? TreeInfoApproveCell {
-            cell.height = height
-            cell.updateViews(cell.frame.size.width)
-        }
-
-    }
-}
-
-class TreeRoutineCategoryNode: TreeNode {
-    init (_ parent_:TreeNode!,_ title_:String,_ tableVC_:UITableViewController) {
-        super.init(.colorTitle, parent_, Setting(set:0,member:1,title_), tableVC_)
-    }
-}
-class TreeRoutineItemNode: TreeNode {
-    var routineItem: RoutineItem!
-    init (_ type_: TreeNodeType,_ parent_:TreeNode!,_ item:RoutineItem,_ tableVC_:UITableViewController) {
-        routineItem = item
-        let setting = Setting(set:0, member:1, item.title, [])
-        super.init(type_, parent_, setting, tableVC_)
-        // callback to refresh display for changes
-        callback = { treeNode in
-            Actions.shared.doAction(.refresh)
-        }
-    }
-
 }
 

@@ -6,7 +6,7 @@ import AudioToolbox
 import WatchKit
 
 class MainVC: UIViewController {
-    
+    static var shared: MainVC?
     let session  = Session.shared
     let active   = Active.shared
     let memos    = Memos.shared
@@ -89,6 +89,7 @@ class MainVC: UIViewController {
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        MainVC.shared = self
         // Muse.shared.testScript() // for future use of ParGraph
 
         // stay dark in invert mode

@@ -32,7 +32,7 @@ class Memos: FileSync {
             completion(self.items)
         }
     }
-    
+
 
     
     func clearAll() {

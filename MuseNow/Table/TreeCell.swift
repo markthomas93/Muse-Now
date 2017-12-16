@@ -13,11 +13,15 @@ class TreeCell: MuCell {
     
     var left: UIImageView!
     var bezel: UIView!
+    var info: UIImageView!
+
     var cellFrame = CGRect.zero
-    var leftFrame  = CGRect.zero
+    var leftFrame = CGRect.zero
     var bezelFrame = CGRect.zero
+    var infoFrame = CGRect.zero
 
     let leftW   = CGFloat(24)   // width (and height) of left disclosure image
+    let infoW   = CGFloat(22)
     let innerH  = CGFloat(36)   // inner height
     let marginW = CGFloat(8)    // margin between elements
     let marginH = CGFloat(4)    //
@@ -29,6 +33,8 @@ class TreeCell: MuCell {
         self.init(coder: decoder)
     }
 
+    /**
+     */
     convenience init(_ treeNode_: TreeNode!, _ tableVC_:UITableViewController) {
         self.init()
         tableVC = tableVC_
@@ -37,6 +43,8 @@ class TreeCell: MuCell {
         buildViews(frame.size.width)
     }
     
+    /**
+     */
     func buildViews(_ width:CGFloat) {
 
         updateFrames(width)
@@ -70,26 +78,74 @@ class TreeCell: MuCell {
         selectedBackgroundView?.backgroundColor = .black
 
         bezel.frame = bezelFrame
+
     }
     
+    /**
+     */
     func updateFrames(_ width:CGFloat) {
 
-        cellFrame  = CGRect(x:0, y:0, width: width, height: height)
+        let infoX = width - height + infoW/2
+        let infoY = (height - infoW) / 2
+        cellFrame = CGRect(x: 0,     y:0,     width: width, height: height)
+        infoFrame = CGRect(x: infoX, y:infoY, width: infoW, height: infoW)
         bezelFrame = cellFrame
     }
 
+
+    /**
+     Called after adding an TreeInfo to its parent node. The info button calls out an information bubble.
+     */
+    func updateInfo(_ width:CGFloat) {
+
+        if let showInfo = treeNode?.showInfo {
+
+            if info == nil {
+
+                switch showInfo {
+
+                case .noInfo: break
+
+                case .newInfo, .oldInfo:
+
+                    info = UIImageView(frame:infoFrame)
+                    info.image = UIImage(named:"icon-Info.png")
+                    info.backgroundColor = .clear
+                    info.alpha = (showInfo == .newInfo ? 1.0 : 0.5)
+
+                    self.addSubview(info)
+                    updateViews(width)
+                }
+            }
+            else {
+                switch showInfo {
+                case .noInfo: alpha = 0.0
+                case .newInfo: alpha = 1.0
+                case .oldInfo: alpha = 0/5
+                }
+            }
+        }
+    }
+
+
+    /**
+     */
     func updateViews(_ width:CGFloat) {
 
         updateFrames(width)
-
         frame = cellFrame
         bezel.frame = bezelFrame
+        info?.frame = infoFrame
     }
 
-    /// adjust display (such as a check mark) based on ratio of children that are set on
+    /**
+     Adjust display (such as a check mark) based on ratio of children that are set on
+     */
     func updateOnRatioOfChildrenMarked() {
         // override
     }
+    /**
+     */
     func updateLeft(animate:Bool) {
 
         var transform = CGAffineTransform.identity
@@ -144,13 +200,13 @@ class TreeCell: MuCell {
 
 
     /**
-    While renumbering, highlight the currently selected parent and children
+     While renumbering, highlight the currently selected parent and children
      to set it apart for the other cells, which are slightly dimmed.
      - note: renumbering currently conflicts with collapsing siblings,
      which is why the TouchCell event will set highlighting to forceHigh
      */
     func setParentChildOther(_ parentChild_:ParentChildOther) {
-    
+
         parentChild = parentChild_
 
         var background = UIColor.black
@@ -168,6 +224,8 @@ class TreeCell: MuCell {
             self.bezel.layer.borderColor = border.cgColor
         })
     }
+    /**
+     */
     override func setHighlight(_ highlighting_:Highlighting, animated:Bool = true) {
 
         if highlighting != highlighting_ {
@@ -202,10 +260,41 @@ class TreeCell: MuCell {
         }
     }
 
+    /**
+     */
+    func touchedInfo(_ location: CGPoint) {
+
+        if let treeNode = treeNode,
+            let treeInfo = treeNode.treeInfo {
+            switch treeNode.showInfo {
+
+            case .newInfo:
+
+                treeInfo.showInfoCell(from:info, in:self)
+                treeNode.showInfo = .oldInfo
+
+            case .oldInfo:
+
+                let bezelX = bezelFrame.origin.x
+                let bezelW = bezelFrame.size.width
+                let infoX0 = bezelX + bezelW - height
+                let infoX1 = infoX0 + height
+                if  location.x >= infoX0,
+                    location.x <= infoX1 {
+                    
+                    treeInfo.showInfoCell(from:info, in:self)
+                }
+            case .noInfo: break
+            }
+        }
+    }
+
+    /**
+     */
     override func touchCell(_ location: CGPoint) {
 
         (tableVC as? TreeTableVC)?.setTouchedCell(self)
-
+        touchedInfo(location)
         // when collapsing sibling, self may also get collapsed, so need to know original state to determine highlight
         let wasExpanded = treeNode.expanded
         var siblingCollapsing = false
@@ -225,7 +314,8 @@ class TreeCell: MuCell {
         let expandMe = (treeNode.children.count > 0 && wasExpanded == treeNode.expanded)
         touchSelf(expandMe, withDelay: siblingCollapsing)
     }
-
+    /**
+     */
     func touchSelf(_ expandMe:Bool, withDelay:Bool) {
 
         func touchAndScroll() {
@@ -252,7 +342,7 @@ class TreeCell: MuCell {
      - via: toucheCell.touchSelf when not collapsed w siblings
      - Parameter scrollNearest: try to keep cell nearest touch location
      */
-     func touchFlipExpand() {
+    func touchFlipExpand() {
 
         if let tableVC = tableVC as? TreeTableVC {
 
@@ -289,7 +379,6 @@ class TreeCell: MuCell {
             }
         }
     }
-
 
 }
 

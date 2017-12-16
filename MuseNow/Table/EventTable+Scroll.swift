@@ -72,6 +72,7 @@ extension EventTableVC {
                     return rowItems[i].rowTime
                 }
             }
+            return rowItems.last?.rowTime ?? Date().timeIntervalSince1970
         }
             // search backwards
         else if rowItem.posY > midY {
@@ -80,14 +81,12 @@ extension EventTableVC {
                     return rowItems[i].rowTime
                 }
             }
+             return rowItems.first?.rowTime ?? Date().timeIntervalSince1970
         }
             // already there
         else {
             return rowItems[starti].rowTime
         }
-        // this should never happen
-        print("!!! \(#function) failed for offsetY:\(offsetY)")
-        return Date().timeIntervalSince1970
     }
 
 }

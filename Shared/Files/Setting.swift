@@ -4,13 +4,18 @@ import Foundation
 import EventKit
 import UIKit
 
+/**
+ Allow mark to be set from parent and/or child
+ - parent: toggle ✓/☐ will set all children ✓/☐
+ - child: toggle  ✓/☐ will parent to  ✓/-/☐
+ */
 struct SetFrom: OptionSet {
     let rawValue: Int
     static let parent = SetFrom(rawValue: 1 << 0) // 1
     static let child  = SetFrom(rawValue: 1 << 1) // 2
 }
 
-public class Setting {
+public class TreeSetting {
 
     var member = 0
     var set = 0

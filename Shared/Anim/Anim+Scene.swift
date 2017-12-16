@@ -334,7 +334,8 @@ extension Anim {
         animNow = .recFinish
         userDotAction()
     }
-    func recFinishAnim() {  Log("⚆ \(#function) sceneFrame:\(sceneFrame))")
+
+     func recFinishAnim() {  Log("⚆ \(#function) sceneFrame:\(sceneFrame))")
 
         if finishTime == 0 {
             finishTime = timeNow

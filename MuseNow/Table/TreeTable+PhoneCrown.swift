@@ -10,7 +10,7 @@ extension TreeTableVC: PhoneCrownDelegate {
             let scrollY = self.tableView.contentOffset.y
             let cellZ = cellY+cellH
             let tablZ = tablY+tablH
-            Log (String(format:"⊛ NearestTouch H:%i S:%i C:%i_%i T:%i_%i %i⟶",
+            Log (String(format:"▤ NearestTouch H:%i S:%i C:%i_%i T:%i_%i %i⟶",
                              Int(headerY),
                              Int(scrollY),
                              Int(cellY), Int(cellZ),
@@ -41,25 +41,29 @@ extension TreeTableVC: PhoneCrownDelegate {
         }
         return false
     }
+
+    /**
+     */
     func scrollToNearestTouch(_ cell:TreeCell!) {
 
-
-        func logScroll(_ lastY:CGFloat,_ lastZ:CGFloat,_ tablY:CGFloat,_ tablZ:CGFloat,_ shift:CGFloat) {
-
+        func logMsg(_ lastY:CGFloat,_ lastZ:CGFloat,_ tablY:CGFloat,_ tablZ:CGFloat,_ shift:CGFloat) -> String {
             let newPath = IndexPath(row:cell.treeNode.row,section:0)
             let newY = tableView.rectForRow(at:newPath).origin.y
             let cellY = cell.lastLocationInTable.y
             let cellZ = cellY+cell.height
             let deltaY = newY - cellY
             let scrollY = tableView.contentOffset.y
-            Log (String(format:"⊛ NearestTouch S:%i C:%i_%i L:%i_%i T:%i_%i %i⟶%i",
-                             Int(scrollY),
-                             Int(cellY), Int(cellZ),
-                             Int(lastY), Int(lastZ),
-                             Int(tablY), Int(tablZ),
-                             Int(deltaY),Int(shift)))
+            let str = (String(format:"▤ NearestTouch S:%i C:%i_%i L:%i_%i T:%i_%i %i⟶%i",
+                              Int(scrollY),
+                              Int(cellY), Int(cellZ),
+                              Int(lastY), Int(lastZ),
+                              Int(tablY), Int(tablZ),
+                              Int(deltaY),Int(shift)))
+            return str
         }
-        
+
+        // begin -------------------------------------------
+
         if  let lastNode = TreeNodes.shared.shownNodes.last,
             let lastCell = lastNode.cell {
 
@@ -72,11 +76,11 @@ extension TreeTableVC: PhoneCrownDelegate {
             let tablZ = tablY + tablH
             let shift = lastZ - tablZ
 
-            // logScroll(lastY, lastZ, tablY, tablZ, shift)
+            Log(logMsg(lastY, lastZ, tablY, tablZ, shift))
 
-            if shift < 0 {
+            if shift != 0 {
                 UIView.animate(withDuration: 0.25, animations: {
-                    self.tableView.contentOffset.y = 0 // += shift
+                    self.tableView.contentOffset.y += shift
                 })
             }
         }

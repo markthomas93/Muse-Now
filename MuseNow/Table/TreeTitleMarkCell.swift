@@ -65,11 +65,17 @@ class TreeTitleMarkCell: TreeTitleCell {
         let bezelW = width - markW - marginH - bezelX
         let titleW = bezelW - marginW
 
-        cellFrame  = CGRect(x:0,       y:0,      width: width,  height: height)
-        leftFrame  = CGRect(x:leftX,   y:leftY,  width: leftW,  height: leftW)
-        titleFrame = CGRect(x:marginW, y:0,      width: titleW, height: bezelH)
-        bezelFrame = CGRect(x:bezelX,  y:bezelY, width: bezelW, height: bezelH)
-        markFrame  = CGRect(x:markX,   y:markY,  width: markW , height: markH)
+        let infoX = width - markW - marginH - height + infoW/2
+        let infoY = (height - infoW) / 2
+
+
+        cellFrame  = CGRect(x: 0,       y: 0,      width: width,  height: height)
+        leftFrame  = CGRect(x: leftX,   y: leftY,  width: leftW,  height: leftW)
+        titleFrame = CGRect(x: marginW, y: 0,      width: titleW, height: bezelH)
+        bezelFrame = CGRect(x: bezelX,  y: bezelY, width: bezelW, height: bezelH)
+        infoFrame  = CGRect(x: infoX,   y: infoY,  width: infoW,  height: infoW)
+        markFrame  = CGRect(x: markX,   y: markY,  width: markW , height: markH)
+
     }
 
     override func updateViews(_ width:CGFloat) {
@@ -80,6 +86,7 @@ class TreeTitleMarkCell: TreeTitleCell {
         left.frame = leftFrame
         title.frame = titleFrame
         bezel.frame = bezelFrame
+        info?.frame = infoFrame
         mark.frame  = markFrame
     }
 
@@ -149,7 +156,7 @@ class TreeTitleMarkCell: TreeTitleCell {
 
         (tableVC as? TreeTableVC)?.setTouchedCell(self)
 
-        let toggleX = frame.size.width -  frame.size.height * 1.618
+        let toggleX = frame.size.width - frame.size.height
         if location.x > toggleX {
             let isOn = treeNode.toggle()
             mark.setMark(isOn)

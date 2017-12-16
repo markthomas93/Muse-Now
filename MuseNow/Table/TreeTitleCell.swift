@@ -53,20 +53,25 @@ class TreeTitleCell: TreeCell {
         let bezelW = width - bezelX
         let titleW = bezelW - marginW
 
-        cellFrame  = CGRect(x:0,       y:0,      width: width,  height: height)
-        leftFrame  = CGRect(x:leftX,   y:leftY,  width: leftW,  height: leftW)
-        titleFrame = CGRect(x:marginW, y:0,      width: titleW, height: bezelH)
-        bezelFrame = CGRect(x:bezelX,  y:bezelY, width: bezelW, height: bezelH)
+        let infoX = width - height + infoW/2
+        let infoY = (height - infoW) / 2
+
+        cellFrame  = CGRect(x: 0,       y: 0,      width: width,  height: height)
+        leftFrame  = CGRect(x: leftX,   y: leftY,  width: leftW,  height: leftW)
+        titleFrame = CGRect(x: marginW, y: 0,      width: titleW, height: bezelH)
+        bezelFrame = CGRect(x: bezelX,  y: bezelY, width: bezelW, height: bezelH)
+        infoFrame  = CGRect(x: infoX,   y: infoY,  width: infoW,  height: infoW)
     }
 
     override func updateViews(_ width:CGFloat) {
 
         updateFrames(width)
 
-        self.frame = cellFrame
-        leftFrame = leftFrame
+        self.frame  = cellFrame
+        leftFrame   = leftFrame
         title.frame = titleFrame
         bezel.frame = bezelFrame
+        info?.frame = infoFrame
     }
 
 }
