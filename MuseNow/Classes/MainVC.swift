@@ -109,8 +109,8 @@ class MainVC: UIViewController {
 
         // dial scene
         
-        anim.table = pagesVC.eventTable
-        touchDial  = TouchDial(dialSize, pagesVC.eventTable)
+        anim.table = pagesVC.eventVC
+        touchDial  = TouchDial(dialSize, pagesVC.eventVC)
         touchForce = TouchDialForce(frame: touchFrame)
         touchForce.touchDial = touchDial
         
@@ -124,15 +124,15 @@ class MainVC: UIViewController {
         
         actions.scene = scene
         active.scene = scene
-        pagesVC.eventTable?.scene = scene
+        pagesVC.eventVC?.scene = scene
         pagesVC.view.backgroundColor = .clear
 
-        actions.tableDelegate = pagesVC.eventTable
+        actions.tableDelegate = pagesVC.eventVC
         session.startSession()
 
         // crown left right
 
-        phoneCrown = PhoneCrown(left:crownLeftFrame, right:crownRightFrame, pagesVC.eventTable)
+        phoneCrown = PhoneCrown(left:crownLeftFrame, right:crownRightFrame, pagesVC.eventVC)
         
         // view hierarcy
 

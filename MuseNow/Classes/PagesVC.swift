@@ -2,22 +2,25 @@
 
 import UIKit
 
+
+public enum PageType: Int { case settings = 0, events = 1 }
+
 class PagesVC: UIViewController, UIPageViewControllerDataSource {
     
     static let shared = PagesVC()
 
     var pageVC : UIPageViewController!
     var pages: [UIViewController] = []
-    var pagei = 1
+    var pageType = PageType.events
     var scrollView: UIScrollView!
     
-    var treeTable: TreeTableVC!
-    var eventTable: EventTableVC!
+    var treeVC: TreeTableVC!
+    var eventVC: EventTableVC!
 
-    var dotBezel: UIView!
+    var spine: UIView!
     var pageFrame = CGRect.zero
     var childFrame = CGRect.zero
-    var bezelFrame = CGRect.zero
+    var spineFrame = CGRect.zero
 
     func updateFrames(_ size:CGSize) {
 
@@ -31,37 +34,28 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
         let viewY = CGFloat(isPanel ? 0 : isPad ? 18 : isPortrait ? statusH : 0)
         let viewH = height - viewY
 
-        let bezelW = CGFloat(64)
-        let bezelH = CGFloat(36)
-        let bezelX = (width - bezelW)/2
-        let bezelY = height - bezelH
+        let spineH = CGFloat(36)
+        let spineY = height - spineH
 
-        let childH = viewH - bezelH
+        let childH = viewH - spineH
 
         pageFrame  = CGRect(x: 0, y: viewY,  width: width, height: viewH)
         childFrame = CGRect(x: 0, y: 0,      width: width, height: childH)
-        bezelFrame = CGRect(x: bezelX, y: bezelY, width: bezelW, height: bezelH)
+        spineFrame = CGRect(x: 0, y: spineY, width: width, height: spineH)
     }
 
     func updateViews(_ size:CGSize) {
 
-        treeTable.updateViews(size.width)
-        treeTable.tableView.reloadData()
-        eventTable.tableView.reloadData()
+        treeVC.updateViews(size.width)
+        treeVC.tableView.reloadData()
+        eventVC.tableView.reloadData()
     }
 
-    func showHelpBubble() {
-        let helpText = """
-            This preview will show your weekly routine on the clock face. \n
-            You can edit times, titles, and days of the week, but not categories or colors. \n
-            A more customizable version will be available for purchase in an upcoming release.
-            """
-        let _ = BubbleTextCover(helpText, from:dotBezel, in: view, on: view)
-    }
-
+    var tourGuide: TourGuide!
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        //showHelpBubble()
+        tourGuide = TourGuide()
+        tourGuide.beginTour()
     }
 
     override func viewDidLoad() {
@@ -83,32 +77,44 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
         }
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        eventTable = storyboard.instantiateViewController(withIdentifier: "EventTable") as! EventTableVC
-        treeTable  = storyboard.instantiateViewController(withIdentifier: "TreeTable")  as! TreeTableVC
+        eventVC = storyboard.instantiateViewController(withIdentifier: "EventTable") as! EventTableVC
+        treeVC  = storyboard.instantiateViewController(withIdentifier: "TreeTable")  as! TreeTableVC
 
-        setBorder(treeTable,  radius:  8, width: 0)
-        setBorder(eventTable, radius: 16, width: 0)
+        setBorder(treeVC,  radius:  8, width: 0)
+        setBorder(eventVC, radius: 16, width: 0)
         
-        treeTable.tableView.contentInset  = .zero
-        eventTable.tableView.contentInset = .zero
+        treeVC.tableView.contentInset  = .zero
+        eventVC.tableView.contentInset = .zero
 
-        treeTable.view?.frame = childFrame
-        eventTable.view?.frame = childFrame
+        treeVC.view?.frame = childFrame
+        eventVC.view?.frame = childFrame
 
-        pages = [treeTable,eventTable]
-        pageVC.setViewControllers([eventTable], direction: .reverse, animated: false, completion: nil)
+        pages = [treeVC,eventVC]
+        pageVC.setViewControllers([eventVC], direction: .reverse, animated: false, completion: nil)
 
-        dotBezel = UIView(frame:bezelFrame)
-        dotBezel.layer.cornerRadius = dotBezel.frame.size.height/2
-        dotBezel.layer.borderColor = UIColor.clear.cgColor
-        dotBezel.layer.borderWidth = 0.5
-        view.addSubview(dotBezel)
+        spine = UIView(frame:spineFrame)
+        spine.layer.cornerRadius = spine.frame.size.height/2
+        spine.layer.borderColor = UIColor.clear.cgColor
+        spine.layer.borderWidth = 0.5
+        spine.isUserInteractionEnabled = false
+        view.addSubview(spine)
 
         addChildViewController(pageVC)
         view.addSubview(pageVC.view)
         pageVC!.didMove(toParentViewController: self)
     }
 
+    func gotoPageType(_ type_:PageType, done:@escaping (()->())) {
+
+        if pageType == type_ { return done() }
+        let index = type_.rawValue
+        let nextVC = pages[index]
+        pageVC.setViewControllers([nextVC],direction: pageType.rawValue < index ? .forward : .reverse, animated: true)
+        let _ = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: {_ in
+            done()
+        })
+    }
+    
     func setBorder(_ vc:UIViewController, radius: CGFloat, width: CGFloat) {
 
         vc.view.layer.cornerRadius = radius
@@ -118,19 +124,22 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
     }
     
     func pageViewController(_ pageVC: UIPageViewController, viewControllerBefore vc: UIViewController) -> UIViewController? {
-        
-        if let index = pages.index(of: vc), index > 0 {
-            pagei = index - 1
-            return pages[pagei]
+
+        let index = pages.index(of: vc)! - 1
+        if index >= 0 {
+            pageType = PageType(rawValue: index) ?? .events
+            return pages[index]
         }
+
         return nil
     }
     
     func pageViewController(_ pageVC: UIPageViewController, viewControllerAfter vc: UIViewController) -> UIViewController? {
         
-        if let index = pages.index(of: vc), index < pages.count-1 {
-            pagei = index + 1
-            return pages[pagei]
+        let index = pages.index(of: vc)! + 1
+        if index < pages.count  {
+            pageType = PageType(rawValue: index) ?? .events
+            return pages[index]
         }
         return nil
     }
@@ -140,7 +149,7 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
     }
     
     func presentationIndex(for: UIPageViewController) -> Int {
-        return pagei
+        return pageType.rawValue
     }
     
     

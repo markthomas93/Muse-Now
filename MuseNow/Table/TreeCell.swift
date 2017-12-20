@@ -25,6 +25,7 @@ class TreeCell: MuCell {
     let innerH  = CGFloat(36)   // inner height
     let marginW = CGFloat(8)    // margin between elements
     let marginH = CGFloat(4)    //
+    let oldInfoAlpha = CGFloat(0.25)
 
     var parentChild = ParentChildOther.other
     var lastLocationInTable = CGPoint.zero
@@ -51,8 +52,8 @@ class TreeCell: MuCell {
         frame = cellFrame
 
         selectionStyle = .none
-        contentView.backgroundColor = .black
-        backgroundColor = .black
+        contentView.backgroundColor = .clear
+        backgroundColor = .clear
 
         // left
 
@@ -61,7 +62,7 @@ class TreeCell: MuCell {
         left.alpha = 0.0 // refreshNodeCells() will setup left's alpha for the whole tree
 
         // make this cell searchable within static cells
-        PagesVC.shared.treeTable.cells[treeNode.setting.title] = self //TODO: move this to caller
+        PagesVC.shared.treeVC.cells[treeNode.setting.title] = self //TODO: move this to caller
 
         // bezel for title
         bezel = UIView(frame:bezelFrame)
@@ -111,7 +112,7 @@ class TreeCell: MuCell {
                     info = UIImageView(frame:infoFrame)
                     info.image = UIImage(named:"icon-Info.png")
                     info.backgroundColor = .clear
-                    info.alpha = (showInfo == .newInfo ? 1.0 : 0.5)
+                    info.alpha = (showInfo == .newInfo ? 1.0 : oldInfoAlpha)
 
                     self.addSubview(info)
                     updateViews(width)
@@ -121,12 +122,11 @@ class TreeCell: MuCell {
                 switch showInfo {
                 case .noInfo: alpha = 0.0
                 case .newInfo: alpha = 1.0
-                case .oldInfo: alpha = 0/5
+                case .oldInfo: alpha = 0.25
                 }
             }
         }
     }
-
 
     /**
      */
@@ -144,6 +144,7 @@ class TreeCell: MuCell {
     func updateOnRatioOfChildrenMarked() {
         // override
     }
+    
     /**
      */
     func updateLeft(animate:Bool) {
@@ -261,17 +262,31 @@ class TreeCell: MuCell {
     }
 
     /**
+     check to see if user either touched a cell with info for the first time,
+     or directly touched the info. If so, then wait
+     until the info has played before conintuing to afterInfo()
      */
-    func touchedInfo(_ location: CGPoint) {
+    func touchedInfo(_ location: CGPoint, done: @escaping ((Bool)->())) {
 
-        if let treeNode = treeNode,
+        func showInfo(_ treeInfo: TreeInfo,_ done: @escaping ((Bool)->())) {
+            treeNode.showInfo = .oldInfo
+            treeInfo.showInfoCell(from:info, in:self, done: { _ in
+                UIView.animate(withDuration: 0.25, animations: {
+                    self.info.alpha = self.oldInfoAlpha
+                })
+                done(true)
+            })
+
+        }
+
+        if  let treeNode = treeNode,
             let treeInfo = treeNode.treeInfo {
+
             switch treeNode.showInfo {
 
             case .newInfo:
 
-                treeInfo.showInfoCell(from:info, in:self)
-                treeNode.showInfo = .oldInfo
+                return showInfo(treeInfo, done)
 
             case .oldInfo:
 
@@ -281,38 +296,57 @@ class TreeCell: MuCell {
                 let infoX1 = infoX0 + height
                 if  location.x >= infoX0,
                     location.x <= infoX1 {
-                    
-                    treeInfo.showInfoCell(from:info, in:self)
+
+                    return showInfo(treeInfo, done)
                 }
             case .noInfo: break
             }
         }
+        // either noInfo or error, so continue immediately
+        done(false)
     }
 
     /**
+     Change expand/collapse tree cells based on user touching a cell.
+     Defer to infoCell help bubble for .newInfo or directly touching .oldInfo.
      */
     override func touchCell(_ location: CGPoint) {
 
         (tableVC as? TreeTableVC)?.setTouchedCell(self)
-        touchedInfo(location)
-        // when collapsing sibling, self may also get collapsed, so need to know original state to determine highlight
-        let wasExpanded = treeNode.expanded
-        var siblingCollapsing = false
-        if let row = treeNode?.row {
-            lastLocationInTable = tableVC.tableView.rectForRow(at: IndexPath(row:row, section:0)).origin
-        }
-        if treeNode.parent != nil {
-            for sib in treeNode.parent.children {
-                if sib.expanded {
-                    sib.cell.touchFlipExpand()
-                    siblingCollapsing = true
-                    break
+
+        /**
+         When collapsing sibling, self may also get collapsed.
+         So, need to know original state to determine highlight.
+         */
+        func afterInfo() {
+            let wasExpanded = treeNode.expanded
+            var siblingCollapsing = false
+            if let row = treeNode?.row {
+                lastLocationInTable = tableVC.tableView.rectForRow(at: IndexPath(row:row, section:0)).origin
+            }
+            if treeNode.parent != nil {
+                for sib in treeNode.parent.children {
+                    if sib.expanded {
+                        sib.cell.touchFlipExpand()
+                        siblingCollapsing = true
+                        break
+                    }
                 }
             }
+            // expand me when I have children and status wasn't change by collapsing siblings
+            let expandMe = (treeNode.children.count > 0) && (wasExpanded == treeNode.expanded)
+            touchSelf(expandMe, withDelay: siblingCollapsing)
         }
-        // expand me when I have children and status wasn't change by collapsing siblings
-        let expandMe = (treeNode.children.count > 0 && wasExpanded == treeNode.expanded)
-        touchSelf(expandMe, withDelay: siblingCollapsing)
+
+        // begin ------------------------------
+
+         touchedInfo(location) { touchingInfo in
+            // expand children, optionally after playing info
+            let wasCollapsed = self.treeNode.expanded == false
+            if !touchingInfo || wasCollapsed {
+                afterInfo()
+            }
+        }
     }
     /**
      */

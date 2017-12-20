@@ -41,6 +41,7 @@ class TreeNodes {
         }
         return maxGrandHeight
     }
+
 }
 
 enum TreeNodeType { case
@@ -94,6 +95,65 @@ class TreeNode {
             }
         }
         return depth+1
+    }
+
+    func find(title:String) -> TreeCell! {
+        // first search childing, breadth first
+        for child in children {
+            if child.setting.title.starts(with:title) {
+                return child.cell
+            }
+        }
+        // otherwise go broadly deep - O(n) with shortcut for most common match at top
+        for child in children {
+            if let cell = child.find(title: title) {
+                return cell
+            }
+        }
+        return nil
+    }
+
+
+    /**
+     find node matching title, and then animate to that cell, if needed
+    */
+    func goto(title:String, done: @escaping (()->())) {
+
+        var lineage:[TreeNode]!
+
+        func nextLineage() {
+            let node = lineage.popLast()!
+            if lineage.isEmpty {
+                if node.expanded == true {
+                    node.cell?.touchCell(.zero)
+                    return DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        done()
+                    }
+                }
+                else {
+                    node.cell.setHighlight(.forceHigh)
+                    done()
+                }
+                return
+            }
+            else if node.expanded == false {
+                node.cell?.touchCell(.zero)
+                return DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    nextLineage()
+                }
+            }
+            nextLineage()
+        }
+
+        if let cell = find(title: title) {
+            var node = cell.treeNode!
+            lineage = [cell.treeNode]
+            while node.parent != nil {
+                node = node.parent!
+                lineage.append(node)
+            }
+            nextLineage()
+        }
     }
 
     func getParentChildOther() -> ParentChildOther {

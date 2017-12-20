@@ -44,7 +44,7 @@ extension TreeTableVC {
         let middle = tableView.bounds.height / 2
         //headerY = max(middle,tableView.bounds.height - shownRowsHeight)
         headerY = max(0,tableView.bounds.height - shownRowsHeight)
-        Log("⿳ heightForHeaderInSection: \(headerY)")
+        //Log("⿳ heightForHeaderInSection: \(headerY)")
         return headerY
     }
 

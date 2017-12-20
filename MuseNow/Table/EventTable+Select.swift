@@ -76,7 +76,7 @@ extension EventTableVC {
     }
     
     
-    /// - via: eventTable
+    /// - via: eventVC
     
     func clearPrevCell() {
         

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		80016D9F1FDEEA7000505E7A /* BubbleText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80016D9E1FDEEA7000505E7A /* BubbleText.swift */; };
 		8004F6171FA3EB0100F7ED94 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8004F6101FA3EB0100F7ED94 /* Assets.xcassets */; };
 		8004F6181FA3EB0100F7ED94 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8004F6121FA3EB0100F7ED94 /* LaunchScreen.storyboard */; };
 		8004F6191FA3EB0100F7ED94 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8004F6141FA3EB0100F7ED94 /* Main.storyboard */; };
@@ -222,7 +221,13 @@
 		8076435B1FACBEB8001733C6 /* Muse.par in Resources */ = {isa = PBXBuildFile; fileRef = 8076434C1FACBE55001733C6 /* Muse.par */; };
 		8076435E1FACDB63001733C6 /* TreeTitleFaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076435D1FACDB63001733C6 /* TreeTitleFaderCell.swift */; };
 		807643611FACDBF7001733C6 /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076435F1FACDBE6001733C6 /* Setting.swift */; };
+		8076B3371FE6C69A001EDD30 /* MuDrawBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076B3331FE6C69A001EDD30 /* MuDrawBubble.swift */; };
+		8076B3391FE6C69A001EDD30 /* BubbleText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076B3351FE6C69A001EDD30 /* BubbleText.swift */; };
+		8076B33A1FE6C69A001EDD30 /* BubbleVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076B3361FE6C69A001EDD30 /* BubbleVideo.swift */; };
+		8076B33C1FE6C783001EDD30 /* TourGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076B33B1FE6C783001EDD30 /* TourGuide.swift */; };
+		8076B33E1FE6D151001EDD30 /* BubbleBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076B33D1FE6D151001EDD30 /* BubbleBase.swift */; };
 		8085C6921FE45F08005AD5A8 /* TreeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8085C6911FE45F08005AD5A8 /* TreeInfo.swift */; };
+		8085C6971FE5A2B0005AD5A8 /* X_dial_320x240.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 8085C6961FE5A2B0005AD5A8 /* X_dial_320x240.mp4 */; };
 		80920B451FA4F6E4004E4D8B /* ComplicationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80920B441FA4F6E4004E4D8B /* ComplicationProvider.swift */; };
 		809433101FDA3D9F00D6EC95 /* LaunchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8094330F1FDA3D9F00D6EC95 /* LaunchVC.swift */; };
 		809E55631FB4C6A700974CB7 /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809E55621FB4C6A700974CB7 /* Audio.swift */; };
@@ -232,8 +237,6 @@
 		80A3E36C1FC0CABC00195BD3 /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F70E1FA3EE2400F7ED94 /* Actions.swift */; };
 		80A3E36E1FC0D51500195BD3 /* TreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A3E36D1FC0D51500195BD3 /* TreeNode.swift */; };
 		80AD99891FCBA06B00BECC4A /* TreeTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AD99881FCBA06A00BECC4A /* TreeTitleCell.swift */; };
-		80C78C7E1FE362F8002E3A95 /* MuDrawBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C78C7D1FE362F8002E3A95 /* MuDrawBubble.swift */; };
-		80C78C801FE36328002E3A95 /* BubbleTextCover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C78C7F1FE36328002E3A95 /* BubbleTextCover.swift */; };
 		80C78C821FE37708002E3A95 /* FileSync+Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C78C811FE37708002E3A95 /* FileSync+Session.swift */; };
 		80C78C831FE37708002E3A95 /* FileSync+Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C78C811FE37708002E3A95 /* FileSync+Session.swift */; };
 		80C78C851FE44BE2002E3A95 /* TreeNode+Subclass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C78C841FE44BE2002E3A95 /* TreeNode+Subclass.swift */; };
@@ -288,7 +291,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		80016D9E1FDEEA7000505E7A /* BubbleText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleText.swift; sourceTree = "<group>"; };
 		8004F60E1FA3EB0100F7ED94 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = MuseNow/Info.plist; sourceTree = SOURCE_ROOT; };
 		8004F60F1FA3EB0100F7ED94 /* MuseNow.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; name = MuseNow.entitlements; path = MuseNow/MuseNow.entitlements; sourceTree = SOURCE_ROOT; };
 		8004F6101FA3EB0100F7ED94 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = MuseNow/Assets.xcassets; sourceTree = SOURCE_ROOT; };
@@ -461,15 +463,20 @@
 		8076434F1FACBE55001733C6 /* MuseFound.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuseFound.swift; sourceTree = "<group>"; };
 		8076435D1FACDB63001733C6 /* TreeTitleFaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeTitleFaderCell.swift; sourceTree = "<group>"; };
 		8076435F1FACDBE6001733C6 /* Setting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Setting.swift; path = Shared/Files/Setting.swift; sourceTree = SOURCE_ROOT; };
+		8076B3331FE6C69A001EDD30 /* MuDrawBubble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MuDrawBubble.swift; path = MuseNow/Classes/Info/MuDrawBubble.swift; sourceTree = SOURCE_ROOT; };
+		8076B3341FE6C69A001EDD30 /* BubbleTextCover.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BubbleTextCover.swift; path = MuseNow/Classes/Info/BubbleTextCover.swift; sourceTree = SOURCE_ROOT; };
+		8076B3351FE6C69A001EDD30 /* BubbleText.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BubbleText.swift; path = MuseNow/Classes/Info/BubbleText.swift; sourceTree = SOURCE_ROOT; };
+		8076B3361FE6C69A001EDD30 /* BubbleVideo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BubbleVideo.swift; path = MuseNow/Classes/Info/BubbleVideo.swift; sourceTree = SOURCE_ROOT; };
+		8076B33B1FE6C783001EDD30 /* TourGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourGuide.swift; sourceTree = "<group>"; };
+		8076B33D1FE6D151001EDD30 /* BubbleBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleBase.swift; sourceTree = "<group>"; };
 		8085C6911FE45F08005AD5A8 /* TreeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeInfo.swift; sourceTree = "<group>"; };
+		8085C6961FE5A2B0005AD5A8 /* X_dial_320x240.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = X_dial_320x240.mp4; path = MuseNow/Video/X_dial_320x240.mp4; sourceTree = SOURCE_ROOT; };
 		80920B441FA4F6E4004E4D8B /* ComplicationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationProvider.swift; sourceTree = "<group>"; };
 		8094330F1FDA3D9F00D6EC95 /* LaunchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchVC.swift; sourceTree = "<group>"; };
 		809E55621FB4C6A700974CB7 /* Audio.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Audio.swift; sourceTree = "<group>"; };
 		809E55661FB4C6EA00974CB7 /* Show.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Show.swift; sourceTree = "<group>"; };
 		80A3E36D1FC0D51500195BD3 /* TreeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeNode.swift; sourceTree = "<group>"; };
 		80AD99881FCBA06A00BECC4A /* TreeTitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeTitleCell.swift; sourceTree = "<group>"; };
-		80C78C7D1FE362F8002E3A95 /* MuDrawBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuDrawBubble.swift; sourceTree = "<group>"; };
-		80C78C7F1FE36328002E3A95 /* BubbleTextCover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleTextCover.swift; sourceTree = "<group>"; };
 		80C78C811FE37708002E3A95 /* FileSync+Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileSync+Session.swift"; sourceTree = "<group>"; };
 		80C78C841FE44BE2002E3A95 /* TreeNode+Subclass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TreeNode+Subclass.swift"; sourceTree = "<group>"; };
 		80CE545E1FA3E0C7005C4D96 /* MuseNow WatchKit App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "MuseNow WatchKit App.entitlements"; sourceTree = "<group>"; };
@@ -810,6 +817,7 @@
 		803C5F421FA3DFBD002A1C11 = {
 			isa = PBXGroup;
 			children = (
+				8085C6951FE5A212005AD5A8 /* Video */,
 				8004F70C1FA3EE2400F7ED94 /* Shared */,
 				803C5F4D1FA3DFBD002A1C11 /* MuseNow */,
 				803C5F611FA3DFBE002A1C11 /* MuseNow WatchKit App */,
@@ -832,6 +840,7 @@
 		803C5F4D1FA3DFBD002A1C11 /* MuseNow */ = {
 			isa = PBXGroup;
 			children = (
+				8076B3321FE6C64C001EDD30 /* Info */,
 				804D59F61FA3FC8B0025B724 /* Classes */,
 				804D5A0B1FA3FCAA0025B724 /* Table */,
 				80203BF71FCDC63900CA4D38 /* ParGraph */,
@@ -874,9 +883,6 @@
 				804D59F91FA3FC8B0025B724 /* Fader.swift */,
 				804D59FA1FA3FC8B0025B724 /* Main+Text.swift */,
 				804D59FB1FA3FC8B0025B724 /* MainVC.swift */,
-				80016D9E1FDEEA7000505E7A /* BubbleText.swift */,
-				80C78C7D1FE362F8002E3A95 /* MuDrawBubble.swift */,
-				80C78C7F1FE36328002E3A95 /* BubbleTextCover.swift */,
 				804D59FC1FA3FC8B0025B724 /* PagesVC.swift */,
 				804D59FD1FA3FC8B0025B724 /* PhoneCrown.swift */,
 				804D59FE1FA3FC8B0025B724 /* TouchDialForce.swift */,
@@ -942,6 +948,27 @@
 				8076434F1FACBE55001733C6 /* MuseFound.swift */,
 			);
 			path = Muse;
+			sourceTree = "<group>";
+		};
+		8076B3321FE6C64C001EDD30 /* Info */ = {
+			isa = PBXGroup;
+			children = (
+				8076B3351FE6C69A001EDD30 /* BubbleText.swift */,
+				8076B33D1FE6D151001EDD30 /* BubbleBase.swift */,
+				8076B33B1FE6C783001EDD30 /* TourGuide.swift */,
+				8076B3341FE6C69A001EDD30 /* BubbleTextCover.swift */,
+				8076B3361FE6C69A001EDD30 /* BubbleVideo.swift */,
+				8076B3331FE6C69A001EDD30 /* MuDrawBubble.swift */,
+			);
+			path = Info;
+			sourceTree = "<group>";
+		};
+		8085C6951FE5A212005AD5A8 /* Video */ = {
+			isa = PBXGroup;
+			children = (
+				8085C6961FE5A2B0005AD5A8 /* X_dial_320x240.mp4 */,
+			);
+			path = Video;
 			sourceTree = "<group>";
 		};
 		809E55651FB4C6EA00974CB7 /* Show */ = {
@@ -1079,6 +1106,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8076435A1FACBEA8001733C6 /* Muse.par in Resources */,
+				8085C6971FE5A2B0005AD5A8 /* X_dial_320x240.mp4 in Resources */,
 				8004F7BB1FA3EE2400F7ED94 /* Blank.fsh in Resources */,
 				80F26DBF1FBA110300C26973 /* Routine.par in Resources */,
 				8004F6191FA3EB0100F7ED94 /* Main.storyboard in Resources */,
@@ -1146,6 +1174,7 @@
 				8004F75B1FA3EE2400F7ED94 /* Haptic.swift in Sources */,
 				8004F7831FA3EE2400F7ED94 /* MuEvents+Marks.swift in Sources */,
 				8004F79B1FA3EE2400F7ED94 /* Cals.swift in Sources */,
+				8076B33A1FE6C69A001EDD30 /* BubbleVideo.swift in Sources */,
 				8004F7791FA3EE2400F7ED94 /* MuColor.swift in Sources */,
 				8004F6E21FA3ED5E00F7ED94 /* Types.swift in Sources */,
 				8004F7AD1FA3EE2400F7ED94 /* Location.swift in Sources */,
@@ -1186,6 +1215,7 @@
 				8004F76F1FA3EE2400F7ED94 /* Dot.swift in Sources */,
 				804D5A231FA3FCAA0025B724 /* EventTable+EventCell.swift in Sources */,
 				8004F6E01FA3ED5E00F7ED94 /* String+.swift in Sources */,
+				8076B33C1FE6C783001EDD30 /* TourGuide.swift in Sources */,
 				8004F7C71FA3EE2400F7ED94 /* Scene.swift in Sources */,
 				8004F7771FA3EE2400F7ED94 /* Dots.swift in Sources */,
 				803C5B241FBF9A2F00BA9C6C /* TreeTableVC.swift in Sources */,
@@ -1210,15 +1240,15 @@
 				8004F76B1FA3EE2400F7ED94 /* Anim+Scene.swift in Sources */,
 				8004F7CF1FA3EE2400F7ED94 /* Transcribe+Apple.swift in Sources */,
 				806ACFE21FC60D7100220EB6 /* TreeEditWeekdCell.swift in Sources */,
-				80C78C7E1FE362F8002E3A95 /* MuDrawBubble.swift in Sources */,
 				8004F77F1FA3EE2400F7ED94 /* MuEvent.swift in Sources */,
-				80016D9F1FDEEA7000505E7A /* BubbleText.swift in Sources */,
 				8004F75D1FA3EE2400F7ED94 /* Motion.swift in Sources */,
 				8004F7CB1FA3EE2400F7ED94 /* Session+Message.swift in Sources */,
+				8076B3391FE6C69A001EDD30 /* BubbleText.swift in Sources */,
 				804D5A281FA3FCAA0025B724 /* EventTable+TimeCell.swift in Sources */,
 				806ACFDB1FC5FC9300220EB6 /* TreeEditTitleCell.swift in Sources */,
 				8004F7931FA3EE2400F7ED94 /* String+regex.swift in Sources */,
 				8004F7B71FA3EE2400F7ED94 /* SayCache.swift in Sources */,
+				8076B3371FE6C69A001EDD30 /* MuDrawBubble.swift in Sources */,
 				804D5A2C1FA3FCAA0025B724 /* EventTimeCell.swift in Sources */,
 				8004F7751FA3EE2400F7ED94 /* Dots+Say.swift in Sources */,
 				8004F7061FA3ED5E00F7ED94 /* ParStr+Compare.swift in Sources */,
@@ -1227,7 +1257,6 @@
 				8004F7911FA3EE2400F7ED94 /* Globals.swift in Sources */,
 				8004F7671FA3EE2400F7ED94 /* Anim+Action.swift in Sources */,
 				8004F7A51FA3EE2400F7ED94 /* Memos.swift in Sources */,
-				80C78C801FE36328002E3A95 /* BubbleTextCover.swift in Sources */,
 				8004F7811FA3EE2400F7ED94 /* MuEvents+Fake.swift in Sources */,
 				8004F7081FA3ED5E00F7ED94 /* ParStr.swift in Sources */,
 				8004F6F21FA3ED5E00F7ED94 /* Node+connect.swift in Sources */,
@@ -1245,6 +1274,7 @@
 				804D5A221FA3FCAA0025B724 /* EventTable+EditRow.swift in Sources */,
 				800C51B91FC221EF00904121 /* TreeTitleMarkCell.swift in Sources */,
 				8004F6FC1FA3ED5E00F7ED94 /* NodeAnys.swift in Sources */,
+				8076B33E1FE6D151001EDD30 /* BubbleBase.swift in Sources */,
 				8004F7C11FA3EE2400F7ED94 /* Image+context.swift in Sources */,
 				80AD99891FCBA06B00BECC4A /* TreeTitleCell.swift in Sources */,
 				8004F6F61FA3ED5E00F7ED94 /* Node+print.swift in Sources */,

@@ -226,7 +226,8 @@ class Dot {
             let event = events[ii]
             let bgnTime = event.bgnTime
             if event.type == .time {
-                eventi = ii ; return event
+                eventi = ii
+                return event
             }
             else if startsThisHour(event) {
 

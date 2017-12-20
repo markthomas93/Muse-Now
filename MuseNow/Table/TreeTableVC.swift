@@ -23,6 +23,7 @@ class TreeTableVC: UITableViewController {
         TreeNodes.shared.root = TreeNode(.titleMark, nil, TreeSetting(set:0,member:1,"Settings"), self)
         tableView.backgroundColor = .black
         self.view.backgroundColor = .black
+        initTree()
     }
 
     func collapseBackToMain() {
@@ -38,7 +39,6 @@ class TreeTableVC: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         if show == nil {
-            initTree()
             tableView.contentOffset.y = 0
         }
         else if Date().timeIntervalSince1970 - lastDisappearTime > 2 {
