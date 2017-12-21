@@ -24,24 +24,16 @@ class TreeInfo {
             cell.updateInfo(tableVC.view.frame.size.width)
         }
     }
+    
     func showInfoCell(from childView: UIView!, in parentView: UIView!, done: ((Bool)->())? = nil ) {
 
+        #if false
         let size =  CGSize(width:160,height:120) // CGSize(width:160,height:120)
-
         let fname = "X_dial_320x240"
         let panelView = MainVC.shared!.panel
         let family:[UIView] = [tableVC.tableView, parentView, childView]
         let covers:[UIView] = [panelView,tableVC.tableView]
-
-
-        //let poi =
-
-        for _ in 0...5 {
-            //let _ = BubbleVideo(TourPoi("yo",.right,.settings,.video,size,family,covers,fname:fname)).go() { result in done?(result) }
-            //let _ = BubbleVideo(TourPoi("yo",.above,.settings,.video,size,family,covers,fname:fname)).go() { result in done?(result) }
-            let _ = BubbleVideo(TourPoi("yo",.below,.settings,.video,size,family,covers,fname:fname)).go() { result in done?(result) }
-        }
-
-
+        let _ = BubbleVideo(TourPoi("yo",.below,.settings,.video,size,family,covers,fname:fname)).go() { result in done?(result) }
+        #endif
     }
 }

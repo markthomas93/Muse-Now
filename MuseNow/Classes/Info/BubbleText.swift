@@ -36,13 +36,22 @@ class BubbleText: BubbleBase  {
      - family[1]: parent if child view. Stays uncovered; others darken.
      - family[2]: child view to spring bubble from. Will not clip.
 
-      - note: if no family[2], then will create a blankChild
+      - note: if no family[2], then will create a childBezel
      */
 
-    override init(_ poi_:TourPoi) {
+    override init(frame: CGRect) {
+        super.init(frame: frame) // calls designated initializer
+    }
 
-        super.init(poi_)
-      
+
+    convenience init(_ poi:TourPoi) {
+        self.init(frame:CGRect.zero)
+        makeBubble(poi)
+    }
+    override func makeBubble(_ poi_:TourPoi) {
+
+        super.makeBubble(poi_)
+
         label = UILabel(frame:contentFrame)
         label.backgroundColor = .clear
         label.text = poi.text
@@ -53,8 +62,11 @@ class BubbleText: BubbleBase  {
         label.textColor = .white
         label.highlightedTextColor = .white
 
-        self.addSubview(label)
-        //??? family[1].addSubview(self)
+        contentView = UIView(frame:contentFrame)
+        label.frame.origin = .zero
+        contentView.addSubview(label)
+
+        self.addSubview(contentView)
     }
    
 

@@ -13,9 +13,11 @@ enum InfoType { case  text, picture, video }
 
 struct TourOptions: OptionSet {
     let rawValue: Int
-    static let highlight = TourOptions(rawValue: 1 << 0) // 1
-    static let circular  = TourOptions(rawValue: 1 << 1) // 2
-    static let overlay   = TourOptions(rawValue: 1 << 2) // 4 continue onto via fadein
+    static let highlight  = TourOptions(rawValue: 1 << 0) // highlight the parent view
+    static let circular   = TourOptions(rawValue: 1 << 1) // draw a circular bezel around parent view
+    static let overlay    = TourOptions(rawValue: 1 << 2) // continue onto via fadein
+    static let timeout    = TourOptions(rawValue: 1 << 3) // early cance video
+    static let nowait     = TourOptions(rawValue: 1 << 4) // do not wait to finish to continue to next
 }
 
 
@@ -29,9 +31,11 @@ class TourPoi {
     var text: String!               // either text for bubble or
     var fname: String!              // optional name of
     var family = [UIView]()         // grand, parent, child views
-    var covers = [UIView]()         // views in which to darken while showing bubble
+    var covering = [UIView]()         // views in which to darken while showing bubble
     var duration = TimeInterval(60) // seconds to show bubble
-    var options: TourOptions = [] // highlighted or draw circular bezel
+    var options: TourOptions = []   // highlighted or draw circular bezel
+
+    var prevPoi: TourPoi!
     var nextPoi: TourPoi!
     var timer = Timer()             // timer for duration between popOut and tuckIn
 
@@ -42,7 +46,7 @@ class TourPoi {
         _           infoType_   : InfoType,
         _           size_       : CGSize = .zero,
         _           family_     : [UIView],
-        _           covers_     : [UIView],
+        _           covering_   : [UIView],
         text        text_       : String = "",
         fname       fname_      : String = "",
         duration    duration_   : TimeInterval = 4.0,
@@ -56,7 +60,7 @@ class TourPoi {
         text = text_
         fname = fname_
         family = family_
-        covers = covers_
+        covering = covering_
         duration = duration_
         options = options_
     }
@@ -69,8 +73,6 @@ class TourGuide {
     var nextPoi: TourPoi!
 
     func buildEventsTour() {
-
-        let size = CGSize(width:240,height:72)
 
         let pageView =  PagesVC.shared.view!
         let pageSpine = PagesVC.shared.spine!
@@ -89,56 +91,63 @@ class TourGuide {
 
         func pageText(_ bubType:BubType,_ view: UIView, _ text:String, _ options: TourOptions) {
 
-            lastPoi = nextPoi
-            nextPoi = TourPoi("Page", bubType, .events, .text, size, [pageView, view], [pageShort,panelView], text:text, duration:duration, options:options)
-            lastPoi?.nextPoi = nextPoi
-            pois.append(nextPoi)
+            pois.append(TourPoi("Page", bubType, .events, .text, CGSize(width:240,height:72),
+                                [pageView, view], [pageShort,panelView], text:text, duration:duration, options:options))
+
         }
         func aboveText(_ bubType:BubType,_ view: UIView, _ text:String, _ options: TourOptions) {
 
-            lastPoi = nextPoi
-            nextPoi = TourPoi("Page", bubType, .events, .text, size, [panelView, view], [], text:text, duration:duration, options:options)
-            lastPoi?.nextPoi = nextPoi
-            pois.append(nextPoi)
+           pois.append(TourPoi("Page", bubType, .events, .text, CGSize(width:240,height:72),
+                               [panelView, view], [], text:text, duration:duration, options:options))
+
         }
         func panelText(_ title: String,_ bubType:BubType,_ view: UIView, _ text:String, _ options: TourOptions) {
 
-            lastPoi = nextPoi
-            nextPoi = TourPoi(title, .below, .events, .text, size, [panelView, view], [pageView], text:text, duration:duration, options:options)
-            lastPoi?.nextPoi = nextPoi
-            pois.append(nextPoi)
-        }
-        func panelVideo(_ title: String,_ bubType:BubType,_ view: UIView, _ fname:String, _ options: TourOptions) {
+            pois.append(TourPoi(title, bubType, .events, .text, CGSize(width:240,height:72),
+                              [pageView, view], [pageView], text:text, duration:duration, options:options))
 
-            lastPoi = nextPoi
-            nextPoi = TourPoi(title, .below, .events, .video, size, [pageView, view], [pageView], fname:fname, duration:duration, options:options)
-            lastPoi?.nextPoi = nextPoi
-            pois.append(nextPoi)
-        }
-//        panelText("Panel", panelView, "The bottom panel puts all the controls under your thumb. Just like the Apple Watch", [.highlight])
-//        panelText("Panel", panelView, "It can scroll and bookmark any of the cells above, with miminal effort.",[.highlight,.overlay])
-//
-//        panelText("Dial", dialView, "This is a 24 hour dial showing a whole week. Drag clockwise to forward in time.",[.highlight, .circular])
-//        panelText("Dial", dialView, "Tap once to scan bookmarked events. Force touch or tap twice to bookmark.",[.highlight, .circular, .overlay])
-//       // panelVideo("Dial", dialView, "X_dial_320x240",[.highlight, .circular, .overlay])
-//
-//        panelText("Crown", crownLeft, "Scroll forward or backwards in time. Behaves just like the crown on the Apple Watch",[.highlight])
-//        panelText("Crown", crownRight, "Same for the right side, plus you can force touch or tap to bookmark an event.",[.highlight])
 
-        pageText(.below, pageSpine, "Here is the touch area for flipping between pages. Tap once to change pages.", [.highlight])
-        //pageText(.above, pageSpine, "Or swipe right to change page over to settings. Whichever feels easier. ",[.highlight,.overlay])
-//        aboveText(.above, pageSpine, "Or swipe right to change page over to settings. Whichever feels easier. ",[.highlight])
-//        aboveText(.above, pageSpine, "Or swipe right to change page over to settings. Whichever feels easier. ",[.highlight])
-//        aboveText(.above, pageSpine, "Or swipe right to change page over to settings. Whichever feels easier. ",[.highlight])
-//        aboveText(.above, pageSpine, "Or swipe right to change page over to settings. Whichever feels easier. ",[.highlight])
+        }
+        func panelVideo(_ title: String,_ bubType:BubType,_ fname:String, _ options: TourOptions) {
+
+           pois.append(TourPoi(title, bubType, .events, .video, CGSize(width:160,height:160),
+                              [pageView, pageView], [pageView,panelView], fname:fname, duration:8, options:options))
+
+        }
+        panelText("Panel", .below, panelView, "The bottom panel puts all the controls under your thumb. Just like the Apple Watch", [.highlight])
+
+        panelVideo("Panel", .triptych13, "Bubble_Watch_320x320.m4v", [.timeout,.nowait])
+        panelVideo("Panel", .triptych23, "Bubble_iPhone_320x320.m4v",[.timeout,.nowait])
+        panelVideo("Panel", .triptych33, "Bubble_iPad_320x320.m4v",  [.timeout])
+
+        panelText("Dial", .below, dialView, "This is a 24 hour dial showing a whole week. Drag clockwise to forward in time.",[.highlight, .circular])
+        panelText("Dial", .below, dialView, "Tap once to scan bookmarked events. Force touch or tap twice to bookmark.",[.highlight, .circular, .overlay])
+
+        panelText("Crown", .below, crownLeft, "Scroll forward or backwards in time. Behaves just like the crown on the Apple Watch",[.highlight])
+        panelText("Crown", .below, crownRight, "Same for the right side, plus you can force touch or tap to bookmark an event.",[.highlight])
+
+        panelText("Pages", .below, pageSpine, "Here is the touch area for flipping between pages. Tap once to change pages.", [.highlight])
+        panelText("Pages", .below, pageSpine, "Or swipe right to change page over to settings. Whichever feels easier. ",[.highlight,.overlay])
 
     }
     func beginTour() {
-        func continueTour() {
 
-            //!!!  buildEventsTour()
+        func buildPois() {
+
+            buildEventsTour()
             buildSettingsTour()
 
+            // build linked list
+            var prevPoi:TourPoi! = nil
+            for poi in pois {
+                prevPoi?.nextPoi = poi
+                poi.prevPoi = prevPoi
+                prevPoi = poi
+            }
+        }
+
+        func continueTour() {
+            
             // animate dial to show whole week
             Anim.shared.animNow = .futrWheel
             Anim.shared.userDotAction()
@@ -147,11 +156,13 @@ class TourGuide {
                 tourPoi(poi)
             }
         }
-        // first goto page, which sets up the tree nodes
+
+        // begin -----------------
+
+        buildPois()
         PagesVC.shared.gotoPageType(.events) {
             continueTour()
         }
-
     }
 
     func buildSettingsTour() {
@@ -165,72 +176,30 @@ class TourGuide {
 
         func leftText(_ title: String,_ bubType:BubType, _ text:String) {
 
-            if let cell = treeRoot.find(title:title),
-                let left = cell.left {
+            if let cell = treeRoot.find(title:title), let left = cell.left {
 
-                lastPoi = nextPoi
-                nextPoi = TourPoi(title, bubType, .settings, .text, size, [treeView,cell,left], [treeView, panelView], text:text, duration:duration)
-                lastPoi?.nextPoi = nextPoi
-                pois.append(nextPoi)
+                pois.append(TourPoi(title, bubType, .settings, .text, size, [treeView,cell,left], [treeView, panelView], text:text, duration:duration))
             }
         }
         func nextText(_ title: String,_ bubType:BubType, _ text:String) {
 
             if let cell = treeRoot.find(title:title) {
-                lastPoi = nextPoi
-                nextPoi = TourPoi(title, bubType, .settings, .text, size, [treeView,cell], [treeView, panelView], text:text, duration:duration)
-                lastPoi?.nextPoi = nextPoi
-                pois.append(nextPoi)
+
+                pois.append(TourPoi(title, bubType, .settings, .text, size, [treeView,cell], [treeView, panelView], text:text, duration:duration))
             }
         }
         func nextMark(_ title:String, _ bubType:BubType, _ text:String) {
-            if let cell = treeRoot.find(title:title) as? TreeTitleMarkCell,
-                let mark = cell.mark {
-                lastPoi = nextPoi
-                nextPoi = TourPoi(title, bubType, .settings, .text, size, [treeView,cell,mark], [treeView, panelView], text:text, duration:duration)
-                lastPoi?.nextPoi = nextPoi
-                pois.append(nextPoi)
+
+            if let cell = treeRoot.find(title:title) as? TreeTitleMarkCell, let mark = cell.mark {
+
+                pois.append(TourPoi(title, bubType, .settings, .text, size, [treeView,cell,mark], [treeView, panelView], text:text, duration:duration))
             }
         }
-//        nextText("Show","Show or hide elements on the Dial. Tap to see chldren.")
-        nextMark("Show",.below,"Tap on this mark to show or hide all the children")
-        nextMark("Show",.above,"Tap on this mark to show or hide all the children")
-        nextMark("Show",.right,"Tap on this mark to show or hide all the children")
-        leftText("Show",.left,"Tap on this mark to show or hide all the children")
-        leftText("Show",.above,"Tap on this mark to show or hide all the children")
-        leftText("Show",.below,"Tap on this mark to show or hide all the children")
-
-        nextMark("Show",.below,"Tap on this mark to show or hide all the children")
-        nextMark("Show",.above,"Tap on this mark to show or hide all the children")
-        nextMark("Show",.right,"Tap on this mark to show or hide all the children")
-        leftText("Show",.left,"Tap on this mark to show or hide all the children")
-        leftText("Show",.above,"Tap on this mark to show or hide all the children")
-        leftText("Show",.below,"Tap on this mark to show or hide all the children")
-
-        
-        //        nextMark("Show",.above,"Tap on this mark to show or hide all the children")
-
- //       leftText("Show",.left,"left arrow expands")
- //       leftText("Show",.above,"left arrow expands")
- //       leftText("Show",.below,"left arrow expands")
-
-
-//        nextMark("Calendars","Show calendars on the dial.")
-//        nextText("Hear","Hear or mute while pausing.")
-//        nextText("Routine","Preview of setting Weekly routine on the dial. Will be available for purchase in a future release")
-    }
-    func beginSettingsTour() {
-
-        func continueTour() {
-            buildSettingsTour()
-            if let poi = pois.first {
-                tourPoi(poi)
-            }
-        }
-        // first goto page, which sets up the tree nodes
-        PagesVC.shared.gotoPageType(.settings) {
-            continueTour()
-        }
+        nextText("Show"     , .below, "Show or hide elements on the Dial. Tap to see chldren.")
+        nextMark("Show"     , .below, "Tap on this mark to show or hide all the children")
+        nextMark("Calendars", .below, "Show calendars on the dial.")
+        nextText("Hear"     , .below, "Hear or mute while pausing.")
+        nextText("Routine"  , .below, "Preview of setting Weekly routine on the dial. Will be available for purchase in a future release")
     }
 
     func tourPoi(_ poi:TourPoi) {
@@ -244,7 +213,7 @@ class TourGuide {
             case .video:    bubble = BubbleVideo(poi)
             case .picture:  bubble = BubbleVideo(poi)
             }
-            bubble?.go() { completed in
+            bubble?.go() {
                 if let nextPoi = poi.nextPoi {
                     if nextPoi.pageType != poi.pageType {
                         PagesVC.shared.gotoPageType(nextPoi.pageType) {

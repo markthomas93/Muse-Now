@@ -9,7 +9,11 @@
 import Foundation
 import UIKit
 
-public enum BubType { case center, above, below, left, right }
+public enum BubType { case
+    center, above, below, left, right,
+    diptych12, diptych22,
+    triptych13, triptych23,triptych33
+}
 
 class MuDrawBubble: UIView {
 
@@ -51,9 +55,11 @@ class MuDrawBubble: UIView {
         super.init(coder: aDecoder)
     }
 
-    init(_ bubType_:BubType, _ size: CGSize,_ radius_: CGFloat,_ family:[UIView]) {
+    override init(frame:CGRect) {
+        super.init(frame: frame)
+    }
+    func makeBubble(_ bubType_:BubType, _ size: CGSize,_ radius_: CGFloat,_ family:[UIView]) {
 
-        super.init(frame:.zero)
         bubType = bubType_
         radius = radius_
 
@@ -67,11 +73,11 @@ class MuDrawBubble: UIView {
         childH = fam2.frame.size.height
 
         switch bubType {
-        case .center: makeCenter(size, family)
         case .below:  makeBelow(size, family)
         case .above:  makeAbove(size, family)
         case .left:   makeLeft(size, family)
         case .right:  makeRight(size, family)
+        default:      makeCenter(size, family)
         }
 
         print("\(bubType) bub:\(bubFrame.origin) viewPoint:\(viewPoint) arrow:\(arrowXY)")
@@ -164,13 +170,36 @@ class MuDrawBubble: UIView {
 
     func makeCenter(_ size: CGSize,_ family:[UIView]) {
 
-        let _ = makeBubFrame(fx: childX + childW / 2,
-                             fy: childY + childH / 2,
+        func makeFrame(_ position:CGFloat, _ count: CGFloat) {
 
-                             dx: -size.width / 2,
-                             dy: -size.height / 2,
-                             w:   size.width,
-                             h:   size.height)
+            let totalW = fam0.frame.size.width
+            let totalH = fam0.frame.size.height
+            let subM = CGFloat(4) // sub margin
+            let subW = (totalW-(count-1)*subM) / count
+            let subH = size.width/size.height * subW
+            let x = (position-1) * (subW + subM)
+            let y = (totalH-subH)/2
+
+            makeBubFrame(fx: x+subW/2, fy: y+subH/2,
+                         dx: -subW/2,  dy: -subH/2,
+                         w:   subW,    h:   subH)
+        }
+        switch bubType {
+        case .diptych12:  makeFrame(1,2)
+        case .diptych22:  makeFrame(2,2)
+        case .triptych13: makeFrame(1,3)
+        case .triptych23: makeFrame(2,3)
+        case .triptych33: makeFrame(3,3)
+
+        default:
+            makeBubFrame(fx: childX + childW / 2,
+                         fy: childY + childH / 2,
+
+                         dx: -size.width / 2,
+                         dy: -size.height / 2,
+                         w:   size.width,
+                         h:   size.height)
+        }
 
     }
 
@@ -337,12 +366,11 @@ class MuDrawBubble: UIView {
         let m = CGFloat(1)
 
         switch bubType {
-        case .center: setCorners(U: m,   B: m+h,   L: m,  R: m+w   ) ; centerPath(path)
-            
         case .below:  setCorners(U: m,   B: m+h-r, L: m,  R: m+w   ) ; belowPath(path)
         case .above:  setCorners(U: m+r, B: m+h,   L: m,  R: m+w   ) ; abovePath(path)
         case .left:   setCorners(U: m,   B: m+h,   L: m+r,R: m+w   ) ; leftPath (path)
         case .right:  setCorners(U: m,   B: m+h,   L: m,  R: m+w-r ) ; rightPath(path)
+        default:      setCorners(U: m,   B: m+h,   L: m,  R: m+w   ) ; centerPath(path)
         }
 
         UIColor.black.setFill()

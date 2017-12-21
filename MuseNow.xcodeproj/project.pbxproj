@@ -207,6 +207,9 @@
 		804D5A2C1FA3FCAA0025B724 /* EventTimeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A1B1FA3FCAA0025B724 /* EventTimeCell.swift */; };
 		804D5A2D1FA3FCAA0025B724 /* ToggleDot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A1C1FA3FCAA0025B724 /* ToggleDot.swift */; };
 		805357B51FDB3798002ED302 /* TreeInfoApproveCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805357B41FDB3798002ED302 /* TreeInfoApproveCell.swift */; };
+		805E96621FEADD940098C948 /* Bubble_iPad_320x320.m4v in Resources */ = {isa = PBXBuildFile; fileRef = 805E965F1FEADD940098C948 /* Bubble_iPad_320x320.m4v */; };
+		805E96631FEADD940098C948 /* Bubble_iPhone_320x320.m4v in Resources */ = {isa = PBXBuildFile; fileRef = 805E96601FEADD940098C948 /* Bubble_iPhone_320x320.m4v */; };
+		805E96641FEADD940098C948 /* Bubble_Watch_320x320.m4v in Resources */ = {isa = PBXBuildFile; fileRef = 805E96611FEADD940098C948 /* Bubble_Watch_320x320.m4v */; };
 		806ACFD71FC5E1D500220EB6 /* TreeEditTimeCell+delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806ACFD61FC5E1D500220EB6 /* TreeEditTimeCell+delegate.swift */; };
 		806ACFD91FC5E39A00220EB6 /* TreeEditTitleCell+delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806ACFD81FC5E39900220EB6 /* TreeEditTitleCell+delegate.swift */; };
 		806ACFDB1FC5FC9300220EB6 /* TreeEditTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806ACFDA1FC5FC9300220EB6 /* TreeEditTitleCell.swift */; };
@@ -227,7 +230,6 @@
 		8076B33C1FE6C783001EDD30 /* TourGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076B33B1FE6C783001EDD30 /* TourGuide.swift */; };
 		8076B33E1FE6D151001EDD30 /* BubbleBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076B33D1FE6D151001EDD30 /* BubbleBase.swift */; };
 		8085C6921FE45F08005AD5A8 /* TreeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8085C6911FE45F08005AD5A8 /* TreeInfo.swift */; };
-		8085C6971FE5A2B0005AD5A8 /* X_dial_320x240.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 8085C6961FE5A2B0005AD5A8 /* X_dial_320x240.mp4 */; };
 		80920B451FA4F6E4004E4D8B /* ComplicationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80920B441FA4F6E4004E4D8B /* ComplicationProvider.swift */; };
 		809433101FDA3D9F00D6EC95 /* LaunchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8094330F1FDA3D9F00D6EC95 /* LaunchVC.swift */; };
 		809E55631FB4C6A700974CB7 /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809E55621FB4C6A700974CB7 /* Audio.swift */; };
@@ -237,6 +239,7 @@
 		80A3E36C1FC0CABC00195BD3 /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F70E1FA3EE2400F7ED94 /* Actions.swift */; };
 		80A3E36E1FC0D51500195BD3 /* TreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A3E36D1FC0D51500195BD3 /* TreeNode.swift */; };
 		80AD99891FCBA06B00BECC4A /* TreeTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AD99881FCBA06A00BECC4A /* TreeTitleCell.swift */; };
+		80BD52361FEB695E00EB4F92 /* BubbleCovers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BD52351FEB695E00EB4F92 /* BubbleCovers.swift */; };
 		80C78C821FE37708002E3A95 /* FileSync+Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C78C811FE37708002E3A95 /* FileSync+Session.swift */; };
 		80C78C831FE37708002E3A95 /* FileSync+Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C78C811FE37708002E3A95 /* FileSync+Session.swift */; };
 		80C78C851FE44BE2002E3A95 /* TreeNode+Subclass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C78C841FE44BE2002E3A95 /* TreeNode+Subclass.swift */; };
@@ -449,6 +452,9 @@
 		804D5A1B1FA3FCAA0025B724 /* EventTimeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventTimeCell.swift; sourceTree = "<group>"; };
 		804D5A1C1FA3FCAA0025B724 /* ToggleDot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleDot.swift; sourceTree = "<group>"; };
 		805357B41FDB3798002ED302 /* TreeInfoApproveCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeInfoApproveCell.swift; sourceTree = "<group>"; };
+		805E965F1FEADD940098C948 /* Bubble_iPad_320x320.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; name = Bubble_iPad_320x320.m4v; path = MuseNow/Video/Bubble_iPad_320x320.m4v; sourceTree = SOURCE_ROOT; };
+		805E96601FEADD940098C948 /* Bubble_iPhone_320x320.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; name = Bubble_iPhone_320x320.m4v; path = MuseNow/Video/Bubble_iPhone_320x320.m4v; sourceTree = SOURCE_ROOT; };
+		805E96611FEADD940098C948 /* Bubble_Watch_320x320.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; name = Bubble_Watch_320x320.m4v; path = MuseNow/Video/Bubble_Watch_320x320.m4v; sourceTree = SOURCE_ROOT; };
 		806ACFD61FC5E1D500220EB6 /* TreeEditTimeCell+delegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TreeEditTimeCell+delegate.swift"; sourceTree = "<group>"; };
 		806ACFD81FC5E39900220EB6 /* TreeEditTitleCell+delegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TreeEditTitleCell+delegate.swift"; sourceTree = "<group>"; };
 		806ACFDA1FC5FC9300220EB6 /* TreeEditTitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeEditTitleCell.swift; sourceTree = "<group>"; };
@@ -470,13 +476,13 @@
 		8076B33B1FE6C783001EDD30 /* TourGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourGuide.swift; sourceTree = "<group>"; };
 		8076B33D1FE6D151001EDD30 /* BubbleBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleBase.swift; sourceTree = "<group>"; };
 		8085C6911FE45F08005AD5A8 /* TreeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeInfo.swift; sourceTree = "<group>"; };
-		8085C6961FE5A2B0005AD5A8 /* X_dial_320x240.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = X_dial_320x240.mp4; path = MuseNow/Video/X_dial_320x240.mp4; sourceTree = SOURCE_ROOT; };
 		80920B441FA4F6E4004E4D8B /* ComplicationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationProvider.swift; sourceTree = "<group>"; };
 		8094330F1FDA3D9F00D6EC95 /* LaunchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchVC.swift; sourceTree = "<group>"; };
 		809E55621FB4C6A700974CB7 /* Audio.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Audio.swift; sourceTree = "<group>"; };
 		809E55661FB4C6EA00974CB7 /* Show.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Show.swift; sourceTree = "<group>"; };
 		80A3E36D1FC0D51500195BD3 /* TreeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeNode.swift; sourceTree = "<group>"; };
 		80AD99881FCBA06A00BECC4A /* TreeTitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeTitleCell.swift; sourceTree = "<group>"; };
+		80BD52351FEB695E00EB4F92 /* BubbleCovers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleCovers.swift; sourceTree = "<group>"; };
 		80C78C811FE37708002E3A95 /* FileSync+Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileSync+Session.swift"; sourceTree = "<group>"; };
 		80C78C841FE44BE2002E3A95 /* TreeNode+Subclass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TreeNode+Subclass.swift"; sourceTree = "<group>"; };
 		80CE545E1FA3E0C7005C4D96 /* MuseNow WatchKit App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "MuseNow WatchKit App.entitlements"; sourceTree = "<group>"; };
@@ -955,6 +961,7 @@
 			children = (
 				8076B3351FE6C69A001EDD30 /* BubbleText.swift */,
 				8076B33D1FE6D151001EDD30 /* BubbleBase.swift */,
+				80BD52351FEB695E00EB4F92 /* BubbleCovers.swift */,
 				8076B33B1FE6C783001EDD30 /* TourGuide.swift */,
 				8076B3341FE6C69A001EDD30 /* BubbleTextCover.swift */,
 				8076B3361FE6C69A001EDD30 /* BubbleVideo.swift */,
@@ -966,7 +973,9 @@
 		8085C6951FE5A212005AD5A8 /* Video */ = {
 			isa = PBXGroup;
 			children = (
-				8085C6961FE5A2B0005AD5A8 /* X_dial_320x240.mp4 */,
+				805E965F1FEADD940098C948 /* Bubble_iPad_320x320.m4v */,
+				805E96601FEADD940098C948 /* Bubble_iPhone_320x320.m4v */,
+				805E96611FEADD940098C948 /* Bubble_Watch_320x320.m4v */,
 			);
 			path = Video;
 			sourceTree = "<group>";
@@ -1106,14 +1115,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				8076435A1FACBEA8001733C6 /* Muse.par in Resources */,
-				8085C6971FE5A2B0005AD5A8 /* X_dial_320x240.mp4 in Resources */,
 				8004F7BB1FA3EE2400F7ED94 /* Blank.fsh in Resources */,
 				80F26DBF1FBA110300C26973 /* Routine.par in Resources */,
 				8004F6191FA3EB0100F7ED94 /* Main.storyboard in Resources */,
+				805E96621FEADD940098C948 /* Bubble_iPad_320x320.m4v in Resources */,
+				805E96631FEADD940098C948 /* Bubble_iPhone_320x320.m4v in Resources */,
 				8004F6181FA3EB0100F7ED94 /* LaunchScreen.storyboard in Resources */,
 				8004F6171FA3EB0100F7ED94 /* Assets.xcassets in Resources */,
 				800C51B41FC2053F00904121 /* Main.xcassets in Resources */,
 				8004F7BF1FA3EE2400F7ED94 /* Dial.fsh in Resources */,
+				805E96641FEADD940098C948 /* Bubble_Watch_320x320.m4v in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1190,6 +1201,7 @@
 				8018E1A61FC394FC00F4C0AC /* TreeEditTimeCell.swift in Sources */,
 				80C78C821FE37708002E3A95 /* FileSync+Session.swift in Sources */,
 				804D5A2B1FA3FCAA0025B724 /* MuCell.swift in Sources */,
+				80BD52361FEB695E00EB4F92 /* BubbleCovers.swift in Sources */,
 				80D483EA1FCB3BBD00D28095 /* TreeColorTitleCell.swift in Sources */,
 				8004F7A31FA3EE2400F7ED94 /* Marks.swift in Sources */,
 				8004F7591FA3EE2400F7ED94 /* Actions.swift in Sources */,

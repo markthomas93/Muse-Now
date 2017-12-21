@@ -18,12 +18,20 @@ class BubbleVideo: BubbleBase {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
+    override init(frame: CGRect) {
+        super.init(frame: frame) // calls designated initializer
+    }
 
-    override init(_ poi:TourPoi) {
+    convenience init(_ poi:TourPoi) {
+        self.init(frame:CGRect.zero)
+        makeBubble(poi)
+    }
+    
+    override func makeBubble(_ poi:TourPoi) {
 
-        super.init(poi)
+        super.makeBubble(poi)
 
-        if let videoURL = Bundle.main.url(forResource: poi.fname, withExtension: "mp4") as NSURL? {
+        if let videoURL = Bundle.main.url(forResource: poi.fname, withExtension: "") as NSURL? {
 
             player = AVPlayer(url: videoURL as URL)
             player?.actionAtItemEnd = .none
@@ -46,12 +54,19 @@ class BubbleVideo: BubbleBase {
         }
     }
  
-    override func go(_ done_: @escaping ((Bool)->())) {
+    override func go(_ gotoNext_: @escaping (()->())) {
 
-        done = done_
+        gotoNext = gotoNext_
 
         popOut() {
-
+            if self.options.contains(.nowait) {
+                self.gotoNext?()
+            }
+            if self.poi.options.contains(.timeout) {
+                self.timer = Timer.scheduledTimer(withTimeInterval: self.duration, repeats: false, block: {_ in
+                    self.timeOut()
+                })
+            }
             self.player?.play()
 
             // finished video notification
@@ -62,9 +77,17 @@ class BubbleVideo: BubbleBase {
                 object: nil)
         }
     }
+    @objc func timeOut() {
+        player?.pause()
+        tuckIn(timeout:true)
+    }
 
     @objc func videoFinished() {
-       tuckIn(true)
+        if self.poi.options.contains(.timeout), timer.isValid {
+            return
+        }
+        timer.invalidate()
+        tuckIn(timeout:false)
     }
 
 }
