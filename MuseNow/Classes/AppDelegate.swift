@@ -10,6 +10,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         return true
     }
+
+//    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+//
+//        self.window = UIWindow(frame: UIScreen.main.bounds)
+//        if let window = self.window {
+//            window.rootViewController = OnboardVC()
+//            window.makeKeyAndVisible()
+//        }
+//        return true
+//    }
+
     func applicationWillResignActive(_ application: UIApplication) { Log("⟳☎︎ \(#function)")
         Active.shared.stopActive()
         didStopActive = true

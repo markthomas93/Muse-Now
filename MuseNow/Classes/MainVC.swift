@@ -7,15 +7,15 @@ import WatchKit
 
 class MainVC: UIViewController {
     static var shared: MainVC?
-    let session  = Session.shared
-    let active   = Active.shared
-    let memos    = Memos.shared
-    let marks    = Marks.shared
-    let anim     = Anim.shared
-    let dots     = Dots.shared
-    let pagesVC  = PagesVC.shared
-    let actions  = Actions.shared
-    let hear     = Hear.shared
+    let session = Session.shared
+    let active  = Active.shared
+    let memos   = Memos.shared
+    let marks   = Marks.shared
+    let anim    = Anim.shared
+    let dots    = Dots.shared
+    let pagesVC = PagesVC.shared
+    let actions = Actions.shared
+    let hear    = Hear.shared
     
     var touchDial  : TouchDial!
     var scene      : Scene!
@@ -87,8 +87,11 @@ class MainVC: UIViewController {
 
 
     override func viewDidLoad() {
-        
+        self.mainFrame = UIScreen.main.bounds
+        self.view.bounds = UIScreen.main.bounds
         super.viewDidLoad()
+
+
         MainVC.shared = self
         // Muse.shared.testScript() // for future use of ParGraph
 

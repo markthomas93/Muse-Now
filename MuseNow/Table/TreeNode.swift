@@ -117,7 +117,7 @@ class TreeNode {
     /**
      find node matching title, and then animate to that cell, if needed
     */
-    func goto(title:String, done: @escaping (()->())) {
+    func goto(title:String, done:@escaping CallVoid) {
 
         var lineage:[TreeNode]!
 
@@ -126,7 +126,7 @@ class TreeNode {
             if lineage.isEmpty {
                 if node.expanded == true {
                     node.cell?.touchCell(.zero)
-                    return DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    return DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                         done()
                     }
                 }
@@ -138,7 +138,7 @@ class TreeNode {
             }
             else if node.expanded == false {
                 node.cell?.touchCell(.zero)
-                return DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                return DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                     nextLineage()
                 }
             }

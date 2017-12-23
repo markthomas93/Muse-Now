@@ -11,9 +11,6 @@ import UIKit
 
 class BubbleText: BubbleBase  {
 
-    var label: UILabel!
-    var labelFrame = CGRect.zero
-
     var labelX = CGFloat(8)
     var labelY = CGFloat(0)
     var labelW = CGFloat(304)
@@ -44,32 +41,37 @@ class BubbleText: BubbleBase  {
     }
 
 
-    convenience init(_ poi:TourPoi) {
+    convenience init(_ bubi:BubbleItem) {
         self.init(frame:CGRect.zero)
-        makeBubble(poi)
+        makeBubble(bubi)
     }
-    override func makeBubble(_ poi_:TourPoi) {
+    override func makeBubble(_ bubi_:BubbleItem) {
 
-        super.makeBubble(poi_)
+        super.makeBubble(bubi_)
 
-        label = UILabel(frame:contentFrame)
-        label.backgroundColor = .clear
-        label.text = poi.text
-        label.adjustsFontSizeToFitWidth = true
-        label.lineBreakMode = .byTruncatingTail
-        label.adjustsFontForContentSizeCategory = true
-        label.numberOfLines = 0
-        label.textColor = .white
-        label.highlightedTextColor = .white
+        for text in bubi.text {
 
-        contentView = UIView(frame:contentFrame)
-        label.frame.origin = .zero
-        contentView.addSubview(label)
-
-        self.addSubview(contentView)
+            let label = UILabel(frame:contentFrame)
+            label.backgroundColor = .clear
+            label.text = text
+            label.adjustsFontSizeToFitWidth = true
+            label.lineBreakMode = .byTruncatingTail
+            if bubi.options.contains(.left) {
+                label.textAlignment = .left
+            }
+            else if bubi.options.contains(.right) {
+                label.textAlignment = .right
+            }
+            else {
+                label.textAlignment = .center
+            }
+            label.adjustsFontForContentSizeCategory = true
+            label.numberOfLines = 0
+            label.textColor = .white
+            label.highlightedTextColor = .white
+            contentViews.append(label)
+        }
     }
    
-
-
 }
 

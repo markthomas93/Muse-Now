@@ -6,6 +6,24 @@
   "images" : [
     {
       "orientation" : "portrait",
+      "filename" : "Default-Portrait-2436h@3x.png",
+      "idiom" : "iphone",
+      "subtype" : "2436h",
+      "scale" : "3x",
+      "minimum-system-version" : "11.0",
+      "extent" : "full-screen"
+    },
+    {
+      "orientation" : "landscape",
+      "filename" : "Default-Landscape-2436h@3x.png",
+      "idiom" : "iphone",
+      "subtype" : "2436h",
+      "scale" : "3x",
+      "minimum-system-version" : "11.0",
+      "extent" : "full-screen"
+    },
+    {
+      "orientation" : "portrait",
       "filename" : "Default.png",
       "idiom" : "iphone",
       "scale" : "1x",

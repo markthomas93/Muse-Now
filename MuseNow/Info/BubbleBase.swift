@@ -12,15 +12,18 @@ import UIKit
 class BubbleBase: MuDrawBubble {
 
     var outFrame = CGRect.zero      // popOut frame
-    var contentFrame = CGRect.zero
-    var contentView: UIView!
+
+    var contentFrame = CGRect.zero  // frame for content inside bubble
+    var contentViews = [UIView]()    // 1 or more views containing content inside bubble
+    var contenti = 0            // index into contentViews
+
     let marginW = CGFloat(8)        // margin inside bezel
     let innerH = CGFloat(36)        // inner height / 4 determines cell bezel radius
 
-    var poi: TourPoi!
+    var bubi: BubbleItem!
     var family = [UIView]()         // grand, parent, child views
     var duration = TimeInterval(60) // seconds to show bubble
-    var options = TourOptions([])
+    var options = BubbleOptions([])
 
     var gotoNext: (()->())?         // callback after tucking in bubble
     var timer = Timer()             // timer for duration between popOut and tuckIn
@@ -52,19 +55,19 @@ class BubbleBase: MuDrawBubble {
      */
 
 
-    func makeBubble(_ poi_:TourPoi) {
+    func makeBubble(_ bubi_:BubbleItem) {
 
-        poi = poi_
-        family = poi.family
-        duration = poi.duration
-        options = poi.options
+        bubi = bubi_
+        family = bubi.family
+        duration = bubi.duration
+        options = bubi.options
 
         let radius = CGFloat(16)
-        let size = poi.size
+        let size = bubi.size
 
         makeChildBezel()
-        BubbleCovers.shared.makeCovers(poi)
-        makeBubble(poi.bubType, size, radius, family) // create bubbleFrame
+        BubbleCovers.shared.makeCovers(bubi)
+        makeBubble(bubi.bubShape, size, radius, family) // create bubbleFrame
 
         self.isUserInteractionEnabled = true
 
@@ -81,8 +84,8 @@ class BubbleBase: MuDrawBubble {
         // setup content frame
 
         var m = marginW
-        switch bubType {
-        case .below, .above, .left, .right:  m = marginW
+        switch bubShape {
+        case .above, .below, .left, .right:  m = marginW
         default:                             m = 1
         }
         let m2 = m*2
@@ -90,9 +93,9 @@ class BubbleBase: MuDrawBubble {
         let w = bubFrame.size.width - m2
         let h = bubFrame.size.height - m2
 
-        switch poi.bubType {
-        case .above: contentFrame = CGRect(x:m,   y:m+r, width:w,   height:h-r)
-        case .below: contentFrame = CGRect(x:m,   y:m,   width:w,   height:h-r)
+        switch bubi.bubShape {
+        case .below: contentFrame = CGRect(x:m,   y:m+r, width:w,   height:h-r)
+        case .above: contentFrame = CGRect(x:m,   y:m,   width:w,   height:h-r)
         case .left:  contentFrame = CGRect(x:m+r, y:m,   width:w-r, height:h)
         case .right: contentFrame = CGRect(x:m,   y:m,   width:w-r, height:h)
         default:     contentFrame = CGRect(x:m,   y:m,   width:w,   height:h)
@@ -125,8 +128,10 @@ class BubbleBase: MuDrawBubble {
 
 
     func go(_ gotoNext_: @escaping (()->())) {
+
         gotoNext = gotoNext_
-        popOut() {
+        self.popOut() {
+
             if self.options.contains(.nowait) {
                 self.gotoNext?()
             }
@@ -143,7 +148,7 @@ class BubbleBase: MuDrawBubble {
     func getTranslation() -> CGPoint {
 
         let vx = viewPoint.x
-        let vw = poi.family.last?.frame.size.width ?? 0
+        let vw = bubi.family.last?.frame.size.width ?? 0
         let vmx = vx + vw/2
 
         let ox = outFrame.origin.x
@@ -153,7 +158,7 @@ class BubbleBase: MuDrawBubble {
 
         // let oy = outFrame.origin.y
         // let vy = viewPoint.y
-        // let vh = poi.family.last?.frame.size.height ?? 0
+        // let vh = bubi.family.last?.frame.size.height ?? 0
         // let vmy = vy + vh/2
         // let omy = oy + oh/2
 
@@ -162,11 +167,11 @@ class BubbleBase: MuDrawBubble {
         // let ovh = oh/vh
         // let ovw = ow/vw
 
-        // print ("\(poi.bubType)\n v:(\(vx),\(vy) \(vw),\(vh) \(vmx),\(vmy))\n o:(\(ox),\(oy) \(ow),\(oh)  \(omx),\(omy))")
+        // print ("\(bubi.bubShape)\n v:(\(vx),\(vy) \(vw),\(vh) \(vmx),\(vmy))\n o:(\(ox),\(oy) \(ow),\(oh)  \(omx),\(omy))")
 
-        switch poi.bubType {
-        case .above:  return CGPoint(x: (vmx-omx)/2, y: -oh/2)
-        case .below:  return CGPoint(x: (vmx-omx)/2, y:  oh/2)
+        switch bubi.bubShape {
+        case .below:  return CGPoint(x: (vmx-omx)/2, y: -oh/2)
+        case .above:  return CGPoint(x: (vmx-omx)/2, y:  oh/2)
 
         case .left:   return CGPoint(x: -ow/2, y: 0)
         case .right:  return CGPoint(x:  ow/2, y: 0)
@@ -174,18 +179,30 @@ class BubbleBase: MuDrawBubble {
         }
     }
     /**
+    prepare next contentView
+    */
+    func prepareContentView(_ index:Int) {
+        contentViews[contenti].removeFromSuperview()
+        contenti = index
+        contentViews[contenti].alpha = 0
+        self.addSubview(contentViews[contenti])
+    }
+
+    /**
      Grow animation outward from inFrame to outFrame.
      To insure that bubble appears above other views,
      bring family[1] to front of family[0].
      */
     func popOut(_ popDone:@escaping()->()) {
 
-        if poi.options.contains(.overlay) {
+        prepareContentView(0)
+
+        if bubi.options.contains(.overlay) {
             transform = .identity
             alpha = 0.0
         }
         else {
-            if BubbleCovers.shared.canFadeIn(poi)  {
+            if BubbleCovers.shared.canFadeIn(bubi)  {
                  family[0].bringSubview(toFront: family[1])
             }
 
@@ -200,11 +217,49 @@ class BubbleBase: MuDrawBubble {
 
         UIView.animate(withDuration: 1.0, delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
             self.alpha = 1.0
+            self.contentViews[self.contenti].alpha = 1.0
             self.transform = .identity
-            BubbleCovers.shared.fadeIn(self.poi)
+            BubbleCovers.shared.fadeIn(self.bubi)
         }, completion: { _ in
+            // self.bubi.closure?(self.bubi,.start)
             popDone()
         })
+    }
+
+    /**
+     When there are more than one content view, then fade out last and fade in 
+     */
+    func fadeNext() -> Bool {
+
+
+        if contenti >= contentViews.count-1 {
+            return false
+        }
+
+        timer.invalidate()
+
+        UIView.animate(withDuration: 1.0, delay: 0.0, options: [], animations: {
+
+            self.contentViews[self.contenti].alpha = 0.0
+
+        }, completion: {_ in
+
+            self.prepareContentView(self.contenti+1)
+            // self.bubi.closure?(self.bubi,.nextContent)
+
+            UIView.animate(withDuration: 1.0, delay: 0.0, options: [], animations: {
+
+                self.contentViews[self.contenti].alpha = 1.0
+
+            }, completion: {_ in
+
+                self.timer = Timer.scheduledTimer(withTimeInterval: self.duration, repeats: false, block: {_ in
+
+                    self.tuckIn(timeout:true)
+                })
+            })
+        })
+        return true
     }
 
     /**
@@ -215,10 +270,10 @@ class BubbleBase: MuDrawBubble {
     func tuckIn(timeout:Bool) {
 
         func nextHasOverlay() -> Bool {
-            if poi.nextPoi == nil {
+            if bubi.nextBub == nil {
                 return false
             }
-            if poi.nextPoi.options.contains(.overlay) {
+            if bubi.nextBub.options.contains(.overlay) {
                 return true
             }
             return false
@@ -230,24 +285,34 @@ class BubbleBase: MuDrawBubble {
             }
         }
 
+
+        // begin ------------------------------
+
+        if fadeNext() {
+            return
+        }
+
+        //bubi.closure?(self.bubi,.finish)
+
         if nextHasOverlay() {
 
             gotoNext?()
             UIView.animate(withDuration: 1.0, delay: 1.0, options: [], animations: {
                 self.alpha = 0
-                self.contentView?.alpha = 0.0
+                self.contentViews[self.contenti].alpha = 0.0
             }, completion: {_ in
                 self.childBezel?.removeFromSuperview()
+                // self.bubi.closure?(self.bubi,.postroll)
             })
         }
         else {
             UIView.animate(withDuration: 1.0, animations: {
                 self.alpha = 0.0
                 self.childBezel?.alpha = 0
-                BubbleCovers.shared.fadeOut(self.poi)
+                BubbleCovers.shared.fadeOut(self.bubi)
             }, completion: { _ in
                 self.childBezel?.removeFromSuperview()
-                BubbleCovers.shared.removeFromSuper(self.poi)
+                BubbleCovers.shared.removeFromSuper(self.bubi)
                 maybeGotoNext()
             })
         }

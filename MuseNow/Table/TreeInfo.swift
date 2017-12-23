@@ -33,7 +33,7 @@ class TreeInfo {
         let panelView = MainVC.shared!.panel
         let family:[UIView] = [tableVC.tableView, parentView, childView]
         let covers:[UIView] = [panelView,tableVC.tableView]
-        let _ = BubbleVideo(TourPoi("yo",.below,.settings,.video,size,family,covers,fname:fname)).go() { result in done?(result) }
+        let _ = BubbleVideo(BubbleItem("yo",.above,.settings,.video,size,family,covers,fname:fname)).go() { result in done?(result) }
         #endif
     }
 }

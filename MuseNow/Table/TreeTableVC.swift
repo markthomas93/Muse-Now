@@ -132,6 +132,24 @@ class TreeTableVC: UITableViewController {
 
         // preview
         let preview = TreeNode(.title, root, TreeSetting(set:1,member:1,"Preview"), self)
+
+        // show | hide - Memos
+
+        let memos  = TreeActNode(preview,"Memos", showSet, ShowSet.memo.rawValue, .showMemo, .hideMemo, self)
+        let memoInfo = """
+            This experiment allows you to record audio memos, which are converted to text.
+
+            To record: \
+            On Apple Watch, rotate away and back again, like throttling a motorcycle and lower your wrist to stop. \
+            On iPhone, tilt device away and back again to record. Repeat that motion stop. \
+            Or simply triple-tap on the dial to record and stop.
+
+            All your recordings are privately saved in your iTunes folder. We don't have a copy and never will. \
+            We will provide a button to automatically erase these files. Or, you can manually copy from your iTunes folder.
+            """
+        let _ = TreeInfo( memos, memoInfo, height: 256, self)
+
+
         // show | hide - Routine
 
         let routine = TreeActNode(preview,"Routine", showSet, ShowSet.routine.rawValue, .showRoutine, .hideRoutine, self)
@@ -155,21 +173,6 @@ class TreeTableVC: UITableViewController {
                 let _ = TreeRoutineItemNode(.timeTitleDays, catNode, item, self)
             }
         }
-        // show | hide - Memos
-
-        let memos  = TreeActNode(preview,"Memos", showSet, ShowSet.memo.rawValue, .showMemo, .hideMemo, self)
-        let memoInfo = """
-            This experiment allows you to record audio memos, which are converted to text.
-
-            To record: \
-            On Apple Watch, rotate away and back again, like throttling a motorcycle and lower your wrist to stop. \
-            On iPhone, tilt device away and back again to record. Repeat that motion stop. \
-            Or simply triple-tap on the dial to record and stop.
-
-            All your recordings are privately saved in your iTunes folder. We don't have a copy and never will. \
-            We will provide a button to automatically erase these files. Or, you can manually copy from your iTunes folder.
-            """
-        let _ = TreeInfo( memos, memoInfo, height: 256, self)
 
 
         // setup table cells from current state of hierary

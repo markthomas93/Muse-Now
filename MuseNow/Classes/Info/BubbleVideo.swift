@@ -22,26 +22,29 @@ class BubbleVideo: BubbleBase {
         super.init(frame: frame) // calls designated initializer
     }
 
-    convenience init(_ poi:TourPoi) {
+    convenience init(_ bubi:BubbleItem) {
         self.init(frame:CGRect.zero)
-        makeBubble(poi)
+        makeBubble(bubi)
     }
     
-    override func makeBubble(_ poi:TourPoi) {
+    override func makeBubble(_ bubi:BubbleItem) {
 
-        super.makeBubble(poi)
+        super.makeBubble(bubi)
 
-        if let videoURL = Bundle.main.url(forResource: poi.fname, withExtension: "") as NSURL? {
+        if let videoURL = Bundle.main.url(forResource: bubi.fname, withExtension: "") as NSURL? {
 
             player = AVPlayer(url: videoURL as URL)
             player?.actionAtItemEnd = .none
             player?.isMuted = true
 
+            let contentView = UIView(frame:contentFrame)
+
             let insetLayer = CALayer()
             insetLayer.frame = contentFrame
+            insetLayer.frame.origin = .zero
             insetLayer.cornerRadius = radius
             insetLayer.masksToBounds = true
-            layer.addSublayer(insetLayer)
+            contentView.layer.addSublayer(insetLayer)
 
             let playerLayer = AVPlayerLayer(player: player)
             playerLayer.videoGravity = .resizeAspect
@@ -51,6 +54,7 @@ class BubbleVideo: BubbleBase {
             playerLayer.frame.origin = .zero
 
             insetLayer.addSublayer(playerLayer)
+            contentViews.append(contentView)
         }
     }
  
@@ -62,7 +66,7 @@ class BubbleVideo: BubbleBase {
             if self.options.contains(.nowait) {
                 self.gotoNext?()
             }
-            if self.poi.options.contains(.timeout) {
+            if self.bubi.options.contains(.timeout) {
                 self.timer = Timer.scheduledTimer(withTimeInterval: self.duration, repeats: false, block: {_ in
                     self.timeOut()
                 })
@@ -83,7 +87,7 @@ class BubbleVideo: BubbleBase {
     }
 
     @objc func videoFinished() {
-        if self.poi.options.contains(.timeout), timer.isValid {
+        if self.bubi.options.contains(.timeout), timer.isValid {
             return
         }
         timer.invalidate()

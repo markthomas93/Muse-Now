@@ -9,15 +9,15 @@
 import Foundation
 import UIKit
 
-public enum BubType { case
+public enum BubShape { case
     center, above, below, left, right,
     diptych12, diptych22,
-    triptych13, triptych23,triptych33
+    triptych13, triptych23,triptych33,
 }
 
 class MuDrawBubble: UIView {
 
-    var bubType = BubType.below
+    var bubShape = BubShape.above
     var bubFrame = CGRect.zero
     var radius  = CGFloat(8)
     var arrowXY = CGPoint.zero
@@ -58,29 +58,29 @@ class MuDrawBubble: UIView {
     override init(frame:CGRect) {
         super.init(frame: frame)
     }
-    func makeBubble(_ bubType_:BubType, _ size: CGSize,_ radius_: CGFloat,_ family:[UIView]) {
+    func makeBubble(_ bubShape_:BubShape, _ size: CGSize,_ radius_: CGFloat,_ family:[UIView]) {
 
-        bubType = bubType_
+        bubShape = bubShape_
         radius = radius_
 
-        fam0 = family[0]
-        fam1 = family[1]
-        fam2 = family[2]
+        fam0 = family[0] // grand
+        fam1 = family[1] // parent
+        fam2 = family[2] // child
 
         childX = fam2.frame.origin.x
         childY = fam2.frame.origin.y
         childW = fam2.frame.size.width
         childH = fam2.frame.size.height
 
-        switch bubType {
-        case .below:  makeBelow(size, family)
-        case .above:  makeAbove(size, family)
+        switch bubShape {
+        case .above:  makeBelow(size, family)
+        case .below:  makeAbove(size, family)
         case .left:   makeLeft(size, family)
         case .right:  makeRight(size, family)
         default:      makeCenter(size, family)
         }
 
-        print("\(bubType) bub:\(bubFrame.origin) viewPoint:\(viewPoint) arrow:\(arrowXY)")
+        print("\(bubShape) bub:\(bubFrame.origin) viewPoint:\(viewPoint) arrow:\(arrowXY)")
 
         self.frame = bubFrame
         isUserInteractionEnabled = true
@@ -184,7 +184,7 @@ class MuDrawBubble: UIView {
                          dx: -subW/2,  dy: -subH/2,
                          w:   subW,    h:   subH)
         }
-        switch bubType {
+        switch bubShape {
         case .diptych12:  makeFrame(1,2)
         case .diptych22:  makeFrame(2,2)
         case .triptych13: makeFrame(1,3)
@@ -365,9 +365,9 @@ class MuDrawBubble: UIView {
         let r = radius
         let m = CGFloat(1)
 
-        switch bubType {
-        case .below:  setCorners(U: m,   B: m+h-r, L: m,  R: m+w   ) ; belowPath(path)
-        case .above:  setCorners(U: m+r, B: m+h,   L: m,  R: m+w   ) ; abovePath(path)
+        switch bubShape {
+        case .above:  setCorners(U: m,   B: m+h-r, L: m,  R: m+w   ) ; belowPath(path)
+        case .below:  setCorners(U: m+r, B: m+h,   L: m,  R: m+w   ) ; abovePath(path)
         case .left:   setCorners(U: m,   B: m+h,   L: m+r,R: m+w   ) ; leftPath (path)
         case .right:  setCorners(U: m,   B: m+h,   L: m,  R: m+w-r ) ; rightPath(path)
         default:      setCorners(U: m,   B: m+h,   L: m,  R: m+w   ) ; centerPath(path)

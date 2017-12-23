@@ -47,7 +47,8 @@ func DebugLog(_ str: String) -> Bool {
         //case NSLog(str)
 
     case
-
+    "🔰", // onboarding pages (japaness beginnner symbol)
+    "💬", // bubble animation closure
     "📅", // EkNotification
     "▤", // TreeTableView
     "⿳": // menu

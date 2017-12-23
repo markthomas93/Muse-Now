@@ -21,13 +21,13 @@ class BubbleCovers {
     let coverAlpha = CGFloat(0.70)  // alpha for covers which darken background
     var covers = [UIView]()         // views in which to darken while showing bubble
 
-    func makeCovers(_ poi:TourPoi) {
+    func makeCovers(_ bubi:BubbleItem) {
 
-        if canFadeIn(poi) {
+        if canFadeIn(bubi) {
 
             covers.removeAll()
 
-            for underView in poi.covering {
+            for underView in bubi.covering {
 
                 let cover = UIView(frame:underView.frame)
                 cover.frame.origin = .zero
@@ -41,15 +41,15 @@ class BubbleCovers {
         }
     }
 
-    func canFadeOut(_ poi:TourPoi) -> Bool {
+    func canFadeOut(_ bubi:BubbleItem) -> Bool {
 
-        if poi.options.contains(.nowait) {
+        if bubi.options.contains(.nowait) {
             return false
         }
-        if poi.nextPoi == nil {
+        if bubi.nextBub == nil {
             return true
         }
-        if poi.nextPoi.options.contains(.overlay) {
+        if bubi.nextBub.options.contains(.overlay) {
             return false
         }
         return true
@@ -57,41 +57,41 @@ class BubbleCovers {
 
     
      // bring parent to front if not a continuation of a previous nowait
-    func canFadeIn(_ poi:TourPoi) -> Bool {
+    func canFadeIn(_ bubi:BubbleItem) -> Bool {
 
-        if poi.options.contains(.overlay) {
+        if bubi.options.contains(.overlay) {
             return false
         }
-        if poi.prevPoi == nil {
+        if bubi.prevBub == nil {
             return true
         }
-        if poi.prevPoi.options.contains(.nowait) {
+        if bubi.prevBub.options.contains(.nowait) {
             return false
         }
-        if poi.options.contains(.nowait) {
+        if bubi.options.contains(.nowait) {
             return true
         }
         return true
     }
 
-    func fadeIn(_ poi:TourPoi) {
-        if canFadeIn(poi) {
+    func fadeIn(_ bubi:BubbleItem) {
+        if canFadeIn(bubi) {
             for cover in self.covers {
                 cover.alpha = self.coverAlpha
             }
         }
     }
 
-    func fadeOut(_ poi:TourPoi) {
-        if canFadeOut(poi) {
+    func fadeOut(_ bubi:BubbleItem) {
+        if canFadeOut(bubi) {
             for cover in self.covers {
                 cover.alpha = 0.0
             }
         }
     }
 
-    func removeFromSuper(_ poi:TourPoi) {
-        if canFadeOut(poi) {
+    func removeFromSuper(_ bubi:BubbleItem) {
+        if canFadeOut(bubi) {
             for cover in self.covers {
                 cover.removeFromSuperview()
             }
