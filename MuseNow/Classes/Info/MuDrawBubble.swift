@@ -12,7 +12,7 @@ import UIKit
 public enum BubShape { case
     center, above, below, left, right,
     diptych12, diptych22,
-    triptych13, triptych23,triptych33,
+    triptych13, triptych23,triptych33
 }
 
 class MuDrawBubble: UIView {
@@ -73,8 +73,8 @@ class MuDrawBubble: UIView {
         childH = fam2.frame.size.height
 
         switch bubShape {
-        case .above:  makeBelow(size, family)
-        case .below:  makeAbove(size, family)
+        case .above:  makeAbove(size, family)
+        case .below:  makeBelow(size, family)
         case .left:   makeLeft(size, family)
         case .right:  makeRight(size, family)
         default:      makeCenter(size, family)
@@ -99,7 +99,7 @@ class MuDrawBubble: UIView {
      */
     func makeBubFrame(fx: CGFloat, fy: CGFloat,
                       dx: CGFloat, dy: CGFloat,
-                      w: CGFloat, h: CGFloat) {
+                      w:  CGFloat, h:  CGFloat) {
 
         let testPoint = CGPoint(x: fx, y: fy)
         viewPoint = fam0.convert(testPoint, from: fam1)
@@ -140,7 +140,7 @@ class MuDrawBubble: UIView {
                           y: viewPoint.y - bubFrame.origin.y)
     }
 
-    func makeAbove(_ size: CGSize,_ family:[UIView]) {
+    func makeBelow(_ size: CGSize,_ family:[UIView]) {
 
         makeBubFrame(fx: childX + childW / 2,
                      fy: childY + childH,
@@ -154,7 +154,7 @@ class MuDrawBubble: UIView {
                           y: 0)
     }
 
-    func makeBelow(_ size: CGSize,_ family:[UIView]) {
+    func makeAbove(_ size: CGSize,_ family:[UIView]) {
 
         makeBubFrame(fx: childX + childW / 2,
                      fy: childY,

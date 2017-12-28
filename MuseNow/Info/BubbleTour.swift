@@ -6,26 +6,39 @@ enum BubContent { case  text, picture, video }
 
 class BubbleTour {
 
-    var bubbles = [BubbleItem]()
-    var nextBub: BubbleItem!
+    var bubbles = [Bubble]()
+    var nextBub: Bubble!
+    var mainView: UIView! // full screen view in which to place subview
+
+    func bubsFrom(anys:[Any]) -> [BubbleItem] {
+
+        var bubItems = [BubbleItem]()
+        var bubItem: BubbleItem!
+        for any in anys {
+            switch any {
+            case let any as String:     bubItem = BubbleItem(any,4.0) ; bubItems.append(bubItem)
+            case let any as Int:        bubItem?.duration = TimeInterval(any) // modify last item
+            case let any as Double:     bubItem?.duration = TimeInterval(any) // modify last item
+            case let any as Float:      bubItem?.duration = TimeInterval(any) // modify last item
+            case let any as CallWait:   bubItem?.callWait = any // // modify last item
+            default: continue
+            }
+        }
+        return bubItems
+    }
 
     func beginTour() {
 
-        buildEventsTour()
-        buildSettingsTour()
+        //buildEventsTour()
+        buildDialogTour()
 
         // build linked list
-        var prevBub:BubbleItem! = nil
-        for bubi in bubbles {
-            prevBub?.nextBub = bubi
-            bubi.prevBub = prevBub
-            prevBub = bubi
+        var prevBub:Bubble! = nil
+        for bubble in bubbles {
+            prevBub?.nextBub = bubble
+            prevBub = bubble
         }
-
-        // animate dial to show whole week
-        Anim.shared.animNow = .futrWheel
-        Anim.shared.userDotAction()
-
+        Actions.shared.doAction(.gotoFuture)
         bubbles.first?.tourBubbles()
     }
 

@@ -41,25 +41,25 @@ class BubbleText: BubbleBase  {
     }
 
 
-    convenience init(_ bubi:BubbleItem) {
+    convenience init(_ bubble:Bubble) {
         self.init(frame:CGRect.zero)
-        makeBubble(bubi)
+        makeBubble(bubble)
     }
-    override func makeBubble(_ bubi_:BubbleItem) {
+    override func makeBubble(_ bubble_:Bubble) {
 
-        super.makeBubble(bubi_)
+        super.makeBubble(bubble_)
 
-        for text in bubi.text {
+        for item in bubble.items {
 
             let label = UILabel(frame:contentFrame)
             label.backgroundColor = .clear
-            label.text = text
+            label.text = item.str
             label.adjustsFontSizeToFitWidth = true
             label.lineBreakMode = .byTruncatingTail
-            if bubi.options.contains(.left) {
+            if bubble.options.contains(.left) {
                 label.textAlignment = .left
             }
-            else if bubi.options.contains(.right) {
+            else if bubble.options.contains(.right) {
                 label.textAlignment = .right
             }
             else {

@@ -119,7 +119,7 @@ class TreeNode {
     */
     func goto(title:String, done:@escaping CallVoid) {
 
-        var lineage:[TreeNode]!
+        var lineage = [TreeNode]()
 
         func nextLineage() {
             let node = lineage.popLast()!
@@ -145,14 +145,27 @@ class TreeNode {
             nextLineage()
         }
 
+        // begin ------------------------------
+
         if let cell = find(title: title) {
+
             var node = cell.treeNode!
-            lineage = [cell.treeNode]
+            lineage.append(node)
             while node.parent != nil {
                 node = node.parent!
                 lineage.append(node)
             }
             nextLineage()
+        }
+    }
+
+    func collapse(title:String) {
+         if let cell = find(title: title),
+            let node = cell.treeNode,
+            let tableVC = cell.tableVC as? TreeTableVC {
+
+            node.expanded = false
+            tableVC.updateTouchCell(cell)
         }
     }
 

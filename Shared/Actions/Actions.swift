@@ -5,7 +5,8 @@ import EventKit
 
 public enum DoAction : Int { case
 
-    unknown, gotoEvent,
+    unknown,
+    gotoEvent, gotoFuture,
 
     // say
     saySpeech, skipSpeech,
@@ -272,6 +273,12 @@ class Actions {
 
             Dots.shared.gotoEvent(event)
             Anim.shared.touchDialGotoTime(event?.bgnTime ?? 0)
+
+             // animate dial to show whole week
+        case .gotoFuture:
+            Anim.shared.wheelTime = 0
+            Anim.shared.animNow = .futrWheel
+            Anim.shared.userDotAction()
 
         case .memoClearAll:  markAction(act, event, index, isSender)
         /**/                Memos.shared.clearAll()

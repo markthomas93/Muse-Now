@@ -3,7 +3,7 @@
 import UIKit
 
 
-public enum PageType: Int { case settings = 0, events = 1, onboard = 3 }
+public enum PageType: Int { case dialog = 0, events = 1, onboard = 3 }
 
 class PagesVC: UIViewController, UIPageViewControllerDataSource {
     
@@ -51,11 +51,10 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
         eventVC.tableView.reloadData()
     }
     
-    var bubbleTour: BubbleTour!
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        bubbleTour = BubbleTour()
-        bubbleTour.beginTour()
+        BubbleTour().beginTour()
     }
 
     override func viewDidLoad() {

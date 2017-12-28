@@ -36,7 +36,7 @@ class TreeEditColorCell: TreeEditCell {
 
         let bezelX = leftX + leftW + marginW
         let bezelY = marginH / 2
-        let bezelH = height - marginH
+        let bezelH = height - marginH*2
         let bezelW = width - bezelX
         
         cellFrame  = CGRect(x: 0,       y: 0,      width: width, height: height)

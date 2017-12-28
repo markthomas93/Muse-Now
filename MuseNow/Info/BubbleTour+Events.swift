@@ -8,84 +8,86 @@
 
 import Foundation
 import UIKit
-
+class Call {
+    var call: CallWait!
+    init(_ call_:CallWait!) { call = call_ }
+}
 extension BubbleTour {
 
     func buildEventsTour() {
 
-        let pageView =  PagesVC.shared.view!
-        let pageSpine = PagesVC.shared.spine!
-        var pageShort = UIView(frame:pageView.frame)
-        pageShort.frame.size.height -= 36
-        pageShort.isUserInteractionEnabled = false
-        pageShort.backgroundColor = .clear
-
         let mainVC = MainVC.shared!
+        mainView = mainVC.view!
+
+        let pagesVC = PagesVC.shared
+        let pageView =  pagesVC.view!
+
+        let eventView = pagesVC.eventVC.tableView!
+
         let panelView = mainVC.panel
         let dialView = mainVC.skView!
         let crownLeft = mainVC.phoneCrown!
         let crownRight = crownLeft.twin!
+        let textDelay = TimeInterval(3)
+        let textSize  = CGSize(width:248,height:64)
+        let videoSize = CGSize(width:248,height:248)
 
-        let duration = TimeInterval(2)
-        /**
-         goto Events page
-         */
-        func firstEventsBubble() {
+        let forceTouch = UIApplication.shared.keyWindow?.rootViewController?.traitCollection.forceTouchCapability ?? .unknown
+        let isForceable = forceTouch == .available
 
-            let firstRoll: CallWait! = { _, finish  in
-                PagesVC.shared.gotoPageType(.events) {
-                    finish()
-                }
+        
+        /// goto Events page
+        let firstRoll: CallWait! = { _, finish  in
+            PagesVC.shared.gotoPageType(.events) {
+                let _ = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: {_ in
+                    Actions.shared.doAction(.gotoFuture)
+                })
+                finish()
             }
-            let text = "Here is the main page of events"
-            bubbles.append(BubbleItem("first", .center, .text, CGSize(width:240,height:64),
-                                      [pageView, pageView], [pageShort,panelView], text:[text], duration:4.0, options:[],
-                                      preRoll:firstRoll))
         }
 
-        func pageText(_ bubShape:BubShape,_ view: UIView, _ text:[String], _ options: BubbleOptions) {
-
-            bubbles.append(BubbleItem("Page", bubShape, .text, CGSize(width:240,height:72),
-                                   [pageView, view], [pageShort,panelView], text:text, duration:duration, options:options))
-
+        func bubVid1(_ title: String,_ anys:[Any],_ bubShape:BubShape = .center, _ views:[UIView], _ covers:[UIView], _ options: BubbleOptions = []) {
+             bubbles.append(Bubble(title, bubsFrom(anys:anys), bubShape, .video, videoSize, views, covers, options))
         }
-        func aboveText(_ bubShape:BubShape,_ view: UIView, _ text:[String], _ options: BubbleOptions) {
-
-            bubbles.append(BubbleItem("Page", bubShape, .text, CGSize(width:240,height:72),
-                                   [panelView, view], [], text:text, duration:duration, options:options))
-
-        }
-        func panelText(_ title: String,_ bubShape:BubShape,_ view: UIView, _ text:[String], _ options: BubbleOptions) {
-
-            bubbles.append(BubbleItem(title, bubShape, .text, CGSize(width:240,height:72),
-                                   [pageView, view], [pageView], text:text, duration:duration, options:options))
-
-
-        }
-        func panelVideo(_ title: String,_ bubShape:BubShape,_ fname:String, _ options: BubbleOptions) {
-
-            bubbles.append(BubbleItem(title, bubShape, .video, CGSize(width:160,height:160),
-                                   [pageView, pageView], [pageView,panelView], fname:fname, duration:8, options:options))
-
+        func bubItem(_ title: String,_ anys:[Any],_ bubShape:BubShape = .above, _ views:[UIView], _ covers:[UIView], _ options: BubbleOptions = []) {
+                bubbles.append(Bubble(title, bubsFrom(anys:anys), bubShape, .text, textSize, views, covers, options))
         }
 
-        firstEventsBubble()
+        let touchDial  = isForceable ? "deep touch" : "double tap"
 
-        panelText("Panel", .above, panelView, ["The bottom panel puts all the controls under your thumb. ",
-                                               "Just like the Apple Watch"], [.highlight,.nowait])
+        let mainBezel = UIView(frame:eventView.convert(eventView.frame, to: mainView))
+        let tableBezel = UIView(frame:eventView.convert(eventView.frame, to: pageView))
+        let spineBezel = UIView(frame:eventView.convert(pagesVC.spine.frame, to: eventView))
 
-        panelVideo("Panel", .triptych13, "Bubble_Watch_320x320.m4v", [.timeout,.nowait])
-        panelVideo("Panel", .triptych23, "Bubble_iPhone_320x320.m4v",[.timeout,.nowait])
-        panelVideo("Panel", .triptych33, "Bubble_iPad_320x320.m4v",  [.timeout])
+        mainBezel.backgroundColor = .clear
+        tableBezel.backgroundColor = .clear
+        spineBezel.backgroundColor = .clear
 
-        panelText("Dial", .above, dialView, ["This is a 24 hour dial showing a whole week. Drag clockwise to forward in time.",
-                                             "Tap once to scan bookmarked events. Force touch or tap twice to bookmark."],[.highlight, .circular])
+        // start ----
 
-        panelText("Crown", .above, crownLeft,  ["Scroll forward or backwards in time. Behaves just like the crown on the Apple Watch"],[.highlight])
-        panelText("Crown", .above, crownRight, ["Same for the right side, plus you can force touch or tap to bookmark an event."],[.highlight])
+        bubItem("Main",    ["Here is the main page \n of filtered events",4,firstRoll], .center, [pageView, pageView], [pageView,panelView])
+        bubItem("Events",  ["starting from last week through next week",4],           .below,  [mainView, mainBezel], [panelView], [.highlight,.fullview])
 
-        panelText("Pages", .above, pageSpine, ["Here is the touch area for flipping between pages. Tap once to change pages.",
-                                               "Or swipe right to change page over to settings."],[.highlight])
+        bubItem("Panel",    ["within reach are all the controls you need",4],       .above, [pageView, panelView], [pageView], [.highlight])
+        bubItem("Panel",    ["with the same look and feel as the Apple Watch", 16], .above, [pageView, panelView], [eventView], [.highlight,.overlay,.nowait])
+        bubVid1("Panel",   ["WatchCrown2.m4v", 16],                                 .center, [mainView, tableBezel], [], [.timeout])
+
+        bubItem("Dial",     ["See the week ahead in a single glance",4,
+                             "on a 24 hour dial spiraling inward",4,
+                             "with each dot showing an hour with",4,
+                             "its colors showing your schedule.",4,
+
+                             "Spin ahead to \n foretell your future",4,
+                             "Spin behind to \n recall your past",4,
+                             "Tap to scan for bookmarks and \n \(touchDial) to toggle.",4], .above, [pageView, dialView], [pageView], [.highlight, .circular])
+
+
+        bubItem("Crown",    ["The crown control acts like the Apple Watch",8,
+                             "Slide your finger to move forward and back in time",8], .above, [pageView, crownRight], [pageView], [.highlight,.circular])
+
+        bubItem("Page",  ["to filter for different events",4,
+                            "swipe right to the dialog page",4,],                   .below,  [mainView, mainBezel], [panelView], [.highlight,.fullview])
+        bubItem("Page",    ["or simply tap the spine",4],                           .below, [mainView, spineBezel], [panelView], [.highlight,.fullview])
 
     }
 }

@@ -87,10 +87,10 @@ class MainVC: UIViewController {
 
 
     override func viewDidLoad() {
+
         self.mainFrame = UIScreen.main.bounds
         self.view.bounds = UIScreen.main.bounds
         super.viewDidLoad()
-
 
         MainVC.shared = self
         // Muse.shared.testScript() // for future use of ParGraph

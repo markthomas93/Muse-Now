@@ -5,12 +5,12 @@ muse : ask (show | hide | setting | clear) {
     hide : ('hide' | 'remove') type
     clear : 'clear' type
 
-    type : 'all'? ('alarms' | 'marks' | events | memos) match? {
+    type : 'all'? ('alarms' | 'marks' | events | memos) match? (
 
         events : 'event' events()
         memos  : 'memos' memos()
         match? : ('with' 'keyword' | 'matching')+ matches()
-    }
+    )
 
     setting : 'set' (speech | debug) onoff {
         
@@ -19,14 +19,15 @@ muse : ask (show | hide | setting | clear) {
         onoff  : ('on' | 'off')
     }
 
-     refresh : ('refresh' | 'reset') 'screen'?
+    refresh : ('refresh' | 'reset') 'screen'?
 }
 
-muse {
-    (show | hide) all marks
-    (show | hide) (events() | memos()) matching matches()
-    set speech (on | off)
-    refresh screen
+muse now {
+    (show | hide) (calendars | reminders | dial ( color ))
+    (say | skip) (event | time | memo)
+    (hear | mute) (speaker | earbuds)
+    preview (memos | routine)
+
 }
 
 muse show all marks

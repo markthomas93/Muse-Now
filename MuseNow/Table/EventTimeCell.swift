@@ -34,7 +34,7 @@ class EventTimeCell: MuCell {
         time.layer.masksToBounds = true
 
 
-        setHighlight(.low, animated:false)
+        setHighlight(.high, animated:false)
 
     }
     
@@ -53,7 +53,7 @@ class EventTimeCell: MuCell {
                 animateBorderColor(time,   fromColor, toColor, duration: 0.25)
             }
             else {
-                time.layer.borderColor    = toColor
+                time.layer.borderColor = toColor
             }
         }
         else {

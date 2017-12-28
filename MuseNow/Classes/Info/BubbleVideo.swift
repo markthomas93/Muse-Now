@@ -22,16 +22,17 @@ class BubbleVideo: BubbleBase {
         super.init(frame: frame) // calls designated initializer
     }
 
-    convenience init(_ bubi:BubbleItem) {
+    convenience init(_ bubble:Bubble) {
         self.init(frame:CGRect.zero)
-        makeBubble(bubi)
+        makeBubble(bubble)
     }
     
-    override func makeBubble(_ bubi:BubbleItem) {
+    override func makeBubble(_ bubble:Bubble) {
 
-        super.makeBubble(bubi)
+        super.makeBubble(bubble)
 
-        if let videoURL = Bundle.main.url(forResource: bubi.fname, withExtension: "") as NSURL? {
+        if  let fileName = bubble.items.first?.str,
+            let videoURL = Bundle.main.url(forResource: fileName, withExtension: "") as NSURL? {
 
             player = AVPlayer(url: videoURL as URL)
             player?.actionAtItemEnd = .none
@@ -58,16 +59,19 @@ class BubbleVideo: BubbleBase {
         }
     }
  
-    override func go(_ gotoNext_: @escaping (()->())) {
+    override func goBubble(_ gotoNext_: @escaping (()->())) {
 
         gotoNext = gotoNext_
 
         popOut() {
+            
             if self.options.contains(.nowait) {
                 self.gotoNext?()
             }
-            if self.bubi.options.contains(.timeout) {
-                self.timer = Timer.scheduledTimer(withTimeInterval: self.duration, repeats: false, block: {_ in
+            if self.bubble.options.contains(.timeout),
+                self.contenti < self.bubble.items.count {
+                let item = self.bubble.items[self.contenti]
+                self.timer = Timer.scheduledTimer(withTimeInterval: item.duration, repeats: false, block: {_ in
                     self.timeOut()
                 })
             }
@@ -87,7 +91,7 @@ class BubbleVideo: BubbleBase {
     }
 
     @objc func videoFinished() {
-        if self.bubi.options.contains(.timeout), timer.isValid {
+        if self.bubble.options.contains(.timeout), timer.isValid {
             return
         }
         timer.invalidate()
