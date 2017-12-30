@@ -29,8 +29,8 @@ class BubbleTour {
 
     func beginTour() {
 
-        //buildEventsTour()
-        buildDialogTour()
+        //buildMainTour()
+        buildMenuTour()
 
         // build linked list
         var prevBub:Bubble! = nil

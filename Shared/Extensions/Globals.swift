@@ -50,14 +50,16 @@ func DebugLog(_ str: String) -> Bool {
     "⎚", // scene animation
     "🔰", // onboarding pages (japaness beginnner symbol)
     "💬", // bubble animation closure
-    "📅", // EkNotification
-    "▤", // TreeTableView
-    "⿳": // menu
+    "📅": // EkNotification
+   
 
         print(MuDate.getHourMinSecMsec() + ": " + str)
         
-    case
+    case    
     "⧉", // sync files
+    "▤", // TreeTableView
+    "⿳", // menu
+    
     "←", // session receiving
     "↔︎", // session activation state
     "→", // session sending

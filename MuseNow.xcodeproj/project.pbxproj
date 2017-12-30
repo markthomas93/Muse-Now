@@ -104,7 +104,7 @@
 		8004F7941FA3EE2400F7ED94 /* String+regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F72F1FA3EE2400F7ED94 /* String+regex.swift */; };
 		8004F7951FA3EE2400F7ED94 /* UIImage+Circle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7301FA3EE2400F7ED94 /* UIImage+Circle.swift */; };
 		8004F7961FA3EE2400F7ED94 /* UIImage+Circle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7301FA3EE2400F7ED94 /* UIImage+Circle.swift */; };
-		8004F7971FA3EE2400F7ED94 /* View+roundCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7311FA3EE2400F7ED94 /* View+roundCorners.swift */; };
+		8004F7971FA3EE2400F7ED94 /* UIView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7311FA3EE2400F7ED94 /* UIView+extension.swift */; };
 		8004F7991FA3EE2400F7ED94 /* Cal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7331FA3EE2400F7ED94 /* Cal.swift */; };
 		8004F79A1FA3EE2400F7ED94 /* Cal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7331FA3EE2400F7ED94 /* Cal.swift */; };
 		8004F79B1FA3EE2400F7ED94 /* Cals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7341FA3EE2400F7ED94 /* Cals.swift */; };
@@ -231,7 +231,7 @@
 		8076435B1FACBEB8001733C6 /* Muse.par in Resources */ = {isa = PBXBuildFile; fileRef = 8076434C1FACBE55001733C6 /* Muse.par */; };
 		8076435E1FACDB63001733C6 /* TreeTitleFaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076435D1FACDB63001733C6 /* TreeTitleFaderCell.swift */; };
 		807643611FACDBF7001733C6 /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076435F1FACDBE6001733C6 /* Setting.swift */; };
-		8076B3371FE6C69A001EDD30 /* MuDrawBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076B3331FE6C69A001EDD30 /* MuDrawBubble.swift */; };
+		8076B3371FE6C69A001EDD30 /* BubbleDraw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076B3331FE6C69A001EDD30 /* BubbleDraw.swift */; };
 		8076B3391FE6C69A001EDD30 /* BubbleText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076B3351FE6C69A001EDD30 /* BubbleText.swift */; };
 		8076B33A1FE6C69A001EDD30 /* BubbleVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076B3361FE6C69A001EDD30 /* BubbleVideo.swift */; };
 		8076B33C1FE6C783001EDD30 /* BubbleTour.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076B33B1FE6C783001EDD30 /* BubbleTour.swift */; };
@@ -252,8 +252,8 @@
 		80C78C851FE44BE2002E3A95 /* TreeNode+Subclass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C78C841FE44BE2002E3A95 /* TreeNode+Subclass.swift */; };
 		80D483EA1FCB3BBD00D28095 /* TreeColorTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D483E91FCB3BBD00D28095 /* TreeColorTitleCell.swift */; };
 		80D483EC1FCB496800D28095 /* TreeTableVC+override.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D483EB1FCB496800D28095 /* TreeTableVC+override.swift */; };
-		80E89FE61FED8D96007D874F /* BubbleTour+Events.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E89FE51FED8D96007D874F /* BubbleTour+Events.swift */; };
-		80E89FE81FED8EC5007D874F /* BubbleTour+Dialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E89FE71FED8EC5007D874F /* BubbleTour+Dialog.swift */; };
+		80E89FE61FED8D96007D874F /* BubbleTour+Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E89FE51FED8D96007D874F /* BubbleTour+Main.swift */; };
+		80E89FE81FED8EC5007D874F /* BubbleTour+Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E89FE71FED8EC5007D874F /* BubbleTour+Menu.swift */; };
 		80F26DBC1FBA07E100C26973 /* Routine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F26DBB1FBA07E100C26973 /* Routine.swift */; };
 		80F26DBD1FBA07E100C26973 /* Routine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F26DBB1FBA07E100C26973 /* Routine.swift */; };
 		80F26DBF1FBA110300C26973 /* Routine.par in Resources */ = {isa = PBXBuildFile; fileRef = 80F26DBE1FBA110300C26973 /* Routine.par */; };
@@ -356,7 +356,7 @@
 		8004F72E1FA3EE2400F7ED94 /* Globals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Globals.swift; sourceTree = "<group>"; };
 		8004F72F1FA3EE2400F7ED94 /* String+regex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+regex.swift"; sourceTree = "<group>"; };
 		8004F7301FA3EE2400F7ED94 /* UIImage+Circle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Circle.swift"; sourceTree = "<group>"; };
-		8004F7311FA3EE2400F7ED94 /* View+roundCorners.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+roundCorners.swift"; sourceTree = "<group>"; };
+		8004F7311FA3EE2400F7ED94 /* UIView+extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+extension.swift"; sourceTree = "<group>"; };
 		8004F7331FA3EE2400F7ED94 /* Cal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cal.swift; sourceTree = "<group>"; };
 		8004F7341FA3EE2400F7ED94 /* Cals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cals.swift; sourceTree = "<group>"; };
 		8004F7351FA3EE2400F7ED94 /* FileMsg.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileMsg.swift; sourceTree = "<group>"; };
@@ -485,8 +485,7 @@
 		8076434F1FACBE55001733C6 /* MuseFound.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuseFound.swift; sourceTree = "<group>"; };
 		8076435D1FACDB63001733C6 /* TreeTitleFaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeTitleFaderCell.swift; sourceTree = "<group>"; };
 		8076435F1FACDBE6001733C6 /* Setting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Setting.swift; path = Shared/Files/Setting.swift; sourceTree = SOURCE_ROOT; };
-		8076B3331FE6C69A001EDD30 /* MuDrawBubble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MuDrawBubble.swift; path = MuseNow/Classes/Info/MuDrawBubble.swift; sourceTree = SOURCE_ROOT; };
-		8076B3341FE6C69A001EDD30 /* BubbleTextCover.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BubbleTextCover.swift; path = MuseNow/Classes/Info/BubbleTextCover.swift; sourceTree = SOURCE_ROOT; };
+		8076B3331FE6C69A001EDD30 /* BubbleDraw.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BubbleDraw.swift; path = MuseNow/Classes/Info/BubbleDraw.swift; sourceTree = SOURCE_ROOT; };
 		8076B3351FE6C69A001EDD30 /* BubbleText.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BubbleText.swift; path = MuseNow/Classes/Info/BubbleText.swift; sourceTree = SOURCE_ROOT; };
 		8076B3361FE6C69A001EDD30 /* BubbleVideo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BubbleVideo.swift; path = MuseNow/Classes/Info/BubbleVideo.swift; sourceTree = SOURCE_ROOT; };
 		8076B33B1FE6C783001EDD30 /* BubbleTour.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleTour.swift; sourceTree = "<group>"; };
@@ -505,8 +504,8 @@
 		80CE545F1FA3E0CE005C4D96 /* MuseNow WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "MuseNow WatchKit Extension.entitlements"; sourceTree = "<group>"; };
 		80D483E91FCB3BBD00D28095 /* TreeColorTitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeColorTitleCell.swift; sourceTree = "<group>"; };
 		80D483EB1FCB496800D28095 /* TreeTableVC+override.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TreeTableVC+override.swift"; sourceTree = "<group>"; };
-		80E89FE51FED8D96007D874F /* BubbleTour+Events.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BubbleTour+Events.swift"; sourceTree = "<group>"; };
-		80E89FE71FED8EC5007D874F /* BubbleTour+Dialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BubbleTour+Dialog.swift"; sourceTree = "<group>"; };
+		80E89FE51FED8D96007D874F /* BubbleTour+Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BubbleTour+Main.swift"; sourceTree = "<group>"; };
+		80E89FE71FED8EC5007D874F /* BubbleTour+Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BubbleTour+Menu.swift"; sourceTree = "<group>"; };
 		80F26DBB1FBA07E100C26973 /* Routine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Routine.swift; path = Routine/Routine.swift; sourceTree = "<group>"; };
 		80F26DBE1FBA110300C26973 /* Routine.par */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; path = Routine.par; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -675,7 +674,7 @@
 				8004F72E1FA3EE2400F7ED94 /* Globals.swift */,
 				8004F72F1FA3EE2400F7ED94 /* String+regex.swift */,
 				8004F7301FA3EE2400F7ED94 /* UIImage+Circle.swift */,
-				8004F7311FA3EE2400F7ED94 /* View+roundCorners.swift */,
+				8004F7311FA3EE2400F7ED94 /* UIView+extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -982,11 +981,10 @@
 				8076B33D1FE6D151001EDD30 /* BubbleBase.swift */,
 				80BD52351FEB695E00EB4F92 /* BubbleCovers.swift */,
 				8076B33B1FE6C783001EDD30 /* BubbleTour.swift */,
-				80E89FE51FED8D96007D874F /* BubbleTour+Events.swift */,
-				80E89FE71FED8EC5007D874F /* BubbleTour+Dialog.swift */,
-				8076B3341FE6C69A001EDD30 /* BubbleTextCover.swift */,
+				80E89FE51FED8D96007D874F /* BubbleTour+Main.swift */,
+				80E89FE71FED8EC5007D874F /* BubbleTour+Menu.swift */,
 				8076B3361FE6C69A001EDD30 /* BubbleVideo.swift */,
-				8076B3331FE6C69A001EDD30 /* MuDrawBubble.swift */,
+				8076B3331FE6C69A001EDD30 /* BubbleDraw.swift */,
 			);
 			path = Info;
 			sourceTree = "<group>";
@@ -1216,7 +1214,7 @@
 				8004F7B31FA3EE2400F7ED94 /* Say+Event.swift in Sources */,
 				8004F78B1FA3EE2400F7ED94 /* Collection+Search.swift in Sources */,
 				8004F7C51FA3EE2400F7ED94 /* Scene+Sprite.swift in Sources */,
-				80E89FE81FED8EC5007D874F /* BubbleTour+Dialog.swift in Sources */,
+				80E89FE81FED8EC5007D874F /* BubbleTour+Menu.swift in Sources */,
 				8004F75B1FA3EE2400F7ED94 /* Haptic.swift in Sources */,
 				8004F7831FA3EE2400F7ED94 /* MuEvents+Marks.swift in Sources */,
 				8004F79B1FA3EE2400F7ED94 /* Cals.swift in Sources */,
@@ -1248,7 +1246,7 @@
 				809E55631FB4C6A700974CB7 /* Audio.swift in Sources */,
 				8004F77B1FA3EE2400F7ED94 /* MuDate.swift in Sources */,
 				805357B51FDB3798002ED302 /* TreeInfoApproveCell.swift in Sources */,
-				8004F7971FA3EE2400F7ED94 /* View+roundCorners.swift in Sources */,
+				8004F7971FA3EE2400F7ED94 /* UIView+extension.swift in Sources */,
 				800C51B71FC2213F00904121 /* TreeTimeTitleDaysCell.swift in Sources */,
 				8004F7611FA3EE2400F7ED94 /* TouchDial.swift in Sources */,
 				804D5A241FA3FCAA0025B724 /* EventTable+MuEvent.swift in Sources */,
@@ -1282,7 +1280,7 @@
 				804D5A211FA3FCAA0025B724 /* EventCell.swift in Sources */,
 				8004F70A1FA3ED5E00F7ED94 /* ParWords.swift in Sources */,
 				8004F7951FA3EE2400F7ED94 /* UIImage+Circle.swift in Sources */,
-				80E89FE61FED8D96007D874F /* BubbleTour+Events.swift in Sources */,
+				80E89FE61FED8D96007D874F /* BubbleTour+Main.swift in Sources */,
 				8004F7851FA3EE2400F7ED94 /* MuEvents.swift in Sources */,
 				8004F7A91FA3EE2400F7ED94 /* Hear.swift in Sources */,
 				8004F76B1FA3EE2400F7ED94 /* Anim+Scene.swift in Sources */,
@@ -1296,7 +1294,7 @@
 				806ACFDB1FC5FC9300220EB6 /* TreeEditTitleCell.swift in Sources */,
 				8004F7931FA3EE2400F7ED94 /* String+regex.swift in Sources */,
 				8004F7B71FA3EE2400F7ED94 /* SayCache.swift in Sources */,
-				8076B3371FE6C69A001EDD30 /* MuDrawBubble.swift in Sources */,
+				8076B3371FE6C69A001EDD30 /* BubbleDraw.swift in Sources */,
 				804D5A2C1FA3FCAA0025B724 /* EventTimeCell.swift in Sources */,
 				8004F7751FA3EE2400F7ED94 /* Dots+Say.swift in Sources */,
 				8004F7061FA3ED5E00F7ED94 /* ParStr+Compare.swift in Sources */,

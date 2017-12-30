@@ -1,4 +1,4 @@
-//
+ //
 //  BubbleBase.swift
 //  MuseNow
 //
@@ -9,7 +9,82 @@
 import Foundation
 import UIKit
 
-class BubbleBase: MuDrawBubble {
+ extension UIView {
+
+    func addDashedLine(color: UIColor, radius:CGFloat) {
+
+        let path = CGMutablePath()
+        let m = CGFloat(1.5)
+        let w = frame.size.width-2*m
+        let h = frame.size.height-2*m
+        let r = radius
+
+
+        func drawRoundedRect() {
+            // 4 corner control points
+
+            var ul  = CGPoint(x: m,     y: m) // upper left control point
+            var ur  = CGPoint(x: m+w,   y: m) // upper right control point
+            var br  = CGPoint(x: m+w,   y: m+h) // lower right control point
+            var bl  = CGPoint(x: m,     y: m+h) // lower left control point
+
+            // 8 line segment start end
+
+            var uls = CGPoint(x: m,     y: m+r  )  // upper left start
+            var ule = CGPoint(x: m+r,   y: m    )  // upper left end
+
+            var urs = CGPoint(x: m+w-r, y: m    )  // upper right start
+            var ure = CGPoint(x: m+w,   y: m+r  )  // upper right end
+
+            var brs = CGPoint(x: m+w,   y: m+h-r)  // lower right start
+            var bre = CGPoint(x: m+w-r, y: m+h  )  // lower right end
+
+            var bls = CGPoint(x: m+r,   y: m+h  )  // lower left start
+            var ble = CGPoint(x: m,     y: m+h-r)  // lower left end
+
+
+            // shorten commands to q_ quad curve, l_ line, s_ scrunch overlapping points
+            func q_(_ p:CGPoint,_ c:CGPoint) { path.addQuadCurve(to: p, control: c) }
+            func l_(_ p:CGPoint)             { path.addLine(to: p) }
+
+            path.move(to: uls)   // start at up left
+            q_(ule,ul) ; l_(urs) // upper left corner w line
+            q_(ure,ur) ; l_(brs) // upper right corner w line
+            q_(bre,br) ; l_(bls) // below right corner w line
+            q_(ble,bl) ; l_(uls) // below left corner w line
+        }
+
+
+        if radius == frame.size.width/2 || radius == frame.size.height {
+            path.addEllipse(in: self.frame)
+        }
+        else {
+            drawRoundedRect()
+        }
+
+        layer.sublayers?.forEach() { if $0.name == "DashedTopLine" { $0.removeFromSuperlayer() }}
+        backgroundColor = .clear
+
+        let shapeLayer: CAShapeLayer = CAShapeLayer()
+        let frameSize = self.frame.size
+        let shapeRect = CGRect(x: 0, y: 0, width: frameSize.width, height: frameSize.height)
+
+        shapeLayer.name = "DashedTopLine"
+        shapeLayer.bounds = shapeRect
+        shapeLayer.position = CGPoint(x: frameSize.width / 2, y: frameSize.height / 2)
+        shapeLayer.fillColor = UIColor.clear.cgColor
+        shapeLayer.strokeColor = color.cgColor
+        shapeLayer.lineWidth = 1.5
+        shapeLayer.lineJoin = kCALineJoinRound
+        shapeLayer.lineDashPattern = [1, 2]
+
+        shapeLayer.path = path
+
+        self.layer.addSublayer(shapeLayer)
+    }
+ }
+
+ class BubbleBase: BubbleDraw {
 
     var outFrame = CGRect.zero      // popOut frame
 
@@ -28,7 +103,6 @@ class BubbleBase: MuDrawBubble {
     var timer = Timer()             // timer for duration between popOut and tuckIn
 
     var childBezel: UIView!         // optional bezel from which to spring bubble
-    var deltaX = CGFloat(0)
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -59,35 +133,31 @@ class BubbleBase: MuDrawBubble {
         family = bubble.family
         options = bubble.options
 
-        let radius = CGFloat(16)
         let size = bubble.size
 
         makeChildBezel()
-        BubbleCovers.shared.makeCovers(bubble)
-        makeBubble(bubble.bubShape, size, radius, family) // create bubbleFrame
+
+        if !bubble.options.contains(.overlay) {
+            BubbleCovers.shared.makeCovers(bubble)
+        }
+        makeBubble(bubble.bubShape, size, family) // create bubbleFrame
 
         self.isUserInteractionEnabled = true
 
-        outFrame = family[1].convert(self.frame,      from: family[0])
-
-        let outFrameX = family[0].convert(outFrame, to: nil).origin.x + self.frame.size.width/2
-        let inFrameX  = family[0].convert(family[2].frame, to: nil).origin.x + family[2].frame.size.width/2
-        deltaX =  inFrameX - outFrameX
-
         alpha = 0
-        self.frame = outFrame
-        family[1].addSubview(self)
+        childBezel.addSubview(self)
 
         // setup content frame
 
         var m = marginW
         switch bubShape {
         case .above, .below, .left, .right:  m = marginW
-        default:                             m = 1
+        default:                             m = 3
         }
+
         let m2 = m*2
         let r = radius
-        let w = bubFrame.size.width - m2
+        let w = bubFrame.size.width  - m2
         let h = bubFrame.size.height - m2
 
         switch bubble.bubShape {
@@ -101,32 +171,25 @@ class BubbleBase: MuDrawBubble {
 
     func makeChildBezel()  {
 
-        if family.count < 3 {
+        if let fromView = family.last {
 
-            var blankFrame = family[1].frame
-            blankFrame.origin = .zero
-            if options.contains(.above) {
-                blankFrame.size.width = family[1].frame.origin.y
-            }
-            childBezel = UIView(frame:blankFrame)
+            var bezelFrame = fromView.frame
+            bezelFrame.origin = .zero
+
+            childBezel = UIView(frame:bezelFrame)
             childBezel.backgroundColor = .clear
+
+            // make border circular or rounded rectangle?
+            let hiRadius = options.contains(.circular)
+                ? min(bezelFrame.width,bezelFrame.height)/2
+                : radius
 
             // highlight border ?
             if options.contains(.highlight) {
-                childBezel.layer.borderColor = UIColor.white.cgColor
-                childBezel.layer.borderWidth = 1
+                childBezel.addDashedLine(color:.white,radius: hiRadius)
             }
-            // make border circular?
-            if options.contains(.circular) {
-                childBezel.layer.cornerRadius = min(blankFrame.width,blankFrame.height)/2
-            }
-            else {
-                childBezel.layer.cornerRadius = innerH / 4 // same as cell corner radius
-            }
-
             childBezel.isUserInteractionEnabled = false
-            family[1].addSubview(childBezel)
-            family.append(childBezel)
+            fromView.addSubview(childBezel)
         }
     }
 
@@ -151,51 +214,29 @@ class BubbleBase: MuDrawBubble {
 
         // begin -------------------
 
+        // if there is a preRoll, wait until after it is finished
         if let callWait = bubble.items[0].callWait {
-            callWait(bubble,poppingOut) // preroll some call first
+            callWait(bubble, poppingOut) // preroll some call first
         }
         else {
             poppingOut()
         }
-
     }
+
     /**
-     Calculate translation to make translation appear to start from top of inFrame.
-     Without translation, the scale animation will appear from center.
-     So, the translation needs shift the center of x coordinate
+     Calculate translation to appear from center of superview
      */
     func getTranslation() -> CGPoint {
 
-        let vx = viewPoint.x
-        let vw = bubble.family.last?.frame.size.width ?? 0
-        let vmx = vx + vw/2
+        self.superview?.bringSubview(toFront: self)
+        self.superview?.superview?.bringSubview(toFront: self.superview!)
+        self.superview?.superview?.superview?.bringSubview(toFront: self.superview!.superview!)
 
-        let ox = outFrame.origin.x
-        let ow = outFrame.size.width
-        let oh = outFrame.size.height
-        let omx = ox + ow/2
+        let f0 = superview?.center ?? .zero
+        let f9 = self.center
 
-        // let oy = outFrame.origin.y
-        // let vy = viewPoint.y
-        // let vh = bubble.family.last?.frame.size.height ?? 0
-        // let vmy = vy + vh/2
-        // let omy = oy + oh/2
+        return CGPoint(x: f0.x-f9.x, y: f0.y-f9.y)
 
-        // let voh = vh/oh
-        // let vow = vw/ow
-        // let ovh = oh/vh
-        // let ovw = ow/vw
-
-        // print ("\(bubble.bubShape)\n v:(\(vx),\(vy) \(vw),\(vh) \(vmx),\(vmy))\n o:(\(ox),\(oy) \(ow),\(oh)  \(omx),\(omy))")
-
-        switch bubble.bubShape {
-        case .below:  return CGPoint(x: (vmx-omx)/2, y: -oh/2)
-        case .above:  return CGPoint(x: (vmx-omx)/2, y:  oh/2)
-
-        case .left:   return CGPoint(x: -ow/2, y: 0)
-        case .right:  return CGPoint(x:  ow/2, y: 0)
-        default:      return .zero
-        }
     }
     /**
     prepare next contentView
@@ -217,7 +258,7 @@ class BubbleBase: MuDrawBubble {
         func shrinkTransform() {
             let scale = CGFloat(0.01)
             let t = getTranslation()
-            alpha = 0.5
+            alpha = 1.0
             self.transform = CGAffineTransform (
                 a: scale, b: 0.0,
                 c: 0.0,   d: scale,
@@ -234,22 +275,25 @@ class BubbleBase: MuDrawBubble {
         }
         else if bubble.options.contains(.above) {
             family[0].addSubview(family[2])
-            BubbleCovers.shared.covers.append(family[2])
+            BubbleCovers.shared.covers.insert(family[2])
             shrinkTransform()
         }
         else if family[1].superview == nil {
             MainVC.shared?.view.addSubview(family[1])
-            BubbleCovers.shared.covers.append(family[1])
+            BubbleCovers.shared.covers.insert(family[1])
             if bubble.options.contains(.fullview) {
                 family[0].addSubview(family[1])
             }
             shrinkTransform()
         }
-        else if BubbleCovers.shared.canFadeIn(bubble)  {
+        else if !bubble.options.contains(.overlay) {
+            //??// needed for BubMark
+            childBezel.superview?.bringSubview(toFront: childBezel)
+            family.last?.superview?.bringSubview(toFront: family.last!)
             family[0].bringSubview(toFront: family[1])
             shrinkTransform()
         }
-
+        
         UIView.animate(withDuration: 1.0, delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
             self.alpha = 1.0
             self.contentViews[self.contenti].alpha = 1.0
@@ -297,7 +341,7 @@ class BubbleBase: MuDrawBubble {
 
         // begin -----------------------
 
-        if let callWait =  bubble.items[contenti+1].callWait {
+        if let callWait = bubble.items[contenti+1].callWait {
             callWait(bubble,fading) // wait for preRoll
         }
         else {
@@ -322,13 +366,13 @@ class BubbleBase: MuDrawBubble {
             }
             return false
         }
+
         func maybeGotoNext() {
             // nowait bubbles already called done
             if !self.options.contains(.nowait) {
                 self.gotoNext?()
             }
         }
-
 
         // begin ------------------------------
 

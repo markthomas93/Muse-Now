@@ -19,13 +19,11 @@ class BubbleCovers {
 
     static var shared = BubbleCovers()
     let coverAlpha = CGFloat(0.70)  // alpha for covers which darken background
-    var covers = [UIView]()         // views in which to darken while showing bubble
+    var covers = Set<UIView>()         // views in which to darken while showing bubble
 
     func makeCovers(_ bub:Bubble) {
 
-        if canFadeIn(bub) {
-
-            covers.removeAll()
+        if !bub.options.contains(.overlay) {
 
             for underView in bub.covering {
 
@@ -35,8 +33,10 @@ class BubbleCovers {
                 cover.alpha = 0.0
                 cover.isUserInteractionEnabled = false
 
-                covers.append(cover)
-                underView.addSubview(cover)
+                if !covers.contains(cover) {
+                    covers.insert(cover)
+                    underView.addSubview(cover)
+                }
             }
         }
     }
@@ -49,16 +49,8 @@ class BubbleCovers {
         return true
     }
     
-     // bring parent to front if not a continuation of a previous nowait
-    func canFadeIn(_ bub:Bubble) -> Bool {
-
-        if bub.options.contains(.overlay)        { return false }
-        if bub.options.contains(.nowait)         { return true }
-        return true
-    }
-
     func fadeIn(_ bub:Bubble) {
-        if canFadeIn(bub) {
+        if !bub.options.contains(.overlay) {
             for cover in self.covers {
                 cover.alpha = self.coverAlpha
             }

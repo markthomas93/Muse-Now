@@ -64,7 +64,6 @@ class ToggleCheck: UIView {
         layer.cornerRadius = height/4
         layer.borderColor = UIColor.black.cgColor
         layer.borderWidth = 1
-        layer.masksToBounds = true
         
         // make check
         check = UIImageView(image: UIImage(named: "icon-check.png")!)

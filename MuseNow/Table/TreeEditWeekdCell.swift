@@ -137,7 +137,7 @@ class TreeEditWeekdayCell: TreeEditCell {
         }
     }
 
-    override func touchCell(_ point: CGPoint) {
+    override func touchCell(_ point: CGPoint, isExpandable:Bool = true) {
 
         (tableVC as? TreeTableVC)?.setTouchedCell(self)
         

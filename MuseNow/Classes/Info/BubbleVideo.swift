@@ -40,12 +40,12 @@ class BubbleVideo: BubbleBase {
 
             let contentView = UIView(frame:contentFrame)
 
-            let insetLayer = CALayer()
-            insetLayer.frame = contentFrame
-            insetLayer.frame.origin = .zero
-            insetLayer.cornerRadius = radius
-            insetLayer.masksToBounds = true
-            contentView.layer.addSublayer(insetLayer)
+//            let insetLayer = CALayer()
+//            insetLayer.frame = contentFrame
+//            insetLayer.frame.origin = .zero
+//            insetLayer.cornerRadius = radius
+//            insetLayer.masksToBounds = true
+//            contentView.layer.addSublayer(insetLayer)
 
             let playerLayer = AVPlayerLayer(player: player)
             playerLayer.videoGravity = .resizeAspect
@@ -54,7 +54,9 @@ class BubbleVideo: BubbleBase {
             playerLayer.frame = contentFrame
             playerLayer.frame.origin = .zero
 
-            insetLayer.addSublayer(playerLayer)
+            contentView.layer.addSublayer(playerLayer)
+            contentView.layer.cornerRadius = radius
+            contentView.layer.masksToBounds = true
             contentViews.append(contentView)
         }
     }

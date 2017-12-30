@@ -117,24 +117,16 @@ class TreeNode {
     /**
      find node matching title, and then animate to that cell, if needed
     */
-    func goto(title:String, done:@escaping CallVoid) {
+    func goto(title:String, finish:@escaping CallVoid) {
 
         var lineage = [TreeNode]()
 
         func nextLineage() {
             let node = lineage.popLast()!
             if lineage.isEmpty {
-                if node.expanded == true {
-                    node.cell?.touchCell(.zero)
-                    return DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                        done()
-                    }
-                }
-                else {
-                    node.cell.setHighlight(.forceHigh)
-                    done()
-                }
-                return
+                // always collapse destination to save space
+                node.cell?.touchCell(.zero, isExpandable:false)
+                finish()
             }
             else if node.expanded == false {
                 node.cell?.touchCell(.zero)
@@ -142,7 +134,9 @@ class TreeNode {
                     nextLineage()
                 }
             }
-            nextLineage()
+            else {
+                nextLineage()
+            }
         }
 
         // begin ------------------------------

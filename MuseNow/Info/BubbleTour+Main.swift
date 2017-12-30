@@ -14,7 +14,7 @@ class Call {
 }
 extension BubbleTour {
 
-    func buildEventsTour() {
+    func buildMainTour() {
 
         let mainVC = MainVC.shared!
         mainView = mainVC.view!
@@ -65,25 +65,26 @@ extension BubbleTour {
 
         // start ----
 
-        bubItem("Main",    ["Here is the main page \n of filtered events",4,firstRoll], .center, [pageView, pageView], [pageView,panelView])
-        bubItem("Events",  ["starting from last week through next week",4],           .below,  [mainView, mainBezel], [panelView], [.highlight,.fullview])
+        bubItem("Main",    ["Here is the main page \n of filtered events",4,firstRoll], .center, [pageView, pageView], [panelView])
+        bubItem("Events",  ["ascending from last week through next week",4],           .below,  [mainView, mainBezel], [panelView], [.highlight,.fullview])
 
         bubItem("Panel",    ["within reach are all the controls you need",4],       .above, [pageView, panelView], [pageView], [.highlight])
         bubItem("Panel",    ["with the same look and feel as the Apple Watch", 16], .above, [pageView, panelView], [eventView], [.highlight,.overlay,.nowait])
         bubVid1("Panel",   ["WatchCrown2.m4v", 16],                                 .center, [mainView, tableBezel], [], [.timeout])
 
-        bubItem("Dial",     ["See the week ahead in a single glance",4,
-                             "on a 24 hour dial spiraling inward",4,
-                             "with each dot showing an hour with",4,
-                             "its colors showing your schedule.",4,
+        bubItem("Dial",     ["See the week in a glance",4,
+                             "on a 24 hour dial spiraling in",4,
+                             "where each dot is an hour showing",4,
+                             "the color of its main event",4,
 
-                             "Spin ahead to \n foretell your future",4,
-                             "Spin behind to \n recall your past",4,
+                             "Spin ahead to see your future as",4,
+                             "a string of hours from now⟶then.",4,
                              "Tap to scan for bookmarks and \n \(touchDial) to toggle.",4], .above, [pageView, dialView], [pageView], [.highlight, .circular])
 
 
-        bubItem("Crown",    ["The crown control acts like the Apple Watch",8,
-                             "Slide your finger to move forward and back in time",8], .above, [pageView, crownRight], [pageView], [.highlight,.circular])
+        bubItem("Crown",    ["The crown acts like the Apple Watch",4,
+                             "Sliding forward and back in time",
+                             "as is skips to the next evet",4], .above, [pageView, crownRight], [pageView], [.highlight,.circular])
 
         bubItem("Page",  ["to filter for different events",4,
                             "swipe right to the dialog page",4,],                   .below,  [mainView, mainBezel], [panelView], [.highlight,.fullview])

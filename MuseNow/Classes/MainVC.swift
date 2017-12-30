@@ -157,7 +157,7 @@ class MainVC: UIViewController {
         v.layer.cornerRadius = 16
         v.layer.borderColor = headColor.cgColor
         v.layer.borderWidth = 1
-        v.layer.masksToBounds = true
+        //??// v.layer.masksToBounds = true
     }
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
 

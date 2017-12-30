@@ -1,10 +1,9 @@
 //
-//  MuDrawBubble.swift
+//  BubbleDraw.swift
 //  MuseNow
 //
 //  Created by warren on 12/14/17.
 //  Copyright © 2017 Muse. All rights reserved.
-//
 
 import Foundation
 import UIKit
@@ -15,11 +14,11 @@ public enum BubShape { case
     triptych13, triptych23,triptych33
 }
 
-class MuDrawBubble: UIView {
+class BubbleDraw: UIView {
 
     var bubShape = BubShape.above
     var bubFrame = CGRect.zero
-    var radius  = CGFloat(8)
+    var radius  = CGFloat(16)
     var arrowXY = CGPoint.zero
 
     // 4 corner control points
@@ -40,14 +39,12 @@ class MuDrawBubble: UIView {
     private var bls = CGPoint.zero // bottom right start
     private var ble = CGPoint.zero // bottom right end
 
-    private var childX = CGFloat(0) // family[2].frame.origin.x
-    private var childY = CGFloat(0) // family[2].frame.origin.y
-    private var childW = CGFloat(0) // family[2].frame.size.width
-    private var childH = CGFloat(0) // amily[2].frame.size.height
+    private var fromX = CGFloat(0) // family[2].frame.origin.x
+    private var fromY = CGFloat(0) // family[2].frame.origin.y
+    private var fromW = CGFloat(0) // family[2].frame.size.width
+    private var fromH = CGFloat(0) // amily[2].frame.size.height
 
-    private var fam0: UIView!
-    private var fam1: UIView!
-    private var fam2: UIView!
+    private var fam: [UIView]!
 
     public var viewPoint = CGPoint.zero // used for animation
 
@@ -57,30 +54,27 @@ class MuDrawBubble: UIView {
 
     override init(frame:CGRect) {
         super.init(frame: frame)
+        self.layer.borderWidth = 1
     }
-    func makeBubble(_ bubShape_:BubShape, _ size: CGSize,_ radius_: CGFloat,_ family:[UIView]) {
+
+    func makeBubble(_ bubShape_:BubShape, _ size: CGSize,_ fam_:[UIView]) {
 
         bubShape = bubShape_
-        radius = radius_
+        fam = fam_
 
-        fam0 = family[0] // grand
-        fam1 = family[1] // parent
-        fam2 = family[2] // child
-
-        childX = fam2.frame.origin.x
-        childY = fam2.frame.origin.y
-        childW = fam2.frame.size.width
-        childH = fam2.frame.size.height
+        let last = fam.last!
+        fromX = last.frame.origin.x
+        fromY = last.frame.origin.y
+        fromW = last.frame.size.width
+        fromH = last.frame.size.height
 
         switch bubShape {
-        case .above:  makeAbove(size, family)
-        case .below:  makeBelow(size, family)
-        case .left:   makeLeft(size, family)
-        case .right:  makeRight(size, family)
-        default:      makeCenter(size, family)
+        case .above:  makeAbove(size)
+        case .below:  makeBelow(size)
+        case .left:   makeLeft(size)
+        case .right:  makeRight(size)
+        default:      makeCenter(size)
         }
-
-        print("\(bubShape) bub:\(bubFrame.origin) viewPoint:\(viewPoint) arrow:\(arrowXY)")
 
         self.frame = bubFrame
         isUserInteractionEnabled = true
@@ -88,101 +82,123 @@ class MuDrawBubble: UIView {
 
     /**
      Shift frame to fit in screen
-     - parameter fx: from child x
-     - parameter fy: from child y
-     - parameter dx: delta x to add to viewPoint
-     - parameter dy: delta y to add to viewPoint
-     - parameter w:  width
-     - parameter h:  height
-
+     - parameter delta: delta point to add to  viewPoint
+     - parameter bubSize: size of bubble
      - returns: ViewPoint from which to spring bubble
      */
-    func makeBubFrame(fx: CGFloat, fy: CGFloat,
-                      dx: CGFloat, dy: CGFloat,
-                      w:  CGFloat, h:  CGFloat) {
 
-        let testPoint = CGPoint(x: fx, y: fy)
-        viewPoint = fam0.convert(testPoint, from: fam1)
-        let x = viewPoint.x + dx
-        let y = viewPoint.y + dy
+    func makeBubFrame(_ delta: CGPoint,
+                      _ bubSize: CGSize) {
 
+        let last = fam.last!
+        let first = fam.first!
+
+        let fo = first.convert(first.frame.origin, from: last) // from origin
+
+        let x = viewPoint.x + delta.x
+        let y = viewPoint.y + delta.y
+        let w = bubSize.width
+        let h = bubSize.height
+        let fow = fo.x + w // frame origin width
+        let foh = fo.y + h // from origin height
+        
         let bW = UIScreen.main.fixedCoordinateSpace.bounds.size.width
         let bH = UIScreen.main.fixedCoordinateSpace.bounds.size.height
-        bubFrame = CGRect(x: max(0,x+w < bW ? x : bW-w),
-                          y: max(0,y+h < bH ? y : bH-h),
+
+        bubFrame = CGRect(x: x + fow < bW ? x : bW-fow,
+                          y: y + foh < bH ? y : bH-foh,
                           width:w, height:h)
+
+        Log("💬 makeBubFrame delta:\(delta) fo:\(fo) xywh:(\(x),\(y)),(\(w),\(h)) bwh:\(bW),\(bH) bubFrame:\(bubFrame.origin),\(bubFrame.size)")
+
+        return
     }
 
-    func makeRight(_ size: CGSize,_ family:[UIView]) {
+    func makeRight(_ size: CGSize) {
 
-        makeBubFrame(fx: childX,
-                     fy: childY + childH / 2,
+        viewPoint = CGPoint(x: 0, y: fromH / 2)
 
-                     dx: -size.width - radius,
-                     dy: -size.height / 2,
-                     w:   size.width + radius,
-                     h:   size.height)
+        let delta = CGPoint(x: -size.width - radius,
+                            y: -size.height / 2)
+
+        let bubSize = CGSize(width: size.width +  radius,
+                             height:size.height)
+
+        makeBubFrame(delta, bubSize)
 
         arrowXY = CGPoint(x: viewPoint.x - bubFrame.origin.x,
                           y: viewPoint.y - bubFrame.origin.y)
+
+        //Log("💬 makeLeft viewPoint:\(viewPoint) delta:\(delta) bubFrame:\(bubFrame) arrowXY:\(arrowXY)")
+
     }
 
-    func makeLeft(_ size: CGSize,_ family:[UIView]) {
+    func makeLeft(_ size: CGSize) {
 
-        makeBubFrame(fx: childX + childW,
-                     fy: childY + childH / 2,
-                     dx: radius,
-                     dy: -size.height / 2,
-                     w:   size.width + radius,
-                     h:   size.height)
+        viewPoint = CGPoint(x: fromW,  y: fromH / 2)
+        let delta = CGPoint(x: radius, y: -size.height / 2)
+
+        let bubSize = CGSize(width:  size.width + radius,
+                             height: size.height)
+
+        makeBubFrame(delta, bubSize)
 
         arrowXY = CGPoint(x: 0,
                           y: viewPoint.y - bubFrame.origin.y)
+
+         //Log("💬 makeRight viewPoint:\(viewPoint) delta:\(delta) bubFrame:\(bubFrame) arrowXY:\(arrowXY)")
     }
 
-    func makeBelow(_ size: CGSize,_ family:[UIView]) {
+    func makeBelow(_ size: CGSize) {
 
-        makeBubFrame(fx: childX + childW / 2,
-                     fy: childY + childH,
+        viewPoint = CGPoint(x: fromW/2, y: fromH)
+        let delta = CGPoint(x: -size.width/2, y: 0)
 
-                     dx: -size.width / 2,
-                     dy: 0,
-                     w: size.width,
-                     h: size.height + radius)
+        let bubSize = CGSize(width:  size.width,
+                             height: size.height + radius)
+
+        makeBubFrame(delta, bubSize)
 
         arrowXY = CGPoint(x: viewPoint.x - bubFrame.origin.x,
                           y: 0)
+         //Log("💬 makeBelow viewPoint:\(viewPoint) delta:\(delta) bubFrame:\(bubFrame) arrowXY:\(arrowXY)")
     }
 
-    func makeAbove(_ size: CGSize,_ family:[UIView]) {
+    func makeAbove(_ size: CGSize) {
 
-        makeBubFrame(fx: childX + childW / 2,
-                     fy: childY,
+        viewPoint = CGPoint(x: fromW/2, y: 0)
 
-                     dx: -size.width / 2,
-                     dy: -size.height - radius,
-                     w:   size.width,
-                     h:   size.height + radius)
+        let delta = CGPoint(x: -size.width / 2,
+                            y: -size.height - radius)
+
+        let bubSize = CGSize(width:  size.width,
+                             height: size.height + radius)
+
+        makeBubFrame(delta, bubSize)
 
         arrowXY = CGPoint(x: viewPoint.x - bubFrame.origin.x,
                           y: viewPoint.y - bubFrame.origin.y)
+
+         //Log("💬 makeAbove viewPoint:\(viewPoint) delta:\(delta) bubFrame:\(bubFrame) arrowXY:\(arrowXY)")
     }
 
-    func makeCenter(_ size: CGSize,_ family:[UIView]) {
+
+    func makeCenter(_ size: CGSize) {
 
         func makeFrame(_ position:CGFloat, _ count: CGFloat) {
 
-            let totalW = fam0.frame.size.width
-            let totalH = fam0.frame.size.height
             let subM = CGFloat(4) // sub margin
-            let subW = (totalW-(count-1)*subM) / count
+            let subW = (fromW - (count-1)*subM) / count
             let subH = size.width/size.height * subW
             let x = (position-1) * (subW + subM)
-            let y = (totalH-subH)/2
-
-            makeBubFrame(fx: x+subW/2, fy: y+subH/2,
-                         dx: -subW/2,  dy: -subH/2,
-                         w:   subW,    h:   subH)
+            let y = max(0,(fromH-subH)/2)
+            
+            viewPoint = CGPoint(x: x+subW/2, y: y+subH/2)
+            let delta = CGPoint(x: -subW/2, y: -subH/2)
+            let bubSize = CGSize(width:  subW, height: subH)
+            
+            makeBubFrame(delta, bubSize)
+             Log("💬 make.\(bubShape) viewPoint:\(viewPoint) delta:\(delta) bubFrame:\(bubFrame) arrowXY:\(arrowXY)")
         }
         switch bubShape {
         case .diptych12:  makeFrame(1,2)
@@ -192,20 +208,20 @@ class MuDrawBubble: UIView {
         case .triptych33: makeFrame(3,3)
 
         default:
-            makeBubFrame(fx: childX + childW / 2,
-                         fy: childY + childH / 2,
 
-                         dx: -size.width / 2,
-                         dy: -size.height / 2,
-                         w:   size.width,
-                         h:   size.height)
+            viewPoint = CGPoint(x: fromW/2, y: fromH/2)
+            let delta = CGPoint(x: -size.width/2, y: -size.height/2)
+            let bubSize = size
+
+            makeBubFrame(delta, bubSize)
+            //Log("💬 makeCenter viewPoint:\(viewPoint) delta:\(delta) bubFrame:\(bubFrame) arrowXY:\(arrowXY)")
         }
 
     }
 
     // paths ---------------------------------------------------------
 
-    func belowPath(_ path:UIBezierPath) {
+    func abovePath(_ path:UIBezierPath) {
 
         let a = arrowXY // arrow point
         let r = radius
@@ -221,19 +237,22 @@ class MuDrawBubble: UIView {
         func l_(_ p:CGPoint)             { path.addLine(to: p) }
         func s_(_ p0:inout CGFloat,_ p1:inout CGFloat) { if p0 > p1 { p0 = (p0+p1)/2 ; p1 = p0 } } // middle point of overlap
 
-        path.move(to: uls)                      // start at upper left
-        q_(ule,ul) ; l_(urs)                    // upper left corner with line
-        q_(ure,ur) ; l_(brs)                    // upper rigth corner with line
         s_(&ar.x,&bre.x)                        // scrunch start of arrow if needed
         s_(&bls.x,&al.x)                        // scrunch end of arrow if needed
+
+        path.move(to: a)                        // start of arrow
+        q_(al,am) ; if bls.x < al.x { l_(bls) } // end of arrow with optional line
+        q_(ble,bl) ; l_(uls)                    // below left corner
+        q_(ule,ul) ; l_(urs)                    // upper left corner with line
+        q_(ure,ur) ; l_(brs)                    // upper rigth corner with line
         q_(bre,br) ; if ar.x < bre.x { l_(ar) } // below right corner w optional line
         q_(a,am)                                // start of arrow
-        q_(al,am) ; if bls.x < al.x { l_(bls) } // end of arrow with optional line
-        q_(ble,bl)                              // below left corner
         path.close()                            // close path with line to upper left
     }
 
-    func abovePath(_ path:UIBezierPath) {
+
+
+    func belowPath(_ path:UIBezierPath) {
 
         let a = arrowXY // arrow point
         let r = radius
@@ -249,15 +268,16 @@ class MuDrawBubble: UIView {
         func l_(_ p:CGPoint)             { path.addLine(to: p) }
         func s_(_ p0:inout CGFloat,_ p1:inout CGFloat) { if p0 > p1 { p0 = (p0+p1)/2 ; p1 = p0 } } // middle point of overlap
 
-        path.move(to: uls)                      // start at upper left
         s_(&ule.x,&al.x)                        // scrunch begin of arrow, if needed
         s_(&ar.x,&urs.x)                        // scrunch end of arrow, if needed
-        q_(ule,ul) ; if ule.x < al.x { l_(al) } // upper left corner w optional line
-        q_(a,am)                                // begin arrow
+
+        path.move(to: a)                       // begin arrow
         q_(ar,am) ; if urs.x > ar.x { l_(urs) } // end arrow with optiona line
         q_(ure,ur) ; l_(brs)                    // upper right corner with line
         q_(bre,br) ; l_(bls)                    // below right corner with line
-        q_(ble,bl)                              // below left corner with line
+        q_(ble,bl) ; l_(uls)                    // below left corner with line
+        q_(ule,ul) ; if ule.x < al.x { l_(al) } // upper left corner w optional line
+        q_(a,am)
         path.close()                            // close path w line to upper left
     }
 
@@ -277,16 +297,18 @@ class MuDrawBubble: UIView {
         func l_(_ p:CGPoint)             { path.addLine(to: p) }
         func s_(_ p0:inout CGFloat,_ p1:inout CGFloat) { if p0 > p1 { p0 = (p0+p1)/2 ; p1 = p0 } } // middle point of overlap
 
-        path.move(to: uls)                      // start at upper left
-        q_(ule,ul) ; l_(urs)                    // upper left start to end
         s_(&ure.y, &au.y)                       // scrunch begin start of arrow if needed
         s_(&ab.y,&brs.y )                       // sceunch end of arrow if needed
-        q_(ure,ur) ; if ure.y < au.y { l_(au) } // upper right corner w optional line to arrow
-        q_(a,am)                                // beginning of arrow
+
+        path.move(to: a)                        // start at tip of arrow
         q_(ab,am) ; if ab.y < brs.y { l_(brs) } // end of arrow w option line to below right
         q_(bre,br) ; l_(bls)                    // below right corner w line
-        q_(ble,bl)                              // bllow left corner
+        q_(ble,bl) ; l_(uls)                    // below left corner
+        q_(ule,ul) ; l_(urs)                    // upper left start to end
+        q_(ure,ur) ; if ure.y < au.y { l_(au) } // upper right corner w optional line to arrow
+        q_(a,am)                                // back to beginning of arrow
         path.close()
+
     }
     func setCorners(U:CGFloat, B:CGFloat, L:CGFloat, R:CGFloat) {
 
@@ -329,16 +351,18 @@ class MuDrawBubble: UIView {
         func l_(_ p:CGPoint)             { path.addLine(to: p) }
         func s_(_ p0:inout CGFloat,_ p1:inout CGFloat) { if p0 > p1 { p0 = (p0+p1)/2 ; p1 = p0 } } // middle point of overlap
 
-        path.move(to: uls)                      // start at up left
+        s_(&ble.y, &ab.y)                       // scrunch begin of arrow, if needed
+        s_(&au.y, &uls.y)                       // scrunch end of arrow if needed
+
+        path.move(to: a)                        // start at tip of arrow
+        q_(au,am) ; if au.y < uls.y { l_(uls) } // end arrow with optional line
         q_(ule,ul) ; l_(urs)                    // upper left corner w line
         q_(ure,ur) ; l_(brs)                    // upper right corner w line
         q_(bre,br) ; l_(bls)                    // below right corner w line
-        s_(&ble.y, &ab.y)                       // scrunch begin of arrow, if needed
-        s_(&au.y, &uls.y)                       // scrunch end of arrow if needed
         q_(ble,bl) ; if ble.y < ab.y { l_(ab) } // below left corner w optional line
         q_(a,am)                                // begin arrow
-        q_(au,am) ; if au.y < uls.y { l_(uls) } // end arrow with optional line
         path.close()                            // close path w line to upper left
+
     }
 
     func centerPath(_ path:UIBezierPath) {
@@ -360,21 +384,25 @@ class MuDrawBubble: UIView {
     override func draw(_ rect: CGRect) {
 
         let path = UIBezierPath()
-        let w = frame.size.width-2
-        let h = frame.size.height-2
+        let m = CGFloat(1.5)
+        let w = frame.size.width-2*m
+        let h = frame.size.height-2*m
         let r = radius
-        let m = CGFloat(1)
+
 
         switch bubShape {
-        case .above:  setCorners(U: m,   B: m+h-r, L: m,  R: m+w   ) ; belowPath(path)
-        case .below:  setCorners(U: m+r, B: m+h,   L: m,  R: m+w   ) ; abovePath(path)
+        case .above:  setCorners(U: m,   B: m+h-r, L: m,  R: m+w   ) ; abovePath(path)
+        case .below:  setCorners(U: m+r, B: m+h,   L: m,  R: m+w   ) ; belowPath(path)
         case .left:   setCorners(U: m,   B: m+h,   L: m+r,R: m+w   ) ; leftPath (path)
         case .right:  setCorners(U: m,   B: m+h,   L: m,  R: m+w-r ) ; rightPath(path)
         default:      setCorners(U: m,   B: m+h,   L: m,  R: m+w   ) ; centerPath(path)
         }
 
-        UIColor.black.setFill()
+        cellColor.setFill() //??//
         UIColor.white.setStroke()
+        let dash: [CGFloat] = [1,2]
+        path.setLineDash(dash, count:dash.count, phase: 0)
+        //path.lineCapStyle = .round
 
         path.fill()
         path.stroke()

@@ -69,7 +69,6 @@ class TreeCell: MuCell {
         bezel.backgroundColor = .clear
         bezel.layer.cornerRadius = innerH/4
         bezel.layer.borderWidth = 1
-        bezel.layer.masksToBounds = true
         bezel.layer.borderColor = cellColor.cgColor
 
         contentView.addSubview(left)
@@ -310,7 +309,7 @@ class TreeCell: MuCell {
      Change expand/collapse tree cells based on user touching a cell.
      Defer to infoCell help bubble for .newInfo or directly touching .oldInfo.
      */
-    override func touchCell(_ location: CGPoint) {
+    override func touchCell(_ location: CGPoint, isExpandable:Bool = true) {
 
         (tableVC as? TreeTableVC)?.setTouchedCell(self)
 
@@ -334,7 +333,7 @@ class TreeCell: MuCell {
                 }
             }
             // expand me when I have children and status wasn't change by collapsing siblings
-            let expandMe = (treeNode.children.count > 0) && (wasExpanded == treeNode.expanded)
+            let expandMe = (treeNode.children.count > 0) && (wasExpanded == treeNode.expanded) && isExpandable
             touchSelf(expandMe, withDelay: siblingCollapsing)
         }
 

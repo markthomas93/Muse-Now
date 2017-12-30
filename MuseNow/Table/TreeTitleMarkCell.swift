@@ -33,7 +33,6 @@ class TreeTitleMarkCell: TreeTitleCell {
         mark.layer.cornerRadius = innerH/4
         mark.layer.borderWidth = 1.0
         mark.layer.borderColor = headColor.cgColor
-        mark.layer.masksToBounds = true
         mark.setMark(treeNode.setting.isOn())
 
         contentView.addSubview(mark)
@@ -151,7 +150,7 @@ class TreeTitleMarkCell: TreeTitleCell {
         }
     }
     
-    override func touchCell(_ location: CGPoint) {
+    override func touchCell(_ location: CGPoint, isExpandable:Bool = true) {
 
         (tableVC as? TreeTableVC)?.setTouchedCell(self)
 
@@ -164,7 +163,7 @@ class TreeTitleMarkCell: TreeTitleCell {
             mark.setMark(isOn)
         }
         else {
-            super.touchCell(location)
+            super.touchCell(location, isExpandable:isExpandable)
         }
     }
     

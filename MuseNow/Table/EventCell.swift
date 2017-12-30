@@ -75,7 +75,7 @@ class EventCell: MuCell {
     }
     
     
-    override func touchCell(_ location: CGPoint) {
+    override func touchCell(_ location: CGPoint, isExpandable:Bool = true) {
 
         let toggleX = frame.size.width -  frame.size.height*1.618
         if location.x > toggleX {
