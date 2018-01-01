@@ -19,6 +19,9 @@ public enum DoAction : Int { case
     hearEarbuds, hearSpeaker,
     muteEarbuds, muteSpeaker,
 
+    // tour
+    playTour,   stopTour,
+
     // show
     showCalendar, hideCalendar,
     showReminder, hideReminder,
@@ -58,16 +61,14 @@ class Actions {
 
     func dialColor(_ fade:Float, isSender: Bool)  {
         
-        scene?.uFade?.floatValue = Float(fade)
+        scene?.uFade?.floatValue = fade
         
         if isSender {
 
             Session.shared.sendMsg( ["class" : "Actions", "dialColor" : fade])
-
             Settings.shared.updateColor(fade)
         }
     }
-    //-----------------------------------------
 
     func doSetTitle(_ title_: String) {
         #if os(watchOS)
@@ -231,7 +232,6 @@ class Actions {
         return suggestions
     }
 
-
     /**
      Dispatch commands to Show, Say, Hear, Dots, Anim
      - via: Actions.[doUpdateEvent, doToggleMark]
@@ -251,6 +251,10 @@ class Actions {
 
             Show.shared.doShowAction(act, isSender: true)
 
+        case .playTour, .stopTour:
+            #if os(iOS)
+                BubbleTour.shared.doTourAction(act)
+            #endif
         // speech to text volume
         case .sayMemo, .skipMemo,
              .sayTime, .skipTime,

@@ -56,7 +56,6 @@ class PhoneCrown: TouchForce {
     }
 
 
-
     func initialize() {
         
         backgroundColor = UIColor.black

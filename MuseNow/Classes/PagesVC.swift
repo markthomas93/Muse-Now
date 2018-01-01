@@ -108,7 +108,10 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
         if pageType == type_ { return done() }
         let index = type_.rawValue
         let nextVC = pages[index]
-        pageVC.setViewControllers([nextVC],direction: pageType.rawValue < index ? .forward : .reverse, animated: true)
+
+        if !nextVC.isBeingPresented {
+            pageVC.setViewControllers([nextVC],direction: pageType.rawValue < index ? .forward : .reverse, animated: true)
+        }
         let _ = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: {_ in
             done()
         })

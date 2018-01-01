@@ -155,8 +155,9 @@ class MuEvents {
         })
     }
     
-    ///  Get EventKit events after getting permission
-
+    /**
+     Get EventKit events after getting permission
+    */
     func getEkEvents(completion: @escaping (_ result:[MuEvent]) -> Void) {
         
         let store = EKEventStore()
@@ -208,7 +209,9 @@ class MuEvents {
         }
     }
 
-    /// Get EventKit reminder after getting permission
+    /**
+     Get EventKit reminders after getting permission
+    */
     func getEkReminders(completion: @escaping (_ result:[MuEvent]) -> Void) -> Void {
         
         let store = EKEventStore()

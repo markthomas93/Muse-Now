@@ -206,6 +206,8 @@ class Dots {
         dot.gotoEvent(event)
         return doti
     }
+    func gotoNextEvent() {
+    }
 
     /**
      get nearest event starting to dot

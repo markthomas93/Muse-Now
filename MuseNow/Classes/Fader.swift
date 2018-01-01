@@ -47,11 +47,11 @@ class Fader: TouchForce {
 
         runway = frame.size.width -  2*thumbR - 4*borderWidth
     }
+    
     func setValue(_ value_:Float) {
         value = value_
         thumb.center.x = thumbR + 2*borderWidth + runway * CGFloat(value)
     }
-    
 
     func updatePos(_ pos:CGPoint) {
         

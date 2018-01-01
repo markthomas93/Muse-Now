@@ -32,6 +32,7 @@ class TreeTitleFaderCell: TreeTitleCell {
         self.frame = cellFrame
 
         fader = Fader(frame:faderFrame)
+        fader.setValue(Anim.shared.scene?.uFade?.floatValue ?? 0)
         bezel.addSubview(title)
         bezel.addSubview(fader)
     }
@@ -43,7 +44,7 @@ class TreeTitleFaderCell: TreeTitleCell {
 
         let bezelX = leftX + leftW + marginW
         let bezelY = marginH / 2
-        let bezelH = height //- 2*marginH
+        let bezelH = height
 
         let bezelW = width - marginW - bezelX
 

@@ -21,7 +21,7 @@ extension BubbleTour {
         let panelView = MainVC.shared!.panel
         let treeRoot = TreeNodes.shared.root!
 
-        let textSize  = CGSize(width:248,height:88)
+        let textSize  = CGSize(width:248,height:64)
         let videoSize = CGSize(width:248,height:248)
         let textDelay = TimeInterval(3)
 
@@ -32,8 +32,12 @@ extension BubbleTour {
         Will expand the node's children and collapse the previous node.
          - note: pass along finish() to be called after animation complets
         */
-        let gotoTitle: CallWait! = { bubble, finish  in
-            TreeNodes.shared.root?.goto(title: bubble.title, finish: finish)
+        let gotoTitle: CallWait! = { base, finish  in
+            TreeNodes.shared.root?.goto(title: base.bubble.title, finish: {
+                let _ = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: {_ in
+                     finish()
+                })
+            })
         }
 
         /// Goto dialog page
@@ -43,21 +47,20 @@ extension BubbleTour {
             }
         }
         /// collapse final cell
-        let lastRoll: CallWait! = { bubble, finish  in
-            TreeNodes.shared.root?.collapse(title: bubble.title)
+        let lastRoll: CallWait! = { base, finish  in
+            TreeNodes.shared.root?.collapse(title: base.bubble.title)
             finish()
         }
 
 
         // setup standard views and covers
 
-        let treeTree =  [treeView, treeView]
-        let treePanel = [treeView, panelView]
+        func bubText(_ title:String,_ anys:[Any],_ bubShape:BubShape,_ options: BubbleOptions = [], covers:[UIView] = []) {
 
-        func bubText(_ title:String,_ anys:[Any],_ bubShape:BubShape,_ options: BubbleOptions = []) {
-
-            bubbles.append(Bubble(title, bubsFrom(anys:anys), bubShape, .text, textSize, treeTree, treePanel, options))
+            bubbles.append(Bubble(title, bubsFrom(anys:anys), bubShape, .text, textSize,
+                                  treeView, treeView, [], [treeView, panelView], options))
         }
+
         func bubVid2(_ title: String,_ anys:[Any],_ bubShape:BubShape,_ options: BubbleOptions = []) {
              if let cell = treeRoot.find(title:title) {
                 // get origin of cell relative to treeView
@@ -65,82 +68,149 @@ extension BubbleTour {
                 let whiteSpace = UIView(frame:CGRect(x:0,y:0,
                                                      width:treeView.frame.size.width,
                                                      height:cellOrigin.y))
-                bubbles.append(Bubble(title, bubsFrom(anys:anys), bubShape, .video, videoSize, [treeView,whiteSpace], treePanel, options))
+                bubbles.append(Bubble(title, bubsFrom(anys:anys), bubShape, .video, videoSize,
+                                      treeView,whiteSpace, [], [treeView, panelView], options))
             }
         }
         func bubCell(_ title:String,_ anys:[Any],_ bubShape:BubShape, _ options: BubbleOptions = []) {
             if let cell = treeRoot.find(title:title) {
-                bubbles.append(Bubble(title, bubsFrom(anys:anys), bubShape, .text, textSize, [treeView,cell], treePanel, options))
+                bubbles.append(Bubble(title, bubsFrom(anys:anys), bubShape, .text, textSize,
+                                      treeView,cell, [], [treeView, panelView], options))
+            }
+        }
+        func bubFade(_ title:String,_ anys:[Any],_ bubShape:BubShape, _ options: BubbleOptions = []) {
+            if let cell = treeRoot.find(title:title) as? TreeTitleFaderCell, let fader = cell.fader {
+                bubbles.append(Bubble(title, bubsFrom(anys:anys), bubShape, .text, textSize,
+                                      treeView,fader, [cell], [treeView], options))
             }
         }
         func bubMark(_ title:String,_ anys:[Any],_ bubShape:BubShape, _ options: BubbleOptions = []) {
             if let cell = treeRoot.find(title:title) as? TreeTitleMarkCell, let mark = cell.mark {
-                bubbles.append(Bubble(title, bubsFrom(anys:anys), bubShape, .text, textSize,  [treeView,cell,mark], treePanel, options))
+                bubbles.append(Bubble(title, bubsFrom(anys:anys), bubShape, .text, textSize,
+                                      treeView, mark, [cell], [treeView, panelView], options))
+            }
+        }
+        func bubThumb(_ title:String,_ anys:[Any],_ bubShape:BubShape, _ options: BubbleOptions = []) {
+            if let cell = treeRoot.find(title:title) as? TreeTitleFaderCell, let fader = cell.fader {
+                bubbles.append(Bubble(title, bubsFrom(anys:anys), bubShape, .text, textSize,
+                                      treeView,fader,[cell], [treeView, panelView], options))
             }
         }
 
         func bubLeft(_ title:String,_ anys:[Any],_ bubShape:BubShape, _ options: BubbleOptions = []) {
             if let cell = treeRoot.find(title:title) as? TreeTitleMarkCell, let left = cell.left {
-                bubbles.append(Bubble(title, bubsFrom(anys:anys), bubShape, .text, textSize,  [treeView,cell,left], treePanel, options))
+                bubbles.append(Bubble(title, bubsFrom(anys:anys), bubShape, .text, textSize,
+                                      treeView,left, [cell], [treeView, panelView], options))
             }
         }
 
         func bubSlider(_ title:String,_ anys:[Any],_ bubShape:BubShape, _ options: BubbleOptions = []) {
             if let cell = treeRoot.find(title:title) as? TreeTitleFaderCell, let thumb = cell.fader.thumb {
-                bubbles.append(Bubble(title, bubsFrom(anys:anys), bubShape, .text, textSize,  [treeView,thumb], treePanel, options))
+                bubbles.append(Bubble(title, bubsFrom(anys:anys), bubShape, .text, textSize,
+                                      treeView,thumb, [], [treeView, panelView], options))
             }
         }
 
+        // color -------------------------------------
+
+        func aniFader(_ fader:Fader, value: Float) {
+
+            let start = fader.value
+            let delta = value - start
+            var count = Float(0)
+
+            let _ = Timer.scheduledTimer(withTimeInterval: 0.016, repeats: true, block: {timer in
+                count += 1
+                let frac = count / 30
+                let next = start + delta * frac
+                fader.setValue(next)
+                Anim.shared.scene?.uFade?.floatValue = next
+                if count == 30 {
+                    timer.invalidate()
+                }
+            })
+        }
+
+        let setFader00: CallWait! = { base, finish in
+            if let fader = base.bubble.from as? Fader { aniFader(fader, value: 0.0) ; finish() }
+        }
+
+        let setFader05: CallWait! = { base, finish  in
+            if let fader = base.bubble.from as? Fader { aniFader(fader, value: 0.5) ; finish() }
+        }
+
+        let setFader10: CallWait! = { base, finish  in
+            if let fader = base.bubble.from as? Fader { aniFader(fader, value: 1.0) ; finish() }
+        }
 
         // begin -----------------------------------
 
         treeVC.initTree()
 
-        bubText("settings", ["Here is the Menu page to filter moments.", 4, gotoDialogPage], .center)
+        // 12: 4 4 4
 
-        bubCell("show",     ["Select which events to see and hear", 4, gotoTitle], .below)
-        bubMark("show",     ["Tap to show or hide sub-options, such as calendars and reminders",4], .right)
-        bubLeft("show",     ["yo",4], .left)
+        bubText("settings", ["Here is the Menu \n to filter events",2,gotoDialogPage], .center, covers:[])
 
-        bubMark("calendars", ["Tap to show or hide calendars and any schedule changes will pause",8, gotoTitle], .above)
-        bubMark("reminders", ["Tap to show or hide reminders and any new reminders will also pause. Works well with Siri:",8,gotoTitle], .above)
+        bubCell("show",     ["Select which events \n to see and hear",2,gotoTitle], .above)
 
-        bubMark("reminders", ["\"Hey Siri, remind me to pack for trip tomorrow\"",25], .above, [.overlay,.nowait])
-        bubVid2("reminders", ["WatchSiri2.m4v", 24], .diptych12, [.timeout, .fullview ,.nowait])
-        bubVid2("reminders", ["PhoneSiri2.m4v", 24], .diptych22, [.timeout, .fullview])
+        bubMark("show",     ["Show or hide everything",2,gotoTitle], .above)
 
-        bubCell("dial",     ["change the dial's appearance",4,gotoTitle], .above)
+        // 12: 4 4 2 2
 
-        bubCell("color",    ["fade between heat map ...",4,gotoTitle,
-                             "monochrome ...",4,
-                             "and event colors",4],.above)
-        // preview
-        bubCell("preview",  ["preview upcoming releases\navailable later for purchase",4,gotoTitle], .above)
+        bubMark("calendars", ["Show calendar events and \n pause on any changes",2, gotoTitle], .above)
+        bubMark("reminders", ["Show timed reminders and \n additions will also pause",2,gotoTitle], .above)
 
-        bubMark("routine",  ["map your weekly routine to \n personalize the dial with ",4, gotoTitle,
-                             "how you spend your time",4], .above)
+        // reminders  -------------------------------------- 24: 4 20,20,20
 
-        bubMark("memos",    ["record short audio memos\nwith location and text transcript",4,gotoTitle],.above)
-        bubMark("memos",    ["triple-tap on the dial\nor tilt away, like so:",25], .below, [.overlay,.nowait])
-        bubVid2("memos",    ["WatchMemo2.m4v", 24], .diptych12, [.timeout,.nowait,.fullview])
-        bubVid2("memos",    ["PhoneMemo2.m4v", 24], .diptych22, [.timeout,.fullview])
-        bubMark("memos",    ["memos are saved in your \niTunes \"shared files\" folder",4,
-                             "We don't keep a copy\n and never will",4], .above)
+        bubCell("reminders", ["Add reminders anytime with Siri:",2,gotoTitle], .above)
+        bubCell("reminders", ["\"Hey Siri, remind me to pack for trip tomorrow\"",12], .below, [.nowait])
+        bubVid2("reminders", ["WatchSiri2.m4v", 24], .diptych12, [.nowait])
+        bubVid2("reminders", ["PhoneSiri2.m4v", 24], .diptych22)
 
-        // hear
-        bubCell("hear",     ["hear or mute while pausing on a bookmark.",4,gotoTitle], .above)
+        // dial -------------------------------------- 8: 4  2 2 2 2
 
-        bubCell("speaker",  ["hear what was said through the speaker",gotoTitle,
-                             "or handoff to earbuds, when connected",4], .above)
+        bubCell("dial",     ["change the dial's appearance",4, gotoTitle], .above)
 
-        bubCell("earbuds",  ["earbuds only when speaker set off",4,gotoTitle,
-                             "try with Apple Watch and Airpods ...",4,
-                             "lift your wrist to hear what's next",4,
-                             "without the need to see a screen",4], .above)
+        bubFade("color",    ["fade between",1, gotoTitle,
+                             "heat map ...",1, setFader00,
+                             "monochrome ...",1, setFader05,
+                             "and event colors",1, setFader10],.above)
 
-        bubText("hear",     ["this concludes the guided tour",8,lastRoll], .center)
+        // preview --------------------------------------
 
+        // 8: 4  2 2 2 2
 
+        bubCell("preview",  ["sneak preview ",4,gotoTitle], .above)
+
+        bubMark("routine",  ["setup your normal routine \n like sleep, meals, work,  ⃨",2,gotoTitle,
+                             "to see how events overlap \n with your weekly routine",2], .above)
+
+        //  memos  -------------------------------------- 24: 2 2 2 2  8  2 2 2 2
+
+        bubMark("memos",    ["record short audio memos \n with location and text",2,gotoTitle,
+                             "triple-tap on the dial to \n record what's on your mind",2],.above)
+
+        bubMark("memos",    ["or tilt away and back again \n like throttling a motorcycle", 2,gotoTitle], .above, [.nowait])
+        bubVid2("memos",    ["WatchMemo2.m4v", 12], .diptych12, [.nowait])
+        bubVid2("memos",    ["PhoneMemo2.m4v", 12], .diptych22)
+
+        bubMark("memos",    ["Memos are saved in your \n iTunes \"shared files\" folder",2,
+                             "we don't want your data \n and will never keep a copy",2], .above)
+
+        // hear  --------------------------------------
+
+        bubCell("hear",     ["hear an announcement, while \n hovering over a bookmark",2,gotoTitle], .above)
+        bubMark("speaker",  ["hear via speaker or handoff \n to earbuds,when connected",2,gotoTitle], .above)
+        bubMark("earbuds",  ["hear only on earbuds for both \n eyes free and hands free",2,gotoTitle], .above)
+
+        bubMark("earbuds",  ["with Apple Watch + Airpods \n simply lift your wrist to hear",2,gotoTitle,
+                             "what's next while keeping \n focus on the road ahead",2], .above)
+
+         // finish  --------------------------------------
+
+        bubText("about",   ["This is where to learn more \n about our products and services",2, gotoTitle], .above)
+        bubText("tour",    ["This concludes the guided tour \n Tap here to tour again",2, gotoTitle,
+                            "Or linger on any control for a \n couple seconds a hint",2], .above)
     }
 
 }

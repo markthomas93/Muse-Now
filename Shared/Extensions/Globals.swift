@@ -19,18 +19,6 @@ func delay(_ delay:Double, closure:@escaping ()->()) {
     let when = DispatchTime.now() + delay
     DispatchQueue.main.asyncAfter(deadline: when, execute: closure)
 }
-extension String {
-    /**
-     Truncates the string to the specified length number of characters and appends an optional trailing string if longer.
-     - Parameter length: Desired maximum lengths of a string
-     - Parameter trailing: A 'String' that will be appended after the truncation.
-
-     - Returns: 'String' object.
-     */
-    func trunc(length: Int, trailing: String = "…") -> String {
-        return (self.count > length) ? self.prefix(length) + trailing : self
-    }
-}
 
 func Log(_ block:@escaping (()->(String))) {
     assert(DebugLog(block()))
@@ -47,16 +35,15 @@ func DebugLog(_ str: String) -> Bool {
         //case NSLog(str)
 
     case
-    "⎚", // scene animation
-    "🔰", // onboarding pages (japaness beginnner symbol)
     "💬", // bubble animation closure
-    "📅": // EkNotification
-   
+    "🔰": // onboarding pages (japaness beginnner symbol)
 
         print(MuDate.getHourMinSecMsec() + ": " + str)
         
     case    
-    "⧉", // sync files
+    "📅", // EkNotification
+    "⧉", // s
+    "⎚", // scene animationync files
     "▤", // TreeTableView
     "⿳", // menu
     

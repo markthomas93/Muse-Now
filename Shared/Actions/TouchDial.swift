@@ -5,7 +5,7 @@ class TouchDial: TouchMove {
     
     let anim = Anim.shared
     let dots = Dots.shared
-    var table : MuseTableDelegate!
+    var table: MuseTableDelegate!
 
     var lastPanT = TimeInterval(0)
     var lastPan˚ = Double(-720)

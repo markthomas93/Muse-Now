@@ -33,7 +33,7 @@ class BubbleText: BubbleBase  {
      - family[1]: parent if child view. Stays uncovered; others darken.
      - family[2]: child view to spring bubble from. Will not clip.
 
-      - note: if no family[2], then will create a childBezel
+      - note: if no family[2], then will create a fromBezel
      */
 
     override init(frame: CGRect) {

@@ -27,7 +27,8 @@ class OnboardPage: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         Log("🔰 appear: \(title!)")
         let bubItem = BubbleItem(title!,4)
-        let bubble = Bubble(title!, [bubItem], .center, .text, CGSize(width:128,height:64),[view,view],[],[])
+        let bubble = Bubble(title!, [bubItem], .center, .text, CGSize(width:128,height:64),
+                            view,view,[],[],[])
 
         BubbleText(bubble).goBubble() {}
     }

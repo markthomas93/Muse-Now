@@ -46,14 +46,14 @@ extension BubbleTour {
             }
         }
 
-        func bubVid1(_ title: String,_ anys:[Any],_ bubShape:BubShape = .center, _ views:[UIView], _ covers:[UIView], _ options: BubbleOptions = []) {
-             bubbles.append(Bubble(title, bubsFrom(anys:anys), bubShape, .video, videoSize, views, covers, options))
+        func bubVid1(_ title: String,_ anys:[Any],_ bubShape:BubShape = .center, _ base:UIView,_ from:UIView, _ covers:[UIView], _ options: BubbleOptions = []) {
+             bubbles.append(Bubble(title, bubsFrom(anys:anys), bubShape, .video, videoSize,
+                                   base, from, [], covers, options))
         }
-        func bubItem(_ title: String,_ anys:[Any],_ bubShape:BubShape = .above, _ views:[UIView], _ covers:[UIView], _ options: BubbleOptions = []) {
-                bubbles.append(Bubble(title, bubsFrom(anys:anys), bubShape, .text, textSize, views, covers, options))
+        func bubItem(_ title: String,_ anys:[Any],_ bubShape:BubShape = .above, _ base:UIView,_ from:UIView, _ covers:[UIView], _ options: BubbleOptions = []) {
+                bubbles.append(Bubble(title, bubsFrom(anys:anys), bubShape, .text, textSize,
+                                      base, from, [], covers, options))
         }
-
-        let touchDial  = isForceable ? "deep touch" : "double tap"
 
         let mainBezel = UIView(frame:eventView.convert(eventView.frame, to: mainView))
         let tableBezel = UIView(frame:eventView.convert(eventView.frame, to: pageView))
@@ -63,32 +63,56 @@ extension BubbleTour {
         tableBezel.backgroundColor = .clear
         spineBezel.backgroundColor = .clear
 
+        func callDelay1(_ call:@escaping()->()) {
+            let _ = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: {_ in  call() })
+        }
+        func call123(_ call:@escaping()->()) {
+            call()
+            let _ = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: {_ in  call() })
+            let _ = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: {_ in  call() })
+        }
+
         // start ----
 
-        bubItem("Main",    ["Here is the main page \n of filtered events",4,firstRoll], .center, [pageView, pageView], [panelView])
-        bubItem("Events",  ["ascending from last week through next week",4],           .below,  [mainView, mainBezel], [panelView], [.highlight,.fullview])
+        // 12: 6  6
 
-        bubItem("Panel",    ["within reach are all the controls you need",4],       .above, [pageView, panelView], [pageView], [.highlight])
-        bubItem("Panel",    ["with the same look and feel as the Apple Watch", 16], .above, [pageView, panelView], [eventView], [.highlight,.overlay,.nowait])
-        bubVid1("Panel",   ["WatchCrown2.m4v", 16],                                 .center, [mainView, tableBezel], [], [.timeout])
+        bubItem("Main",  ["Timeline spans 2 weeks from \n last week to the next",4,firstRoll],  .below,  mainView, mainBezel, [panelView], [.highlight,.alpha05])
+        bubItem("Panel", ["Control panel puts it all \n under your thumb",2],                   .above,  pageView, panelView, [pageView], [.highlight])
 
-        bubItem("Dial",     ["See the week in a glance",4,
-                             "on a 24 hour dial spiraling in",4,
-                             "where each dot is an hour showing",4,
-                             "the color of its main event",4,
+        bubItem("Panel", ["with the same look and feel \n as the Apple Watch", 2],              .above,  pageView, panelView, [eventView], [.highlight,.overlay,.nowait])
+        bubVid1("Panel", ["WatchCrown2.m4v", 6],                                                .center, mainView, tableBezel, [])
 
-                             "Spin ahead to see your future as",4,
-                             "a string of hours from now⟶then.",4,
-                             "Tap to scan for bookmarks and \n \(touchDial) to toggle.",4], .above, [pageView, dialView], [pageView], [.highlight, .circular])
+        // 24: 2 2 2 2  2 2 2 2  2 2 2 2
 
+        // delayed call
 
-        bubItem("Crown",    ["The crown acts like the Apple Watch",4,
-                             "Sliding forward and back in time",
-                             "as is skips to the next evet",4], .above, [pageView, crownRight], [pageView], [.highlight,.circular])
+        let futureWheel = { Actions.shared.doAction(.gotoFuture) }
+        let nextEvent   = { PhoneCrown.shared.delegate.phoneCrownDeltaRow(1,true) }
+        let toggleEvent = { PhoneCrown.shared.delegate.phoneCrownToggle(true) }
+        let scanEvents  = { Anim.shared.resumeScan() }
 
-        bubItem("Page",  ["to filter for different events",4,
-                            "swipe right to the dialog page",4,],                   .below,  [mainView, mainBezel], [panelView], [.highlight,.fullview])
-        bubItem("Page",    ["or simply tap the spine",4],                           .below, [mainView, spineBezel], [panelView], [.highlight,.fullview])
+        bubItem("Dial", ["See the week in a glance \n as 24 hours times 7 days",2, futureWheel,
+                         "168 hours, in all, shown \n as dots spiralling inwards",2],       .above, pageView, dialView, [pageView], [.highlight, .circular])
+
+        bubItem("Dial", ["Touch the dial and spin \n around to feel bumps",2,   nextEvent,
+                         "while crossing an event \n to feel key moments.",2,  nextEvent],  .above, pageView, dialView, [], [.highlight, .circular])
+
+        bubItem("Dial", ["Force touch (or double tap) \n to mark an event",2, toggleEvent,
+                         "that pauses while scanning \n the week ahead",2,  scanEvents],    .above, pageView, dialView, [], [.highlight, .circular])
+
+        bubItem("Dial", ["Hear a countdown whenever \n you raise your wrist",2,
+                         "no need to see or touch \n anything to stay current",2,futureWheel], .above, pageView, dialView, [], [.highlight, .circular])
+
+        // 12: 2 2 2 2  8
+
+        bubItem("Crown", ["The virtual crown acts \n just like the Apple Watch",2,
+                          "sliding up and down in time \n to skip through events",2], .above, pageView, crownRight, [pageView], [.highlight,.circular, .nowait])
+
+        bubVid1("Crown", ["WatchCrown2.m4v",8],                                        .center, mainView, tableBezel, [])
+
+        // 12:
+        
+        bubItem("Page", ["To filter events either \n tap the spine or swipe right",2],  .below, mainView, spineBezel, [panelView], [.highlight])
 
     }
 }

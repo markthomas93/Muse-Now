@@ -1,92 +1,15 @@
- //
 //  BubbleBase.swift
 //  MuseNow
 //
 //  Created by warren on 12/17/17.
 //  Copyright © 2017 Muse. All rights reserved.
-//
 
 import Foundation
 import UIKit
 
- extension UIView {
-
-    func addDashedLine(color: UIColor, radius:CGFloat) {
-
-        let path = CGMutablePath()
-        let m = CGFloat(1.5)
-        let w = frame.size.width-2*m
-        let h = frame.size.height-2*m
-        let r = radius
-
-
-        func drawRoundedRect() {
-            // 4 corner control points
-
-            var ul  = CGPoint(x: m,     y: m) // upper left control point
-            var ur  = CGPoint(x: m+w,   y: m) // upper right control point
-            var br  = CGPoint(x: m+w,   y: m+h) // lower right control point
-            var bl  = CGPoint(x: m,     y: m+h) // lower left control point
-
-            // 8 line segment start end
-
-            var uls = CGPoint(x: m,     y: m+r  )  // upper left start
-            var ule = CGPoint(x: m+r,   y: m    )  // upper left end
-
-            var urs = CGPoint(x: m+w-r, y: m    )  // upper right start
-            var ure = CGPoint(x: m+w,   y: m+r  )  // upper right end
-
-            var brs = CGPoint(x: m+w,   y: m+h-r)  // lower right start
-            var bre = CGPoint(x: m+w-r, y: m+h  )  // lower right end
-
-            var bls = CGPoint(x: m+r,   y: m+h  )  // lower left start
-            var ble = CGPoint(x: m,     y: m+h-r)  // lower left end
-
-
-            // shorten commands to q_ quad curve, l_ line, s_ scrunch overlapping points
-            func q_(_ p:CGPoint,_ c:CGPoint) { path.addQuadCurve(to: p, control: c) }
-            func l_(_ p:CGPoint)             { path.addLine(to: p) }
-
-            path.move(to: uls)   // start at up left
-            q_(ule,ul) ; l_(urs) // upper left corner w line
-            q_(ure,ur) ; l_(brs) // upper right corner w line
-            q_(bre,br) ; l_(bls) // below right corner w line
-            q_(ble,bl) ; l_(uls) // below left corner w line
-        }
-
-
-        if radius == frame.size.width/2 || radius == frame.size.height {
-            path.addEllipse(in: self.frame)
-        }
-        else {
-            drawRoundedRect()
-        }
-
-        layer.sublayers?.forEach() { if $0.name == "DashedTopLine" { $0.removeFromSuperlayer() }}
-        backgroundColor = .clear
-
-        let shapeLayer: CAShapeLayer = CAShapeLayer()
-        let frameSize = self.frame.size
-        let shapeRect = CGRect(x: 0, y: 0, width: frameSize.width, height: frameSize.height)
-
-        shapeLayer.name = "DashedTopLine"
-        shapeLayer.bounds = shapeRect
-        shapeLayer.position = CGPoint(x: frameSize.width / 2, y: frameSize.height / 2)
-        shapeLayer.fillColor = UIColor.clear.cgColor
-        shapeLayer.strokeColor = color.cgColor
-        shapeLayer.lineWidth = 1.5
-        shapeLayer.lineJoin = kCALineJoinRound
-        shapeLayer.lineDashPattern = [1, 2]
-
-        shapeLayer.path = path
-
-        self.layer.addSublayer(shapeLayer)
-    }
- }
-
  class BubbleBase: BubbleDraw {
 
-    var outFrame = CGRect.zero      // popOut frame
+    var fromBezel: UIView!         // optional bezel from which to spring bubble
 
     var contentFrame = CGRect.zero  // frame for content inside bubble
     var contentViews = [UIView]()   // 1 or more views containing content inside bubble
@@ -96,13 +19,9 @@ import UIKit
     let innerH = CGFloat(36)        // inner height / 4 determines cell bezel radius
 
     var bubble: Bubble!
-    var family = [UIView]()         // grand, parent, child views
-    var options = BubbleOptions([])
-
     var gotoNext: (()->())?         // callback after tucking in bubble
     var timer = Timer()             // timer for duration between popOut and tuckIn
-
-    var childBezel: UIView!         // optional bezel from which to spring bubble
+    var cancelling = false
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -111,41 +30,28 @@ import UIKit
         super.init(frame: frame) // calls designated initializer
     }
 
+    deinit {
+        Log(bubble.logString(bubble.logString("💬 base::\(#function)")))
+    }
+
     /**
-     Create a bubble with text with timeout and completion callback
-
-     - Parameter str: text to display inside bubble
-     - Parameter family_: family of view grand, parent, child
-     - Parameter covering_: list of views to cover with darking alpha views
-     - Parameter completion_: completion callback
-
-     - family[0]: grand of parent view. Will bring parent to front.
-     - family[1]: parent of child view. Stays uncovered; others darken.
-     - family[2]: child view to spring bubble from. Will not clip.
-
-     - note: if no family[2], then will create a childBezel
+     Create a bubble with content, timeout, and completion callback
      */
-
-
     func makeBubble(_ bubble_:Bubble) {
 
         bubble = bubble_
-        family = bubble.family
-        options = bubble.options
-
         let size = bubble.size
 
         makeChildBezel()
 
         if !bubble.options.contains(.overlay) {
-            BubbleCovers.shared.makeCovers(bubble)
+            let alpha: CGFloat = bubble.options.contains(.alpha05) ? 0.5 : 0.7
+            BubbleCovers.shared.makeCovers(bubble, alpha)
         }
-        makeBubble(bubble.bubShape, size, family) // create bubbleFrame
+        makeBubble(bubble.bubShape, size, bubble.base, bubble.from) // create bubbleFrame
 
         self.isUserInteractionEnabled = true
-
         alpha = 0
-        childBezel.addSubview(self)
 
         // setup content frame
 
@@ -171,73 +77,64 @@ import UIKit
 
     func makeChildBezel()  {
 
-        if let fromView = family.last {
+        let fromFrame = bubble.from.frame
+        fromBezel = UIView(frame:fromFrame)
+        fromBezel.frame.origin = .zero
+        fromBezel.backgroundColor = .clear
 
-            var bezelFrame = fromView.frame
-            bezelFrame.origin = .zero
+        // make border circular or rounded rectangle?
+        let highlightRadius = bubble.options.contains(.circular)
+            ? min(fromFrame.width,fromFrame.height)/2
+            : radius
 
-            childBezel = UIView(frame:bezelFrame)
-            childBezel.backgroundColor = .clear
-
-            // make border circular or rounded rectangle?
-            let hiRadius = options.contains(.circular)
-                ? min(bezelFrame.width,bezelFrame.height)/2
-                : radius
-
-            // highlight border ?
-            if options.contains(.highlight) {
-                childBezel.addDashedLine(color:.white,radius: hiRadius)
-            }
-            childBezel.isUserInteractionEnabled = false
-            fromView.addSubview(childBezel)
+        // highlight from view?
+        if bubble.options.contains(.highlight) {
+            fromBezel.addDashBorder(color: .white, radius: highlightRadius)
         }
+        fromBezel.isUserInteractionEnabled = false
+        bubble.from.addSubview(fromBezel)
+        fromBezel.addSubview(self)
     }
 
-
-    func goBubble(_ gotoNext_: @escaping (()->())) {
+    func goBubble(_ gotoNext_: @escaping CallVoid) {
 
         gotoNext = gotoNext_
-
         contenti = 0
-        let duration = bubble.items[0].duration
+        cancelling = false
 
-        func poppingOut() {
-            self.popOut() {
-                if self.options.contains(.nowait) {
-                    self.gotoNext?()
-                }
-                self.timer = Timer.scheduledTimer(withTimeInterval: duration, repeats: false, block: {_ in
-                    self.tuckIn(timeout:true)
-                })
+        func popOutContinue() {
+            // continue to next bubble if no wait for first tiem
+            if bubble.options.contains(.nowait) && contenti == 0 {
+                Log(bubble.logString("💬 base::goBubble⟶gotoNext"))
+                gotoNext?()
             }
+            setTimeOut()
         }
 
         // begin -------------------
 
-        // if there is a preRoll, wait until after it is finished
+        // wait for preRoll
         if let callWait = bubble.items[0].callWait {
-            callWait(bubble, poppingOut) // preroll some call first
+            callWait(self, { self.popOut() { popOutContinue() } }) // preroll some call first
         }
         else {
-            poppingOut()
+            popOut() { popOutContinue() }
         }
     }
-
+    
     /**
-     Calculate translation to appear from center of superview
+     Timer for duration of bubble. Maybe be cancelled
      */
-    func getTranslation() -> CGPoint {
-
-        self.superview?.bringSubview(toFront: self)
-        self.superview?.superview?.bringSubview(toFront: self.superview!)
-        self.superview?.superview?.superview?.bringSubview(toFront: self.superview!.superview!)
-
-        let f0 = superview?.center ?? .zero
-        let f9 = self.center
-
-        return CGPoint(x: f0.x-f9.x, y: f0.y-f9.y)
-
+    func setTimeOut() {
+        let duration = bubble.items[contenti].duration
+        timer = Timer.scheduledTimer(timeInterval: duration, target: self, selector: #selector(timedOut), userInfo: nil, repeats: false)
     }
+    @objc func timedOut() {
+        Log(bubble.logString("💬 base::timedOut"))
+        if cancelling { return }
+        self.tuckIn(timeout:true)
+    }
+    
     /**
     prepare next contentView
     */
@@ -256,8 +153,14 @@ import UIKit
     func popOut(_ popDone:@escaping()->()) {
 
         func shrinkTransform() {
+
+            // get translation
+            let f0 = superview?.center ?? .zero
+            let f9 = self.center
+            let t = CGPoint(x: f0.x-f9.x, y: f0.y-f9.y)
+
             let scale = CGFloat(0.01)
-            let t = getTranslation()
+
             alpha = 1.0
             self.transform = CGAffineTransform (
                 a: scale, b: 0.0,
@@ -269,85 +172,103 @@ import UIKit
 
         prepareContentView(0)
 
-        if bubble.options.contains(.overlay) {
+        let options = bubble.options
+        let base    = bubble.base
+        let from    = bubble.from
+
+        if options.contains(.overlay) {
             transform = .identity
             alpha = 0.0
         }
-        else if bubble.options.contains(.above) {
-            family[0].addSubview(family[2])
-            BubbleCovers.shared.covers.insert(family[2])
+        else if from?.superview == nil {
+            BubbleCovers.shared.remove.insert(from!)
+            base?.addSubview(from!)
             shrinkTransform()
         }
-        else if family[1].superview == nil {
-            MainVC.shared?.view.addSubview(family[1])
-            BubbleCovers.shared.covers.insert(family[1])
-            if bubble.options.contains(.fullview) {
-                family[0].addSubview(family[1])
-            }
+        else {
             shrinkTransform()
         }
-        else if !bubble.options.contains(.overlay) {
-            //??// needed for BubMark
-            childBezel.superview?.bringSubview(toFront: childBezel)
-            family.last?.superview?.bringSubview(toFront: family.last!)
-            family[0].bringSubview(toFront: family[1])
-            shrinkTransform()
+
+        // bring views to front
+        superview?.bringSubview(toFront: self)
+        superview?.superview?.bringSubview(toFront: self.superview!)
+        superview?.superview?.superview?.bringSubview(toFront: self.superview!.superview!)
+
+        fromBezel?.superview?.bringSubview(toFront: fromBezel)
+        from?.superview?.bringSubview(toFront: from!)
+        for front in bubble.front {
+            front.superview?.bringSubview(toFront: front)
         }
-        
-        UIView.animate(withDuration: 1.0, delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
-            self.alpha = 1.0
-            self.contentViews[self.contenti].alpha = 1.0
-            self.transform = .identity
-            BubbleCovers.shared.fadeIn(self.bubble)
-        }, completion: { _ in
-            popDone()
-        })
+        animateOut(duration: 1.0, delay: 0.0, finished: popDone)
     }
 
     /**
-     When there are more than one content view, then fade out last and fade in 
+     When there are more than one content view, then fade next in the following sequence:
+        - fadeOutOld
+        - fadeInNew
+        - setTimeOut
      */
     func fadeNext() -> Bool {
 
-        if contenti >= bubble.items.count-1 {
-            return false // run out of content
+        func fadeOutOld() {
+            UIView.animate(withDuration: 1.0, delay: 0.0, options: [.allowUserInteraction], animations: {
+                self.contentViews[self.contenti].alpha = 0.0
+            }, completion: { finished in if finished { fadeInNew() } })
         }
 
-        timer.invalidate()
-        let duration = bubble.items[contenti+1].duration
+        func fadeInNew() {
 
-        func fading() {
+            prepareContentView(contenti+1)
 
             UIView.animate(withDuration: 1.0, delay: 0.0, options: [.allowUserInteraction], animations: {
 
-                self.contentViews[self.contenti].alpha = 0.0
+                self.contentViews[self.contenti].alpha = 1.0
 
-            }, completion: {_ in
-
-                self.prepareContentView(self.contenti+1)
-
-                UIView.animate(withDuration: 1.0, delay: 0.0, options: [.allowUserInteraction], animations: {
-
-                    self.contentViews[self.contenti].alpha = 1.0
-
-                }, completion: {_ in
-                    self.timer = Timer.scheduledTimer(withTimeInterval:duration, repeats: false, block: {_ in
-                        self.tuckIn(timeout:true)
-                    })
-
-                })
-            })
+            }, completion: { finished in if finished { self.setTimeOut() } })
         }
 
         // begin -----------------------
 
+        if contenti >= bubble.items.count-1 {
+            return false // run out of content
+        }
+        timer.invalidate()
+
         if let callWait = bubble.items[contenti+1].callWait {
-            callWait(bubble,fading) // wait for preRoll
+            callWait(self,fadeOutOld) // wait for preRoll
         }
         else {
-            fading() // no need to wait
+            fadeOutOld() // no need to wait
         }
         return true
+    }
+
+    // animations ----------------------------
+
+    func animateOut(duration: TimeInterval, delay: TimeInterval, finished: @escaping CallVoid) {
+
+        UIView.animate(withDuration: 1.0, delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0, options: [.curveEaseOut], animations: {
+            self.alpha = 1.0
+            self.contentViews[self.contenti].alpha = 1.0
+            self.transform = .identity
+            BubbleCovers.shared.fadeIn(self.bubble)
+        }, completion: { completed in
+            if completed { finished() }
+        })
+    }
+
+    func animateIn(duration: TimeInterval, delay:TimeInterval,finished:@escaping CallVoid) {
+
+        UIView.animate(withDuration:duration, delay:delay, options: [], animations: {
+            self.alpha = 0
+            self.fromBezel?.alpha = 0
+            self.contentViews[self.contenti].alpha = 0.0
+
+        }, completion: { _ in
+            self.fromBezel?.removeFromSuperview()
+            BubbleCovers.shared.maybeRemoveFromSuper(self.bubble)
+            finished()
+        })
     }
 
     /**
@@ -357,57 +278,34 @@ import UIKit
      */
     func tuckIn(timeout:Bool) {
 
-        func nextHasOverlay() -> Bool {
-            if bubble.nextBub == nil {
-                return false
-            }
-            if bubble.nextBub.options.contains(.overlay) {
-                return true
-            }
-            return false
-        }
-
+         // .nowait bubbles call gotoNext immediately after popping out
         func maybeGotoNext() {
-            // nowait bubbles already called done
-            if !self.options.contains(.nowait) {
-                self.gotoNext?()
+
+            if !bubble.options.contains(.nowait) {
+                Log(bubble.logString("💬 base::maybeGotoNext⟶gotoNext"))
+                gotoNext?()
             }
         }
-
         // begin ------------------------------
 
-        if fadeNext() {
-            return
-        }
+        if fadeNext() { return } // more content so skip tuckIN
 
-        if nextHasOverlay() {
-
+        // overlay waits for new bubble to appear on top
+        if (bubble.nextBub?.options.contains(.overlay) ?? false) {
             maybeGotoNext()
-            UIView.animate(withDuration: 1.0, delay: 1.0, options: [], animations: {
-                self.alpha = 0
-                self.contentViews[self.contenti].alpha = 0.0
-            }, completion: {_ in
-                self.childBezel?.removeFromSuperview()
-            })
+            animateIn(duration: 1.0, delay: 1.0, finished:{})
         }
         else {
-            UIView.animate(withDuration: 1.0, animations: {
-                self.alpha = 0.0
-                self.childBezel?.alpha = 0
-                BubbleCovers.shared.fadeOut(self.bubble)
-            }, completion: { _ in
-                self.childBezel?.removeFromSuperview()
-                BubbleCovers.shared.removeFromSuper(self.bubble)
+            animateIn(duration: 1.0, delay: 0, finished: {
                 maybeGotoNext()
             })
         }
     }
+    func cancelBubble() {
 
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) { //print(#function)
         timer.invalidate()
-        self.tuckIn(timeout:false)
-        //super.touchesBegan(touches, with: event)
+        cancelling = true
+        animateIn(duration: 0.5, delay: 0, finished:{})
     }
-
 }
 

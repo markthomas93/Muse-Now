@@ -61,6 +61,7 @@ class TreeTableVC: UITableViewController {
 
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide),
                                                name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+
         // switch to emoji keyboard should trigger UIKeyboardWillChangeFrame, but fails in iOS 11
         //
         //        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow),
@@ -178,10 +179,15 @@ class TreeTableVC: UITableViewController {
         // hear | mute
 
         let hearSet = Hear.shared.hearSet.rawValue
-        let hear = TreeNode(.titleMark, root, TreeSetting(set:1,member:1,"hear | mute"), self)
+        let hear = TreeNode(.title, root, TreeSetting(set:1,member:1,"hear | mute"), self)
         let _   = TreeActNode(hear,"speaker", hearSet, HearSet.speaker.rawValue, .hearSpeaker , .muteSpeaker, self)
         let _   = TreeActNode(hear,"earbuds", hearSet, HearSet.earbuds.rawValue, .hearEarbuds , .muteEarbuds, self)
 
+        // about
+        let tourSet = BubbleTour.shared.tourSet
+        let about = TreeNode(.title, root, TreeSetting(set:1,member:1,"about"), self)
+        let _     = TreeActNode(about,"tour", tourSet, TourSet.playTour.rawValue, .playTour , .stopTour, self)
+        let _     = TreeNode(.title, about, TreeSetting(set:1,member:1,"about"), self)
 
         // setup table cells from current state of hierary
         root!.refreshNodeCells()
