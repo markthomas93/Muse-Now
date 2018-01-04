@@ -45,39 +45,17 @@ class EventCell: MuCell {
     }
 
     override func setHighlight(_ highlighting_:Highlighting, animated:Bool = true) {
-
-        if highlighting != highlighting_ {
-            
-            var index = 0
-            switch highlighting_ {
-            case .high,.forceHigh: highlighting = .high ; index = 1 ; isSelected = true
-            default:               highlighting = .low  ; index = 0 ; isSelected = false
-            }
-            let borders     = [cellColor.cgColor, UIColor.white.cgColor]
-            let backgrounds = [cellColor.cgColor, UIColor.black.cgColor]
-            
-            if animated {
-                animateViews([bezel,mark], borders, backgrounds, index, duration: 0.25)
-            }
-            else {
-                bezel.layer.borderColor     = borders[index]
-                mark.layer.borderColor      = borders[index]
-                bezel.layer.backgroundColor = backgrounds[index]
-                mark.layer.backgroundColor  = backgrounds[index]
-            }
-        }
-        else {
-            switch highlighting {
-            case .high,.forceHigh: isSelected = true       
-            default:               isSelected = false
-            }
-        }
-    }
-    
+        setHighlights(highlighting_,
+                      views:        [bezel,mark],
+                      borders:      [cellColor,.white],
+                      backgrounds:  [cellColor,.black],
+                      alpha:        1.0,
+                      animated:     animated)
+     }
     
     override func touchCell(_ location: CGPoint, isExpandable:Bool = true) {
 
-        let toggleX = frame.size.width -  frame.size.height*1.618
+        let toggleX = frame.size.width - frame.size.height*1.618
         if location.x > toggleX {
 
             event.mark = !(event.mark)

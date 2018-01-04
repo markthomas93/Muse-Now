@@ -41,9 +41,9 @@ extension TreeTableVC {
             }
         }
         shownRowsHeight += 44 //?? Kludge fixup after expanding and contracting -- scrolls beyond tableView.bounds
-        //?? let middle = tableView.bounds.height / 2
-        //headerY = max(middle,tableView.bounds.height - shownRowsHeight)
-        headerY = max(0,tableView.bounds.height - shownRowsHeight)
+        let middle = tableView.bounds.height / 2
+        headerY = max(middle,tableView.bounds.height - shownRowsHeight)
+        //headerY = max(0,tableView.bounds.height - shownRowsHeight)
         //Log("⿳ heightForHeaderInSection: \(headerY)")
         return headerY
     }

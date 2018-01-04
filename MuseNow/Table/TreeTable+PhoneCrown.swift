@@ -10,7 +10,7 @@ extension TreeTableVC: PhoneCrownDelegate {
             let scrollY = self.tableView.contentOffset.y
             let cellZ = cellY+cellH
             let tablZ = tablY+tablH
-            Log (String(format:"▤ NearestTouch H:%i S:%i C:%i_%i T:%i_%i %i⟶",
+            Log (String(format:"▤ NearestTouch H:%i S:%i C:%i_%i T:%i_%i %i ➛ ",
                              Int(headerY),
                              Int(scrollY),
                              Int(cellY), Int(cellZ),
@@ -53,7 +53,7 @@ extension TreeTableVC: PhoneCrownDelegate {
             let cellZ = cellY+cell.height
             let deltaY = newY - cellY
             let scrollY = tableView.contentOffset.y
-            let str = (String(format:"▤ NearestTouch S:%i C:%i_%i L:%i_%i T:%i_%i %i⟶%i",
+            let str = (String(format:"▤ NearestTouch S:%i C:%i_%i L:%i_%i T:%i_%i %i ➛ %i",
                               Int(scrollY),
                               Int(cellY), Int(cellZ),
                               Int(lastY), Int(lastZ),

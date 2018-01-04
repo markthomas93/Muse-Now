@@ -71,7 +71,7 @@ extension Dots {
         isClockwise = delta > 0
 
         func logCrown(_ optional:String = "" ) {
-            Log("⊛ crownNextEvent(\(delta),\(inFuture ? "futr" : "past")) dot Prev⟶Now: \(dotPrev) ⟶ \(dotNow) \(optional)")
+            Log("⊛ crownNextEvent(\(delta),\(inFuture ? "futr" : "past")) dot Prev ➛ Now: \(dotPrev)  ➛  \(dotNow) \(optional)")
         }
         dotPrev = dotNow
 

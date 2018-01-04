@@ -94,9 +94,9 @@
 
         var strActs = [StrAct]()
         //strActs.append(saySet.contains(.speech) ? StrAct("skip speech"  , .skipSpeech) : StrAct("say speech", .saySpeech))
-        strActs.append(saySet.contains(.memo)   ? StrAct("skip memos"   , .skipMemo)   : StrAct("say memos",  .sayMemo))
-        strActs.append(saySet.contains(.event)  ? StrAct("skip events"  , .skipEvent)  : StrAct("say events", .sayEvent))
-        strActs.append(saySet.contains(.time)   ? StrAct("skip times"   , .skipTime)   : StrAct("say times",   .sayTime))
+        strActs.append(saySet.contains(.memo)   ? StrAct("skip memos"  , .skipMemo)   : StrAct("say memos",  .sayMemo))
+        strActs.append(saySet.contains(.event)  ? StrAct("skip events" , .skipEvent)  : StrAct("say events", .sayEvent))
+        strActs.append(saySet.contains(.time)   ? StrAct("skip times"  , .skipTime)   : StrAct("say times",  .sayTime))
         return strActs
     }
 
@@ -168,11 +168,11 @@
      */
     func updateDialog(_ event: MuEvent!,_ phrase:SayPhrase, spoken:String, title:String, via:String) -> Void {
 
-/**
-  - note: delay time > 1 sec is useful for user spinning dial,
+        /**
+         - note: delay time > 1 sec is useful for user spinning dial,
          for .phraseDotTime and .phraseEventTime
          but adds confusion for scanning where a pending cache may use delay times to
-  */
+         */
         func newItem(_ delay: TimeInterval,_ decay: TimeInterval,_ clear:[SayPhrase], immediate:Bool = false) {
             if immediate                { actions.doSetTitle(title) }
             if phrase == .phraseBlank   { clearTransientPhrases() }

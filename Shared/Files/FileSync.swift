@@ -21,7 +21,7 @@ class FileSync: NSObject {
 
         let deltaTime = fileTime - memoryTime
         if deltaTime > 0 {
-            Log ("⧉ saveData \(fileName) \(memoryTime)⟶\(fileTime) 𝚫\(deltaTime)")
+            Log ("⧉ saveData \(fileName) \(memoryTime) ➛ \(fileTime) 𝚫\(deltaTime)")
             do {
                 let url = FileManager.documentUrlFile(self.fileName)
                 try data.write(to:url)
@@ -49,7 +49,7 @@ class FileSync: NSObject {
     func archiveArray(_ root: [Any], _ updateTime:TimeInterval) -> Bool {
 
         let deltaTime = updateTime - memoryTime
-        //Log ("⧉ archive:\(fileName) count:\(root.count) memory⟶update time: \(memoryTime)⟶\(updateTime) 𝚫\(deltaTime)")
+        //Log ("⧉ archive:\(fileName) count:\(root.count) memory ➛ update time: \(memoryTime) ➛ \(updateTime) 𝚫\(deltaTime)")
         if deltaTime > 0 {
             let data = NSKeyedArchiver.archivedData(withRootObject:root)
             return saveData(data,updateTime)
@@ -63,7 +63,7 @@ class FileSync: NSObject {
     func archiveDict(_ root: [String:Any], _ updateTime:TimeInterval) -> Bool {
 
         let deltaTime = updateTime - memoryTime
-        //Log ("⧉ archiveDict:\(fileName) count:\(root.count) memory⟶update time: \(memoryTime)⟶\(updateTime)  𝚫\(deltaTime)")
+        //Log ("⧉ archiveDict:\(fileName) count:\(root.count) memory ➛ update time: \(memoryTime) ➛ \(updateTime)  𝚫\(deltaTime)")
         if deltaTime > 0 {
             let data = NSKeyedArchiver.archivedData(withRootObject:root)
             return saveData(data,updateTime)

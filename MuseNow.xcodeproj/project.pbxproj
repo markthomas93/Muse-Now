@@ -171,13 +171,18 @@
 		800C51B71FC2213F00904121 /* TreeTimeTitleDaysCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800C51B61FC2213E00904121 /* TreeTimeTitleDaysCell.swift */; };
 		800C51B91FC221EF00904121 /* TreeTitleMarkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800C51B81FC221EF00904121 /* TreeTitleMarkCell.swift */; };
 		800D49381FECD9300075AB1A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 800D49361FECD9300075AB1A /* LaunchScreen.storyboard */; };
-		800D493A1FECE5FD0075AB1A /* icon-Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 800D49391FECE5FD0075AB1A /* icon-Logo.png */; };
 		8018E1A41FC36F8E00F4C0AC /* TreeColorTitleMarkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8018E1A31FC36F8E00F4C0AC /* TreeColorTitleMarkCell.swift */; };
 		8018E1A61FC394FC00F4C0AC /* TreeEditTimeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8018E1A51FC394FB00F4C0AC /* TreeEditTimeCell.swift */; };
+		801A78881FFD3CBE00A11845 /* TouchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8025E37A1FFC0B95004B81F4 /* TouchScreen.swift */; };
 		80203C171FD47DA500CA4D38 /* TreeTableVC+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80203C161FD47DA500CA4D38 /* TreeTableVC+Keyboard.swift */; };
 		80203C1B1FD5A5D400CA4D38 /* TreeTable+PhoneCrown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80203C1A1FD5A5D400CA4D38 /* TreeTable+PhoneCrown.swift */; };
 		80203C1D1FD5B51A00CA4D38 /* EventRowItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80203C1C1FD5B51A00CA4D38 /* EventRowItem.swift */; };
 		80203C1F1FD7854500CA4D38 /* TreeEditTimeCell+user.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80203C1E1FD7854500CA4D38 /* TreeEditTimeCell+user.swift */; };
+		8025E3791FFBF1F3004B81F4 /* TreeNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8025E3781FFBF1F3004B81F4 /* TreeNodes.swift */; };
+		8025E3801FFC0C04004B81F4 /* TouchForce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8025E37D1FFC0C04004B81F4 /* TouchForce.swift */; };
+		8025E3811FFC0C04004B81F4 /* TouchDialForce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8025E37E1FFC0C04004B81F4 /* TouchDialForce.swift */; };
+		8025E3821FFC0C04004B81F4 /* UITouch+Force.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8025E37F1FFC0C04004B81F4 /* UITouch+Force.swift */; };
+		8025E3841FFC0C49004B81F4 /* ColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8025E3831FFC0C49004B81F4 /* ColorCell.swift */; };
 		803C5B231FBF82E000BA9C6C /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076435F1FACDBE6001733C6 /* Setting.swift */; };
 		803C5B241FBF9A2F00BA9C6C /* TreeTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803C5B211FBF622400BA9C6C /* TreeTableVC.swift */; };
 		803C5F5E1FA3DFBE002A1C11 /* MuseNow WatchKit App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 803C5F5D1FA3DFBE002A1C11 /* MuseNow WatchKit App.app */; };
@@ -186,14 +191,10 @@
 		803C5F6D1FA3DFBE002A1C11 /* MuseNow WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 803C5F6C1FA3DFBE002A1C11 /* MuseNow WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		803C5F7A1FA3DFBE002A1C11 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 803C5F791FA3DFBE002A1C11 /* Assets.xcassets */; };
 		804D5A011FA3FC8B0025B724 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D59F71FA3FC8B0025B724 /* AppDelegate.swift */; };
-		804D5A021FA3FC8B0025B724 /* ColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D59F81FA3FC8B0025B724 /* ColorCell.swift */; };
 		804D5A031FA3FC8B0025B724 /* Fader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D59F91FA3FC8B0025B724 /* Fader.swift */; };
 		804D5A051FA3FC8B0025B724 /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D59FB1FA3FC8B0025B724 /* MainVC.swift */; };
 		804D5A061FA3FC8B0025B724 /* PagesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D59FC1FA3FC8B0025B724 /* PagesVC.swift */; };
 		804D5A071FA3FC8B0025B724 /* PhoneCrown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D59FD1FA3FC8B0025B724 /* PhoneCrown.swift */; };
-		804D5A081FA3FC8B0025B724 /* TouchDialForce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D59FE1FA3FC8B0025B724 /* TouchDialForce.swift */; };
-		804D5A091FA3FC8B0025B724 /* TouchForce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D59FF1FA3FC8B0025B724 /* TouchForce.swift */; };
-		804D5A0A1FA3FC8B0025B724 /* UITouch+Force.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A001FA3FC8B0025B724 /* UITouch+Force.swift */; };
 		804D5A211FA3FCAA0025B724 /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A101FA3FCAA0025B724 /* EventCell.swift */; };
 		804D5A221FA3FCAA0025B724 /* EventTable+EditRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A111FA3FCAA0025B724 /* EventTable+EditRow.swift */; };
 		804D5A231FA3FCAA0025B724 /* EventTable+EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A121FA3FCAA0025B724 /* EventTable+EventCell.swift */; };
@@ -238,6 +239,7 @@
 		8076B33E1FE6D151001EDD30 /* BubbleBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076B33D1FE6D151001EDD30 /* BubbleBase.swift */; };
 		8085C6921FE45F08005AD5A8 /* TreeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8085C6911FE45F08005AD5A8 /* TreeInfo.swift */; };
 		80920B451FA4F6E4004E4D8B /* ComplicationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80920B441FA4F6E4004E4D8B /* ComplicationProvider.swift */; };
+		80924B181FFAA26300D738CC /* icon-Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 80924B171FFAA26300D738CC /* icon-Logo.png */; };
 		809E55631FB4C6A700974CB7 /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809E55621FB4C6A700974CB7 /* Audio.swift */; };
 		809E55641FB4C6A700974CB7 /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809E55621FB4C6A700974CB7 /* Audio.swift */; };
 		809E55671FB4C6EA00974CB7 /* Show.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809E55661FB4C6EA00974CB7 /* Show.swift */; };
@@ -399,7 +401,6 @@
 		800C51B61FC2213E00904121 /* TreeTimeTitleDaysCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeTimeTitleDaysCell.swift; sourceTree = "<group>"; };
 		800C51B81FC221EF00904121 /* TreeTitleMarkCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeTitleMarkCell.swift; sourceTree = "<group>"; };
 		800D49371FECD9300075AB1A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = MuseNow/Base.lproj/LaunchScreen.storyboard; sourceTree = SOURCE_ROOT; };
-		800D49391FECE5FD0075AB1A /* icon-Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-Logo.png"; path = "../../../../Desktop/icon-Logo.png"; sourceTree = "<group>"; };
 		8018E1A31FC36F8E00F4C0AC /* TreeColorTitleMarkCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeColorTitleMarkCell.swift; sourceTree = "<group>"; };
 		8018E1A51FC394FB00F4C0AC /* TreeEditTimeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeEditTimeCell.swift; sourceTree = "<group>"; };
 		80203BF91FCDC63900CA4D38 /* Repetitions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repetitions.swift; sourceTree = "<group>"; };
@@ -430,6 +431,12 @@
 		80203C1A1FD5A5D400CA4D38 /* TreeTable+PhoneCrown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TreeTable+PhoneCrown.swift"; sourceTree = "<group>"; };
 		80203C1C1FD5B51A00CA4D38 /* EventRowItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventRowItem.swift; sourceTree = "<group>"; };
 		80203C1E1FD7854500CA4D38 /* TreeEditTimeCell+user.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TreeEditTimeCell+user.swift"; sourceTree = "<group>"; };
+		8025E3781FFBF1F3004B81F4 /* TreeNodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeNodes.swift; sourceTree = "<group>"; };
+		8025E37A1FFC0B95004B81F4 /* TouchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchScreen.swift; sourceTree = "<group>"; };
+		8025E37D1FFC0C04004B81F4 /* TouchForce.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchForce.swift; sourceTree = "<group>"; };
+		8025E37E1FFC0C04004B81F4 /* TouchDialForce.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchDialForce.swift; sourceTree = "<group>"; };
+		8025E37F1FFC0C04004B81F4 /* UITouch+Force.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITouch+Force.swift"; sourceTree = "<group>"; };
+		8025E3831FFC0C49004B81F4 /* ColorCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorCell.swift; sourceTree = "<group>"; };
 		803C5B211FBF622400BA9C6C /* TreeTableVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeTableVC.swift; sourceTree = "<group>"; };
 		803C5F4B1FA3DFBD002A1C11 /* MuseNow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MuseNow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		803C5F5D1FA3DFBE002A1C11 /* MuseNow WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MuseNow WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -440,15 +447,11 @@
 		803C5F791FA3DFBE002A1C11 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		803C5F7B1FA3DFBE002A1C11 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		804D59F71FA3FC8B0025B724 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		804D59F81FA3FC8B0025B724 /* ColorCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorCell.swift; sourceTree = "<group>"; };
 		804D59F91FA3FC8B0025B724 /* Fader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fader.swift; sourceTree = "<group>"; };
 		804D59FA1FA3FC8B0025B724 /* Main+Text.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Main+Text.swift"; sourceTree = "<group>"; };
 		804D59FB1FA3FC8B0025B724 /* MainVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainVC.swift; sourceTree = "<group>"; };
 		804D59FC1FA3FC8B0025B724 /* PagesVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PagesVC.swift; sourceTree = "<group>"; };
 		804D59FD1FA3FC8B0025B724 /* PhoneCrown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneCrown.swift; sourceTree = "<group>"; };
-		804D59FE1FA3FC8B0025B724 /* TouchDialForce.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchDialForce.swift; sourceTree = "<group>"; };
-		804D59FF1FA3FC8B0025B724 /* TouchForce.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchForce.swift; sourceTree = "<group>"; };
-		804D5A001FA3FC8B0025B724 /* UITouch+Force.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITouch+Force.swift"; sourceTree = "<group>"; };
 		804D5A0C1FA3FCAA0025B724 /* CalCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalCell.swift; sourceTree = "<group>"; };
 		804D5A101FA3FCAA0025B724 /* EventCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventCell.swift; sourceTree = "<group>"; };
 		804D5A111FA3FCAA0025B724 /* EventTable+EditRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EventTable+EditRow.swift"; sourceTree = "<group>"; };
@@ -494,6 +497,7 @@
 		8076B33D1FE6D151001EDD30 /* BubbleBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleBase.swift; sourceTree = "<group>"; };
 		8085C6911FE45F08005AD5A8 /* TreeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeInfo.swift; sourceTree = "<group>"; };
 		80920B441FA4F6E4004E4D8B /* ComplicationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationProvider.swift; sourceTree = "<group>"; };
+		80924B171FFAA26300D738CC /* icon-Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-Logo.png"; path = "MuseNow/Video/icon-Logo.png"; sourceTree = SOURCE_ROOT; };
 		809E55621FB4C6A700974CB7 /* Audio.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Audio.swift; sourceTree = "<group>"; };
 		809E55661FB4C6EA00974CB7 /* Show.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Show.swift; sourceTree = "<group>"; };
 		809FA9E81FEC1A6D00AC45B6 /* Bubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bubble.swift; sourceTree = "<group>"; };
@@ -841,6 +845,17 @@
 			path = Par;
 			sourceTree = "<group>";
 		};
+		8025E37C1FFC0BBD004B81F4 /* Touch */ = {
+			isa = PBXGroup;
+			children = (
+				8025E37A1FFC0B95004B81F4 /* TouchScreen.swift */,
+				8025E37E1FFC0C04004B81F4 /* TouchDialForce.swift */,
+				8025E37D1FFC0C04004B81F4 /* TouchForce.swift */,
+				8025E37F1FFC0C04004B81F4 /* UITouch+Force.swift */,
+			);
+			path = Touch;
+			sourceTree = "<group>";
+		};
 		803C5F421FA3DFBD002A1C11 = {
 			isa = PBXGroup;
 			children = (
@@ -868,6 +883,7 @@
 		803C5F4D1FA3DFBD002A1C11 /* MuseNow */ = {
 			isa = PBXGroup;
 			children = (
+				8025E37C1FFC0BBD004B81F4 /* Touch */,
 				8076B3321FE6C64C001EDD30 /* Info */,
 				804D59F61FA3FC8B0025B724 /* Classes */,
 				804D5A0B1FA3FCAA0025B724 /* Table */,
@@ -910,13 +926,9 @@
 				800D49361FECD9300075AB1A /* LaunchScreen.storyboard */,
 				804D59FC1FA3FC8B0025B724 /* PagesVC.swift */,
 				806276791FED6AAB00195A10 /* OnboardVC.swift */,
-				804D59F81FA3FC8B0025B724 /* ColorCell.swift */,
 				804D59F91FA3FC8B0025B724 /* Fader.swift */,
 				804D59FA1FA3FC8B0025B724 /* Main+Text.swift */,
 				804D59FD1FA3FC8B0025B724 /* PhoneCrown.swift */,
-				804D59FE1FA3FC8B0025B724 /* TouchDialForce.swift */,
-				804D59FF1FA3FC8B0025B724 /* TouchForce.swift */,
-				804D5A001FA3FC8B0025B724 /* UITouch+Force.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -929,6 +941,7 @@
 				80203C161FD47DA500CA4D38 /* TreeTableVC+Keyboard.swift */,
 				80D483EB1FCB496800D28095 /* TreeTableVC+override.swift */,
 				80A3E36D1FC0D51500195BD3 /* TreeNode.swift */,
+				8025E3781FFBF1F3004B81F4 /* TreeNodes.swift */,
 				8085C6911FE45F08005AD5A8 /* TreeInfo.swift */,
 				80C78C841FE44BE2002E3A95 /* TreeNode+Subclass.swift */,
 				806ACFE81FC624CB00220EB6 /* TreeCell.swift */,
@@ -948,6 +961,7 @@
 				806ACFD81FC5E39900220EB6 /* TreeEditTitleCell+delegate.swift */,
 				806ACFE01FC60D7000220EB6 /* TreeEditWeekdCell.swift */,
 				804D5A0C1FA3FCAA0025B724 /* CalCell.swift */,
+				8025E3831FFC0C49004B81F4 /* ColorCell.swift */,
 				804D5A101FA3FCAA0025B724 /* EventCell.swift */,
 				80203C1C1FD5B51A00CA4D38 /* EventRowItem.swift */,
 				804D5A111FA3FCAA0025B724 /* EventTable+EditRow.swift */,
@@ -1008,7 +1022,7 @@
 				805E965F1FEADD940098C948 /* Bubble_iPad_320x320.m4v */,
 				805E96601FEADD940098C948 /* Bubble_iPhone_320x320.m4v */,
 				805E96611FEADD940098C948 /* Bubble_Watch_320x320.m4v */,
-				800D49391FECE5FD0075AB1A /* icon-Logo.png */,
+				80924B171FFAA26300D738CC /* icon-Logo.png */,
 			);
 			path = Video;
 			sourceTree = "<group>";
@@ -1148,13 +1162,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				8076435A1FACBEA8001733C6 /* Muse.par in Resources */,
+				80924B181FFAA26300D738CC /* icon-Logo.png in Resources */,
 				8004F7BB1FA3EE2400F7ED94 /* Blank.fsh in Resources */,
 				80F26DBF1FBA110300C26973 /* Routine.par in Resources */,
 				8004F6191FA3EB0100F7ED94 /* Main.storyboard in Resources */,
 				805E96621FEADD940098C948 /* Bubble_iPad_320x320.m4v in Resources */,
 				805E96631FEADD940098C948 /* Bubble_iPhone_320x320.m4v in Resources */,
 				8004F6171FA3EB0100F7ED94 /* Assets.xcassets in Resources */,
-				800D493A1FECE5FD0075AB1A /* icon-Logo.png in Resources */,
 				800C51B41FC2053F00904121 /* Main.xcassets in Resources */,
 				8004F7BF1FA3EE2400F7ED94 /* Dial.fsh in Resources */,
 				800D49381FECD9300075AB1A /* LaunchScreen.storyboard in Resources */,
@@ -1196,6 +1210,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8004F7001FA3ED5E00F7ED94 /* Par.swift in Sources */,
+				8025E3821FFC0C04004B81F4 /* UITouch+Force.swift in Sources */,
 				8004F7871FA3EE2400F7ED94 /* Array+.swift in Sources */,
 				8004F7C31FA3EE2400F7ED94 /* Polar.swift in Sources */,
 				809FA9E91FEC1A6D00AC45B6 /* Bubble.swift in Sources */,
@@ -1205,6 +1220,7 @@
 				8004F7B51FA3EE2400F7ED94 /* Say.swift in Sources */,
 				8004F7C91FA3EE2400F7ED94 /* Texture.swift in Sources */,
 				8004F6F41FA3ED5E00F7ED94 /* Node+find.swift in Sources */,
+				8025E3841FFC0C49004B81F4 /* ColorCell.swift in Sources */,
 				80203C171FD47DA500CA4D38 /* TreeTableVC+Keyboard.swift in Sources */,
 				8004F6E41FA3ED5E00F7ED94 /* Visitor.swift in Sources */,
 				806ACFD71FC5E1D500220EB6 /* TreeEditTimeCell+delegate.swift in Sources */,
@@ -1237,9 +1253,9 @@
 				806ACFE61FC60EA900220EB6 /* TreeEditCell.swift in Sources */,
 				8004F79F1FA3EE2400F7ED94 /* FileSync.swift in Sources */,
 				807643581FACBE55001733C6 /* MuseFound.swift in Sources */,
-				804D5A091FA3FC8B0025B724 /* TouchForce.swift in Sources */,
 				80D483EC1FCB496800D28095 /* TreeTableVC+override.swift in Sources */,
 				8004F7B91FA3EE2400F7ED94 /* SayItem.swift in Sources */,
+				801A78881FFD3CBE00A11845 /* TouchScreen.swift in Sources */,
 				8018E1A61FC394FC00F4C0AC /* TreeEditTimeCell.swift in Sources */,
 				80C78C821FE37708002E3A95 /* FileSync+Session.swift in Sources */,
 				80DF78481FF828830089475E /* BubbleItem.swift in Sources */,
@@ -1248,13 +1264,13 @@
 				80D483EA1FCB3BBD00D28095 /* TreeColorTitleCell.swift in Sources */,
 				8004F7A31FA3EE2400F7ED94 /* Marks.swift in Sources */,
 				8004F7591FA3EE2400F7ED94 /* Actions.swift in Sources */,
-				804D5A0A1FA3FC8B0025B724 /* UITouch+Force.swift in Sources */,
 				80F26DBC1FBA07E100C26973 /* Routine.swift in Sources */,
 				8004F7891FA3EE2400F7ED94 /* AVAudio+.swift in Sources */,
 				806ACFDF1FC60C1C00220EB6 /* TreeEditColorCell.swift in Sources */,
 				8062767A1FED6AAB00195A10 /* OnboardVC.swift in Sources */,
 				809E55631FB4C6A700974CB7 /* Audio.swift in Sources */,
 				8004F77B1FA3EE2400F7ED94 /* MuDate.swift in Sources */,
+				8025E3801FFC0C04004B81F4 /* TouchForce.swift in Sources */,
 				805357B51FDB3798002ED302 /* TreeInfoApproveCell.swift in Sources */,
 				8004F7971FA3EE2400F7ED94 /* UIView+extension.swift in Sources */,
 				800C51B71FC2213F00904121 /* TreeTimeTitleDaysCell.swift in Sources */,
@@ -1283,7 +1299,6 @@
 				8004F6FA1FA3ED5E00F7ED94 /* NodeAny.swift in Sources */,
 				8004F7651FA3EE2400F7ED94 /* Active.swift in Sources */,
 				8004F7631FA3EE2400F7ED94 /* TouchMove.swift in Sources */,
-				804D5A021FA3FC8B0025B724 /* ColorCell.swift in Sources */,
 				8076435E1FACDB63001733C6 /* TreeTitleFaderCell.swift in Sources */,
 				806ACFD91FC5E39A00220EB6 /* TreeEditTitleCell+delegate.swift in Sources */,
 				8004F75F1FA3EE2400F7ED94 /* Taps.swift in Sources */,
@@ -1303,6 +1318,7 @@
 				804D5A281FA3FCAA0025B724 /* EventTable+TimeCell.swift in Sources */,
 				806ACFDB1FC5FC9300220EB6 /* TreeEditTitleCell.swift in Sources */,
 				8004F7931FA3EE2400F7ED94 /* String+extension.swift in Sources */,
+				8025E3811FFC0C04004B81F4 /* TouchDialForce.swift in Sources */,
 				8004F7B71FA3EE2400F7ED94 /* SayCache.swift in Sources */,
 				8076B3371FE6C69A001EDD30 /* BubbleDraw.swift in Sources */,
 				804D5A2C1FA3FCAA0025B724 /* EventTimeCell.swift in Sources */,
@@ -1310,6 +1326,7 @@
 				8004F7061FA3ED5E00F7ED94 /* ParStr+Compare.swift in Sources */,
 				8004F78D1FA3EE2400F7ED94 /* Dictionary+FileManager.swift in Sources */,
 				8004F7991FA3EE2400F7ED94 /* Cal.swift in Sources */,
+				8025E3791FFBF1F3004B81F4 /* TreeNodes.swift in Sources */,
 				8004F7911FA3EE2400F7ED94 /* Globals.swift in Sources */,
 				8004F7671FA3EE2400F7ED94 /* Anim+Action.swift in Sources */,
 				8004F7A51FA3EE2400F7ED94 /* Memos.swift in Sources */,
@@ -1326,7 +1343,6 @@
 				8004F6DE1FA3ED5E00F7ED94 /* Repetitions.swift in Sources */,
 				804D5A291FA3FCAA0025B724 /* EventTable+Update.swift in Sources */,
 				8004F79D1FA3EE2400F7ED94 /* FileMsg.swift in Sources */,
-				804D5A081FA3FC8B0025B724 /* TouchDialForce.swift in Sources */,
 				804D5A221FA3FCAA0025B724 /* EventTable+EditRow.swift in Sources */,
 				800C51B91FC221EF00904121 /* TreeTitleMarkCell.swift in Sources */,
 				8004F6FC1FA3ED5E00F7ED94 /* NodeAnys.swift in Sources */,

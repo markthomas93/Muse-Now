@@ -20,7 +20,7 @@ public enum DoAction : Int { case
     muteEarbuds, muteSpeaker,
 
     // tour
-    playTour,   stopTour,
+    tourMain, tourMenu, tourOnboard, stopTour,
 
     // show
     showCalendar, hideCalendar,
@@ -251,7 +251,7 @@ class Actions {
 
             Show.shared.doShowAction(act, isSender: true)
 
-        case .playTour, .stopTour:
+        case .tourMain, .tourMenu, .tourOnboard, .stopTour:
             #if os(iOS)
                 BubbleTour.shared.doTourAction(act)
             #endif

@@ -20,4 +20,5 @@ struct BubbleOptions: OptionSet {
     static let left      = BubbleOptions(rawValue: 1 << 5) // left align text inside of bubble
     static let right     = BubbleOptions(rawValue: 1 << 6) // right align text inside of bubble
     static let alpha05   = BubbleOptions(rawValue: 1 << 7) // cover alpha 0.5
+    static let interact  = BubbleOptions(rawValue: 1 << 8) // allow user to pass through touches to UI
 }

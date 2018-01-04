@@ -64,7 +64,7 @@ class Hear {
         hearSet = hearSet_
         let oldRoute = route
         updateRoute()
-        Log("🎧 \(#function) \(oldRoute) ⟶ \(route)")
+        Log("🎧 \(#function) \(oldRoute)  ➛  \(route)")
     }
 
   

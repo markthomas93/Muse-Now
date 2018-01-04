@@ -29,9 +29,9 @@ extension Say {
         
     /**
      Announce a dot event based on type, via:
-     - Scene.scanning ⟶ Dots+Say.say[First|Next]Dot
-     - Scene.touchDialPan ⟶ Dots+Action.updateViaPan
-     - Scene+action.crownAction ⟶ Dots+Action.crownNextEventOrHour
+     - Scene.scanning  ➛  Dots+Say.say[First|Next]Dot
+     - Scene.touchDialPan  ➛  Dots+Action.updateViaPan
+     - Scene+action.crownAction  ➛  Dots+Action.crownNextEventOrHour
      */
     func sayDotEvent(_ event: MuEvent!, isTouching:Bool, via:String) {
         Log("🗣 sayDotEvent(via:\(via)) .\(event.type)")
@@ -95,20 +95,17 @@ extension Say {
      - via: Scene.update.scanning
      */
     func sayElapseTime(_ event:MuEvent!) {
-
-        if canSay(.event) {
-
-            updateDialog(event, .phraseEventTitle, spoken:event.title, title:event.title, via:#function)
-
-            if canSay(.time /*.sayEventTime*/) {
-
-                let timeNow = Date().timeIntervalSince1970
-                let prefix = timeNow < event.bgnTime ? "in " : ""
-                let suffix = timeNow < event.bgnTime ? "" : " ago"
-                let elapse = prefix + MuDate.elapseTime(event.bgnTime) + suffix
-
-                updateDialog(event, .phraseEventTime, spoken:elapse, title:elapse, via:#function)
-            }
+        
+        updateDialog(event, .phraseEventTitle, spoken:event.title, title:event.title, via:#function)
+        
+        if canSay(.time /*.sayEventTime*/) {
+            
+            let timeNow = Date().timeIntervalSince1970
+            let prefix = timeNow < event.bgnTime ? "in " : ""
+            let suffix = timeNow < event.bgnTime ? "" : " ago"
+            let elapse = prefix + MuDate.elapseTime(event.bgnTime) + suffix
+            
+            updateDialog(event, .phraseEventTime, spoken:elapse, title:elapse, via:#function)
         }
     }
     
@@ -117,22 +114,19 @@ extension Say {
      - via: Scene.update.scanning
      */
     func sayBeginTime(_ event: MuEvent!) {
-
-        if canSay(.event) {
-
-            updateDialog(event, .phraseEventTitle, spoken:event.title, title:event.title, via:#function)
-
-            if canSay(.time /*.sayEventTime*/) {
-
-                let timeNow = Date().timeIntervalSince1970
-                let prefix = timeNow < event.bgnTime ? "begins " : "began "
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "h:mm a"
-                let date = Date(timeIntervalSince1970:event.bgnTime)
-                let title = dateFormatter.string(from:date)
-                let spoken = prefix + title
-                updateDialog(event, .phraseEventTime,  spoken:spoken,   title:title, via:#function)
-            }
+        
+        updateDialog(event, .phraseEventTitle, spoken:event.title, title:event.title, via:#function)
+        
+        if canSay(.time /*.sayEventTime*/) {
+            
+            let timeNow = Date().timeIntervalSince1970
+            let prefix = timeNow < event.bgnTime ? "begins " : "began "
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "h:mm a"
+            let date = Date(timeIntervalSince1970:event.bgnTime)
+            let title = dateFormatter.string(from:date)
+            let spoken = prefix + title
+            updateDialog(event, .phraseEventTime,  spoken:spoken,   title:title, via:#function)
         }
     }
     

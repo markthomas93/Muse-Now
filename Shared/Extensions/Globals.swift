@@ -2,9 +2,10 @@
 
 import UIKit
 
-let headColor = UIColor(red: 0.15, green: 0.15, blue: 0.15, alpha: 1.0)
-let cellColor = UIColor(red: 0.08, green: 0.08, blue: 0.08, alpha: 1.0)
-let textColor = UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1.0)
+let bordColor = UIColor(red: 0.25, green: 0.25, blue: 0.25, alpha: 1.0) // section cell border color
+let headColor = UIColor(red: 0.15, green: 0.15, blue: 0.15, alpha: 1.0) // section cell color
+let cellColor = UIColor(red: 0.08, green: 0.08, blue: 0.08, alpha: 1.0) // standard cell color
+let textColor = UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1.0) // textcolor inside cell
 
 let Phi⁻¹ = CGFloat(0.618033989)
 let Phi⁻² = CGFloat(0.3819660116)
@@ -35,16 +36,18 @@ func DebugLog(_ str: String) -> Bool {
         //case NSLog(str)
 
     case
-    "💬", // bubble animation closure
+    //"💬", // bubble animation closure
+     "▤", // TreeTableView
     "🔰": // onboarding pages (japaness beginnner symbol)
 
         print(MuDate.getHourMinSecMsec() + ": " + str)
         
-    case    
+    case
+    "✏︎",  // draw bubble
     "📅", // EkNotification
     "⧉", // s
     "⎚", // scene animationync files
-    "▤", // TreeTableView
+
     "⿳", // menu
     
     "←", // session receiving

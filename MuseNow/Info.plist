@@ -80,5 +80,7 @@
 	</array>
 	<key>WKCompanionAppBundleIdentifier</key>
 	<string>com.muse.MuseNow</string>
+	<key>NSPrincipalClass</key>
+	<string>MyApplication</string>
 </dict>
 </plist>

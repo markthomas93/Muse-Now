@@ -208,7 +208,7 @@ class Dot {
     }
     
     func printResult(_ fn: String, _ i0:Int,_ i1:Int,_ title:String) {
-        //let str = String(format: "· %-16@ eventi: %i ⟶ %i  %@", fn,i0,i1,title)
+        //let str = String(format: "· %-16@ eventi: %i  ➛  %i  %@", fn,i0,i1,title)
         //print(String(format:"%-50@",str), terminator:" ")
     }
 

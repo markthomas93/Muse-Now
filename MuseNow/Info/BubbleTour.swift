@@ -12,20 +12,22 @@ extension UIWindow {
         }
     }
 }
-
-
 struct TourSet: OptionSet {
     let rawValue: Int
-    static let playTour = TourSet(rawValue: 1 << 0) // 1
-    static let size = 1
+    static let tourOnboard  = TourSet(rawValue: 1 << 0) // 1
+    static let tourMain     = TourSet(rawValue: 2 << 0) // 2
+    static let tourMenu     = TourSet(rawValue: 3 << 0) // 4
+    static let size = 3
 }
-
 
 class BubbleTour {
 
     static var shared = BubbleTour()
+
     var bubbles = [Bubble]()
-    var tourSet = TourSet([.playTour])
+    var bubbleNow: Bubble!
+
+    var tourSet = TourSet([.tourOnboard,.tourMain,.tourMenu])
 
     var mainView: UIView! // full screen view in which to place subview
 
@@ -50,33 +52,40 @@ class BubbleTour {
     func doTourAction(_ act:DoAction) {
 
         switch act {
-        case .playTour: beginTour() ; Haptic.play(.start)
-        case .stopTour: stopTour()  ; Haptic.play(.stop)
+        case .tourMain:     beginTourSet([.tourMain])    ; Haptic.play(.start)
+        case .tourMenu:     beginTourSet([.tourMenu])    ; Haptic.play(.start)
+        case .tourOnboard:  beginTourSet([.tourOnboard]) ; Haptic.play(.start)
+        case .stopTour:     stopTour()                   ; Haptic.play(.stop)
         default: break
         }
     }
 
-    func beginTour() {
-
-        tourSet.insert([.playTour])
-        buildMainTour()
-        buildMenuTour()
+    func beginTourSet(_ tourSet_:TourSet) {
+        return  //???//
+        tourSet = tourSet_
+        if tourSet.contains([.tourMain]) { buildMainTour() }
+        if tourSet.contains([.tourMenu]) { buildMenuTour() }
 
         // build linked list
-        var prevBub: Bubble! = nil
+        var prevBubble: Bubble! = nil
         for bubble in bubbles {
-            prevBub?.nextBub = bubble
-            bubble.prevBub = prevBub
-            prevBub = bubble
+            prevBubble?.nextBubble = bubble
+            bubble.prevBubble = prevBubble
+            prevBubble = bubble
         }
         Actions.shared.doAction(.gotoFuture)
         bubbles.first?.tourBubbles()
     }
   
     func stopTour() {
-        tourSet.remove([.playTour])
-        //!!! didn't work PagesVC.shared.treeVC.tableView.reloadData()
-        Bubbles.shared.cancelBubbles()
+        BubblesPlaying.shared.cancelBubbles()
+        tourSet = []
+        // clear out memory?
+        for bubble in bubbles {
+            bubble.prevBubble = nil
+        }
+        bubbles.removeAll()
+        TouchScreen.shared.endRedirecting()
     }
 
 }

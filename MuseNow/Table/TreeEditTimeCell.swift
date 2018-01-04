@@ -47,7 +47,7 @@ class TreeEditTimeCell: TreeEditCell {
         bgnLabel.text = "  :"
         bgnLabel.setValue(UIColor.white, forKey:"textColor")
         bgnLabel.textAlignment = .center
-        bgnLabel.isUserInteractionEnabled = false
+        //??// bgnLabel.isUserInteractionEnabled = false
 
         // end hour:Min
         endTimePicker = UIPickerView(frame:endTimeFrame)
@@ -61,15 +61,15 @@ class TreeEditTimeCell: TreeEditCell {
         endLabel.text = "  :"
         endLabel.setValue(UIColor.white, forKey:"textColor")
         endLabel.textAlignment = .center
-        endLabel.isUserInteractionEnabled = false
+        //??// endLabel.isUserInteractionEnabled = false
 
         // arrow label between start end
 
         arrowLabel = UILabel(frame:arrowFrame)
-        arrowLabel.text = " ⟶"
+        arrowLabel.text = "  ➛ "
         arrowLabel.setValue(UIColor.white, forKey:"textColor")
         arrowLabel.textAlignment = .center
-        arrowLabel.isUserInteractionEnabled = false
+        //??// arrowLabel.isUserInteractionEnabled = false
 
         bezel.addSubview(arrowLabel)
         bezel.addSubview(bgnLabel)

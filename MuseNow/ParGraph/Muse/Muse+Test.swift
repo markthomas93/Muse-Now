@@ -19,7 +19,7 @@ extension Muse {
 
         func printRequest(_ request:String, timeNow: TimeInterval = Date().timeIntervalSince1970) {
 
-            print("\"\(request)\" ⟶ ", terminator:"")
+            print("\"\(request)\"  ➛  ", terminator:"")
 
             parWords.update(request,timeNow)
 

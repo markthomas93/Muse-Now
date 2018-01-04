@@ -30,7 +30,7 @@ extension BubbleTour {
         /**
         Search tree nodes for one that matches the title saved in bubble.
         Will expand the node's children and collapse the previous node.
-         - note: pass along finish() to be called after animation complets
+         - note: pass along finish() to be called after animation completes
         */
         let gotoTitle: CallWait! = { base, finish  in
             TreeNodes.shared.root?.goto(title: base.bubble.title, finish: {
@@ -93,7 +93,7 @@ extension BubbleTour {
         func bubThumb(_ title:String,_ anys:[Any],_ bubShape:BubShape, _ options: BubbleOptions = []) {
             if let cell = treeRoot.find(title:title) as? TreeTitleFaderCell, let fader = cell.fader {
                 bubbles.append(Bubble(title, bubsFrom(anys:anys), bubShape, .text, textSize,
-                                      treeView,fader,[cell], [treeView, panelView], options))
+                                      treeView,fader, [cell], [treeView, panelView], options))
             }
         }
 
@@ -180,7 +180,7 @@ extension BubbleTour {
 
         // 8: 4  2 2 2 2
 
-        bubCell("preview",  ["sneak preview ",4,gotoTitle], .above)
+        bubCell("preview",  ["sneak preview of \n future extensions",4,gotoTitle], .above)
 
         bubMark("routine",  ["setup your normal routine \n like sleep, meals, work,  ⃨",2,gotoTitle,
                              "to see how events overlap \n with your weekly routine",2], .above)
@@ -195,12 +195,12 @@ extension BubbleTour {
         bubVid2("memos",    ["PhoneMemo2.m4v", 12], .diptych22)
 
         bubMark("memos",    ["Memos are saved in your \n iTunes \"shared files\" folder",2,
-                             "we don't want your data \n and will never keep a copy",2], .above)
+                             "we don't have a copy \n and never will ",2], .above)
 
         // hear  --------------------------------------
 
-        bubCell("hear",     ["hear an announcement, while \n hovering over a bookmark",2,gotoTitle], .above)
-        bubMark("speaker",  ["hear via speaker or handoff \n to earbuds,when connected",2,gotoTitle], .above)
+        bubCell("hear",     ["hear an announcement when \n passing over a bookmark",2,gotoTitle], .above)
+        bubMark("speaker",  ["hear via speaker or handoff \n to connected earbuds",2,gotoTitle], .above)
         bubMark("earbuds",  ["hear only on earbuds for both \n eyes free and hands free",2,gotoTitle], .above)
 
         bubMark("earbuds",  ["with Apple Watch + Airpods \n simply lift your wrist to hear",2,gotoTitle,
@@ -208,9 +208,15 @@ extension BubbleTour {
 
          // finish  --------------------------------------
 
-        bubText("about",   ["This is where to learn more \n about our products and services",2, gotoTitle], .above)
-        bubText("tour",    ["This concludes the guided tour \n Tap here to tour again",2, gotoTitle,
-                            "Or linger on any control for a \n couple seconds a hint",2], .above)
+        bubCell("about",   ["here is more about us",1, gotoTitle], .above)
+        bubCell("support", ["support and policy",1, gotoTitle], .above)
+        bubCell("news",    ["news about enhancements",1, gotoTitle], .above)
+        bubCell("tour",    ["to replay part of this tour",1, gotoTitle], .above)
+        bubCell("main",    ["tap to tour the main page",1, gotoTitle], .above)
+        bubCell("menu",    ["tap to tour this menu page",1, gotoTitle], .above)
+        bubCell("about",   ["and that about wraps it up",1, gotoTitle,
+                            "for now",2], .above)
+
     }
 
 }

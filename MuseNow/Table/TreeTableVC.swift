@@ -29,7 +29,7 @@ class TreeTableVC: UITableViewController {
         if let root = TreeNodes.shared.root {
             root.cell.collapseAllTheWayDown()
             root.expanded = true
-            TreeNodes.shared.renumber()
+            TreeNodes.shared.renumber(touchedCell?.treeNode ?? nil)
             tableView.reloadData()
         }
         touchedCell?.setHighlight(.low)
@@ -121,12 +121,12 @@ class TreeTableVC: UITableViewController {
 
         // show | hide - dial
 
-        let dial = TreeNode(.title, show, TreeSetting(set:1,member:1,"dial"), self)
+        let dial = TreeNode(.title, show, "dial", self)
         let _ =  TreeDialColorNode(dial, "color", self)
 
         // show | hide - Routine
 
-        let preview = TreeNode(.title, show, TreeSetting(set:1,member:1,"preview"), self)
+        let preview = TreeNode(.title, show, "preview", self)
 
         let routine = TreeActNode(preview,"routine", showSet, ShowSet.routine.rawValue, .showRoutine, .hideRoutine, self)
 
@@ -171,7 +171,7 @@ class TreeTableVC: UITableViewController {
         // say | skip
 
         let saySet = Say.shared.saySet.rawValue
-        let say = TreeNode(.titleMark, root, TreeSetting(set:1,member:1,"say | skip"), self)
+        let say = TreeNode(.titleMark, root, "say | skip", self)
         let _  = TreeActNode(say, "event", saySet, SaySet.event.rawValue, .sayEvent, .skipEvent, self)
         let _  = TreeActNode(say, "time",  saySet, SaySet.time.rawValue,  .sayTime,  .skipTime, self)
         let _  = TreeActNode(say, "memo",  saySet, SaySet.memo.rawValue,  .sayMemo,  .skipMemo, self)
@@ -179,22 +179,26 @@ class TreeTableVC: UITableViewController {
         // hear | mute
 
         let hearSet = Hear.shared.hearSet.rawValue
-        let hear = TreeNode(.title, root, TreeSetting(set:1,member:1,"hear | mute"), self)
+        let hear = TreeNode(.title, root, "hear | mute", self)
         let _   = TreeActNode(hear,"speaker", hearSet, HearSet.speaker.rawValue, .hearSpeaker , .muteSpeaker, self)
         let _   = TreeActNode(hear,"earbuds", hearSet, HearSet.earbuds.rawValue, .hearEarbuds , .muteEarbuds, self)
 
         // about
-        let tourSet = BubbleTour.shared.tourSet
-        let about = TreeNode(.title, root, TreeSetting(set:1,member:1,"about"), self)
-        let _     = TreeActNode(about,"tour", tourSet, TourSet.playTour.rawValue, .playTour , .stopTour, self)
-        let _     = TreeNode(.title, about, TreeSetting(set:1,member:1,"about"), self)
+        let about = TreeNode(.title, root, "about", self)
+        let _     = TreeNode(.title, about, "support", self)
+        let _     = TreeNode(.title, about, "news", self)
 
-        // setup table cells from current state of hierary
+        let tour  = TreeNode(.title, about, "tour", self)
+        let _     = TreeNode(.title, tour, "main", self)
+        let _     = TreeNode(.title, tour, "menu", self)
+
+        // setup table cells from current st
         root!.refreshNodeCells()
-        TreeNodes.shared.renumber()
+        TreeNodes.shared.renumber(nil)
     }
 
     /**
+     remove highlight for sibling cell
      */
     func setTouchedCell(_ cell: TreeCell!) {
 
@@ -204,7 +208,7 @@ class TreeTableVC: UITableViewController {
             touchedCell.setHighlight(.low)
         }
         touchedCell = cell
-        touchedCell.setHighlight(.high)
+        //???// touchedCell.setHighlight(.high)
     }
 
     /**
@@ -213,7 +217,7 @@ class TreeTableVC: UITableViewController {
 
         // changed count
         let oldCount = TreeNodes.shared.shownNodes.count
-        TreeNodes.shared.renumber()
+        TreeNodes.shared.renumber(touchedCell?.treeNode ?? nil)
         let newCount = TreeNodes.shared.shownNodes.count
         let delta = newCount - oldCount
 

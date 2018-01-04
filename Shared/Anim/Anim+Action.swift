@@ -53,7 +53,7 @@ extension Anim {
         case .startup, .shutdown:                                   startupTime  = 0
         }
         actionTime  = Date().timeIntervalSince1970
-        //Log(String(format: "⎚ userDotAction dot Prev,Now: %g,%g  %@⟶%@  tense:%@", prev,now,"\(animPrev)","\(animNow)","\(flipTense)"))
+        //Log(String(format: "⎚ userDotAction dot Prev,Now: %g,%g  %@ ➛ %@  tense:%@", prev,now,"\(animPrev)","\(animNow)","\(flipTense)"))
     }
     
     // pause ------------------------------------------

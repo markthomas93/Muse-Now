@@ -205,59 +205,30 @@ class TreeCell: MuCell {
      - note: renumbering currently conflicts with collapsing siblings,
      which is why the TouchCell event will set highlighting to forceHigh
      */
-    func setParentChildOther(_ parentChild_:ParentChildOther) {
+    func setParentChildOther(_ parentChild_:ParentChildOther, touched:Bool) {
 
         parentChild = parentChild_
-
-        var background = UIColor.black
-        var border    = headColor
-        var newAlpha  = CGFloat(1.0)
-
-        switch parentChild {
-        case .parent: background = headColor ; border = UIColor.gray
-        case .child:  background = cellColor ;
-        case .other:  background = .black ; newAlpha = 0.6 ;
-        }
-        UIView.animate(withDuration: 0.25, animations: {
-            self.bezel.backgroundColor = background
-            self.bezel.alpha = newAlpha
-            self.bezel.layer.borderColor = border.cgColor
-        })
+        setHighlight(touched ? .forceHigh : .refresh)
     }
     /**
      */
     override func setHighlight(_ highlighting_:Highlighting, animated:Bool = true) {
+        
+        var newAlpha: CGFloat!
+        var border: UIColor!
+        var background: UIColor!
+        switch parentChild {
+        case .parent: border = bordColor ; background = headColor ; newAlpha = 1.00
+        case .child:  border = headColor ; background = cellColor ; newAlpha = 1.00
+        case .other:  border = headColor ; background = .black    ; newAlpha = 0.62
+        }
 
-        if highlighting != highlighting_ {
-            
-            var index = 0
-            switch highlighting_ {
-            case .high,.forceHigh: highlighting = .high ; index = 1 ; isSelected = true
-            default:               highlighting = .low  ; index = 0 ; isSelected = false
-            }
-            let borders = [headColor.cgColor, UIColor.white.cgColor]
-            var background: UIColor!
-            switch parentChild {
-            case .parent: background = headColor
-            case .child: background  = cellColor
-            case .other: background  = .black
-            }
-            let backgrounds = [background.cgColor, background.cgColor]
-            
-            if animated {
-                animateViews([bezel], borders, backgrounds, index, duration: 0.25)
-            }
-            else {
-                bezel.layer.borderColor     = borders[index]
-                bezel.layer.backgroundColor = backgrounds[index]
-            }
-        }
-        else {
-            switch highlighting {
-            case .high,.forceHigh: isSelected = true
-            default:               isSelected = false
-            }
-        }
+        setHighlights(highlighting_,
+                      views:        [bezel],
+                      borders:      [border,.white],
+                      backgrounds:  [background, background],
+                      alpha:        newAlpha,
+                      animated:     animated)
     }
 
     /**
@@ -352,15 +323,19 @@ class TreeCell: MuCell {
     func touchSelf(_ expandMe:Bool, withDelay:Bool) {
 
         func touchAndScroll() {
-            if expandMe {  touchFlipExpand() }
-            else { setHighlight(.forceHigh) }
+            if expandMe {
+                touchFlipExpand()
+            }
+            else {
+                setHighlight(.forceHigh)
+            }
             (tableVC as? TreeTableVC)?.scrollToNearestTouch(self)
         }
 
         // begin ------------
 
         if withDelay {
-            let _ = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: {_ in
+            let _ = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: {_ in //???//
                 touchAndScroll()
             })
         }

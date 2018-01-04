@@ -77,29 +77,29 @@ class ParWords: ParStr {
          v next match.
      For example, when expecting `"muse show event yo"`:
 
-     "muse show event yo" ⟶
+     "muse show event yo"  ➛ 
      //   min(<,^,v)   => hops
      0,0: min(0,.,0) += 0 => 0
      1,1: min(0,0,0) += 0 => 0
      2,2: min(0,0,0) += 0 => 0
      3,3: min(0,0,.) += 0 => 0
 
-     "muse event show yo" ⟶
+     "muse event show yo"  ➛ 
       //   min(<,^,v)  => hops
      0,0: min(0,.,1) += 0 => 0
      1,2: min(1,1,2) += 1 => 1
      2,1: min(1,2,1) += 1 => 2
      3,3: min(0,1,.) += 0 => 2
 
-     "yo muse show event" ⟶
+     "yo muse show event"  ➛ 
      //   min(<,^,v)   => hops
      0,1: min(1,.,0) += 0 => 0
      1,2: min(1,0,0) += 0 => 0
      2,3: min(1,0,4) += 0 => 0
      3,0: min(3,4,.) += 3 => 3
 
-     "muse show yo event" ⟶ hops:2
-     "muse event yo show" ⟶ hops:2
+     "muse show yo event"  ➛  hops:2
+     "muse event yo show"  ➛  hops:2
      */
 
     func totalHops(trace:Bool = false) -> Int {

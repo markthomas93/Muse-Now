@@ -324,7 +324,7 @@ extension Anim {
         else {
             sceneFrame += increment
         }
-         //Log(String(format:"⚆ animOut %.1f⟶%.1f xScale:%.0f dotNow:%.1f (%.1f / %.2f / %.1f) -> %.1f", sceneFrame,nextFrame,xScale,dots.dotNow, distance,timeRemain,fps, increment))
+         //Log(String(format:"⚆ animOut %.1f ➛ %.1f xScale:%.0f dotNow:%.1f (%.1f / %.2f / %.1f) -> %.1f", sceneFrame,nextFrame,xScale,dots.dotNow, distance,timeRemain,fps, increment))
     }
     func gotoRecFinish() {
 

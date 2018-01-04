@@ -1,6 +1,22 @@
 
 import UIKit
 
+
+@objc(MyApplication) class MyApplication: UIApplication {
+
+
+    var touchScreen = TouchScreen.shared
+
+//    override func sendEvent(_ event: UIEvent) {
+//
+//        if event.type == .touches,
+//            touchScreen.redirectSendEvent(event) {
+//        }
+//        else {
+//            super.sendEvent(event)
+//        }
+//    }
+}
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 

@@ -77,6 +77,7 @@ extension BubbleTour {
         // 12: 6  6
 
         bubItem("Main",  ["Timeline spans 2 weeks from \n last week to the next",4,firstRoll],  .below,  mainView, mainBezel, [panelView], [.highlight,.alpha05])
+        
         bubItem("Panel", ["Control panel puts it all \n under your thumb",2],                   .above,  pageView, panelView, [pageView], [.highlight])
 
         bubItem("Panel", ["with the same look and feel \n as the Apple Watch", 2],              .above,  pageView, panelView, [eventView], [.highlight,.overlay,.nowait])
@@ -92,7 +93,7 @@ extension BubbleTour {
         let scanEvents  = { Anim.shared.resumeScan() }
 
         bubItem("Dial", ["See the week in a glance \n as 24 hours times 7 days",2, futureWheel,
-                         "168 hours, in all, shown \n as dots spiralling inwards",2],       .above, pageView, dialView, [pageView], [.highlight, .circular])
+                         "for a total of 168 hours \n shown as dots spiralling in",2],       .above, pageView, dialView, [pageView], [.highlight, .circular])
 
         bubItem("Dial", ["Touch the dial and spin \n around to feel bumps",2,   nextEvent,
                          "while crossing an event \n to feel key moments.",2,  nextEvent],  .above, pageView, dialView, [], [.highlight, .circular])
@@ -100,7 +101,7 @@ extension BubbleTour {
         bubItem("Dial", ["Force touch (or double tap) \n to mark an event",2, toggleEvent,
                          "that pauses while scanning \n the week ahead",2,  scanEvents],    .above, pageView, dialView, [], [.highlight, .circular])
 
-        bubItem("Dial", ["Hear a countdown whenever \n you raise your wrist",2,
+        bubItem("Dial", ["Hear a countdown when \n you raise your wrist",2,
                          "no need to see or touch \n anything to stay current",2,futureWheel], .above, pageView, dialView, [], [.highlight, .circular])
 
         // 12: 2 2 2 2  8

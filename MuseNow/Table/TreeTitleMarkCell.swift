@@ -87,70 +87,40 @@ class TreeTitleMarkCell: TreeTitleCell {
         mark.frame  = markFrame
     }
 
-    override func setParentChildOther(_ parentChild_:ParentChildOther) {
+    override func setParentChildOther(_ parentChild_:ParentChildOther, touched:Bool) {
 
         parentChild = parentChild_
-
-        var background = UIColor.black
-        var border    = headColor
-        var newAlpha  = CGFloat(1.0)
-
-        switch parentChild {
-        case .parent: background = headColor ; border = UIColor.gray
-        case .child:  background = cellColor
-        case .other:  background = .black ; newAlpha = 0.6
-        }
-        UIView.animate(withDuration: 0.25, animations: {
-            self.bezel.backgroundColor = background
-            self.bezel.alpha = newAlpha
-            self.bezel.layer.borderColor = border.cgColor
-
-            self.mark.backgroundColor = background
-            self.mark.check.alpha = newAlpha*newAlpha // double alpha the check
-            self.mark.layer.borderColor = border.cgColor
-        })
+        setHighlight(touched ? .forceHigh : .refresh)
     }
     
     override func setHighlight(_ highlighting_:Highlighting, animated:Bool = true) {
-        
-        if highlighting != highlighting_ {
-            
-            var index = 0
-            switch highlighting_ {
-            case .high,.forceHigh: highlighting = .high ; index = 1 ; isSelected = true
-            default:               highlighting = .low  ; index = 0 ; isSelected = false
-            }
-            let borders     = [headColor.cgColor, UIColor.white.cgColor]
-            
-            // set background from hierarchy depth
-            var background: UIColor!
-            switch parentChild {
-            case .parent: background = headColor
-            case .child: background  = cellColor
-            case .other: background  = .black
-            }
-            let backgrounds = [background.cgColor, background.cgColor]
-            
-            if animated {
-                animateViews([bezel,mark], borders, backgrounds, index, duration: 0.25)
-            }
-            else {
-                bezel.layer.borderColor    = borders[index]
-                bezel.layer.backgroundColor = backgrounds[index]
-                
-                mark.layer.borderColor     = borders[index]
-                mark.layer.backgroundColor = backgrounds[index]
-            }
+
+        var newAlpha:CGFloat!
+        var border: UIColor!
+        var background: UIColor!
+        switch parentChild {
+        case .parent: border = bordColor ; background = headColor ; newAlpha = 1.0
+        case .child:  border = headColor ; background = cellColor ; newAlpha = 1.0
+        case .other:  border = headColor ; background = .black    ; newAlpha = 0.62
+        }
+
+        setHighlights(highlighting_,
+                      views:        [bezel, mark],
+                      borders:      [border, .white],
+                      backgrounds:  [background, background],
+                      alpha:        newAlpha,
+                      animated:     animated)
+        if animated {
+            UIView.animate(withDuration: 0.25, animations: {
+                self.mark.alpha = newAlpha * newAlpha
+            })
         }
         else {
-            switch highlighting {
-            case .high,.forceHigh: isSelected = true
-            default:               isSelected = false
-            }
+            mark.alpha = newAlpha * newAlpha
         }
     }
     
-    override func touchCell(_ location: CGPoint, isExpandable:Bool = true) {
+    override func touchCell(_ location: CGPoint, isExpandable:Bool) {
 
         (tableVC as? TreeTableVC)?.setTouchedCell(self)
 

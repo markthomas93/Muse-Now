@@ -9,68 +9,10 @@
 import Foundation
 import UIKit
 
-class TreeNodes {
-
-    static var shared = TreeNodes()
-
-    var shownNodes = [TreeNode!]() // currently displayed nodes
-    var nextNodes = [TreeNode!]() // double buffer update
-
-    var root: TreeNode!
-
-    /**
-     Renumber currently displayed table cells. Used for animating expand/collapse of children
-     */
-    func renumber() {
-
-        nextNodes.removeAll()
-        root?.expanded = true // root always expanded
-        root?.renumber()
-        shownNodes = nextNodes
-        root?.rehighlight()
-    }
-
-    // what is the maximum height needed when for longest child
-    func maxExpandedChildHeight() -> CGFloat {
-        var maxGrandHeight = CGFloat(0)
-        for child in root.children {
-            let grandchildRowsHeight = child.cell.height + child.childRowsHeight()
-            if maxGrandHeight < grandchildRowsHeight {
-                maxGrandHeight = grandchildRowsHeight
-            }
-        }
-        return maxGrandHeight
-    }
-
-}
-
-enum TreeNodeType { case
-    unknown,
-    title,
-    infoApprove,
-    titleFader,
-    titleMark,
-    colorTitle,
-    colorTitleMark,
-    timeTitleDays,
-    editTime,
-    editTitle,
-    editWeekday,
-    editColor
-}
-/**
- Optional info disclosure upon first expand
- - noInfo: do not show "i" icon
- - newInfo: white icon, auto show info on expand
- - oldInfo: gray icon, only show when touching icon
- */
-enum ShowInfo { case
-    noInfo,
-    newInfo,
-    oldInfo
-}
 class TreeNode {
-
+    static var Id = 1
+    static func nextId() -> Int { Id += 1 ; return Id }
+    var id = TreeNode.nextId()
     var type = TreeNodeType.titleMark
     var parent: TreeNode!
     var children = [TreeNode]()
@@ -84,6 +26,45 @@ class TreeNode {
     var onRatio = CGFloat(1.0)
     var showInfo = ShowInfo.noInfo
     var treeInfo: TreeInfo!
+
+
+    func initialize (_ type_:TreeNodeType, _ parent_:TreeNode!,_ setting_: TreeSetting,_ tableVC_:UITableViewController) {
+
+        parent = parent_
+        setting = setting_
+        type = type_
+
+        if let parent = parent {
+            level = parent.level+1
+            parent.children.append(self)
+        }
+
+        switch type {
+        case .title:            cell = TreeTitleCell(self, tableVC_)
+        case .infoApprove:      cell = TreeInfoApproveCell(self, tableVC_)
+        case .titleFader:       cell = TreeTitleFaderCell(self, tableVC_)
+        case .titleMark:        cell = TreeTitleMarkCell(self, tableVC_)
+        case .colorTitle:       cell = TreeColorTitleCell(self, tableVC_)
+        case .colorTitleMark:   cell = TreeColorTitleMarkCell(self, tableVC_)
+        case .timeTitleDays:    cell = TreeTimeTitleDaysCell(self, tableVC_)
+        case .editTime:         cell = TreeEditTimeCell(self, tableVC_)
+        case .editTitle:        cell = TreeEditTitleCell(self, tableVC_)
+        case .editWeekday:      cell = TreeEditWeekdayCell(self, tableVC_)
+        case .editColor:        cell = TreeEditColorCell(self, tableVC_)
+        case .unknown:          cell = TreeEditColorCell(self, tableVC_)
+        }
+    }
+
+    convenience init (_ type_:TreeNodeType, _ parent_:TreeNode!,_ setting_: TreeSetting,_ tableVC_:UITableViewController) {
+        self.init()
+        initialize(type_,parent_,setting_,tableVC_)
+    }
+    convenience init (_ type_:TreeNodeType, _ parent_:TreeNode!,_ title:String,_ tableVC_:UITableViewController) {
+        self.init()
+         initialize(type_,parent_, TreeSetting(set:1,member:1,title),tableVC_)
+    }
+
+
 
     @discardableResult func renumber() -> Int {
         depth = 0
@@ -144,10 +125,9 @@ class TreeNode {
         if let cell = find(title: title) {
 
             var node = cell.treeNode!
-            lineage.append(node)
             while node.parent != nil {
-                node = node.parent!
                 lineage.append(node)
+                node = node.parent!
             }
             nextLineage()
         }
@@ -178,7 +158,8 @@ class TreeNode {
 
     func rehighlight() {
 
-        cell?.setParentChildOther(getParentChildOther())
+        let touched = (self.id == TreeNodes.shared.touchedNode?.id ?? -1)
+        cell?.setParentChildOther(getParentChildOther(), touched: touched )
 
         if expanded {
             for child in children {
@@ -187,33 +168,6 @@ class TreeNode {
         }
     }
     var callback: ((TreeNode) -> ())?
-
-    init (_ type_:TreeNodeType, _ parent_:TreeNode!,_ setting_: TreeSetting,_ tableVC_:UITableViewController) {
-
-        parent = parent_
-        setting = setting_
-        type = type_
-
-        if let parent = parent {
-            level = parent.level+1
-            parent.children.append(self)
-        }
-
-        switch type {
-        case .title:            cell = TreeTitleCell(self, tableVC_)
-        case .infoApprove:      cell = TreeInfoApproveCell(self, tableVC_)
-        case .titleFader:       cell = TreeTitleFaderCell(self, tableVC_)
-        case .titleMark:        cell = TreeTitleMarkCell(self, tableVC_)
-        case .colorTitle:       cell = TreeColorTitleCell(self, tableVC_)
-        case .colorTitleMark:   cell = TreeColorTitleMarkCell(self, tableVC_)
-        case .timeTitleDays:    cell = TreeTimeTitleDaysCell(self, tableVC_)
-        case .editTime:         cell = TreeEditTimeCell(self, tableVC_)
-        case .editTitle:        cell = TreeEditTitleCell(self, tableVC_)
-        case .editWeekday:      cell = TreeEditWeekdayCell(self, tableVC_)
-        case .editColor:        cell = TreeEditColorCell(self, tableVC_)
-        case .unknown:          cell = TreeEditColorCell(self, tableVC_)
-        }
-    }
 
     func updateCallback() {
         callback?(self)
@@ -311,4 +265,15 @@ class TreeNode {
         return cell?.height ?? 0 + childRowsHeight()
     }
 }
+
+extension TreeNode: Hashable {
+    var hashValue: Int {
+        return id
+    }
+
+    static func == (lhs: TreeNode, rhs: TreeNode) -> Bool {
+        return lhs.id == rhs.id
+    }
+}
+
 

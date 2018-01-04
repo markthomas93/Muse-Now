@@ -7,7 +7,12 @@
 import Foundation
 import UIKit
 
- class BubbleBase: BubbleDraw {
+
+enum BubblePhase { case poppedOut, tuckedIn, nudged }
+
+typealias CallBubblePhase = ((BubblePhase)->())
+
+class BubbleBase: BubbleDraw {
 
     var fromBezel: UIView!         // optional bezel from which to spring bubble
 
@@ -19,9 +24,11 @@ import UIKit
     let innerH = CGFloat(36)        // inner height / 4 determines cell bezel radius
 
     var bubble: Bubble!
-    var gotoNext: (()->())?         // callback after tucking in bubble
+
+    var onGoing: CallBubblePhase?    // callback after tucking in bubble
     var timer = Timer()             // timer for duration between popOut and tuckIn
     var cancelling = false
+    //??// var bubbleTouch: BubbleTouch!
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -50,7 +57,6 @@ import UIKit
         }
         makeBubble(bubble.bubShape, size, bubble.base, bubble.from) // create bubbleFrame
 
-        self.isUserInteractionEnabled = true
         alpha = 0
 
         // setup content frame
@@ -91,22 +97,22 @@ import UIKit
         if bubble.options.contains(.highlight) {
             fromBezel.addDashBorder(color: .white, radius: highlightRadius)
         }
-        fromBezel.isUserInteractionEnabled = false
         bubble.from.addSubview(fromBezel)
         fromBezel.addSubview(self)
     }
 
-    func goBubble(_ gotoNext_: @escaping CallVoid) {
+    func goBubble(_ onGoing_: @escaping CallBubblePhase) {
 
-        gotoNext = gotoNext_
+        onGoing = onGoing_
         contenti = 0
         cancelling = false
 
         func popOutContinue() {
+
             // continue to next bubble if no wait for first tiem
             if bubble.options.contains(.nowait) && contenti == 0 {
-                Log(bubble.logString("💬 base::goBubble⟶gotoNext"))
-                gotoNext?()
+                Log(bubble.logString("💬 base::goBubble ➛ onGoing"))
+                onGoing?(.poppedOut)
             }
             setTimeOut()
         }
@@ -142,7 +148,9 @@ import UIKit
         contentViews[contenti].removeFromSuperview()
         contenti = index
         contentViews[contenti].alpha = 0
-        self.addSubview(contentViews[contenti])
+        let contentView = contentViews[contenti]
+        addSubview(contentView)
+        //bubbleTouch = BubbleTouch(contentView, { self.nudgeBubble() })
     }
 
     /**
@@ -150,7 +158,7 @@ import UIKit
      To insure that bubble appears above other views,
      bring family[1] to front of family[0].
      */
-    func popOut(_ popDone:@escaping()->()) {
+    func popOut(_ popDone:@escaping CallVoid) {
 
         func shrinkTransform() {
 
@@ -190,6 +198,7 @@ import UIKit
         }
 
         // bring views to front
+
         superview?.bringSubview(toFront: self)
         superview?.superview?.bringSubview(toFront: self.superview!)
         superview?.superview?.superview?.bringSubview(toFront: self.superview!.superview!)
@@ -203,7 +212,7 @@ import UIKit
     }
 
     /**
-     When there are more than one content view, then fade next in the following sequence:
+     When there are more than one content views, then fade next in the following sequence:
         - fadeOutOld
         - fadeInNew
         - setTimeOut
@@ -211,9 +220,7 @@ import UIKit
     func fadeNext() -> Bool {
 
         func fadeOutOld() {
-            UIView.animate(withDuration: 1.0, delay: 0.0, options: [.allowUserInteraction], animations: {
-                self.contentViews[self.contenti].alpha = 0.0
-            }, completion: { finished in if finished { fadeInNew() } })
+            animateOut(duration: 1.0, delay: 0.0, finished: fadeInNew)
         }
 
         func fadeInNew() {
@@ -224,7 +231,11 @@ import UIKit
 
                 self.contentViews[self.contenti].alpha = 1.0
 
-            }, completion: { finished in if finished { self.setTimeOut() } })
+            }, completion: { finished in if finished {
+
+                    self.setTimeOut() }
+
+            })
         }
 
         // begin -----------------------
@@ -235,6 +246,7 @@ import UIKit
         timer.invalidate()
 
         if let callWait = bubble.items[contenti+1].callWait {
+
             callWait(self,fadeOutOld) // wait for preRoll
         }
         else {
@@ -247,19 +259,20 @@ import UIKit
 
     func animateOut(duration: TimeInterval, delay: TimeInterval, finished: @escaping CallVoid) {
 
-        UIView.animate(withDuration: 1.0, delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0, options: [.curveEaseOut], animations: {
+        BubbleCovers.shared.fadeIn(self.bubble, duration, delay)
+
+        UIView.animate(withDuration: 1.0, delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0, options: [.curveEaseOut,.allowUserInteraction,.beginFromCurrentState], animations: {
             self.alpha = 1.0
             self.contentViews[self.contenti].alpha = 1.0
             self.transform = .identity
-            BubbleCovers.shared.fadeIn(self.bubble)
         }, completion: { completed in
             if completed { finished() }
         })
     }
 
     func animateIn(duration: TimeInterval, delay:TimeInterval,finished:@escaping CallVoid) {
-
-        UIView.animate(withDuration:duration, delay:delay, options: [], animations: {
+         BubbleCovers.shared.fadeOut(self.bubble, duration, delay)
+        UIView.animate(withDuration:duration, delay:delay, options: [.allowUserInteraction,.beginFromCurrentState], animations: {
             self.alpha = 0
             self.fromBezel?.alpha = 0
             self.contentViews[self.contenti].alpha = 0.0
@@ -278,34 +291,43 @@ import UIKit
      */
     func tuckIn(timeout:Bool) {
 
-         // .nowait bubbles call gotoNext immediately after popping out
-        func maybeGotoNext() {
-
-            if !bubble.options.contains(.nowait) {
-                Log(bubble.logString("💬 base::maybeGotoNext⟶gotoNext"))
-                gotoNext?()
-            }
-        }
-        // begin ------------------------------
-
         if fadeNext() { return } // more content so skip tuckIN
 
         // overlay waits for new bubble to appear on top
-        if (bubble.nextBub?.options.contains(.overlay) ?? false) {
-            maybeGotoNext()
+        if (bubble.nextBubble?.options.contains(.overlay) ?? false) {
+            onGoing?(.tuckedIn)
             animateIn(duration: 1.0, delay: 1.0, finished:{})
         }
         else {
             animateIn(duration: 1.0, delay: 0, finished: {
-                maybeGotoNext()
+                self.onGoing?(.tuckedIn)
             })
         }
     }
-    func cancelBubble() {
 
-        timer.invalidate()
-        cancelling = true
-        animateIn(duration: 0.5, delay: 0, finished:{})
+    /**
+     When shaking phone to cancel everthing, do a really fast shutdown
+     */
+    func cancelBubble() {
+        if !cancelling {
+            cancelling = true
+            timer.invalidate()
+
+            animateIn(duration: 0.5, delay: 0, finished:{})
+        }
     }
+
+    /**
+     When tapping on screen continue with normal animation with shortened duration
+     */
+    func nudgeBubble() {
+
+        cancelling = true
+        timer.invalidate()
+        animateIn(duration: 0.5, delay: 0, finished: {
+            self.onGoing?(.tuckedIn)
+        })
+    }
+
 }
 

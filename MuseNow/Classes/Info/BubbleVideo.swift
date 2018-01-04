@@ -27,7 +27,7 @@ class BubbleVideo: BubbleBase {
 
     deinit {
          NotificationCenter.default.removeObserver(self)
-        Log(bubble.logString("💬 Video::deinit !!! "))
+        Log(bubble.logString("💬 Video::deinit !!!"))
     }
     
     override func makeBubble(_ bubble:Bubble) {
@@ -58,16 +58,11 @@ class BubbleVideo: BubbleBase {
     /**
      animate bubble onto screen and execute player
      */
-    override func goBubble(_ gotoNext_: @escaping (()->())) {
+    override func goBubble(_ onGoing_: @escaping CallBubblePhase) {
 
         /// Continue with video after popping out bubble
         func playVideo() {
 
-            // nowait, continue with  next bubble
-            if bubble.options.contains(.nowait) && contenti == 0 {
-                Log(bubble.logString("💬 Video::playVideo⟶gotoNext"))
-                gotoNext?()
-            }
             // set time limit
             if contenti < bubble.items.count {
                 setTimeOut()
@@ -82,11 +77,13 @@ class BubbleVideo: BubbleBase {
             }
         }
 
+
         // begin ------------------------
 
-        gotoNext = gotoNext_
+        onGoing = onGoing_
         Log(bubble.logString("💬 Video::goBubble"))
         popOut() {
+            self.onGoing?(.poppedOut)
             playVideo()
         }
     }

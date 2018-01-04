@@ -12,8 +12,8 @@ import UIKit
 class TreeCalendarNode: TreeNode {
 
     init (_ parent_:TreeNode!,_ title_:String, _ cal:Cal!,_ tableVC_:UITableViewController) {
-
-        super.init(.colorTitleMark, parent_, TreeSetting(set:1,member:1,title_), tableVC_)
+        super.init()
+        initialize(.colorTitleMark, parent_, TreeSetting(set:1,member:1,title_), tableVC_)
 
         if let cell = cell as? TreeColorTitleMarkCell {
             cell.setColor(cal.color)
@@ -32,8 +32,8 @@ class TreeCalendarNode: TreeNode {
 class TreeDialColorNode: TreeNode {
 
     init (_ parent_:TreeNode!,_ title_:String,_ tableVC_:UITableViewController) {
-
-        super.init(.titleFader, parent_, TreeSetting(set:0,member:1,title_),tableVC_)
+        super.init()
+        initialize(.titleFader, parent_, TreeSetting(set:0,member:1,title_),tableVC_)
 
         if let cell = cell as? TreeTitleFaderCell {
 
@@ -63,7 +63,8 @@ class TreeDialColorNode: TreeNode {
 
 class TreeActNode: TreeNode {
     init (_ parent_:TreeNode!,_ title_:String, _ set:Int, _ member: Int,_ onAct:DoAction,_ offAct:DoAction,_ tableVC_:UITableViewController) {
-        super.init(.titleMark, parent_, TreeSetting(set:set,member:member,title_),tableVC_)
+        super.init()
+        initialize(.titleMark, parent_, TreeSetting(set:set,member:member,title_),tableVC_)
 
         // callback to set action message based on isOn()
         callback = { treeNode in
@@ -75,15 +76,18 @@ class TreeActNode: TreeNode {
 
 class TreeRoutineCategoryNode: TreeNode {
     init (_ parent_:TreeNode!,_ title_:String,_ tableVC_:UITableViewController) {
-        super.init(.colorTitle, parent_, TreeSetting(set:0,member:1,title_), tableVC_)
+        super.init()
+        initialize(.colorTitle, parent_, TreeSetting(set:0,member:1,title_), tableVC_)
     }
 }
 class TreeRoutineItemNode: TreeNode {
     var routineItem: RoutineItem!
     init (_ type_: TreeNodeType,_ parent_:TreeNode!,_ item:RoutineItem,_ tableVC_:UITableViewController) {
+        super.init()
         routineItem = item
         let setting = TreeSetting(set:0, member:1, item.title, [])
-        super.init(type_, parent_, setting, tableVC_)
+
+        initialize(type_, parent_, setting, tableVC_)
         // callback to refresh display for changes
         callback = { treeNode in
             Actions.shared.doAction(.refresh)

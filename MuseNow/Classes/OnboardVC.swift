@@ -30,7 +30,7 @@ class OnboardPage: UIViewController {
         let bubble = Bubble(title!, [bubItem], .center, .text, CGSize(width:128,height:64),
                             view,view,[],[],[])
 
-        BubbleText(bubble).goBubble() {}
+        BubbleText(bubble).goBubble() {_ in }
     }
 
 }

@@ -51,10 +51,9 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
         eventVC.tableView.reloadData()
     }
     
-
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        BubbleTour().beginTour()
+        BubbleTour().beginTourSet([.tourMain,.tourMenu])
     }
 
     override func viewDidLoad() {

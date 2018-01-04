@@ -58,6 +58,20 @@ class BubbleDraw: UIView {
         self.layer.borderWidth = 1
     }
 
+    override open func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+    }
+    override open func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesMoved(touches, with: event)
+    }
+    override open func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesEnded(touches, with: event)
+    }
+    override open func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesCancelled(touches, with: event)
+    }
+
+
     func makeBubble(_ bubShape_:BubShape, _ size: CGSize,_ base_:UIView,_ from_:UIView) {
 
         bubShape = bubShape_
@@ -78,7 +92,6 @@ class BubbleDraw: UIView {
         }
 
         self.frame = bubFrame
-        isUserInteractionEnabled = true
     }
 
     /**
@@ -107,7 +120,7 @@ class BubbleDraw: UIView {
                           y: y + foh < bH ? y : bH-foh,
                           width:w, height:h)
 
-        //Log("💬 makeBubFrame delta:\(delta) fo:\(fo) xywh:(\(x),\(y)),(\(w),\(h)) bwh:\(bW),\(bH) bubFrame:\(bubFrame.origin),\(bubFrame.size)")
+        //Log("✏︎💬 makeBubFrame delta:\(delta) fo:\(fo) xywh:(\(x),\(y)),(\(w),\(h)) bwh:\(bW),\(bH) bubFrame:\(bubFrame.origin),\(bubFrame.size)")
 
         return
     }

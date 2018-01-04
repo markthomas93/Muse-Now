@@ -97,19 +97,19 @@ extension Node {
     /**
      Reduce nested Suffixs of same type
      
-     - `a (b | (c | d) )  ⟶ a (b | c | d)`
-     - `a (b | (c | d)?)? ⟶ a (b | c | d)?`
-     - `a (b | (c | d)*)* ⟶ a (b | c | d)*`
-     - `a (b | (c | d)*)  ⟶ no change`
-     - `a (b | (c | d)*)? ⟶ no change`
+     - `a (b | (c | d) )   ➛  a (b | c | d)`
+     - `a (b | (c | d)?)?  ➛  a (b | c | d)?`
+     - `a (b | (c | d)*)*  ➛  a (b | c | d)*`
+     - `a (b | (c | d)*)   ➛  no change`
+     - `a (b | (c | d)*)?  ➛  no change`
      
      - Parameter visitor: track nodes already visited to break loops
      */
     func distillSuffixs(_ visitor: Visitor = Visitor(0)) {
         
         /** nested suffix is extension of self
-         - `(a | ( b | c))` ⟶ true
-         - `(a | ( b | c)?)` ⟶ false
+         - `(a | ( b | c))`  ➛  true
+         - `(a | ( b | c)?)`  ➛  false
          */
         func isSelfRecursive(_ node:Node!) -> Bool {
             
@@ -124,7 +124,7 @@ extension Node {
             }
         }
         /** promote nested suffix
-         - `(a | ( b | c))` ⟶ `(a | b | c)`
+         - `(a | ( b | c))`  ➛  `(a | b | c)`
          */
         func distill() {
             

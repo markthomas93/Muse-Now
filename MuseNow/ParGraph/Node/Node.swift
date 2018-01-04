@@ -145,7 +145,7 @@ class Node {
 
     func setMatch(_ str: String, _ matchStr_: @escaping SubStr) {
 
-        print("\"\(str)\" ⟶ ", terminator:"")
+        print("\"\(str)\"  ➛  ", terminator:"")
 
         if let nodeAny = findStrand(ParStr(str)) {
 

@@ -34,7 +34,7 @@ class EventTimeCell: MuCell {
         time.layer.masksToBounds = true
 
 
-        setHighlight(.high, animated:false)
+        setHighlight(.forceHigh, animated:false)
 
     }
     

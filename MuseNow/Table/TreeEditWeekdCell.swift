@@ -111,30 +111,13 @@ class TreeEditWeekdayCell: TreeEditCell {
 
     override func setHighlight(_ highlighting_:Highlighting, animated:Bool = true) {
 
-        if highlighting != highlighting_ {
+        setHighlights(highlighting_,
+                      views:        [bezel],
+                      borders:      [headColor,.white],
+                      backgrounds:  [.black,   .white],
+                      alpha:        1.0,
+                      animated:     animated)
 
-            var index = 0
-            switch highlighting_ {
-            case .high,.forceHigh: highlighting = .high ; index = 1 ; isSelected = true
-            default:               highlighting = .low  ; index = 0 ; isSelected = false
-            }
-            let borders     = [headColor.cgColor, UIColor.white.cgColor]
-            let backgrounds = [UIColor.black.cgColor, UIColor.white.cgColor]
-
-            if animated {
-                animateViews([bezel], borders, backgrounds, index, duration: 0.25)
-            }
-            else {
-                bezel.layer.borderColor    = borders[index]
-                bezel.layer.backgroundColor = backgrounds[index]
-            }
-        }
-        else {
-            switch highlighting {
-            case .high,.forceHigh: isSelected = true
-            default:               isSelected = false
-            }
-        }
     }
 
     override func touchCell(_ point: CGPoint, isExpandable:Bool = true) {

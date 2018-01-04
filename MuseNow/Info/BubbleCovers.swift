@@ -34,7 +34,7 @@ class BubbleCovers {
                 cover.frame.origin = .zero
                 cover.backgroundColor = .black
                 cover.alpha = 0.0
-                cover.isUserInteractionEnabled = false
+                //??// cover.isUserInteractionEnabled = false
 
                 if !covers.contains(cover) {
                     covers.insert(cover)
@@ -46,50 +46,56 @@ class BubbleCovers {
     }
 
     func canFadeIn(_ bub:Bubble) -> Bool {
-        if bub.options.contains(.overlay)        { return false }
-        if bub.prevBub == nil                    { return true  }
-        if bub.prevBub.options.contains(.nowait) { return false }
+        if bub.options.contains(.overlay)           { return false }
+        if bub.prevBubble == nil                    { return true  }
+        if bub.prevBubble.options.contains(.nowait) { return false }
         return true
     }
     func canFadeOut(_ bub:Bubble) -> Bool {
 
-        if bub.options.contains(.nowait)          { return false }
-        if bub.nextBub == nil                     { return true  }
-        if bub.nextBub.options.contains(.overlay) { return false }
+        if bub.options.contains(.nowait)             { return false }
+        if bub.nextBubble == nil                     { return true  }
+        if bub.nextBubble.options.contains(.overlay) { return false }
         return true
     }
     
-//    func fadeIn(_ bub:Bubble) {
-//        if canFadeIn(bub) {
-//            self.covers.forEach { $0.alpha = self.coverAlpha }
-//        }
-//    }
-
-    func fadeOut(_ bub: Bubble) {
-        if canFadeOut(bub) {
-            self.covers.forEach { $0.alpha = 0.0}
+    func fadeIn(_ bubble:Bubble,_ duration:TimeInterval,_ delay:TimeInterval) {
+        if canFadeIn(bubble) { Log(bubble.logString("💬 Covers::fadeIn"))
+            UIView.animate(withDuration: duration, delay: delay, options: [.curveLinear], animations: {
+                self.covers.forEach { $0.alpha = self.coverAlpha }
+            })
+        }
+    }
+    
+    func fadeOut(_ bubble: Bubble,_ duration:TimeInterval,_ delay:TimeInterval) {
+        if canFadeOut(bubble) { Log(bubble.logString("💬 Covers::fadeOut"))
+            UIView.animate(withDuration: duration, delay: delay, options: [.curveLinear], animations: {
+                self.covers.forEach { $0.alpha = 0.0}
+            })
         }
     }
 
     func removeFromSuper() {
+
         covers.forEach { $0.removeFromSuperview() }
         remove.forEach { $0.removeFromSuperview() }
         covers.removeAll()
         remove.removeAll()
     }
-    func maybeRemoveFromSuper(_ bub:Bubble) {
-        if canFadeOut(bub) {
-           removeFromSuper()
+    func maybeRemoveFromSuper(_ bubble:Bubble) {
+        if canFadeOut(bubble) { Log(bubble.logString("💬 Covers::\(#function)"))
+            removeFromSuper()
         }
     }
-    func removeRemainingCovers() {
+    func fadeRemoveRemainingCovers() { Log("💬 Covers::\(#function) covers:\(covers.count) remove:\(remove.count)")
+        if covers.count > 0 || remove.count > 0 {
+            UIView.animate(withDuration:1.0, animations: {
+                self.covers.forEach { $0.alpha = 0 }
+                self.remove.forEach { $0.alpha = 0 }
 
-        UIView.animate(withDuration:0.25, animations: {
-            self.covers.forEach { $0.alpha = 0 }
-            self.remove.forEach { $0.alpha = 0 }
-
-        }, completion: { _ in
-           self.removeFromSuper()
-        })
+            }, completion: { _ in
+                self.removeFromSuper()
+            })
+        }
     }
 }
