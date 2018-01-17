@@ -38,13 +38,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //    }
 
     func applicationWillResignActive(_ application: UIApplication) { Log("⟳☎︎ \(#function)")
-        Active.shared.stopActive()
+        MainVC.shared?.active?.stopActive()
         didStopActive = true
     }
     func applicationDidBecomeActive(_ application: UIApplication) { Log("⟳☎︎ \(#function)")
         if didStopActive {
             didStopActive = false
-            Active.shared.startActive()
+            MainVC.shared?.active?.startActive()
         }
     }
     func applicationDidEnterBackground(_ application: UIApplication) { Log("⟳☎︎ \(#function)")

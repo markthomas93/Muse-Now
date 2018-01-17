@@ -1,6 +1,12 @@
  
 import Foundation
- 
+
+ struct DocumentsDirectory {
+    static let localDocumentsURL: NSURL? = FileManager.default.urls(for: FileManager.SearchPathDirectory.documentDirectory, in: .userDomainMask).last! as NSURL
+    static var url = FileManager.default.url(forUbiquityContainerIdentifier: nil)
+    static let iCloudDocumentsURL = url?.appendingPathComponent("Documents")
+ }
+
  extension FileManager {
     
     static func waitFile (_ recName:String,_ timeOut:TimeInterval,_ completion: @escaping (_ found:Bool) -> Void) {
@@ -20,7 +26,25 @@ import Foundation
             completion (false)
         }
     }
-    
+
+
+    /**
+     iCloud Drive Directory for Documents
+    */
+    static func iCloudDriveURL() -> URL! {
+        let fileMan = FileManager.default
+        if  let ubiqURL = fileMan.url(forUbiquityContainerIdentifier: nil) {
+            let iCloudURL = ubiqURL.appendingPathComponent("Documents")
+            if !fileMan.fileExists(atPath: iCloudURL.path, isDirectory: nil) {
+                do { try fileMan.createDirectory(at: iCloudURL, withIntermediateDirectories: true, attributes: nil) }
+                catch let error as NSError { print(error) }
+            }
+            return iCloudURL
+        }
+        return nil
+    }
+
+
     // shared container for muse apps
     static func museGroupURL() -> URL! {
         let groupName = "group.com.muse.MuseNow"

@@ -5,21 +5,19 @@ import UIKit
 extension TreeTableVC: PhoneCrownDelegate {
     @discardableResult
     func scrollToMakeVisibleCell(_ cell:MuCell!,_ index:Int) -> Bool {
-
+        
         func logScroll(_ cellY:CGFloat,_ cellH:CGFloat,_ tablY:CGFloat,_ tablH:CGFloat,_ deltaY:CGFloat) {
             let scrollY = self.tableView.contentOffset.y
             let cellZ = cellY+cellH
             let tablZ = tablY+tablH
             Log (String(format:"▤ NearestTouch H:%i S:%i C:%i_%i T:%i_%i %i ➛ ",
-                             Int(headerY),
-                             Int(scrollY),
-                             Int(cellY), Int(cellZ),
-                             Int(tablY), Int(tablZ),
-                             Int(deltaY)))
+                        Int(headerY),
+                        Int(scrollY),
+                        Int(cellY), Int(cellZ),
+                        Int(tablY), Int(tablZ),
+                        Int(deltaY)))
         }
-
-
-
+        
         let row = min(index,TreeNodes.shared.shownNodes.count-1)
         let indexPath = IndexPath(row: row, section: 0)
         let cellRect = tableView.rectForRow(at: indexPath)
@@ -32,7 +30,7 @@ extension TreeTableVC: PhoneCrownDelegate {
             let tablH = tableView.bounds.size.height
             let deltaY = cellY < tablY ? cellY - tablY  : (cellY+cellH) - (tablY+tablH)
 
-         // logScroll(cellY,cellH,tablY,tablH,deltaY)
+            logScroll(cellY,cellH,tablY,tablH,deltaY)
 
             UIView.animate(withDuration: 0.25, animations: {
                 self.tableView.contentOffset.y += deltaY
@@ -62,9 +60,40 @@ extension TreeTableVC: PhoneCrownDelegate {
             return str
         }
 
+        /**
+         Best last node is one that is most likely next touch.
+         Thus, alowing multiple taps in same position to explore list.
+         */
+        func getBestLastNode() -> TreeNode! {
+
+            var lastNode = TreeNodes.shared.shownNodes.last
+            let shownNodes = TreeNodes.shared.shownNodes
+
+            if let touchNode = TreeNodes.shared.touchedNode,            // there is a touched node
+                let touchIdex = shownNodes.index(of: touchNode),        // where it's position in shown
+                touchIdex+1 < shownNodes.count-1 {                      // is not the last position
+
+                // for expanded node, choose next sibling as bottom
+                // for collpsed node, chose next aunt as bottom
+                // for top level nodes, there is no aunt, all will be shown
+
+                let exitLevel = touchNode.depth > 0
+                    ? touchNode.level
+                    : touchNode.level-1
+
+                for index in touchIdex+1 ..< shownNodes.count {       // search through the touchNode's
+                    lastNode = shownNodes[index]
+                    if lastNode!.level <= exitLevel {                  // subsequent shown nodes
+                        break
+                    }
+                }
+            }
+            return lastNode
+        }
+
         // begin -------------------------------------------
 
-        if  let lastNode = TreeNodes.shared.shownNodes.last,
+        if  let lastNode = getBestLastNode(),
             let lastCell = lastNode.cell {
 
             let lastY = tableView.rectForRow(at: IndexPath(row:lastNode.row, section:0)).origin.y
@@ -78,7 +107,7 @@ extension TreeTableVC: PhoneCrownDelegate {
 
             Log(logMsg(lastY, lastZ, tablY, tablZ, shift))
 
-            if shift != 0 {
+            if shift > 0 { // shift != 0 causes jitter for negative values when total size is < 1/2 screen size
                 UIView.animate(withDuration: 0.25, animations: {
                     self.tableView.contentOffset.y += shift
                 })
@@ -90,6 +119,7 @@ extension TreeTableVC: PhoneCrownDelegate {
      User force touches our double tapped on phoneCrowndouble
      */
     func phoneCrownToggle(_ isRight:Bool) { Log ("⊛ TreeTableVC::\(#function)")
+
         // toggle mark on the right
         if  isRight,
             let touchedCell = touchedCell as? TreeTitleMarkCell,
@@ -131,9 +161,9 @@ extension TreeTableVC: PhoneCrownDelegate {
             var index = 0
             for node in shownNodes {
                 // found position
-                if node?.cell == findCell {
-                    if node?.row != index {
-                        print("************* node.row:\(node?.row ?? -1) vs index:\(index)")
+                if node.cell == findCell {
+                    if node.row != index {
+                        print("************* node.row:\(node.row) vs index:\(index)")
                     }
                     return index
                 }
@@ -141,6 +171,7 @@ extension TreeTableVC: PhoneCrownDelegate {
             }
             return -1
         }
+        
         /// advance to new cell and highlight
         func highlightNextCell(_ index:Int) {
             switch index {

@@ -1,24 +1,37 @@
 //  CalCell.swift
 
-
+import Foundation
 import UIKit
 import EventKit
 
 public enum ParentChildOther { case parent, child, other }
 
+extension Timer {
+    class func delay(_ delay:TimeInterval,_ fn:@escaping CallVoid) {
+        let _ = Timer.scheduledTimer(withTimeInterval: delay, repeats: false, block: {_ in fn()})
+    }
+}
+
 class TreeCell: MuCell {
 
     var treeNode: TreeNode!
     var autoExpand = true
-    
+
     var left: UIImageView!
     var bezel: UIView!
+
     var info: UIImageView!
+    var infoIcon = ""
+    var infoSection: BubbleSection!
+    var infoDelay = TimeInterval(4.0)
+    var infoShowing = false
+    var infoTimer = Timer()
 
     var cellFrame = CGRect.zero
     var leftFrame = CGRect.zero
     var bezelFrame = CGRect.zero
     var infoFrame = CGRect.zero
+    var infoTap = CGRect.zero // tap area for info button, while it is showing
 
     let leftW   = CGFloat(24)   // width (and height) of left disclosure image
     let infoW   = CGFloat(22)
@@ -26,6 +39,7 @@ class TreeCell: MuCell {
     let marginW = CGFloat(8)    // margin between elements
     let marginH = CGFloat(4)    //
     let oldInfoAlpha = CGFloat(0.25)
+    var touched = false         // last touched cell, updated durning renumber calling setParentChildOther
 
     var parentChild = ParentChildOther.other
     var lastLocationInTable = CGPoint.zero
@@ -43,7 +57,7 @@ class TreeCell: MuCell {
         treeNode = treeNode_
         buildViews(frame.size.width)
     }
-    
+
     /**
      */
     func buildViews(_ width:CGFloat) {
@@ -52,7 +66,7 @@ class TreeCell: MuCell {
         frame = cellFrame
 
         selectionStyle = .none
-        contentView.backgroundColor = .clear
+        contentView.backgroundColor = .black
         backgroundColor = .clear
 
         // left
@@ -69,6 +83,7 @@ class TreeCell: MuCell {
         bezel.backgroundColor = .clear
         bezel.layer.cornerRadius = innerH/4
         bezel.layer.borderWidth = 1
+        bezel.layer.masksToBounds = true //!!!//
         bezel.layer.borderColor = cellColor.cgColor
 
         contentView.addSubview(left)
@@ -77,52 +92,50 @@ class TreeCell: MuCell {
         selectedBackgroundView = UIView()
         selectedBackgroundView?.backgroundColor = .black
 
-        bezel.frame = bezelFrame
+        info = UIImageView(frame:infoFrame)
+        info.backgroundColor = .clear
+        self.addSubview(info)
+        info.alpha = 0.0
+        infoShowing = false
 
+        bezel.frame = bezelFrame
     }
-    
+
     /**
      */
     func updateFrames(_ width:CGFloat) {
 
-        let infoX = width - height + infoW/2
+        let infoTx = width - height // tappable x
+        let infoX = infoTx + infoW/2
         let infoY = (height - infoW) / 2
-        cellFrame = CGRect(x: 0,     y:0,     width: width, height: height)
-        infoFrame = CGRect(x: infoX, y:infoY, width: infoW, height: infoW)
+        cellFrame = CGRect(x: 0,      y:0,     width: width, height: height)
+        infoFrame = CGRect(x: infoX,  y:infoY, width: infoW, height: infoW)
+        infoTap   = CGRect(x: infoTx, y:0,     width: height, height: height)
         bezelFrame = cellFrame
     }
 
-
     /**
-     Called after adding an TreeInfo to its parent node. The info button calls out an information bubble.
      */
-    func updateInfo(_ width:CGFloat) {
+    func addInfoBubble(_ infoSection_:BubbleSection) {
 
-        if let showInfo = treeNode?.showInfo {
+        if let tourSet = infoSection_.tourSet {
+            infoSection = infoSection_
+            if      tourSet.contains(.information)  { treeNode?.showInfo = .information  }
+            else if tourSet.contains(.purchase)     { treeNode?.showInfo = .purchase     }
+            else if tourSet.contains(.construction) { treeNode?.showInfo = .construction }
+            else                                    { treeNode?.showInfo = .nothingHere  }
 
-            if info == nil {
+            if let showInfo = treeNode?.showInfo {
+
+                //infoAlpha = 0
 
                 switch showInfo {
-
-                case .noInfo: break
-
-                case .newInfo, .oldInfo:
-
-                    info = UIImageView(frame:infoFrame)
-                    info.image = UIImage(named:"icon-Info.png")
-                    info.backgroundColor = .clear
-                    info.alpha = (showInfo == .newInfo ? 1.0 : oldInfoAlpha)
-
-                    self.addSubview(info)
-                    updateViews(width)
+                case .information:  infoIcon = "icon-Information.png"
+                case .construction: infoIcon = "icon-Construction.png"
+                case .purchase:     infoIcon = "icon-Dollar.png" //  "icon-Cart.png"
+                case .nothingHere:  return
                 }
-            }
-            else {
-                switch showInfo {
-                case .noInfo: alpha = 0.0
-                case .newInfo: alpha = 1.0
-                case .oldInfo: alpha = 0.25
-                }
+                info.image = UIImage(named:infoIcon)
             }
         }
     }
@@ -143,7 +156,7 @@ class TreeCell: MuCell {
     func updateOnRatioOfChildrenMarked() {
         // override
     }
-    
+
     /**
      */
     func updateLeft(animate:Bool) {
@@ -171,6 +184,7 @@ class TreeCell: MuCell {
             case .timeTitleDays:     expandable = true
 
             case .titleFader,
+                 .titleButton,
                  .editTime,
                  .editTitle,
                  .editWeekday,
@@ -189,7 +203,6 @@ class TreeCell: MuCell {
             UIView.animate(withDuration: 0.25, animations: {
                 self.left.transform = transform
                 self.left.alpha = alphaNext
-
             })
         }
         else {
@@ -205,15 +218,52 @@ class TreeCell: MuCell {
      - note: renumbering currently conflicts with collapsing siblings,
      which is why the TouchCell event will set highlighting to forceHigh
      */
-    func setParentChildOther(_ parentChild_:ParentChildOther, touched:Bool) {
+    func setParentChildOther(_ parentChild_:ParentChildOther, touched touched_:Bool) {
 
+        touched = touched_
         parentChild = parentChild_
         setHighlight(touched ? .forceHigh : .refresh)
     }
-    /**
-     */
+
+    override func setHighlights(_ highlighting_:Highlighting, views:[UIView], borders:[UIColor], backgrounds:[UIColor], alpha:CGFloat, animated:Bool) {
+
+        super.setHighlights(highlighting_,
+                            views:        views,
+                            borders:      borders,
+                            backgrounds:  backgrounds,
+                            alpha:        alpha,
+                            animated:     animated)
+
+        infoTimer.invalidate()
+
+        let isHigh =  [.forceHigh,.high].contains(highlighting)
+
+        if isHigh {
+            if animated { animateInfo(newAlpha: 1.0, duration: 1.0, delay: infoDelay)}
+            else        { info.alpha = 1.0 ; infoShowing = true }
+        }
+        else {
+             //??// BubbleTour.shared.cancelSection(infoSection)
+            if animated { animateInfo(newAlpha: 0.0, duration: 0.25, delay: 0)}
+            else        { info.alpha = 0.0 ; infoShowing = false }
+        }
+    }
+    func animateInfo(newAlpha:CGFloat, duration:TimeInterval, delay:TimeInterval) {
+
+        infoTimer.invalidate()
+        infoTimer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false, block: { _ in
+
+            self.infoShowing = (newAlpha > 0)
+            //Log("⏲ animateInfo \(self.treeNode.setting.title) alpha: \(newAlpha)")
+
+            UIView.animate(withDuration: duration, delay: 0, options: [.allowUserInteraction,.beginFromCurrentState], animations: {
+                self.info.alpha = newAlpha
+            })
+        })
+    }
+
     override func setHighlight(_ highlighting_:Highlighting, animated:Bool = true) {
-        
+
         var newAlpha: CGFloat!
         var border: UIColor!
         var background: UIColor!
@@ -229,6 +279,7 @@ class TreeCell: MuCell {
                       backgrounds:  [background, background],
                       alpha:        newAlpha,
                       animated:     animated)
+
     }
 
     /**
@@ -236,43 +287,17 @@ class TreeCell: MuCell {
      or directly touched the info. If so, then wait
      until the info has played before conintuing to afterInfo()
      */
-    func touchedInfo(_ location: CGPoint, done: @escaping ((Bool)->())) {
+    func touchedInfo(_ location: CGPoint, done: @escaping CallBool) {
 
-        func showInfo(_ treeInfo: TreeInfo,_ done: @escaping ((Bool)->())) {
-            treeNode.showInfo = .oldInfo
-            treeInfo.showInfoCell(from:info, in:self, done: { _ in
-                UIView.animate(withDuration: 0.25, animations: {
-                    self.info.alpha = self.oldInfoAlpha
-                })
-                done(true)
-            })
+        if  info.alpha > 0,
+            let treeNode = treeNode,
+            treeNode.showInfo != .nothingHere,
+            info.alpha == 1.0,
+            infoTap.contains(location) {
 
+            return BubbleTour.shared.tourSection(infoSection,done)
         }
-
-        if  let treeNode = treeNode,
-            let treeInfo = treeNode.treeInfo {
-
-            switch treeNode.showInfo {
-
-            case .newInfo:
-
-                return showInfo(treeInfo, done)
-
-            case .oldInfo:
-
-                let bezelX = bezelFrame.origin.x
-                let bezelW = bezelFrame.size.width
-                let infoX0 = bezelX + bezelW - height
-                let infoX1 = infoX0 + height
-                if  location.x >= infoX0,
-                    location.x <= infoX1 {
-
-                    return showInfo(treeInfo, done)
-                }
-            case .noInfo: break
-            }
-        }
-        // either noInfo or error, so continue immediately
+        // either nothingHere or error, so continue immediately
         done(false)
     }
 
@@ -294,6 +319,7 @@ class TreeCell: MuCell {
             if let row = treeNode?.row {
                 lastLocationInTable = tableVC.tableView.rectForRow(at: IndexPath(row:row, section:0)).origin
             }
+            // collapse any sibling that is expanded
             if treeNode.parent != nil {
                 for sib in treeNode.parent.children {
                     if sib.expanded {
@@ -303,44 +329,28 @@ class TreeCell: MuCell {
                     }
                 }
             }
+
             // expand me when I have children and status wasn't change by collapsing siblings
             let expandMe = (treeNode.children.count > 0) && (wasExpanded == treeNode.expanded) && isExpandable
-            touchSelf(expandMe, withDelay: siblingCollapsing)
+
+            func touchAndScroll() {
+                if expandMe { touchFlipExpand() }
+                else { setHighlight(.forceHigh) }
+                (tableVC as? TreeTableVC)?.scrollToNearestTouch(self)
+            }
+
+            if siblingCollapsing { Timer.delay(0.25,touchAndScroll) }
+            else                 { touchAndScroll() }
         }
 
         // begin ------------------------------
 
-         touchedInfo(location) { touchingInfo in
+        touchedInfo(location) { touchingInfo in
             // expand children, optionally after playing info
             let wasCollapsed = self.treeNode.expanded == false
             if !touchingInfo || wasCollapsed {
                 afterInfo()
             }
-        }
-    }
-    /**
-     */
-    func touchSelf(_ expandMe:Bool, withDelay:Bool) {
-
-        func touchAndScroll() {
-            if expandMe {
-                touchFlipExpand()
-            }
-            else {
-                setHighlight(.forceHigh)
-            }
-            (tableVC as? TreeTableVC)?.scrollToNearestTouch(self)
-        }
-
-        // begin ------------
-
-        if withDelay {
-            let _ = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: {_ in //???//
-                touchAndScroll()
-            })
-        }
-        else {
-            touchAndScroll()
         }
     }
 

@@ -10,7 +10,6 @@ import UIKit
 
 extension TreeTableVC {
 
-
     @objc func keyboardWillShow(_ notification: Notification) {
 
         if !blockKeyboard,
@@ -38,6 +37,7 @@ extension TreeTableVC {
             })
         }
     }
+
     @objc func keyboardWillHide(_ notification: Notification) {
         if touchedCell?.treeNode?.parent?.expanded == true {
             if  let lastSiblingNode = touchedCell?.treeNode?.parent?.children.last,

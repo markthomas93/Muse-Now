@@ -19,8 +19,6 @@ class TreeTableVC: UITableViewController {
     override func viewDidLoad() {
 
         super.viewDidLoad()
-
-        TreeNodes.shared.root = TreeNode(.titleMark, nil, TreeSetting(set:0,member:1,"Settings"), self)
         tableView.backgroundColor = .black
         self.view.backgroundColor = .black
     }
@@ -38,7 +36,7 @@ class TreeTableVC: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
 
-        initTree()
+        TreeNodes.shared.initTree(self)
 
         if show == nil {
             tableView.contentOffset.y = 0
@@ -90,114 +88,6 @@ class TreeTableVC: UITableViewController {
     }
 
     /**
-     Initialize once. There is more than one way of getting here:
-     - onboarding bubble tour
-     - swiping over from another page
-     */
-    func initTree() {
-
-        if show != nil {
-            return
-        }
-        let root = TreeNodes.shared.root
-
-        // show | hide - Calendars & Reminders
-
-        let showSet = Show.shared.showSet.rawValue
-        show = TreeNode(.titleMark, root, TreeSetting(set:0, member:1, "show | hide"), self)
-        let showCal = TreeActNode(show, "calendars", showSet, ShowSet.calendar.rawValue, .showCalendar , .hideCalendar, self)
-        for (key,cals) in Cals.shared.sourceCals {
-            if cals.count == 1 {
-                let _ = TreeCalendarNode(showCal, key, cals.first, self)
-            }
-            else {
-                for cal in cals {
-                    let _ = TreeCalendarNode(showCal, cal!.title, cal, self)
-                }
-            }
-        }
-        let _   = TreeActNode(show,"reminders", showSet, ShowSet.reminder.rawValue, .showReminder, .hideReminder, self)
-
-
-        // show | hide - dial
-
-        let dial = TreeNode(.title, show, "dial", self)
-        let _ =  TreeDialColorNode(dial, "color", self)
-
-        // show | hide - Routine
-
-        let preview = TreeNode(.title, show, "preview", self)
-
-        let routine = TreeActNode(preview,"routine", showSet, ShowSet.routine.rawValue, .showRoutine, .hideRoutine, self)
-
-        let routineInfo =
-        """
-            Show your weekly routine on the clock face. \n
-            You can edit times, titles, and days of the week, but not categories or colors. \n
-            A more customizable version will be available for purchase in an upcoming release.
-            """
-        let _ = TreeInfo(routine, routineInfo, height:128, self)
-
-        let catalog = Routine.shared.catalog
-        for category in Routine.shared.categories {
-            let catNode = TreeRoutineCategoryNode(routine, category, self)
-            if let cell = catNode.cell as? TreeColorTitleCell,
-                let rgb = Routine.shared.colors[category] {
-                cell.setColor(rgb)
-            }
-            for item in catalog[category]! {
-                let _ = TreeRoutineItemNode(.timeTitleDays, catNode, item, self)
-            }
-        }
-
-        // show | hide - Memos
-
-        let memos  = TreeActNode(preview, "memos", showSet, ShowSet.memo.rawValue, .showMemo, .hideMemo, self)
-
-        let memoInfo = """
-            This experiment allows you to record audio memos, which are converted to text.
-
-            To record: \
-            On Apple Watch, rotate away and back again, like throttling a motorcycle and lower your wrist to stop. \
-            On iPhone, tilt device away and back again to record. Repeat that motion stop. \
-            Or simply triple-tap on the dial to record and stop.
-
-            All your recordings are privately saved in your iTunes folder. We don't have a copy and never will. \
-            We will provide a button to automatically erase these files. Or, you can manually copy from your iTunes folder.
-            """
-        let _ = TreeInfo( memos, memoInfo, height: 256, self)
-
-
-        // say | skip
-
-        let saySet = Say.shared.saySet.rawValue
-        let say = TreeNode(.titleMark, root, "say | skip", self)
-        let _  = TreeActNode(say, "event", saySet, SaySet.event.rawValue, .sayEvent, .skipEvent, self)
-        let _  = TreeActNode(say, "time",  saySet, SaySet.time.rawValue,  .sayTime,  .skipTime, self)
-        let _  = TreeActNode(say, "memo",  saySet, SaySet.memo.rawValue,  .sayMemo,  .skipMemo, self)
-
-        // hear | mute
-
-        let hearSet = Hear.shared.hearSet.rawValue
-        let hear = TreeNode(.title, root, "hear | mute", self)
-        let _   = TreeActNode(hear,"speaker", hearSet, HearSet.speaker.rawValue, .hearSpeaker , .muteSpeaker, self)
-        let _   = TreeActNode(hear,"earbuds", hearSet, HearSet.earbuds.rawValue, .hearEarbuds , .muteEarbuds, self)
-
-        // about
-        let about = TreeNode(.title, root, "about", self)
-        let _     = TreeNode(.title, about, "support", self)
-        let _     = TreeNode(.title, about, "news", self)
-
-        let tour  = TreeNode(.title, about, "tour", self)
-        let _     = TreeNode(.title, tour, "main", self)
-        let _     = TreeNode(.title, tour, "menu", self)
-
-        // setup table cells from current st
-        root!.refreshNodeCells()
-        TreeNodes.shared.renumber(nil)
-    }
-
-    /**
      remove highlight for sibling cell
      */
     func setTouchedCell(_ cell: TreeCell!) {
@@ -208,7 +98,7 @@ class TreeTableVC: UITableViewController {
             touchedCell.setHighlight(.low)
         }
         touchedCell = cell
-        //???// touchedCell.setHighlight(.high)
+        TreeNodes.shared.touchedNode = cell.treeNode
     }
 
     /**

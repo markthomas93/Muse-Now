@@ -4,7 +4,7 @@ import UIKit
 import WatchKit
 import MobileCoreServices
 
-class FileSync: NSObject {
+class FileSync: NSObject, FileManagerDelegate {
     
     let session = Session.shared
     var fileName = "" // override name at init()
@@ -41,88 +41,57 @@ class FileSync: NSObject {
         }
         return false
     }
-
     /**
-     Save array into file. Explicitly set creation date to either local time or remote time.
-    */
-    @discardableResult
-    func archiveArray(_ root: [Any], _ updateTime:TimeInterval) -> Bool {
-
-        let deltaTime = updateTime - memoryTime
-        //Log ("⧉ archive:\(fileName) count:\(root.count) memory ➛ update time: \(memoryTime) ➛ \(updateTime) 𝚫\(deltaTime)")
-        if deltaTime > 0 {
-            let data = NSKeyedArchiver.archivedData(withRootObject:root)
-            return saveData(data,updateTime)
-        }
-        return false
-    }
-    
-    /**
-     Save Dictionary into file. Explicitly set creation date to either local time or remote time.
+     Read file into data
      */
-    func archiveDict(_ root: [String:Any], _ updateTime:TimeInterval) -> Bool {
-
-        let deltaTime = updateTime - memoryTime
-        //Log ("⧉ archiveDict:\(fileName) count:\(root.count) memory ➛ update time: \(memoryTime) ➛ \(updateTime)  𝚫\(deltaTime)")
-        if deltaTime > 0 {
-            let data = NSKeyedArchiver.archivedData(withRootObject:root)
-            return saveData(data,updateTime)
-        }
-        return false
-    }
-    
-    /**
-     Read file into array
-     */
-     func unarchiveArray(completion: @escaping (_ result:[Any]) -> Void) {
+    func unarchiveData(completion: @escaping (_ data: Data?) -> Void) {
         let url = FileManager.documentUrlFile(self.fileName)
-
-        if  let data = NSData(contentsOf: url),
-            let array = NSKeyedUnarchiver.unarchiveObject(with:data as Data) as? [Any] {
-            memoryTime = getFileTime() //??
-            Log ("⧉ unarchiveArray:\(fileName) memoryTime:\(memoryTime) count:\(array.count)")
-            completion(array)
-        }
-        else {
-            Log ("⧉ unarchiveArray:\(fileName) count:0")
-            completion([])
-        }
-    }
-    
-    
-    /**
-     Read file into dictionary.
-     */
-    func unarchiveDict(completion: @escaping (_ result:[String:Any]) -> Void) {
-        
-        let url = FileManager.documentUrlFile(fileName)
-        
-        if  let data = NSData(contentsOf: url),
-            let dict = NSKeyedUnarchiver.unarchiveObject(with:data as Data) as? [String:Any] {
+        if let data = NSData(contentsOf: url as URL) as Data? {
             memoryTime = getFileTime()
-            Log ("⧉ unarchiveDict:\(fileName)  memoryTime:\(memoryTime) count:\(dict.count)") ; //Log("⧉ unarchiveDict url:\(url)") //!!!
-            completion(dict)
+            Log ("⧉ unarchiveData:\(fileName) memoryTime:\(memoryTime) count:\(data)")
+            completion(data)
         }
         else {
-            //Log ("⧉ unarchiveDict:\(fileName) count:0")
-            completion([:])
+            Log ("⧉ unarchiveData:\(fileName) count:0")
+            completion(nil)
         }
     }
 
     /**
-     Remove all files that match a prefix string, such as "Memo_". Process in background
+     Save data into file. Explicitly set creation date to either local time or remote time.
      */
-    func removeAllDocPrefix(_ prefix:String) {
-        func dispatch() {
-            let docUrl = FileManager.documentURL()
-            let fileMgr = FileManager.default
-            do {
-                let files = try fileMgr.contentsOfDirectory(atPath: docUrl.path)
-                for fname in files {
+    @discardableResult
+    func archiveData(_ data: Data, _ updateTime:TimeInterval) -> Bool {
 
+        let deltaTime = updateTime - memoryTime
+        Log ("⧉ archiveData:\(fileName) memory ➛ update time: \(memoryTime) ➛ \(updateTime) 𝚫\(deltaTime)")
+        if deltaTime > 0 {
+            return saveData(data,updateTime)
+        }
+        return false
+    }
+
+
+    /**
+     Move all files that match a prefix string, such as "Memo_" to iCloudDrive directory
+     */
+    func moveAllDocPrefix(_ prefix:String) {
+        
+        func dispatch() {
+
+            let fileMgr = FileManager.default
+            fileMgr.delegate = self
+            let documentUrl = FileManager.documentURL()
+            let iDriveUrl = FileManager.iCloudDriveURL()
+
+            do { let files = try fileMgr.contentsOfDirectory(atPath: documentUrl.path)
+                 for fname in files {
                     if fname.hasPrefix(prefix) {
-                        let remURL = docUrl.appendingPathComponent(fname)
-                        try fileMgr.removeItem(at: remURL)
+                        let removeUrl = documentUrl.appendingPathComponent(fname)
+                        let driveUrl = iDriveUrl!.appendingPathComponent(fname)
+                        if fileMgr.fileExists(atPath: driveUrl.path) { continue }
+                        try FileManager().copyItem(at:removeUrl, to:driveUrl)
+                        //???// try fileMgr.removeItem(at: remURL)
                     }
                 }
             }

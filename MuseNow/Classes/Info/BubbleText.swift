@@ -56,15 +56,7 @@ class BubbleText: BubbleBase  {
             label.text = item.str
             label.adjustsFontSizeToFitWidth = true
             label.lineBreakMode = .byTruncatingTail
-            if bubble.options.contains(.left) {
-                label.textAlignment = .left
-            }
-            else if bubble.options.contains(.right) {
-                label.textAlignment = .right
-            }
-            else {
-                label.textAlignment = .center
-            }
+            label.textAlignment = .center
             label.adjustsFontForContentSizeCategory = true
             label.numberOfLines = 0
             label.textColor = .white

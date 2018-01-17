@@ -7,7 +7,7 @@ import EventKit
 extension TreeTableVC {
 
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        //Log("⿳ scrollY: \(Int(self.tableView.contentOffset.y))")
+        //Log("▤ scrollY: \(Int(self.tableView.contentOffset.y))")
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -16,7 +16,7 @@ extension TreeTableVC {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let rows = TreeNodes.shared.shownNodes.count
-        //Log("⿳ numberOfRowsInSection: \(rows)")
+        //Log("▤ numberOfRowsInSection: \(rows)")
         return rows
     }
 
@@ -27,7 +27,7 @@ extension TreeTableVC {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let row = indexPath.row
         let node = TreeNodes.shared.shownNodes[row]
-        if let height = node?.cell?.height {
+        if let height = node.cell?.height {
             return height
         }
         return rowHeight
@@ -36,7 +36,7 @@ extension TreeTableVC {
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         var shownRowsHeight = CGFloat(0)
         for node in TreeNodes.shared.shownNodes {
-            if let cell = node?.cell {
+            if let cell = node.cell {
                 shownRowsHeight += cell.height
             }
         }
@@ -44,7 +44,7 @@ extension TreeTableVC {
         let middle = tableView.bounds.height / 2
         headerY = max(middle,tableView.bounds.height - shownRowsHeight)
         //headerY = max(0,tableView.bounds.height - shownRowsHeight)
-        //Log("⿳ heightForHeaderInSection: \(headerY)")
+        Log("▤ heightForHeaderInSection: \(headerY)")
         return headerY
     }
 
@@ -59,8 +59,10 @@ extension TreeTableVC {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let row = indexPath.row
-        if let node = TreeNodes.shared.shownNodes[row] {
-            //Log("⿳ cellForRowAt:\(row) title:\(node.cell.title.text!)")
+        let shownNodes = TreeNodes.shared.shownNodes
+        if row < shownNodes.count {
+            let node = shownNodes[row]
+            //Log("▤ cellForRowAt:\(row) title:\(node.cell.title.text!)")
             return node.cell
         }
         return UITableViewCell()

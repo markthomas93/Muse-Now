@@ -46,8 +46,14 @@ class MuColor {
     
     class func colorFrom(cgColor: CGColor) -> UInt32 {
         
-        let rgba = cgColor.components
-        return makeColor32((rgba?[0])!,(rgba?[1])!,(rgba?[2])!)
+        if let rgba = cgColor.components {
+            switch rgba.count {
+            case 0: return 0
+            case 1,2: return makeColor32(rgba[0], rgba[0], rgba[0]) // gray
+            default:  return makeColor32(rgba[0], rgba[1], rgba[2]) // color
+            }
+        }
+        return 0
     }
     
     class func colorFrom(event: EKEvent, _ type: EventType = .ekevent) -> UInt32 {

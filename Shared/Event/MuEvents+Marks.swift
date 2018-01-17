@@ -12,9 +12,9 @@ extension MuEvents {
     }
     
     /**
-     Refresh all event's marks, after reading Marks.plist
+     Refresh all event's marks, after reading Marks.Json
       - via: MuEvents::updateEvents
-      - via: Session::parseMsg(Msg["addFile":"Marks.plist",...])
+      - via: Session::parseMsg(Msg["addFile":"Marks.Json",...])
      */
     func applyMarks() { Log ("✓ \(#function)")
         

@@ -10,14 +10,13 @@ class Cals: FileSync {
     static let shared = Cals()
     
     var ekCals = [EKCalendar]()         // event kit calendars minus holidays and contacts
-    var cals = [Cal!]()                  // muse translated version of EKCalendar
+    var cals = [Cal]()                  // muse translated version of EKCalendar
     var idCal = [String:Cal!]()         // retreive cal from its calendarID
     var sourceCals = [String:[Cal!]]()  // each data source may have several calendars
-    
 
     override init() {
         super.init()
-        fileName = "Cals.plist"
+        fileName = "Calendars.json"
     }
     
     // EKCalendar --------------------------------------------
@@ -57,37 +56,43 @@ class Cals: FileSync {
             }
         }
         // apply archived calendars isOn preferences
-        unarchiveArray() { array in
-            let fileCals = array as! [Cal]
-            for fileCal in fileCals {
-                
-                if let memCal = self.idCal[fileCal.calId] {
-                    memCal.isOn = fileCal.isOn
+        unarchiveData() { data in
+
+            if  let data = data,
+                let fileCals = try? JSONDecoder().decode([Cal].self, from:data) {
+                for fileCal in fileCals {
+                    if let memCal = self.idCal[fileCal.calId] {
+                        memCal.isOn = fileCal.isOn
+                    }
                 }
+                return completion()
             }
-            completion()
+            else {
+                completion()
+            }
         }
     }
 
-    
     // File -------------------------------------------------
-    
 
-  
-    func updateCalsArchive() {
+    func archiveCals(done:@escaping CallVoid) {
 
-        if archiveArray(cals,Date().timeIntervalSince1970) {
+        if let data = try? JSONEncoder().encode(cals) {
+            let _ = saveData(data, Date().timeIntervalSince1970)
             Actions.shared.doRefresh(/*isSender*/false)
             sendSyncFile()
+            return done()
         }
+        done()
     }
+
 
     /// find and update event Marker
     func updateMark(_ calId:String,_ isOn:Bool) {
         for cali in cals {
-            if cali?.calId == calId {
-                cali!.isOn = isOn
-                updateCalsArchive()
+            if cali.calId == calId {
+                cali.isOn = isOn
+                archiveCals {}
                 return
             }
         }

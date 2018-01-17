@@ -66,7 +66,8 @@ class TreeInfoApproveCell: TreeCell {
         let titleX = marginW
         let titleW = bezelW - titleX - marginW
 
-        let infoX = width - height + infoW/2
+        let infoTx = width - height // tappable x
+        let infoX = infoTx + infoW/2
         let infoY = (height - infoW) / 2
 
         cellFrame  = CGRect(x: 0,      y: 0,      width: width,  height: height)
@@ -74,6 +75,7 @@ class TreeInfoApproveCell: TreeCell {
         titleFrame = CGRect(x: titleX, y: 0,      width: titleW, height: bezelH)
         bezelFrame = CGRect(x: bezelX, y: bezelY, width: bezelW, height: bezelH)
         infoFrame  = CGRect(x: infoX,  y: infoY,  width: infoW,  height: infoW)
+        infoTap    = CGRect(x: infoTx, y:0,       width: height, height: height)
         autoExpand = false
     }
 

@@ -17,9 +17,9 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.12.11.a</string>
+	<string>2018.01.12</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>2</string>
 	<key>CLKComplicationPrincipalClass</key>
 	<string>$(PRODUCT_MODULE_NAME).Complication</string>
 	<key>CLKComplicationSupportedFamilies</key>
@@ -82,5 +82,17 @@
 	<string>com.muse.MuseNow</string>
 	<key>NSPrincipalClass</key>
 	<string>MyApplication</string>
+	<key>NSUbiquitousContainers</key>
+	<dict>
+		<key>iCloud.com.muse.MuseNow</key>
+		<dict>
+			<key>NSUbiquitousContainerIsDocumentScopePublic</key>
+			<true/>
+			<key>NSUbiquitousContainerName</key>
+			<string>MuseNow</string>
+			<key>NSUbiquitousContainerSupportedFolderLevels</key>
+			<string>Any</string>
+		</dict>
+	</dict>
 </dict>
 </plist>

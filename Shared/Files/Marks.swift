@@ -2,26 +2,18 @@
 
 import Foundation
 
-class Marks: FileSync {
+class Marks: FileSync, Codable {
     
     static let shared = Marks()
+
     var idMark = [String:Mark]()
 
     override init() {
         super.init()
-        fileName = "Marks.plist"
+        fileName = "Marks.json"
     }
 
-    func unarchiveMarks(_ completion: @escaping () ->Void) {
-        
-        unarchiveArray() { array in
-            if let markArray = array as? [Mark] {
-                self.updateMarks(markArray)
-                completion()
-            }
-        }
-    }
-    
+
      func updateMarks(_ dataItems:[Mark]) {
 
         let weekSecs: TimeInterval = (7*24+1)*60*60 // 168+1 hours as seconds
@@ -59,7 +51,27 @@ class Marks: FileSync {
             default: return
             }
         }
-        let _ = archiveArray(Array(idMark.values), Date().timeIntervalSince1970)
-        Marks.shared.sendSyncFile() 
+        archiveMarks() { print(#function) }
     }
+
+    func archiveMarks(done:@escaping CallVoid) {
+        if let data = try? JSONEncoder().encode(idMark) {
+            let _ = saveData(data, Date().timeIntervalSince1970)
+        }
+        Marks.shared.sendSyncFile()
+    }
+
+    func unarchiveMarks(_ completion: @escaping () -> Void) {
+        unarchiveData() { data in
+            if let data = data,
+                let newIdMark = try? JSONDecoder().decode([String:Mark].self, from:data) {
+                self.idMark.removeAll()
+                self.idMark = newIdMark
+                return completion()
+            }
+            completion()
+        }
+
+    }
+
 }

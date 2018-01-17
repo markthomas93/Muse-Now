@@ -20,7 +20,7 @@ public enum DoAction : Int { case
     muteEarbuds, muteSpeaker,
 
     // tour
-    tourMain, tourMenu, tourOnboard, stopTour,
+    tourAll, tourMain, tourMenu, tourOnboard, stopTour,
 
     // show
     showCalendar, hideCalendar,
@@ -32,7 +32,7 @@ public enum DoAction : Int { case
 
     showEvents, showAlarms, showMarks,showTime,
     markOn, markOff,
-    memoClearAll, markClearAll,
+    memoMoveAll, markClearAll,
     noteAdd, noteRemove,
     //chimeOff, chimeLow, chimeMedium, chimeHigh, chimeOn,
     debugOn, debugOff,
@@ -142,14 +142,14 @@ class Actions {
         scene.updateSceneFinish()
         
         if isSender {
-            let data = NSKeyedArchiver.archivedData(withRootObject:event)
-            Session.shared.sendMsg(
-                ["class" : "MuseEvent",
-                 "addEvent" : data])
+            if let data = try? JSONEncoder().encode(event) {
+                Session.shared.sendMsg(
+                    ["class" : "MuseEvent",
+                     "addEvent" : data])
+            }
         }
     }
     
-      
     func doUpdateEvent(_ event:MuEvent, isSender: Bool) {
         
         scene.pauseScene()
@@ -159,8 +159,8 @@ class Actions {
         if event.type == .memo {
             Memos.shared.updateMemoArchive()
         }
-        if isSender {
-            let data = NSKeyedArchiver.archivedData(withRootObject:event)
+        if isSender,
+            let data = try? JSONEncoder().encode(event) {
             Session.shared.sendMsg(["class"       : "MuseEvent",
                                     "updateEvent" : data])
         }
@@ -219,7 +219,7 @@ class Actions {
         strActs.append(contentsOf:Say.shared.getMenus())
         
         strActs.append(StrAct("clear all marks",.markClearAll))
-        strActs.append(StrAct("clear all memos",.memoClearAll))
+        strActs.append(StrAct("clear all memos",.memoMoveAll))
         strActs.append(StrAct("refresh",.refresh))
     }
 
@@ -251,7 +251,7 @@ class Actions {
 
             Show.shared.doShowAction(act, isSender: true)
 
-        case .tourMain, .tourMenu, .tourOnboard, .stopTour:
+        case .tourAll, .tourMain, .tourMenu, .tourOnboard, .stopTour:
             #if os(iOS)
                 BubbleTour.shared.doTourAction(act)
             #endif
@@ -284,8 +284,8 @@ class Actions {
             Anim.shared.animNow = .futrWheel
             Anim.shared.userDotAction()
 
-        case .memoClearAll:  markAction(act, event, index, isSender)
-        /**/                Memos.shared.clearAll()
+        case .memoMoveAll:  markAction(act, event, index, isSender)
+        /**/                Memos.shared.moveAll()
         /**/                doRefresh(isSender)
             
         case .refresh:      doRefresh(isSender)
@@ -343,7 +343,7 @@ class Actions {
         case .markOn:       markEvent = dot.setMark(true, event)
         case .markOff:      markEvent = dot.setMark(false, event)
         case .markClearAll: break //!!!! Dots.shared.hideEventsWith(type:.mark)
-        case .memoClearAll: Dots.shared.hideEventsWith(type:.memo)
+        case .memoMoveAll: Dots.shared.hideEventsWith(type:.memo)
         default: break
         }
         

@@ -9,6 +9,18 @@
 import Foundation
 import UIKit
 
+class TreeButtonNode: TreeNode {
+    init (_ parent_:TreeNode!,_ title_:String,_ butnTitle:String, _ act:CallVoid!,_ tableVC_:UITableViewController) {
+        super.init()
+        initialize(.titleButton, parent_, TreeSetting(set:1,member:1,title_),tableVC_)
+        if let cell = cell as? TreeTitleButtonCell {
+            cell.butnTitle = butnTitle
+            cell.butn.titleLabel?.text = butnTitle
+            cell.butnAct = act
+        }
+    }
+}
+
 class TreeCalendarNode: TreeNode {
 
     init (_ parent_:TreeNode!,_ title_:String, _ cal:Cal!,_ tableVC_:UITableViewController) {
@@ -38,8 +50,8 @@ class TreeDialColorNode: TreeNode {
         if let cell = cell as? TreeTitleFaderCell {
 
             // intialize fader
-            if let value = Settings.shared.root["dialColor"] as? Float{
-                cell.fader.setValue(value)
+            if let value = Settings.shared.root["dialColor"] {
+                cell.fader.setValue(Float(value)/Float(0xFFFF))
             }
             // callback when starting fade, so freeze scrolling
             cell.fader.updateBegan = {
@@ -60,6 +72,8 @@ class TreeDialColorNode: TreeNode {
         }
     }
 }
+
+
 
 class TreeActNode: TreeNode {
     init (_ parent_:TreeNode!,_ title_:String, _ set:Int, _ member: Int,_ onAct:DoAction,_ offAct:DoAction,_ tableVC_:UITableViewController) {

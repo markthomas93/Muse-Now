@@ -17,10 +17,10 @@ extension Scene {
         var dbgMask = Texture.makeDialMask(7, hour:0, size, margin:40,lineWidth:0.25, dotFactor: 0.62, maskFactor: 0.50) as! [SKTexture]
         let img0 = dbgMask[0].cgImage()
         let img1 = dbgMask[1].cgImage()
-        print("yo")
         #endif
     }
     func initSprite() {
+        
         complications = Texture.makeComplication(dayHour.days, size, lineWidth:0.125, maskFactor:0.90, margin:16)
         dialMask = Texture.makeDialMask(dayHour.days, hour:0, size, margin:8, lineWidth:0.25, dotFactor: 0.62, maskFactor: 0.50) as! [SKTexture]
         sprite = SKSpriteNode(texture: dialMask[0], color: UIColor.black, size:size)

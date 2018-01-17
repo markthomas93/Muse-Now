@@ -47,7 +47,8 @@ class TreeColorTitleCell: TreeTitleCell {
         let titleX = colorX + colorW + marginW
         let titleW = bezelW - titleX
 
-        let infoX = width - titleW - height + infoW/2
+        let infoTx = width - titleW - height
+        let infoX =  infoTx + infoW/2
         let infoY = (height - infoW) / 2
 
         cellFrame  = CGRect(x: 0,      y: 0,      width: width,  height: height)
@@ -56,6 +57,7 @@ class TreeColorTitleCell: TreeTitleCell {
         titleFrame = CGRect(x: titleX, y: 0,      width: titleW, height: bezelH)
         bezelFrame = CGRect(x: bezelX, y: bezelY, width: bezelW, height: bezelH)
         infoFrame  = CGRect(x: infoX,  y: infoY,  width: infoW,  height: infoW)
+        infoTap    = CGRect(x: infoTx,  y:0,       width: height, height: height)
         autoExpand = false
     }
 

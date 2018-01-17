@@ -186,7 +186,7 @@ class MuEvents {
         Cals.shared.unarchiveCals(store) {
             
             let (bgnTime,endTime) = MuDate.prevNextWeek() // previous and next week date range
-            var events: [MuEvent] = [] // events
+            var events = [MuEvent]() // events
             
             let ekCals = Cals.shared.ekCals
             let idCal = Cals.shared.idCal
@@ -224,15 +224,17 @@ class MuEvents {
                     print("there was an errror \(error.localizedDescription)")
                 }
                 if accessGranted {
-                    var events: [MuEvent] = []
+
                     let (bgnTime,endTime) = MuDate.prevNextWeek()
                     let pred = store.predicateForIncompleteReminders(withDueDateStarting: bgnTime!, ending:endTime!, calendars: nil)
                     
                     store.fetchReminders(matching: pred, completion: { (reminders:[EKReminder]?) in
-                        
-                        for rem in reminders! {
-                            let mkRem = MuEvent(reminder: rem)
-                            events.append(mkRem)
+                        var events = [MuEvent]()
+                        if let reminders = reminders {
+                            for rem in reminders {
+                                let mkRem = MuEvent(reminder: rem)
+                                events.append(mkRem)
+                            }
                         }
                         completion(events)
                     })

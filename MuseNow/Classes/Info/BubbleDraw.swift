@@ -16,10 +16,10 @@ public enum BubShape { case
 
 class BubbleDraw: UIView {
 
-    var bubShape = BubShape.above
     var bubFrame = CGRect.zero
     var radius  = CGFloat(16)
     var arrowXY = CGPoint.zero
+    var bubble: Bubble! // base view which may contain from in its hierarchy
 
     // 4 corner control points
 
@@ -43,9 +43,6 @@ class BubbleDraw: UIView {
     private var fromY = CGFloat(0) // family[2].frame.origin.y
     private var fromW = CGFloat(0) // family[2].frame.size.width
     private var fromH = CGFloat(0) // amily[2].frame.size.height
-
-    private var base: UIView! // base view which may contain from in its hierarchy
-    private var from: UIView! // view from which the bubble springs
 
     public var viewPoint = CGPoint.zero // used for animation
 
@@ -71,19 +68,20 @@ class BubbleDraw: UIView {
         super.touchesCancelled(touches, with: event)
     }
 
+    /**
+     Create a dotted border that may include
+     an arrow pointing to from view
+    */
+    func makeBorder() {
 
-    func makeBubble(_ bubShape_:BubShape, _ size: CGSize,_ base_:UIView,_ from_:UIView) {
-
-        bubShape = bubShape_
-        base = base_
-        from = from_
-
+        let from = bubble.from!
         fromX = from.frame.origin.x
         fromY = from.frame.origin.y
         fromW = from.frame.size.width
         fromH = from.frame.size.height
 
-        switch bubShape {
+        let size = bubble.size
+        switch bubble.bubShape {
         case .above:  makeAbove(size)
         case .below:  makeBelow(size)
         case .left:   makeLeft(size)
@@ -104,7 +102,7 @@ class BubbleDraw: UIView {
     func makeBubFrame(_ delta: CGPoint,
                       _ bubSize: CGSize) {
 
-        let fo = base.convert(base.frame.origin, from: from) // from origin
+        let fo = bubble.base.convert(bubble.base.frame.origin, from: bubble.from) // from origin
 
         let x = viewPoint.x + delta.x
         let y = viewPoint.y + delta.y
@@ -112,15 +110,16 @@ class BubbleDraw: UIView {
         let h = bubSize.height
         let fow = fo.x + w // frame origin width
         let foh = fo.y + h // from origin height
-        
-        let bW = UIScreen.main.fixedCoordinateSpace.bounds.size.width
-        let bH = UIScreen.main.fixedCoordinateSpace.bounds.size.height
+
+        let bounds = bubble.base.bounds
+        let bW = bounds.size.width
+        let bH = bounds.size.height
 
         bubFrame = CGRect(x: x + fow < bW ? x : bW-fow,
                           y: y + foh < bH ? y : bH-foh,
                           width:w, height:h)
 
-        //Log("✏︎💬 makeBubFrame delta:\(delta) fo:\(fo) xywh:(\(x),\(y)),(\(w),\(h)) bwh:\(bW),\(bH) bubFrame:\(bubFrame.origin),\(bubFrame.size)")
+        Log("✏︎💬 makeBubFrame delta:\(delta) fo:\(fo) xywh:(\(x),\(y)),(\(w),\(h)) bwh:\(bW),\(bH) bubFrame:\(bubFrame.origin),\(bubFrame.size)")
 
         return
     }
@@ -190,28 +189,33 @@ class BubbleDraw: UIView {
         arrowXY = CGPoint(x: viewPoint.x - bubFrame.origin.x,
                           y: viewPoint.y - bubFrame.origin.y)
 
-         //Log("💬 makeAbove viewPoint:\(viewPoint) delta:\(delta) bubFrame:\(bubFrame) arrowXY:\(arrowXY)")
+          Log("💬 makeAbove viewPoint:\(viewPoint) delta:\(delta) bubFrame:\(bubFrame) arrowXY:\(arrowXY)")
     }
 
 
     func makeCenter(_ size: CGSize) {
 
-        func makeFrame(_ position:CGFloat, _ count: CGFloat) {
+        let subM = CGFloat(4) // sub margin
 
-            let subM = CGFloat(4) // sub margin
+        func makeFrame(_ position:CGFloat, _ count: CGFloat) {
+            
+
             let subW = (fromW - (count-1)*subM) / count
             let subH = size.width/size.height * subW
             let x = (position-1) * (subW + subM)
             let y = max(0,(fromH-subH)/2)
             
             viewPoint = CGPoint(x: x+subW/2, y: y+subH/2)
-            let delta = CGPoint(x: -subW/2, y: -subH/2)
+            let delta = bubble.options.contains(.snugAbove)
+                ? CGPoint(x: -subW/2, y: -subH - subM)
+                : CGPoint(x: -subW/2, y: -subH/2)
+
             let bubSize = CGSize(width:  subW, height: subH)
             
             makeBubFrame(delta, bubSize)
              //Log("💬 make.\(bubShape) viewPoint:\(viewPoint) delta:\(delta) bubFrame:\(bubFrame) arrowXY:\(arrowXY)")
         }
-        switch bubShape {
+        switch bubble.bubShape {
         case .diptych12:  makeFrame(1,2)
         case .diptych22:  makeFrame(2,2)
         case .triptych13: makeFrame(1,3)
@@ -221,7 +225,9 @@ class BubbleDraw: UIView {
         default:
 
             viewPoint = CGPoint(x: fromW/2, y: fromH/2)
-            let delta = CGPoint(x: -size.width/2, y: -size.height/2)
+            let delta = bubble.options.contains(.snugAbove)
+                ? CGPoint(x: -size.width/2, y: -size.height - subM)
+                : CGPoint(x: -size.width/2, y: -size.height/2)
             let bubSize = size
 
             makeBubFrame(delta, bubSize)
@@ -401,7 +407,7 @@ class BubbleDraw: UIView {
         let r = radius
 
 
-        switch bubShape {
+        switch bubble.bubShape {
         case .above:  setCorners(U: m,   B: m+h-r, L: m,  R: m+w   ) ; abovePath(path)
         case .below:  setCorners(U: m+r, B: m+h,   L: m,  R: m+w   ) ; belowPath(path)
         case .left:   setCorners(U: m,   B: m+h,   L: m+r,R: m+w   ) ; leftPath (path)

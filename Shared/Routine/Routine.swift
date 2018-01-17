@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct DaysOfWeek: OptionSet {
+struct DaysOfWeek: OptionSet, Codable {
     let rawValue: Int
     static let doh = DaysOfWeek(rawValue: 0)        //   SMTWRFS
     static let sun = DaysOfWeek(rawValue: 1 << 6)   // 0b1000000
@@ -20,7 +20,7 @@ struct DaysOfWeek: OptionSet {
     static let sat = DaysOfWeek(rawValue: 1 << 0)   // 0b0000001
 }
 
-class RoutineItem {
+class RoutineItem: Codable {
 
     var bgnMinutes = 0   // midnight
     var durMinutes = 60  // one hour
@@ -118,10 +118,10 @@ class Routine {
         add(0b0111100, 19.0, 1.0, "Study","Study")      // "Study from 7 to 8 pm on sunday through thursday"
         add(0b0001000, 15.0, 1.0, "Study","Quiz")       // "Quiz on Wednesday at 3"
         add(0b0000010, 12.0, 1.0, "Study","Test")       // "Test on Friday at 3"
-        add(0b0111111,  9.0, 3.0, "Work","Work")     // "Work from 9 to 12 on weekdays"
-        add(0b0000001,  9.0, 3.0, "Work","Work")     // "Work from 9 to 12 on on saturday"
-        add(0b0001010, 13.0, 2.0, "Work","Work")   // "Work from 1 to 3 on wednesday and thursday"
-        add(0b0110100, 13.0, 3.0, "Work","Work")   // "Work from 1 to 4 on monday, tuesday, thursday"
+        add(0b0111111,  9.0, 3.0, "Work","Work")        // "Work from 9 to 12 on weekdays"
+        add(0b0000001,  9.0, 3.0, "Work","Work")        // "Work from 9 to 12 on on saturday"
+        add(0b0001010, 13.0, 2.0, "Work","Work")        // "Work from 1 to 3 on wednesday and thursday"
+        add(0b0110100, 13.0, 3.0, "Work","Work")        // "Work from 1 to 4 on monday, tuesday, thursday"
         add(0b0101000, 17.5, 2.5, "Health","Stretch")   // "Stretch from 5:30 to 8 pm on monday and tuesday"
         add(0b1000000,  8.0, 4.0, "Health","Bike")      // "Bike from 8 to 2 on sunday"
         add(0b1000000, 16.0, 2.0, "Health","Stretch")   // "Stretch from 4 to 6 pm on sunday"

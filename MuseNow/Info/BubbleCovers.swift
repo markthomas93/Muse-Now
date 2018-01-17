@@ -19,29 +19,27 @@ class BubbleCovers {
 
     static var shared = BubbleCovers()
     var coverAlpha = CGFloat(0.70)      // alpha for covers which darken background
-    var covers = Set<UIView>()          // views in which to darken while showing bubble
-    var remove = Set<UIView>()          // views to remove after bubble has completed
+    var covers = [UIView:UIView]()      // views in which to darken while showing bubble
+    var remove = [UIView:UIView]()      // invisible views to remove after animation completes
 
     func makeCovers(_ bub:Bubble, _ alpha_:CGFloat) {
 
-        if !bub.options.contains(.overlay) {
+        if bub.options.contains(.overlay) { return }
 
-            coverAlpha = alpha_
+        coverAlpha = alpha_
 
-            for underView in bub.covering {
 
-                let cover = UIView(frame:underView.frame)
-                cover.frame.origin = .zero
-                cover.backgroundColor = .black
-                cover.alpha = 0.0
-                //??// cover.isUserInteractionEnabled = false
+        for underView in bub.covering {
 
-                if !covers.contains(cover) {
-                    covers.insert(cover)
-                    remove.insert(cover)
-                    underView.addSubview(cover)
-                }
-            }
+            if covers[underView] != nil { continue }
+
+            let cover = UIView(frame:underView.frame)
+            cover.frame.origin = .zero
+            cover.backgroundColor =  .black
+            cover.alpha = 0.25
+            cover.isUserInteractionEnabled = false
+            covers[underView] = cover
+            underView.addSubview(cover)
         }
     }
 
@@ -60,9 +58,18 @@ class BubbleCovers {
     }
     
     func fadeIn(_ bubble:Bubble,_ duration:TimeInterval,_ delay:TimeInterval) {
-        if canFadeIn(bubble) { Log(bubble.logString("💬 Covers::fadeIn"))
+        if canFadeIn(bubble) { //Log(bubble.logString("💬 Covers::fadeIn"))
+            for (key,value) in self.covers {
+                if let tableView = key as? UITableView {
+                    value.frame.origin = tableView.contentOffset
+                }
+                //???// key.backgroundColor = .blue  
+            }
             UIView.animate(withDuration: duration, delay: delay, options: [.curveLinear], animations: {
-                self.covers.forEach { $0.alpha = self.coverAlpha }
+                 for value in self.covers.values {
+                    //print ("*** cover key:\(key.frame) value:\(value.frame) super:\(key.superview!.frame)")
+                    value.alpha = self.coverAlpha
+                }
             })
         }
     }
@@ -70,15 +77,15 @@ class BubbleCovers {
     func fadeOut(_ bubble: Bubble,_ duration:TimeInterval,_ delay:TimeInterval) {
         if canFadeOut(bubble) { Log(bubble.logString("💬 Covers::fadeOut"))
             UIView.animate(withDuration: duration, delay: delay, options: [.curveLinear], animations: {
-                self.covers.forEach { $0.alpha = 0.0}
+                self.covers.values.forEach { $0.alpha = 0.0}
             })
         }
     }
 
     func removeFromSuper() {
 
-        covers.forEach { $0.removeFromSuperview() }
-        remove.forEach { $0.removeFromSuperview() }
+        covers.values.forEach { $0.removeFromSuperview() }
+        remove.values.forEach { $0.removeFromSuperview() }
         covers.removeAll()
         remove.removeAll()
     }
@@ -87,12 +94,10 @@ class BubbleCovers {
             removeFromSuper()
         }
     }
-    func fadeRemoveRemainingCovers() { Log("💬 Covers::\(#function) covers:\(covers.count) remove:\(remove.count)")
-        if covers.count > 0 || remove.count > 0 {
+    func fadeRemoveRemainingCovers() { Log("💬 Covers::\(#function) covers:\(covers.count)")
+        if covers.count > 0 {
             UIView.animate(withDuration:1.0, animations: {
-                self.covers.forEach { $0.alpha = 0 }
-                self.remove.forEach { $0.alpha = 0 }
-
+                self.covers.values.forEach { $0.alpha = 0 }
             }, completion: { _ in
                 self.removeFromSuper()
             })

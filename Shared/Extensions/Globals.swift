@@ -16,7 +16,7 @@ let Pi = Double.pi
 let Pi2 = Double.pi*2 // Swift 3.1 deprecated M_PI, but has problem with CGFloat.pi
 let Infi = Double.greatestFiniteMagnitude // infinity
 
-func delay(_ delay:Double, closure:@escaping ()->()) {
+func delay(_ delay:Double,_ closure:@escaping ()->()) {
     let when = DispatchTime.now() + delay
     DispatchQueue.main.asyncAfter(deadline: when, execute: closure)
 }
@@ -36,20 +36,23 @@ func DebugLog(_ str: String) -> Bool {
         //case NSLog(str)
 
     case
-    //"💬", // bubble animation closure
-     "▤", // TreeTableView
+    "▭", // textfield
     "🔰": // onboarding pages (japaness beginnner symbol)
 
         print(MuDate.getHourMinSecMsec() + ": " + str)
         
     case
+    "⏲", // timing
+    "💬", // bubble animation closure
+    "⟳", // life cycle
+    "⧉", // syncfile
+    "▤", // TreeTableView
+    "⿳", // calendar event
     "✏︎",  // draw bubble
     "📅", // EkNotification
-    "⧉", // s
+
     "⎚", // scene animationync files
 
-    "⿳", // menu
-    
     "←", // session receiving
     "↔︎", // session activation state
     "→", // session sending
@@ -60,12 +63,11 @@ func DebugLog(_ str: String) -> Bool {
     "🎧", // Hear Via
     "∿",  // audio recorder
 
-    "⟳", // life cycle
     "▣", // observe main window bounds
     "◰", // view layout
     "⊛", // crown
 
-    "▭", // textfield
+
 
     "👆", // tap action
 

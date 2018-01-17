@@ -164,8 +164,9 @@ extension Session {
             Log("⧉ ←\(#function) unknown metadata for file:\(file)")
         }
     }
-    
-    func moveFileToDoc(_ srcURL: URL, _ fileName: String, _ time: TimeInterval = 0) {
+
+
+      func moveFileToDoc(_ srcURL: URL, _ fileName: String, _ time: TimeInterval = 0) {
         let dstURL = FileManager.documentUrlFile(fileName)
         if let _ = try? FileManager().moveItem(at:srcURL, to:dstURL) {
             if time != 0 {

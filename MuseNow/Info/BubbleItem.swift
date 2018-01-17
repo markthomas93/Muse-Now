@@ -18,12 +18,12 @@ class BubbleItem {
 
     var str: String!                 // either text for bubble or filename
     var duration: TimeInterval
-    var callWait: CallWait! = {_,finished in finished()} // buildup before displaying bubble
+    var preRoll: CallWait! = {_,finished in finished()} // buildup before displaying bubble
 
-    init(_ str_:String,_ duration_:TimeInterval,_ callWait_:CallWait! = nil) {
+    init(_ str_:String,_ duration_:TimeInterval,_ preRoll_:CallWait! = nil) {
         str = str_
         duration = duration_
-        callWait = callWait_
+        preRoll = preRoll_
     }
 }
 

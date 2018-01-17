@@ -20,15 +20,15 @@ class MuCell: UITableViewCell {
             default:                highlighting = .low  ; isSelected = false
             }
 
-            var border: CGColor!
-            var background: CGColor!
+            var border      : CGColor!
+            var background  : CGColor!
 
             switch highlighting {
             case .high, .forceHigh: border = borders[1].cgColor ; background = backgrounds[1].cgColor
             default:                border = borders[0].cgColor ; background = backgrounds[0].cgColor
             }
             if animated {
-                animateViews(views, border, background, alpha: alpha, duration: 0.25) //???//
+                animateViews(views, border, background, alpha: alpha, duration: 0.25)
             }
             else {
                 for view in views {

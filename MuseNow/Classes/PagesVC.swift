@@ -3,7 +3,7 @@
 import UIKit
 
 
-public enum PageType: Int { case dialog = 0, events = 1, onboard = 3 }
+public enum PageType: Int { case menu = 0, main = 1, onboard = 3 }
 
 class PagesVC: UIViewController, UIPageViewControllerDataSource {
     
@@ -11,7 +11,7 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
 
     var pageVC : UIPageViewController!
     var pages: [UIViewController] = []
-    var pageType = PageType.events
+    var pageType = PageType.main
     var scrollView: UIScrollView!
     
     var treeVC: TreeTableVC!
@@ -53,7 +53,7 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        BubbleTour().beginTourSet([.tourMain,.tourMenu])
+        BubbleTour.shared.beginTourSet([.tourMain,.tourMenu])
     }
 
     override func viewDidLoad() {
@@ -102,18 +102,20 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
         pageVC!.didMove(toParentViewController: self)
     }
 
-    func gotoPageType(_ type_:PageType, done:@escaping (()->())) {
+    func gotoPageType(_ type_:PageType, done:@escaping CallVoid) {
 
         if pageType == type_ { return done() }
         let index = type_.rawValue
         let nextVC = pages[index]
 
         if !nextVC.isBeingPresented {
-            pageVC.setViewControllers([nextVC],direction: pageType.rawValue < index ? .forward : .reverse, animated: true)
+            pageVC.setViewControllers([nextVC],direction: pageType.rawValue < index ? .forward : .reverse, animated: true, completion: {_ in
+                done()
+            })
         }
-        let _ = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: {_ in
-            done()
-        })
+        else {
+            Timer.delay(0.5) { done() }
+        }
     }
     
     func setBorder(_ vc:UIViewController, radius: CGFloat, width: CGFloat) {
@@ -128,7 +130,7 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
 
         let index = pages.index(of: vc)! - 1
         if index >= 0 {
-            pageType = PageType(rawValue: index) ?? .events
+            pageType = PageType(rawValue: index) ?? .main
             return pages[index]
         }
 
@@ -139,7 +141,7 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
         
         let index = pages.index(of: vc)! + 1
         if index < pages.count  {
-            pageType = PageType(rawValue: index) ?? .events
+            pageType = PageType(rawValue: index) ?? .main
             return pages[index]
         }
         return nil

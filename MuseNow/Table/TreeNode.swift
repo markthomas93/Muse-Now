@@ -9,6 +9,8 @@
 import Foundation
 import UIKit
 
+typealias CallTreeNode = ((TreeNode!)->())
+
 class TreeNode {
     static var Id = 1
     static func nextId() -> Int { Id += 1 ; return Id }
@@ -24,8 +26,7 @@ class TreeNode {
     var any: Any! // may contain Cal
     var row = -1
     var onRatio = CGFloat(1.0)
-    var showInfo = ShowInfo.noInfo
-    var treeInfo: TreeInfo!
+    var showInfo = ShowInfo.nothingHere
 
 
     func initialize (_ type_:TreeNodeType, _ parent_:TreeNode!,_ setting_: TreeSetting,_ tableVC_:UITableViewController) {
@@ -41,6 +42,7 @@ class TreeNode {
 
         switch type {
         case .title:            cell = TreeTitleCell(self, tableVC_)
+        case .titleButton:      cell = TreeTitleButtonCell(self, tableVC_)
         case .infoApprove:      cell = TreeInfoApproveCell(self, tableVC_)
         case .titleFader:       cell = TreeTitleFaderCell(self, tableVC_)
         case .titleMark:        cell = TreeTitleMarkCell(self, tableVC_)
@@ -98,7 +100,7 @@ class TreeNode {
     /**
      find node matching title, and then animate to that cell, if needed
     */
-    func goto(title:String, finish:@escaping CallVoid) {
+    func goto(title:String, finish:@escaping CallTreeNode) {
 
         var lineage = [TreeNode]()
 
@@ -107,11 +109,12 @@ class TreeNode {
             if lineage.isEmpty {
                 // always collapse destination to save space
                 node.cell?.touchCell(.zero, isExpandable:false)
-                finish()
+                Timer.delay(1.0) {
+                    finish(node) }
             }
             else if node.expanded == false {
                 node.cell?.touchCell(.zero)
-                return DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                Timer.delay(1.0) {
                     nextLineage()
                 }
             }
@@ -122,7 +125,10 @@ class TreeNode {
 
         // begin ------------------------------
 
-        if let cell = find(title: title) {
+        if self.setting.title.starts(with: title) {
+            finish(self)
+        }
+        else if let cell = find(title: title) {
 
             var node = cell.treeNode!
             while node.parent != nil {
@@ -130,6 +136,9 @@ class TreeNode {
                 node = node.parent!
             }
             nextLineage()
+        }
+        else {
+            finish(nil)
         }
     }
 

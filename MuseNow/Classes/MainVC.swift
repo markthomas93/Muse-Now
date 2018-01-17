@@ -6,27 +6,31 @@ import AudioToolbox
 import WatchKit
 
 class MainVC: UIViewController {
+
     static var shared: MainVC?
     let session = Session.shared
-    let active  = Active.shared
+
     let memos   = Memos.shared
     let marks   = Marks.shared
     let anim    = Anim.shared
     let dots    = Dots.shared
     let pagesVC = PagesVC.shared
-    let actions = Actions.shared
     let hear    = Hear.shared
+
+    var active      : Active!
+    var actions     : Actions! 
+    var onboardVC   : OnboardVC!
+    var touchDial   : TouchDial!
+    var scene       : Scene!
+    var touchForce  : TouchDialForce!
     
-    var touchDial  : TouchDial!
-    var scene      : Scene!
-    var touchForce : TouchDialForce!
-    
-    var panel       = UIView() // contains dial, crowns, fader
-    var phoneCrown  : PhoneCrown!
+    var panel      = UIView() // contains dial, crowns, fader
+    var phoneCrown : PhoneCrown!
     
     var skView: SKView!
 
     let dialSize = CGSize(width: 172, height: 172)
+    var onboarding = false
 
     private var mainFrame = CGRect.zero
     private var pagesFrame = CGRect.zero
@@ -35,17 +39,16 @@ class MainVC: UIViewController {
     private var skViewFrame = CGRect.zero
     private var crownLeftFrame = CGRect.zero
     private var crownRightFrame = CGRect.zero
-
     private var observer: NSKeyValueObservation?
 
     func updateFrames(_ size:CGSize) {
-
+        
         let height = size.height
         let width  = size.width
         let statusH = UIApplication.shared.statusBarFrame.height
 
         let isPad = UIDevice.current.userInterfaceIdiom == .pad
-        let isPanel = isPad && width < height/2 // is panel inside ipad app
+        let isPanel = isPad && width < height // is panel inside ipad app
         let isPortrait = height > width // is portrait mode
         let viewY   = CGFloat(isPanel ? 0 : isPad ? 18 : isPortrait ? statusH : 0)
         let viewH   = height - viewY
@@ -78,6 +81,7 @@ class MainVC: UIViewController {
         skView.frame          = skViewFrame
         phoneCrown.frame      = crownLeftFrame
         phoneCrown.twin.frame = crownRightFrame
+
         phoneCrown.initialize()
         phoneCrown.twin.initialize()
         phoneCrown.setNeedsDisplay()
@@ -86,23 +90,17 @@ class MainVC: UIViewController {
     }
 
 
-    override func viewDidLoad() {
+    func makeOnboard() {
+        onboardVC = OnboardVC()
+        view.addSubview(onboardVC.view)
+    }
 
-        self.mainFrame = UIScreen.main.bounds
-        self.view.bounds = UIScreen.main.bounds
-        super.viewDidLoad()
-
-        MainVC.shared = self
-        // Muse.shared.testScript() // for future use of ParGraph
-
-        // stay dark in invert mode
-        view.accessibilityIgnoresInvertColors = true
-        view.backgroundColor = .black
+    func makePages() {
 
         // some views not yet initialized, so only update frames
-        updateFrames(view.bounds.size)
+
         pagesVC.updateFrames(pagesFrame.size)
-        
+
         view.frame = mainFrame
         view.addSubview(pagesVC.view)
 
@@ -111,12 +109,12 @@ class MainVC: UIViewController {
         scene = Scene(size: dialSize)
 
         // dial scene
-        
+
         anim.table = pagesVC.eventVC
         touchDial  = TouchDial(dialSize, pagesVC.eventVC)
         touchForce = TouchDialForce(frame: touchFrame)
         touchForce.touchDial = touchDial
-        
+
         skView = SKView(frame:skViewFrame)
         skView.backgroundColor = UIColor.black
         skView.presentScene(scene)
@@ -124,7 +122,8 @@ class MainVC: UIViewController {
         skView.addSubview(touchForce)
 
         // delegates
-        
+        actions = Actions.shared
+        active = Active.shared
         actions.scene = scene
         active.scene = scene
         pagesVC.eventVC?.scene = scene
@@ -136,7 +135,7 @@ class MainVC: UIViewController {
         // crown left right
 
         phoneCrown = PhoneCrown(left:crownLeftFrame, right:crownRightFrame, pagesVC.eventVC)
-        
+
         // view hierarcy
 
         view.addSubview(panel)
@@ -151,7 +150,6 @@ class MainVC: UIViewController {
             Log("▣ observer:\(object.bounds.size)")
         }
     }
-
     func setBorder(_ v:UIView) {
         
         v.layer.cornerRadius = 16
@@ -159,28 +157,51 @@ class MainVC: UIViewController {
         v.layer.borderWidth = 1
         //??// v.layer.masksToBounds = true
     }
+        
+    // overrides -----------------------------
+    
+    override func viewDidLoad() {
+        
+        self.mainFrame = view.bounds
+        super.viewDidLoad()
+        
+        MainVC.shared = self
+        view.accessibilityIgnoresInvertColors = true  // stay dark in invert mode
+        view.backgroundColor = .black
+        
+        updateFrames(view.bounds.size)
+        
+        if onboarding  {
+            makeOnboard()
+        }
+        else {
+            makePages()
+        }
+        // Muse.shared.testScript() // for future use of ParGraph
+    }
+    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-
+        
         Log("▣ MainVC \(size)")
         super.viewWillTransition(to: size, with: coordinator)
     }
-
+    
     override func viewDidAppear(_ animated: Bool) { Log("⟳ \(#function)")
-        active.startActive()
+        active?.startActive()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         observer?.invalidate()
         //...
     }
-
+    
     override func prefersHomeIndicatorAutoHidden() -> Bool {
         return true
     }
-
+    
     override var prefersStatusBarHidden : Bool {
         return false
     }
-        
-  }
+    
+}
 

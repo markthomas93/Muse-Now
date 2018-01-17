@@ -12,6 +12,7 @@ import UIKit
 enum TreeNodeType { case
     unknown,
     title,
+    titleButton,
     infoApprove,
     titleFader,
     titleMark,
@@ -30,22 +31,23 @@ enum TreeNodeType { case
  - oldInfo: gray icon, only show when touching icon
  */
 enum ShowInfo { case
-    noInfo,
-    newInfo,
-    oldInfo
+    nothingHere,
+    information,
+    construction,
+    purchase
 }
 
 class TreeNodes {
 
     static var shared = TreeNodes()
 
-    var shownNodes = [TreeNode!]() // currently displayed nodes
-    var nextNodes = [TreeNode!]() // double buffer update
+    var shownNodes = [TreeNode]() // currently displayed nodes
+    var nextNodes = [TreeNode]() // double buffer update
     var touchedNode: TreeNode! // which node was last touched
     var root: TreeNode!
-
     /**
-     Renumber currently displayed table cells. Used for animating expand/collapse of children
+     Renumber currently displayed table cells.
+     Used for animating expand/collapse of children
      */
     func renumber(_ touchedNode:TreeNode!) {
 

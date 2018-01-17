@@ -76,6 +76,10 @@ extension Anim {
         return wasPausing
     }
 
+    func scanFuture() {
+        animNow = .futrScan
+    }
+
     func resumeScan() {
         
         switch animPause {

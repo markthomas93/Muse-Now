@@ -149,7 +149,7 @@ extension Session {
             case "\(DoAction.markOn)":       return .markOn
             case "\(DoAction.markOff)":      return .markOff
             case "\(DoAction.markClearAll)": return .markClearAll
-            case "\(DoAction.memoClearAll)": return .memoClearAll
+            case "\(DoAction.memoMoveAll)": return .memoMoveAll
             case "\(DoAction.noteAdd)":      return .noteAdd
             case "\(DoAction.noteRemove)":   return .noteRemove
             case "\(DoAction.refresh)":      return .refresh

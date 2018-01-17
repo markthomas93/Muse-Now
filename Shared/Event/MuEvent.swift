@@ -3,7 +3,7 @@ import Foundation
 import EventKit
 import UIKit
 
-public enum EventType: String { case
+public enum EventType: String, Codable { case
     unknown     = "unknown",
     routine     = "routine",
     ekevent     = "ekevent",    // Apple Calendar events
@@ -13,65 +13,25 @@ public enum EventType: String { case
     time        = "time"
 }
 
-@objc(MuEvent) // data compatible between iPhone and appleWatch
-open class MuEvent: NSObject, NSCoding {
+struct Coordinate: Codable {
+    var latitude: Double
+    var longitude: Double
+
+    init(_ lat:Double,_ lon:Double) {
+        latitude = lat
+        longitude = lon
+    }
+}
+
+
+//@objc(MuEvent) // data compatible between iPhone and appleWatch
+open class MuEvent: Codable {
 
     static var tempID = 1000 // temporary id for event
     class func makeTempId() -> String {
         tempID += 1
         let result = String(tempID)
         return result
-    }
-    var eventId  = ""
-    var title    = "" // title from ekEvent or sttApple or sttSwm
-    var notes    = "" // notes from ekEvent
-    var sttApple = "" // apple speech to text
-    var sttSwm   = "" // speak with me stt
-    var type     = EventType.unknown
-    var bgnTime  = TimeInterval(0) // begin time
-    var endTime  = TimeInterval(0) // endTime
-    var rgb      = UInt32(0)
-    var alarm    = false
-    var coord    = CLLocationCoordinate2DMake(0,0)
-    var mark     = false // only used by MuseNow, not part of EventKit
-
-    required public init?(coder decoder: NSCoder) {
-        super.init()
-        eventId  = decoder.decodeObject      (forKey:"eventId") as! String
-        title    = decoder.decodeObject      (forKey:"title")   as! String
-        type     = EventType(rawValue:decoder.decodeObject (forKey:"type") as! String)!
-        notes    = decoder.decodeObject      (forKey:"note")    as! String
-        sttSwm   = decoder.decodeObject      (forKey:"sttSwm")  as! String
-        sttApple = decoder.decodeObject      (forKey:"sttApple") as! String
-        bgnTime  = decoder.decodeDouble      (forKey:"bgnTime")
-        endTime  = decoder.decodeDouble      (forKey:"endTime")
-        rgb      = UInt32(decoder.decodeInt64(forKey:"rgb"))
-        alarm    = decoder.decodeBool        (forKey:"alarm")
-        mark     = decoder.decodeBool        (forKey:"mark")
-        let lat  = decoder.decodeDouble      (forKey:"lat")
-        let lon  = decoder.decodeDouble      (forKey:"lon")
-        coord = CLLocationCoordinate2DMake  (lat, lon)
-    }
-    
-    public func encode(with aCoder: NSCoder) {
-        
-        aCoder.encode(eventId,        forKey:"eventId")
-        aCoder.encode(type.rawValue,  forKey:"type")
-        aCoder.encode(title,          forKey:"title")
-        aCoder.encode(notes,          forKey:"note")
-        aCoder.encode(sttApple,       forKey:"sttApple")
-        aCoder.encode(sttSwm,         forKey:"sttSwm")
-        aCoder.encode(bgnTime,        forKey:"bgnTime")
-        aCoder.encode(endTime,        forKey:"endTime")
-        aCoder.encode(Int64(rgb),     forKey:"rgb")
-        aCoder.encode(alarm,          forKey:"alarm")
-        aCoder.encode(mark,           forKey:"mark")
-        aCoder.encode(coord.latitude, forKey:"lat")
-        aCoder.encode(coord.longitude,forKey:"lon")
-    }
-
-    override init () {
-       super.init()
     }
     func makeEventId(_ ekEvent: EKEvent! = nil) -> String {
         if  let ekEvent = ekEvent,
@@ -82,7 +42,21 @@ open class MuEvent: NSObject, NSCoding {
             return "\(bgnTime)-\(type.rawValue)-\(title)"
         }
     }
+
     
+    var eventId  = ""
+    var title    = "" // title from ekEvent or sttApple or sttSwm
+    var notes    = "" // notes from ekEvent
+    var sttApple = "" // apple speech to text
+    var sttSwm   = "" // speak with me stt
+    var type     = EventType.unknown
+    var bgnTime  = TimeInterval(0) // begin time
+    var endTime  = TimeInterval(0) // endTime
+    var rgb      = UInt32(0)
+    var alarm    = false
+    var coord    = Coordinate(0,0)
+    var mark     = false // only used by MuseNow, not part of EventKit
+
     convenience init(reminder : EKReminder) {
         
         self.init()
@@ -136,7 +110,7 @@ open class MuEvent: NSObject, NSCoding {
         self.init(type_, title_)
 
         rgb   = MuColor.makeTypeColor(color)
-        coord = coord_
+        coord = Coordinate(coord_.latitude,coord_.longitude)
     }
     
     convenience init( _ type_: EventType, _ title_:String, _ time: TimeInterval,_ eventId_:String, _ coord_:CLLocationCoordinate2D, _ color: TypeColor) {

@@ -2,44 +2,48 @@
 
 import Foundation
 
-class Memos: FileSync {
+class Memos: FileSync, Codable {
     
     static let shared = Memos()
     var items = [MuEvent]()
     
     override init() {
         super.init()
-        fileName = "Memos.plist"
+        fileName = "Memos.json"
     }
- 
-    /**
-     Memos are recorded and store outside of EkEvents
-     */
-    func unarchiveMemos(completion: @escaping (_ result:[MuEvent]) -> Void) -> Void {
-        
-        unarchiveArray() { array in
-            
-            self.items.removeAll()
-            let dataItems = array as! [MuEvent]
-            
-            let weekSecs: TimeInterval = (7*24+1)*60*60 // 168+1 hours as seconds
-            let lastWeekSecs = Date().timeIntervalSince1970 - weekSecs
-            self.items = dataItems.filter { $0.bgnTime >= lastWeekSecs }
-            
-            self.items.sort { "\($0.bgnTime)"+$0.eventId < "\($1.bgnTime)"+$1.eventId }
 
-            //Log ("⧉ Memos::\(#function) items:\(self.items.count) fileTime:\(fileTime) -> memoryTime:\(self.memoryTime) ")
-            completion(self.items)
+
+    func archiveMemos(done:@escaping CallVoid) {
+
+        if let data = try? JSONEncoder().encode(items) {
+
+            let _ = saveData(data, Date().timeIntervalSince1970)
+        }
+        Marks.shared.sendSyncFile()
+    }
+    func unarchiveMemos(_ completion: @escaping (_ result:[MuEvent]) -> Void) -> Void {
+        unarchiveData() { data in
+            if let data = data,
+                let newItems = try? JSONDecoder().decode([MuEvent].self, from:data) {
+                self.items.removeAll()
+                let weekSecs: TimeInterval = (7*24+1)*60*60 // 168+1 hours as seconds
+                let lastWeekSecs = Date().timeIntervalSince1970 - weekSecs
+                self.items = newItems.filter { $0.bgnTime >= lastWeekSecs }
+
+                self.items.sort { "\($0.bgnTime)"+$0.eventId < "\($1.bgnTime)"+$1.eventId }
+
+                Log ("⧉ Memos::\(#function) items:\(self.items.count)  memoryTime:\(self.memoryTime) ")
+                return completion(self.items)
+            }
+            completion([])
         }
     }
 
-
     
-    func clearAll() {
-
-        if archiveArray([], Date().timeIntervalSince1970) {
-             items.removeAll()
-            removeAllDocPrefix("Memo_")
+    func moveAll() {
+        archiveMemos {
+            //???// items.removeAll()
+            self.moveAllDocPrefix("Memo_")
         }
     }
     
@@ -55,7 +59,7 @@ class Memos: FileSync {
      */
     func addMemoEvent(_ event:MuEvent) {
         items.append(event)
-        let _ = archiveArray(items,Date().timeIntervalSince1970)
+        archiveMemos {}
     }
 
     /**
@@ -70,7 +74,7 @@ class Memos: FileSync {
      */
 
     func updateMemoArchive() {
-        let _ = archiveArray(items,Date().timeIntervalSince1970)
+        archiveMemos {}
     }
 
     /**
@@ -88,10 +92,11 @@ class Memos: FileSync {
                 }
             }
         #elseif os(watchOS)
-            if isSender {
+            if isSender,
+                let data = try? JSONEncoder().encode(event) {
                 Session.shared.sendMsg(
                     [ "class"    : "Transcribe",
-                      "recEvent" : NSKeyedArchiver.archivedData(withRootObject:event),
+                      "recEvent" : data,
                       "recName"  : recName])
             }
         #endif

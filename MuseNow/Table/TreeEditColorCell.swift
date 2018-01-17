@@ -24,7 +24,6 @@ class TreeEditColorCell: TreeEditCell {
         super.buildViews(width)
         color = UIView(frame:colorFrame)
         color.backgroundColor = .blue
-
         bezel.addSubview(color)
     }
 

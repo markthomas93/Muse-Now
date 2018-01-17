@@ -64,14 +64,16 @@ class TreeTitleMarkCell: TreeTitleCell {
         let bezelW = width - markW - marginH - bezelX
         let titleW = bezelW - marginW
 
-        let infoX = width - markW - marginH - height + infoW/2
-        let infoY = (height - infoW) / 2
+        let infoTx = width - markW - marginH - height // tappable x
+        let infoX  = infoTx + infoW/2
+        let infoY  = (height - infoW) / 2
 
         cellFrame  = CGRect(x: 0,       y: 0,      width: width,  height: height)
         leftFrame  = CGRect(x: leftX,   y: leftY,  width: leftW,  height: leftW)
         titleFrame = CGRect(x: marginW, y: 0,      width: titleW, height: bezelH)
         bezelFrame = CGRect(x: bezelX,  y: bezelY, width: bezelW, height: bezelH)
         infoFrame  = CGRect(x: infoX,   y: infoY,  width: infoW,  height: infoW)
+        infoTap    = CGRect(x: infoTx,  y:0,       width: height, height: height)
         markFrame  = CGRect(x: markX,   y: markY,  width: markW , height: markH)
     }
 
@@ -87,9 +89,10 @@ class TreeTitleMarkCell: TreeTitleCell {
         mark.frame  = markFrame
     }
 
-    override func setParentChildOther(_ parentChild_:ParentChildOther, touched:Bool) {
+    override func setParentChildOther(_ parentChild_:ParentChildOther, touched touched_:Bool) {
 
         parentChild = parentChild_
+        touched = touched_
         setHighlight(touched ? .forceHigh : .refresh)
     }
     
@@ -110,13 +113,16 @@ class TreeTitleMarkCell: TreeTitleCell {
                       backgrounds:  [background, background],
                       alpha:        newAlpha,
                       animated:     animated)
+
+        let newMarkAlpha = newAlpha * newAlpha
+
         if animated {
             UIView.animate(withDuration: 0.25, animations: {
-                self.mark.alpha = newAlpha * newAlpha
+                self.mark.alpha = newMarkAlpha
             })
         }
         else {
-            mark.alpha = newAlpha * newAlpha
+            mark.alpha = newMarkAlpha
         }
     }
     
@@ -127,7 +133,16 @@ class TreeTitleMarkCell: TreeTitleCell {
         let toggleX = frame.size.width - frame.size.height
         if location.x > toggleX {
             let isOn = treeNode.toggle()
-            if isOn && treeNode?.showInfo == .newInfo {
+            var newInfo: Bool!
+
+            switch treeNode.showInfo {
+            case .information,
+                 .construction,
+                 .purchase:  newInfo = true
+            default:         newInfo = false
+            }
+
+            if isOn && newInfo {
                super.touchCell(.zero)
             }
             mark.setMark(isOn)

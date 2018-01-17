@@ -126,7 +126,7 @@ class PhoneCrown: TouchForce {
         prevDeltaRow = nextDeltaRow
     }
     
-    //? Touching superclass overrides left and right side are synchonized with each other
+    /// Touching superclass overrides left and right side are synchonized with each other
 
     // began
     override func began(_ pos: CGPoint,_ time: TimeInterval) {
