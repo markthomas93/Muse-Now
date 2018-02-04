@@ -25,13 +25,13 @@ class Bubble {
     var front: [UIView]!                // views to bring to front
     var covering = [UIView]()           // views in which to darken while showing bubble
     var items = [BubbleItem]()
-    var bubView: BubbleBase!            // views
+    var bubBase: BubbleBase!            // views
 
     var options = BubbleOptions()       // highlighted or draw circular bezel
     var timer = Timer()                 // timer for duration between popOut and tuckIn
 
-    var prevBubble: Bubble!                // previous bubble in tour, needed to reuse covers
-    var nextBubble: Bubble!                // next bubble in tour
+    var prevBubble: Bubble!             // previous bubble in tour, needed to reuse covers
+    var nextBubble: Bubble!             // next bubble in tour
 
     init(_  title_      : String = "",
          _  items_      : [BubbleItem],
@@ -60,7 +60,7 @@ class Bubble {
     /**
     build linked list
     */
-    func tourBubbleSection(_ section:BubbleSection, _ done: @escaping CallVoid) {
+    func tourBubbleSection(_ section:TourSection, _ done: @escaping CallVoid) {
     }
 
 
@@ -73,37 +73,39 @@ class Bubble {
             nextBubble?.tourNextBubble(done) ?? done()
         }
 
-        // begin -----------------------
-        switch self.bubContent {
-        case .text:     bubView = BubbleText(self)
-        case .video:    bubView = BubbleVideo(self)
-        case .picture:  bubView = BubbleVideo(self)
-        }
-        BubblesPlaying.shared.addBubble(self)
+        func goBubble() {
 
-        bubView?.goBubble() { phase in // when bubView calls onGoing()
+            BubblesPlaying.shared.addBubble(self)
+            bubBase?.goBubble() { phase in // when bubBase calls onGoing()
 
-            switch phase {
-            case .poppedOut:
-                if self.options.contains(.nowait) {
-                    gotoNext()
-                }
-            case .nudged,.tuckedIn:
-                BubblesPlaying.shared.playSet.remove(self)
-                if !self.options.contains(.nowait) {
-                    gotoNext()
+                switch phase {
+                case .poppedOut:
+                    if self.options.contains(.nowait) {
+                        gotoNext()
+                    }
+                case .nudged,.tuckedIn:
+                    BubblesPlaying.shared.playSet.remove(self)
+                    if !self.options.contains(.nowait) {
+                        gotoNext()
+                    }
                 }
             }
         }
+
+        // begin -----------------------
+
+        switch self.bubContent {
+        case .text:     bubBase = BubbleText(self)
+        case .video:    bubBase = BubbleVideo(self)
+        case .picture:  bubBase = BubbleVideo(self)
+        }
+        bubBase.makeBubble(self,goBubble)
     }
 
     func logString(_ prefix:String) -> String {
         let pre = prefix.padding(toLength: 36, withPad: " ", startingAt: 0)
         let suf1 = " \(id):\"\((items.first?.str ?? "nil").trunc(length:16))\""
         let suf2 = "\(nextBubble?.id ?? 0):\"\((nextBubble?.items.first?.str ?? "nil").trunc(length:16))\""
-        if suf2.contains("here is") {
-            print("yo") //???//
-        }
         return  pre + suf1 + " ➛ " + suf2
     }
 }

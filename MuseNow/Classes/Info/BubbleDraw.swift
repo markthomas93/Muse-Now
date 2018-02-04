@@ -14,6 +14,7 @@ public enum BubShape { case
     triptych13, triptych23, triptych33
 }
 
+
 class BubbleDraw: UIView {
 
     var bubFrame = CGRect.zero
@@ -102,8 +103,11 @@ class BubbleDraw: UIView {
     func makeBubFrame(_ delta: CGPoint,
                       _ bubSize: CGSize) {
 
-        let fo = bubble.base.convert(bubble.base.frame.origin, from: bubble.from) // from origin
-
+        var fo = bubble.base.convert(bubble.base.frame.origin, from: bubble.from) // from origin
+        // tableView
+        if let tableView = bubble.base as? UITableView {
+            fo.y -= tableView.contentOffset.y
+        }
         let x = viewPoint.x + delta.x
         let y = viewPoint.y + delta.y
         let w = bubSize.width
@@ -119,7 +123,7 @@ class BubbleDraw: UIView {
                           y: y + foh < bH ? y : bH-foh,
                           width:w, height:h)
 
-        Log("✏︎💬 makeBubFrame delta:\(delta) fo:\(fo) xywh:(\(x),\(y)),(\(w),\(h)) bwh:\(bW),\(bH) bubFrame:\(bubFrame.origin),\(bubFrame.size)")
+        Log("💬✏︎ makeBubFrame delta:\(delta) fo:\(fo) xywh:(\(x),\(y)),(\(w),\(h)) bwh:\(bW),\(bH) bubFrame:\(bubFrame.origin),\(bubFrame.size)")
 
         return
     }
@@ -183,13 +187,13 @@ class BubbleDraw: UIView {
 
         let bubSize = CGSize(width:  size.width,
                              height: size.height + radius)
-
+        
         makeBubFrame(delta, bubSize)
 
         arrowXY = CGPoint(x: viewPoint.x - bubFrame.origin.x,
                           y: viewPoint.y - bubFrame.origin.y)
 
-          Log("💬 makeAbove viewPoint:\(viewPoint) delta:\(delta) bubFrame:\(bubFrame) arrowXY:\(arrowXY)")
+        Log("💬 makeAbove viewPoint:\(viewPoint) delta:\(delta) bubFrame:\(bubFrame) arrowXY:\(arrowXY)")
     }
 
 
@@ -198,7 +202,6 @@ class BubbleDraw: UIView {
         let subM = CGFloat(4) // sub margin
 
         func makeFrame(_ position:CGFloat, _ count: CGFloat) {
-            
 
             let subW = (fromW - (count-1)*subM) / count
             let subH = size.width/size.height * subW
@@ -233,7 +236,6 @@ class BubbleDraw: UIView {
             makeBubFrame(delta, bubSize)
             //Log("💬 makeCenter viewPoint:\(viewPoint) delta:\(delta) bubFrame:\(bubFrame) arrowXY:\(arrowXY)")
         }
-
     }
 
     // paths ---------------------------------------------------------

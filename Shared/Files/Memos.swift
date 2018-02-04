@@ -42,7 +42,6 @@ class Memos: FileSync, Codable {
     
     func moveAll() {
         archiveMemos {
-            //???// items.removeAll()
             self.moveAllDocPrefix("Memo_")
         }
     }

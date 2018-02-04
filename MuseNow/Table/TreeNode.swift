@@ -109,14 +109,13 @@ class TreeNode {
             if lineage.isEmpty {
                 // always collapse destination to save space
                 node.cell?.touchCell(.zero, isExpandable:false)
-                Timer.delay(1.0) {
-                    finish(node) }
+                Timer.delay(0.5) { finish(node) }
             }
             else if node.expanded == false {
                 node.cell?.touchCell(.zero)
-                Timer.delay(1.0) {
+                //???// Timer.delay(0.5) {
                     nextLineage()
-                }
+                //???// }
             }
             else {
                 nextLineage()
@@ -142,16 +141,7 @@ class TreeNode {
         }
     }
 
-    func collapse(title:String) {
-         if let cell = find(title: title),
-            let node = cell.treeNode,
-            let tableVC = cell.tableVC as? TreeTableVC {
-
-            node.expanded = false
-            tableVC.updateTouchCell(cell)
-        }
-    }
-
+   
     func getParentChildOther() -> ParentChildOther {
         if depth == 0, parent?.depth == 1 { return .child }
         else if depth == 1, expanded      { return .parent }

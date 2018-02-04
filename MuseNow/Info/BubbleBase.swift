@@ -17,9 +17,10 @@ class BubbleBase: BubbleDraw {
     var fromBezel: UIView!         // optional bezel from which to spring bubble
 
     var contentFrame = CGRect.zero  // frame for content inside bubble
-    var contentViews = [UIView]()   // 1 or more views containing content inside bubble
-    var contenti = 0                // index into contentViews
-
+    var contentView: UIView!
+    var contenti = -1                // index into contentViews
+    var viewCount = 0
+    
     let marginW = CGFloat(8)        // margin inside bezel
     let innerH = CGFloat(36)        // inner height / 4 determines cell bezel radius
 
@@ -38,8 +39,29 @@ class BubbleBase: BubbleDraw {
         Log(bubble.logString(bubble.logString("💬 base::\(#function)")))
     }
 
+    func makeContentView(_ index: Int) -> UIView {
+         let view = UIView(frame:.zero)
+        return view
+    }
     /// Create a bubble with content, timeout, and completion callback
-    func makeBubble(_ bubble_:Bubble) {
+    func makeBubble(_ bubble_:Bubble,_ done: @escaping CallVoid ) {
+
+        bubble = bubble_
+
+        /// this is the main bubble maker
+        func makeMain(_ index:Int) {
+            contenti = index
+            findFromView()
+            makeFromViewBezel()
+            maybeMakeCovers()
+            makeBorder()
+            makeContentFrame()
+            alpha = 0
+            done()
+        }
+
+        //sometimes the first callWait is needed to rearrange views before making bubble
+        bubble.items.first?.callWait?(self, { makeMain(0)}) ?? makeMain(-1)
 
         /// Some bubbles appear above other bubbles, such as Video.
         func findFromView() {
@@ -84,7 +106,7 @@ class BubbleBase: BubbleDraw {
         /// make frame within bubble that contains content
         func makeContentFrame() {
 
-            let m = [.above,.below,.left,.right].contains(bubble.bubShape) ? marginW : 3
+            let m = [.above,.below,.left,.right].contains(bubble.bubShape) || bubble.bubContent == .text ? marginW : 3
             let m2 = m*2
             let r = radius
             let w = bubFrame.size.width  - m2
@@ -98,16 +120,6 @@ class BubbleBase: BubbleDraw {
             default:     contentFrame = CGRect(x:m,   y:m,   width:w,   height:h)
             }
         }
-
-        // begin ---------------------------------------
-
-        bubble = bubble_
-        findFromView()
-        makeFromViewBezel()
-        maybeMakeCovers()
-        makeBorder() 
-        makeContentFrame()
-        alpha = 0
     }
 
     /**
@@ -116,33 +128,18 @@ class BubbleBase: BubbleDraw {
     func goBubble(_ onGoing_: @escaping CallBubblePhase) {
 
         onGoing = onGoing_
-        contenti = 0
         cancelling = false
+
+        popOut() { popOutContinue() }
 
         func popOutContinue() {
 
             // continue to next bubble if nowait for first time
-            if bubble.options.contains(.nowait) && contenti == 0 {
+            if bubble.options.contains(.nowait) && viewCount == 0 {
                 Log(bubble.logString("💬 base::goBubble ➛ onGoing"))
                 onGoing?(.poppedOut)
             }
             setTimeOut()
-        }
-
-        // begin -------------------
-
-        // with wait for setup or popOut immediately
-
-        // TODO: this should be replaced by a chain of ((Any)->(Any)) closures, like so
-        // CallQueue.addCalls([preRoll,popOut,popOutContinue])
-        // CallQueue could then test each item for nil, if so, skip to next
-
-        if let preRoll = bubble.items.first?.preRoll {
-
-            preRoll(self, { self.popOut() { popOutContinue() } }) // preroll some call first
-        }
-        else {
-            popOut() { popOutContinue() }
         }
     }
     
@@ -150,8 +147,12 @@ class BubbleBase: BubbleDraw {
      Timer for duration of bubble. Maybe be cancelled
      */
     func setTimeOut() {
-        let duration = bubble.items[contenti].duration
-        timer = Timer.scheduledTimer(timeInterval: duration, target: self, selector: #selector(timedOut), userInfo: nil, repeats: false)
+        let duration = (0 ..< bubble.items.count).contains(contenti)
+            ? bubble.items[contenti].duration
+            : TimeInterval(1)
+
+        timer = Timer.scheduledTimer(timeInterval: duration, target: self,
+                                     selector: #selector(timedOut), userInfo: nil, repeats: false)
     }
     @objc func timedOut() {
         Log(bubble.logString("💬 base::timedOut"))
@@ -160,14 +161,38 @@ class BubbleBase: BubbleDraw {
     }
     
     /**
-    Prepare next contentView by remov
-    */
-    func prepareContentView(_ index:Int) {
-        contentViews[contenti].removeFromSuperview()
-        contenti = index
-        contentViews[contenti].alpha = 0
-        let contentView = contentViews[contenti]
-        addSubview(contentView)
+     Prepare next contentView
+     */
+    func nextContentView(_ isEmpty:@escaping CallBool) {
+
+        if contenti >= bubble.items.count-1 {
+            return isEmpty(true)
+        }
+        contenti += 1 // side effect
+
+        func prepareContinue() {
+            contentView = makeContentView(contenti)
+            contentView.alpha = 0
+            addSubview(contentView)
+            isEmpty(false)
+        }
+        // when new content item is a callWait,
+        // execute the callWait before continuing
+
+        if let callWait = bubble.items[contenti].callWait {
+
+            // last callWait waits for bubble to tuck in -- //TODO: sync queue this 
+            if contenti == bubble.items.count-1 {
+                isEmpty(true)
+                Timer.delay(1.0) { callWait(self) {} }
+            }
+            else {
+                callWait(self) { self.nextContentView(isEmpty) }
+            }
+        }
+        else {
+            prepareContinue()
+        }
     }
 
     /**
@@ -176,6 +201,47 @@ class BubbleBase: BubbleDraw {
      bring family[1] to front of family[0].
      */
     func popOut(_ popDone:@escaping CallVoid) {
+
+        nextContentView() { isEmpty in
+            if isEmpty { popDone() }
+            else       { popOutContent() }
+        }
+
+        func popOutContent() {
+
+            let options = bubble.options
+            let base    = bubble.base
+            let from    = bubble.from
+
+            if options.contains(.overlay) {
+                transform = .identity
+                alpha = 0.0
+            }
+            else if from?.superview == nil,
+                from != base {
+
+                BubbleCovers.shared.remove[from!] = from
+                base?.addSubview(from!)
+                shrinkTransform()
+            }
+            else {
+                shrinkTransform()
+            }
+
+            // bring views to front
+
+            superview?.bringSubview(toFront: self)
+            superview?.superview?.bringSubview(toFront: self.superview!)
+            superview?.superview?.superview?.bringSubview(toFront: self.superview!.superview!)
+
+            fromBezel?.superview?.bringSubview(toFront: fromBezel)
+            from?.superview?.bringSubview(toFront: from!)
+
+            for front in bubble.front {
+                front.superview?.bringSubview(toFront: front)
+            }
+            self.animateOut(duration: 1.0, delay: 0.0, popDone)
+        }
 
         func shrinkTransform() {
 
@@ -192,40 +258,6 @@ class BubbleBase: BubbleDraw {
                 c: 0.0,   d: scale,
                 tx: t.x,  ty: t.y)
         }
-
-        // begin ------------------------------
-
-        prepareContentView(0)
-
-        let options = bubble.options
-        let base    = bubble.base
-        let from    = bubble.from
-
-        if options.contains(.overlay) {
-            transform = .identity
-            alpha = 0.0
-        }
-        else if from?.superview == nil {
-            BubbleCovers.shared.remove[from!] = from
-            base?.addSubview(from!)
-            shrinkTransform()
-        }
-        else {
-            shrinkTransform()
-        }
-
-        // bring views to front
-
-        superview?.bringSubview(toFront: self)
-        superview?.superview?.bringSubview(toFront: self.superview!)
-        superview?.superview?.superview?.bringSubview(toFront: self.superview!.superview!)
-
-        fromBezel?.superview?.bringSubview(toFront: fromBezel)
-        from?.superview?.bringSubview(toFront: from!)
-        for front in bubble.front {
-            front.superview?.bringSubview(toFront: front)
-        }
-        animateOut(duration: 1.0, delay: 0.0, finished: popDone)
     }
 
     /**
@@ -234,46 +266,71 @@ class BubbleBase: BubbleDraw {
         - fadeInNew
         - setTimeOut
      */
-    func fadeNext() -> Bool {
+    func fadeNext(finished:@escaping CallBool) {
 
-        func fadeOutOld() {
-            animateOut(duration: 1.0, delay: 0.0, finished: fadeInNew)
+        timer.invalidate()
+
+        if contenti >= bubble.items.count-1 {
+            return finished(true) // run out of content
         }
 
+        func fadeOutOld(fadeNext:@escaping CallVoid) {
+            let animateView = self.contentView
+            UIView.animate(withDuration: 0.5, delay: 0.0, options: [.allowUserInteraction], animations: {
+                animateView?.alpha = 0.0
+            }, completion: { completed in
+                animateView?.removeFromSuperview()
+                fadeNext()
+            })
+
+        }
         func fadeInNew() {
-            prepareContentView(contenti+1)
-            UIView.animate(withDuration: 1.0, delay: 0.0, options: [.allowUserInteraction], animations: {
-                self.contentViews[self.contenti].alpha = 1.0
-            }, completion: { finished in if finished {
-                self.setTimeOut() }
+
+            let animateView = self.contentView
+
+            UIView.animate(withDuration: 0.5, delay: 0.0, options: [.allowUserInteraction], animations: {
+                animateView?.alpha = 1.0
+            }, completion: { completed in
+                if completed {
+                    self.setTimeOut()
+                }
             })
         }
 
-        // begin -----------------------
+       fadeOutOld {
 
-        if contenti >= bubble.items.count-1 {
-            return false // run out of content
-        }
-        timer.invalidate()
+            self.nextContentView() { isEmpty in
 
-        if let preRoll = bubble.items[contenti+1].preRoll {
-
-            preRoll(self,fadeOutOld) // wait for preRoll
+                if isEmpty {
+                    finished(true)
+                }
+                else {
+                    fadeInNew()
+                    finished(false)
+                }
+            }
         }
-        else {
-            fadeOutOld() // no need to wait
-        }
-        return true
     }
-
     // animations ----------------------------
 
-    func animateOut(duration: TimeInterval, delay: TimeInterval, finished: @escaping CallVoid) {
+    func animateOut(duration: TimeInterval, delay: TimeInterval,_ finished: @escaping CallVoid) {
 
         BubbleCovers.shared.fadeIn(self.bubble, duration, delay)
-
+        let animateView = contentView
+        
+        UIView.animate(withDuration: 1.0, delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0, options: [.curveEaseOut,.allowUserInteraction,.beginFromCurrentState], animations: {
+            self.alpha = 1.0
+            animateView?.alpha = 1.0
+            self.transform = .identity
+        }, completion: { completed in
+            if completed {
+                maybeScrollTableToRevealSelf()
+                finished()
+            }
+        })
 
         func maybeScrollTableToRevealSelf() {
+
             if let tableView = bubble.base as? UITableView {
                 let selfOrigin = convert(tableView.frame.origin, to: tableView)
                 let selfShift = selfOrigin.y - tableView.contentOffset.y
@@ -287,29 +344,20 @@ class BubbleBase: BubbleDraw {
             }
         }
 
-        UIView.animate(withDuration: 1.0, delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0, options: [.curveEaseOut,.allowUserInteraction,.beginFromCurrentState], animations: {
-            self.alpha = 1.0
-            self.contentViews[self.contenti].alpha = 1.0
-            self.transform = .identity
-        }, completion: { completed in
-            if completed {
-                maybeScrollTableToRevealSelf()
-                finished()
-            }
-        })
     }
 
     func animateIn(duration: TimeInterval, delay:TimeInterval,finished:@escaping CallVoid) {
 
-         BubbleCovers.shared.fadeOut(self.bubble, duration, delay)
-
+        BubbleCovers.shared.fadeOut(self.bubble, duration, delay)
+        let animateView = contentView
         UIView.animate(withDuration:duration, delay:delay, options: [.allowUserInteraction,.beginFromCurrentState], animations: {
             self.alpha = 0
             self.fromBezel?.alpha = 0
-            self.contentViews[self.contenti].alpha = 0.0
+            animateView?.alpha = 0.0
 
         }, completion: { _ in
             self.fromBezel?.removeFromSuperview()
+            animateView?.removeFromSuperview()
             BubbleCovers.shared.maybeRemoveFromSuper(self.bubble)
             finished()
         })
@@ -322,17 +370,23 @@ class BubbleBase: BubbleDraw {
      */
     func tuckIn(timeout:Bool) {
 
-        if fadeNext() { return } // more content so skip tuckIN
-
-        // overlay waits for new bubble to appear on top
-        if bubble.nextBubble?.options.contains(.overlay) ?? false {
-            onGoing?(.tuckedIn)
-            animateIn(duration: 1.0, delay: 1.0, finished:{})
+        fadeNext() { finished in
+            if finished {
+                tuckInContinue()
+            }
         }
-        else {
-            animateIn(duration: 1.0, delay: 0, finished: {
-                self.onGoing?(.tuckedIn)
-            })
+        func tuckInContinue() {
+
+            // overlay waits for new bubble to appear on top
+            if bubble.nextBubble?.options.contains(.overlay) ?? false {
+                onGoing?(.tuckedIn)
+                animateIn(duration: 1.0, delay: 1.0, finished:{})
+            }
+            else {
+                animateIn(duration: 1.0, delay: 0, finished: {
+                    self.onGoing?(.tuckedIn)
+                })
+            }
         }
     }
 

@@ -9,6 +9,7 @@ class MainVC: UIViewController {
 
     static var shared: MainVC?
     let session = Session.shared
+    let settings = Settings.shared
 
     let memos   = Memos.shared
     let marks   = Marks.shared
@@ -30,16 +31,14 @@ class MainVC: UIViewController {
     var skView: SKView!
 
     let dialSize = CGSize(width: 172, height: 172)
-    var onboarding = false
 
-    private var mainFrame = CGRect.zero
-    private var pagesFrame = CGRect.zero
-    private var panelFrame = CGRect.zero
-    private var touchFrame = CGRect.zero
-    private var skViewFrame = CGRect.zero
-    private var crownLeftFrame = CGRect.zero
-    private var crownRightFrame = CGRect.zero
-    private var observer: NSKeyValueObservation?
+    var pagesFrame = CGRect.zero
+    var panelFrame = CGRect.zero
+    var touchFrame = CGRect.zero
+    var skViewFrame = CGRect.zero
+    var crownLeftFrame = CGRect.zero
+    var crownRightFrame = CGRect.zero
+    var observer: NSKeyValueObservation?
 
     func updateFrames(_ size:CGSize) {
         
@@ -61,7 +60,6 @@ class MainVC: UIViewController {
         let crownR = width - crownW
         let pagesH = height - dialH - viewY
 
-        mainFrame       = CGRect(x: 0,      y:viewY,  width: width,  height: height)
         pagesFrame      = CGRect(x: 0,      y:0,      width: width,  height: pagesH)
         panelFrame      = CGRect(x: 0,      y:panelY, width: width,  height: dialH)
 
@@ -75,7 +73,6 @@ class MainVC: UIViewController {
 
         updateFrames(size)
 
-        view.frame            = mainFrame
         touchForce.frame      = touchFrame
         panel.frame           = panelFrame
         skView.frame          = skViewFrame
@@ -91,18 +88,36 @@ class MainVC: UIViewController {
 
 
     func makeOnboard() {
+
         onboardVC = OnboardVC()
-        view.addSubview(onboardVC.view)
+        onboardVC.view.alpha = 0
+        view.addSubview(self.onboardVC.view)
+
+        UIView.animate(withDuration: 1.0, animations: {
+            self.onboardVC.view.alpha = 1
+        })
     }
 
-    func makePages() {
+    func transitionFromOnboarding() {
+
+        Onboard.shared.state = .completed
+        settings.settings["boarding"] = Onboard.shared.state.rawValue
+        settings.archiveSettings {}
+        
+        makePages() {
+            Actions.shared.doAction(.refresh)
+            UIView.animate(withDuration: 1.0, animations: {
+                self.onboardVC.view.alpha = 0
+            }, completion:{ _ in
+                self.onboardVC.view.removeFromSuperview()
+                Tour.shared.beginTourSet([.main,.menu])
+            })
+        }
+    }
+
+    func makePages(_ done: @escaping CallVoid) {
 
         // some views not yet initialized, so only update frames
-
-        pagesVC.updateFrames(pagesFrame.size)
-
-        view.frame = mainFrame
-        view.addSubview(pagesVC.view)
 
         panel.frame = panelFrame
         panel.backgroundColor = .black
@@ -136,8 +151,6 @@ class MainVC: UIViewController {
 
         phoneCrown = PhoneCrown(left:crownLeftFrame, right:crownRightFrame, pagesVC.eventVC)
 
-        // view hierarcy
-
         view.addSubview(panel)
         panel.addSubview(skView)
         panel.addSubview(phoneCrown)
@@ -149,59 +162,8 @@ class MainVC: UIViewController {
             TreeNodes.shared.root.updateViews(object.bounds.size.width)
             Log("▣ observer:\(object.bounds.size)")
         }
+        done()
     }
-    func setBorder(_ v:UIView) {
-        
-        v.layer.cornerRadius = 16
-        v.layer.borderColor = headColor.cgColor
-        v.layer.borderWidth = 1
-        //??// v.layer.masksToBounds = true
-    }
-        
-    // overrides -----------------------------
-    
-    override func viewDidLoad() {
-        
-        self.mainFrame = view.bounds
-        super.viewDidLoad()
-        
-        MainVC.shared = self
-        view.accessibilityIgnoresInvertColors = true  // stay dark in invert mode
-        view.backgroundColor = .black
-        
-        updateFrames(view.bounds.size)
-        
-        if onboarding  {
-            makeOnboard()
-        }
-        else {
-            makePages()
-        }
-        // Muse.shared.testScript() // for future use of ParGraph
-    }
-    
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        
-        Log("▣ MainVC \(size)")
-        super.viewWillTransition(to: size, with: coordinator)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) { Log("⟳ \(#function)")
-        active?.startActive()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        observer?.invalidate()
-        //...
-    }
-    
-    override func prefersHomeIndicatorAutoHidden() -> Bool {
-        return true
-    }
-    
-    override var prefersStatusBarHidden : Bool {
-        return false
-    }
-    
+
 }
 

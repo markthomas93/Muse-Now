@@ -40,30 +40,24 @@ class BubbleText: BubbleBase  {
         super.init(frame: frame) // calls designated initializer
     }
 
-
     convenience init(_ bubble:Bubble) {
         self.init(frame:CGRect.zero)
-        makeBubble(bubble)
     }
-    override func makeBubble(_ bubble_:Bubble) {
 
-        super.makeBubble(bubble_)
+    override func makeContentView(_ index: Int) -> UIView {
 
-        for item in bubble.items {
-
-            let label = UILabel(frame:contentFrame)
-            label.backgroundColor = .clear
-            label.text = item.str
-            label.adjustsFontSizeToFitWidth = true
-            label.lineBreakMode = .byTruncatingTail
-            label.textAlignment = .center
-            label.adjustsFontForContentSizeCategory = true
-            label.numberOfLines = 0
-            label.textColor = .white
-            label.highlightedTextColor = .white
-            contentViews.append(label)
-        }
+        let item = bubble.items[index]
+        let label = UILabel(frame:contentFrame)
+        label.backgroundColor = .clear
+        label.text = item.str
+        label.adjustsFontSizeToFitWidth = true
+        label.lineBreakMode = .byTruncatingTail
+        label.textAlignment = .center
+        label.adjustsFontForContentSizeCategory = true
+        label.numberOfLines = 0
+        label.textColor = .white
+        label.highlightedTextColor = .white
+        return label
     }
-   
 }
 

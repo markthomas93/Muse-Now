@@ -3,7 +3,6 @@
 import UIKit
 import EventKit
 
-
 class TreeTableVC: UITableViewController {
 
     var cells : [String:MuCell] = [:]
@@ -27,7 +26,7 @@ class TreeTableVC: UITableViewController {
         if let root = TreeNodes.shared.root {
             root.cell.collapseAllTheWayDown()
             root.expanded = true
-            TreeNodes.shared.renumber(touchedCell?.treeNode ?? nil)
+            TreeNodes.shared.renumber()
             tableView.reloadData()
         }
         touchedCell?.setHighlight(.low)
@@ -103,28 +102,25 @@ class TreeTableVC: UITableViewController {
 
     /**
      */
-    func updateTouchCell(_ cell: TreeCell) {
+    func updateTouchNodes(_ oldNodes: [TreeNode], _ newNodes:[TreeNode]) {
 
-        // changed count
-        let oldCount = TreeNodes.shared.shownNodes.count
-        TreeNodes.shared.renumber(touchedCell?.treeNode ?? nil)
-        let newCount = TreeNodes.shared.shownNodes.count
-        let delta = newCount - oldCount
-
-        // new height of cells preceeding cell
-        let row = cell.treeNode.row
-
-        if delta > 0 {
-            let indexPaths = (row+1 ... row+delta).map { IndexPath(row: $0, section: 0) }
-            tableView.insertRows(at: indexPaths, with: .none)
+        let delSet = oldNodes.filter { !newNodes.contains($0) }
+        let addSet = newNodes.filter { !oldNodes.contains($0) }
+        Log ("*** beginUpdates ***")
+        tableView.beginUpdates()
+        if delSet.count > 0 {
+            let indexPaths = delSet.map { IndexPath(row: $0.row, section: 0) }
+            tableView.deleteRows(at: indexPaths, with: .fade)
         }
-        else if delta < 0 {
-            let indexPaths = (row+1 ... row-delta).map { IndexPath(row: $0, section: 0) }
-            tableView.deleteRows(at: indexPaths, with: .none)
+        if addSet.count > 0 {
+            let indexPaths = addSet.map { IndexPath(row: $0.row, section: 0) }
+            tableView.insertRows(at: indexPaths, with: .fade)
         }
-        else {
+        if addSet.count == 0, delSet.count == 0 {
             tableView.reloadData()
         }
-     }
-    
+        tableView.endUpdates()
+        Log ("*** endUpdates ***")
+    }
+
 }

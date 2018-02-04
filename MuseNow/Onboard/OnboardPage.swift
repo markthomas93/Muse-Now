@@ -11,12 +11,13 @@ import UIKit
 
 class OnboardPage: UIViewController {
 
-    var action: CallVoid! // action after bubble is shown
+    var anys = [Any]()
+    var bubble: Bubble!
 
-    convenience init(_ title_:String, _ action_: @escaping CallVoid) {
+    convenience init(_ title_:String,_ anys_: [Any]) {
         self.init()
         title = title_
-        action = action_
+        anys = anys_
     }
 
     override func viewDidLoad() {
@@ -28,21 +29,26 @@ class OnboardPage: UIViewController {
         let label = UILabel()
         view.addSubview(label)
         label.text = title
+        label.textAlignment = .center
         label.textColor = .white
         label.translatesAutoresizingMaskIntoConstraints = false
         label.topAnchor.constraint(equalTo: view.topAnchor, constant: 50).isActive = true
-        label.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        label.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 0).isActive = true
+        label.frame.size.width = view.frame.size.width
     }
 
     override func viewDidAppear(_ animated: Bool) {
         Log("🔰 appear: \(title!)")
-        let bubItem = BubbleItem(title!,4)
-        let bubble = Bubble(title!, [bubItem], .center, .text, CGSize(width:128,height:64),
-                            view,view,[],[],[])
+        let bubs = Tour.shared.bubsFrom(anys)
+        bubble = Bubble(title!, bubs, .center, .text, CGSize(width:256,height:128), view, view, [], [], [])
 
-        BubbleText(bubble).goBubble() {_ in
-            self.action?()
+        bubble.tourNextBubble {
+
         }
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        bubble?.bubBase?.cancelBubble()
+        super.viewWillDisappear(animated)
     }
 
 }

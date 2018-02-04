@@ -22,17 +22,16 @@ class BubbleVideo: BubbleBase {
 
     convenience init(_ bubble:Bubble) {
         self.init(frame:CGRect.zero)
-        makeBubble(bubble)
     }
 
     deinit {
          NotificationCenter.default.removeObserver(self)
         Log(bubble.logString("💬 Video::deinit !!!"))
     }
-    
-    override func makeBubble(_ bubble:Bubble) {
 
-        super.makeBubble(bubble)
+    override func makeContentView(_ index: Int) -> UIView {
+
+        let contentView = UIView(frame:contentFrame)
 
         if  let fileName = bubble.items.first?.str,
             let videoURL = Bundle.main.url(forResource: fileName, withExtension: "") as NSURL? {
@@ -47,18 +46,24 @@ class BubbleVideo: BubbleBase {
             playerLayer.frame = contentFrame
             playerLayer.frame.origin = .zero
 
-            let contentView = UIView(frame:contentFrame)
             contentView.layer.addSublayer(playerLayer)
             contentView.layer.cornerRadius = radius
             contentView.layer.masksToBounds = true
-            contentViews.append(contentView)
         }
+        return contentView
     }
 
     /**
      animate bubble onto screen and execute player
      */
     override func goBubble(_ onGoing_: @escaping CallBubblePhase) {
+
+        onGoing = onGoing_
+        Log(bubble.logString("💬 Video::goBubble"))
+        popOut() {
+            self.onGoing?(.poppedOut)
+            playVideo()
+        }
 
         /// Continue with video after popping out bubble
         func playVideo() {
@@ -75,16 +80,6 @@ class BubbleVideo: BubbleBase {
             if contenti == 0 {
                 NotificationCenter.default.addObserver(self, selector:#selector(self.videoFinishedPlaying), name: .AVPlayerItemDidPlayToEndTime, object: nil)
             }
-        }
-
-
-        // begin ------------------------
-
-        onGoing = onGoing_
-        Log(bubble.logString("💬 Video::goBubble"))
-        popOut() {
-            self.onGoing?(.poppedOut)
-            playVideo()
         }
     }
     /**

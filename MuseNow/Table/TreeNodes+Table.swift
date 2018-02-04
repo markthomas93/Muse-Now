@@ -85,15 +85,15 @@ extension TreeNodes {
 
         // about ------------------------------------------------
 
-        let about = TreeNode(.title, root,  "about",    vc)
-        let _     = TreeNode(.title, about, "support",  vc)
-        let _     = TreeNode(.title, about, "blog",     vc)
-
-        let _  = TreeButtonNode(about, "tour", "go", { Actions.shared.doAction(.tourAll) }, vc)
+        let more = TreeNode(.title, root, "more",    vc)
+        let _    = TreeNode(.title, more, "about",   vc)
+        let _    = TreeNode(.title, more, "support", vc)
+        let _    = TreeNode(.title, more, "blog",    vc)
+        let _    = TreeButtonNode(more,  "tour", "go", { Actions.shared.doAction(.tourAll) }, vc)
 
         // setup table cells from current st
         root!.refreshNodeCells()
-        TreeNodes.shared.renumber(nil)
+        TreeNodes.shared.renumber()
     }
 
 }

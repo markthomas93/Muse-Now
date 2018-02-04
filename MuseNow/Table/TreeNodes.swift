@@ -49,7 +49,7 @@ class TreeNodes {
      Renumber currently displayed table cells.
      Used for animating expand/collapse of children
      */
-    func renumber(_ touchedNode:TreeNode!) {
+    func renumber() {
 
         nextNodes.removeAll()
         root?.expanded = true // root always expanded

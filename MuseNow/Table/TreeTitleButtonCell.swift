@@ -10,8 +10,8 @@ import UIKit
 import EventKit
 
 class TreeTitleButtonCell: TreeTitleCell {
-
-    var butn: UIButton!
+    var butn0: UIView! // under button that allows subview
+    var butn1: UIView! // over button that show shape
     var butnFrame = CGRect.zero
     var butnTitle = "go"
     var butnAct: CallVoid!
@@ -35,19 +35,15 @@ class TreeTitleButtonCell: TreeTitleCell {
         updateFrames(width)
 
         // for button
-        butn = UIButton(frame:butnFrame)
-        butn.titleLabel?.text = butnTitle
-        butn.addSolidBorder(color: .white, radius: innerH/2)
-        butn.layer.masksToBounds = true
-        butn.addTarget(self, action: #selector(butnAction), for: .touchUpInside)
-        butn.isUserInteractionEnabled = false
-        contentView.addSubview(butn)
+        butn0 = UIView(frame:butnFrame)
+        butn1 = UIView(frame:butnFrame)
+        butn1.frame.origin = .zero
+        butn0.addSubview(butn1)
+        butn1.addSolidBorder(color: .white, radius: innerH/2)
+        butn1.clipsToBounds = false
+        contentView.addSubview(butn0)
     }
-    
-    @objc func butnAction() {
-        butnAct?()
-    }
-    override func updateFrames(_ width:CGFloat) {
+     override func updateFrames(_ width:CGFloat) {
 
         let butnW = height
 
@@ -88,7 +84,8 @@ class TreeTitleButtonCell: TreeTitleCell {
         title.frame = titleFrame
         bezel.frame = bezelFrame
         info?.frame = infoFrame
-        butn.frame  = butnFrame
+        butn0.frame = butnFrame
+        butn1.frame.size = butn0.frame.size
     }
 
     override func setParentChildOther(_ parentChild_:ParentChildOther, touched touched_:Bool) {
@@ -110,7 +107,7 @@ class TreeTitleButtonCell: TreeTitleCell {
         }
 
         setHighlights(highlighting_,
-                      views:        [bezel, butn],
+                      views:        [bezel, butn1],
                       borders:      [border, .white],
                       backgrounds:  [background, background],
                       alpha:        newAlpha,
@@ -119,16 +116,15 @@ class TreeTitleButtonCell: TreeTitleCell {
         newAlpha = newAlpha * newAlpha
         let isHigh = [.forceHigh,.high].contains(highlighting)
         let newColor = isHigh ? .lightGray : background
-        butn.clipsToBounds = true //???//
         if animated {
             UIView.animate(withDuration: 0.25, animations: {
-                self.butn.alpha = newAlpha
-                self.butn.backgroundColor = newColor
+                self.butn1.alpha = newAlpha
+                self.butn1.backgroundColor = newColor
             })
         }
         else {
-            butn.alpha = newAlpha
-            butn.backgroundColor = newColor
+            butn1.alpha = newAlpha
+            butn1.backgroundColor = newColor
         }
     }
 
@@ -138,7 +134,7 @@ class TreeTitleButtonCell: TreeTitleCell {
 
         let toggleX = frame.size.width - frame.size.height
         if location.x > toggleX {
-            butn.sendActions(for: .touchUpInside)
+            butnAct?()
         }
     }
 

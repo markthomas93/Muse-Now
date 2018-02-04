@@ -197,6 +197,7 @@ extension Session {
 extension Session {
     
     // Sender
+    
     func sendMessage(_ message: [String : Any],  errorHandler: ((Error) -> Void)? = nil) -> Bool {
         
         if let session = validSession {

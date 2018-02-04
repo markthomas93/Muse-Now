@@ -14,7 +14,7 @@ import UIKit
  over the same covers that darken the backgroud.
  So, manage handoff between bubbles.
  */
-
+class BubbleCover: UIView {}
 class BubbleCovers {
 
     static var shared = BubbleCovers()
@@ -33,10 +33,10 @@ class BubbleCovers {
 
             if covers[underView] != nil { continue }
 
-            let cover = UIView(frame:underView.frame)
+            let cover = BubbleCover(frame:underView.frame)
             cover.frame.origin = .zero
             cover.backgroundColor =  .black
-            cover.alpha = 0.25
+            cover.alpha = 0.0
             cover.isUserInteractionEnabled = false
             covers[underView] = cover
             underView.addSubview(cover)
@@ -63,7 +63,6 @@ class BubbleCovers {
                 if let tableView = key as? UITableView {
                     value.frame.origin = tableView.contentOffset
                 }
-                //???// key.backgroundColor = .blue  
             }
             UIView.animate(withDuration: duration, delay: delay, options: [.curveLinear], animations: {
                  for value in self.covers.values {

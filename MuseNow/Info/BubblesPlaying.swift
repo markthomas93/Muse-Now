@@ -18,7 +18,7 @@ class BubblesPlaying {
 
     func cancelBubbles() {
         for bubble in playSet {
-            bubble.bubView?.cancelBubble()
+            bubble.bubBase?.cancelBubble()
         }
         BubbleCovers.shared.fadeRemoveRemainingCovers()
         playing = false
@@ -42,7 +42,7 @@ class BubblesPlaying {
                     lastBubble = bubble
                 }
                 Log(bubble.logString("💬 removing"))
-                bubble.bubView.nudgeBubble()
+                bubble.bubBase.nudgeBubble()
             }
             //??// lastBubble.gotoNext()
         }
@@ -53,14 +53,14 @@ class BubblesPlaying {
             if let touchPoint = touches.first?.location(in: nil),
                 let winView = MyApplication.shared.delegate?.window! {
 
-                let bubView  = bubble.bubView!
-                let bubFrame = bubView.frame
+                let bubBase  = bubble.bubBase!
+                let bubFrame = bubBase.frame
 
                 let winPoint = winView.convert(touchPoint, from:nil)
                 //let winFrame = winView.frame
 
-                let bubFrame1 = bubView.convert(bubFrame, from:nil)
-                let bubFrame2 = bubView.convert(bubFrame, to:nil)
+                let bubFrame1 = bubBase.convert(bubFrame, from:nil)
+                let bubFrame2 = bubBase.convert(bubFrame, to:nil)
 
                 let bubFrame3 = winView.convert(bubFrame, from:nil)
                 let bubFrame4 = winView.convert(bubFrame, to:nil)

@@ -33,7 +33,10 @@ class TreeTitleFaderCell: TreeTitleCell {
 
         fader = Fader(frame:faderFrame)
         fader.setValue(Anim.shared.scene?.uFade?.floatValue ?? 0)
+
+        fader.clipsToBounds = false
         bezel.layer.masksToBounds = false // needed for demo
+
         bezel.addSubview(title)
         bezel.addSubview(fader)
     }

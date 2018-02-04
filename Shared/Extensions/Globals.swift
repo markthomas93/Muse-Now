@@ -36,14 +36,18 @@ func DebugLog(_ str: String) -> Bool {
         //case NSLog(str)
 
     case
-    "▭", // textfield
+    "⧉", // syncfile
     "🔰": // onboarding pages (japaness beginnner symbol)
 
         print(MuDate.getHourMinSecMsec() + ": " + str)
         
     case
+
+    "*", // TableVC updates
     "⏲", // timing
     "💬", // bubble animation closure
+    "▭", // textfield
+
     "⟳", // life cycle
     "⧉", // syncfile
     "▤", // TreeTableView
@@ -66,8 +70,6 @@ func DebugLog(_ str: String) -> Bool {
     "▣", // observe main window bounds
     "◰", // view layout
     "⊛", // crown
-
-
 
     "👆", // tap action
 

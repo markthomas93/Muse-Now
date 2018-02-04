@@ -105,9 +105,8 @@ extension TreeTableVC: PhoneCrownDelegate {
             let tablZ = tablY + tablH
             let shift = lastZ - tablZ
 
-            Log(logMsg(lastY, lastZ, tablY, tablZ, shift))
-
             if shift > 0 { // shift != 0 causes jitter for negative values when total size is < 1/2 screen size
+                Log(logMsg(lastY, lastZ, tablY, tablZ, shift))
                 UIView.animate(withDuration: 0.25, animations: {
                     self.tableView.contentOffset.y += shift
                 })

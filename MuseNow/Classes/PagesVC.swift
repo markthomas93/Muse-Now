@@ -53,7 +53,6 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        BubbleTour.shared.beginTourSet([.tourMain,.tourMenu])
     }
 
     override func viewDidLoad() {
@@ -133,7 +132,6 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
             pageType = PageType(rawValue: index) ?? .main
             return pages[index]
         }
-
         return nil
     }
     

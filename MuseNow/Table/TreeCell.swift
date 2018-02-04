@@ -3,6 +3,7 @@
 import Foundation
 import UIKit
 import EventKit
+import Dispatch
 
 public enum ParentChildOther { case parent, child, other }
 
@@ -22,9 +23,8 @@ class TreeCell: MuCell {
 
     var info: UIImageView!
     var infoIcon = ""
-    var infoSection: BubbleSection!
-    var infoDelay = TimeInterval(4.0)
-    var infoShowing = false
+    var infoSection: TourSection!
+    var infoDelay = TimeInterval(2.0)
     var infoTimer = Timer()
 
     var cellFrame = CGRect.zero
@@ -96,7 +96,6 @@ class TreeCell: MuCell {
         info.backgroundColor = .clear
         self.addSubview(info)
         info.alpha = 0.0
-        infoShowing = false
 
         bezel.frame = bezelFrame
     }
@@ -116,7 +115,7 @@ class TreeCell: MuCell {
 
     /**
      */
-    func addInfoBubble(_ infoSection_:BubbleSection) {
+    func addInfoBubble(_ infoSection_:TourSection) {
 
         if let tourSet = infoSection_.tourSet {
             infoSection = infoSection_
@@ -240,26 +239,31 @@ class TreeCell: MuCell {
 
         if isHigh {
             if animated { animateInfo(newAlpha: 1.0, duration: 1.0, delay: infoDelay)}
-            else        { info.alpha = 1.0 ; infoShowing = true }
+            else        { info.alpha = 1.0  }
         }
         else {
-             //??// BubbleTour.shared.cancelSection(infoSection)
+             //??// Tour.shared.cancelSection(infoSection)
             if animated { animateInfo(newAlpha: 0.0, duration: 0.25, delay: 0)}
-            else        { info.alpha = 0.0 ; infoShowing = false }
+            else        { info.alpha = 0.0 }
         }
     }
     func animateInfo(newAlpha:CGFloat, duration:TimeInterval, delay:TimeInterval) {
 
-        infoTimer.invalidate()
-        infoTimer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false, block: { _ in
+        if info?.image != nil { //???//
+            info.superview?.bringSubview(toFront: info)
 
-            self.infoShowing = (newAlpha > 0)
-            //Log("⏲ animateInfo \(self.treeNode.setting.title) alpha: \(newAlpha)")
+            infoTimer.invalidate()
+            infoTimer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false, block: { _ in
 
-            UIView.animate(withDuration: duration, delay: 0, options: [.allowUserInteraction,.beginFromCurrentState], animations: {
-                self.info.alpha = newAlpha
+                Log("⏲ animateInfo \(self.treeNode.setting.title) alpha: \(newAlpha)")
+
+                UIView.animate(withDuration: duration, delay: 0, options: [.allowUserInteraction,.beginFromCurrentState], animations: {
+                    self.info.alpha = newAlpha
+                }, completion:{ completed in
+                    Log("⏲ animateInfo \(self.treeNode.setting.title) alpha: \(self.info.alpha) completed:\(completed)")
+                })
             })
-        })
+        }
     }
 
     override func setHighlight(_ highlighting_:Highlighting, animated:Bool = true) {
@@ -283,11 +287,11 @@ class TreeCell: MuCell {
     }
 
     /**
-     check to see if user either touched a cell with info for the first time,
+     Check whether user either touched a cell with info for the first time,
      or directly touched the info. If so, then wait
      until the info has played before conintuing to afterInfo()
      */
-    func touchedInfo(_ location: CGPoint, done: @escaping CallBool) {
+    func maybeTouchInfoFirst(_ location: CGPoint,_ done: @escaping CallBool)  {
 
         if  info.alpha > 0,
             let treeNode = treeNode,
@@ -295,10 +299,11 @@ class TreeCell: MuCell {
             info.alpha == 1.0,
             infoTap.contains(location) {
 
-            return BubbleTour.shared.tourSection(infoSection,done)
+            Tour.shared.tourSection(infoSection, done)
         }
-        // either nothingHere or error, so continue immediately
-        done(false)
+        else {
+            done(false)
+        }
     }
 
     /**
@@ -307,15 +312,15 @@ class TreeCell: MuCell {
      */
     override func touchCell(_ location: CGPoint, isExpandable:Bool = true) {
 
+
         (tableVC as? TreeTableVC)?.setTouchedCell(self)
 
-        /**
-         When collapsing sibling, self may also get collapsed.
-         So, need to know original state to determine highlight.
-         */
-        func afterInfo() {
+        func afterTouchingInfo() {
+
+            let oldShown = TreeNodes.shared.shownNodes
+            Log ("*** oldShown: \(oldShown.count) *** ")
+
             let wasExpanded = treeNode.expanded
-            var siblingCollapsing = false
             if let row = treeNode?.row {
                 lastLocationInTable = tableVC.tableView.rectForRow(at: IndexPath(row:row, section:0)).origin
             }
@@ -323,8 +328,7 @@ class TreeCell: MuCell {
             if treeNode.parent != nil {
                 for sib in treeNode.parent.children {
                     if sib.expanded {
-                        sib.cell.touchFlipExpand()
-                        siblingCollapsing = true
+                        sib.cell.collapseAllTheWayDown()
                         break
                     }
                 }
@@ -332,54 +336,26 @@ class TreeCell: MuCell {
 
             // expand me when I have children and status wasn't change by collapsing siblings
             let expandMe = (treeNode.children.count > 0) && (wasExpanded == treeNode.expanded) && isExpandable
-
-            func touchAndScroll() {
-                if expandMe { touchFlipExpand() }
-                else { setHighlight(.forceHigh) }
-                (tableVC as? TreeTableVC)?.scrollToNearestTouch(self)
-            }
-
-            if siblingCollapsing { Timer.delay(0.25,touchAndScroll) }
-            else                 { touchAndScroll() }
-        }
-
-        // begin ------------------------------
-
-        touchedInfo(location) { touchingInfo in
-            // expand children, optionally after playing info
-            let wasCollapsed = self.treeNode.expanded == false
-            if !touchingInfo || wasCollapsed {
-                afterInfo()
-            }
-        }
-    }
-
-    /**
-     Either collapse or expand treeNodes and update TreeTableVC
-     - via: toucheCell while siblingCollapsing
-     - via: toucheCell.touchSelf when not collapsed w siblings
-     - Parameter scrollNearest: try to keep cell nearest touch location
-     */
-    func touchFlipExpand() {
-
-        if let tableVC = tableVC as? TreeTableVC {
-
-            if treeNode.expanded == true {
-                collapseAllTheWayDown()
-                tableVC.updateTouchCell(self)
-            }
-            else {
+            if expandMe {  
                 treeNode.expanded = true
                 updateLeft(animate:true)
-                tableVC.updateTouchCell(self)
-
-                // scroll show the next node after last child (+1)
-                if  let node = treeNode?.children.last,
-                    let lastChildCell = node.cell,
-                    tableVC.scrollToMakeVisibleCell(lastChildCell, node.row + 1) {
-                    return
-                }
             }
+            else {
+                setHighlight(.forceHigh)
+            }
+            TreeNodes.shared.renumber()
+            let newShown = TreeNodes.shared.shownNodes
+             Log ("*** oldShown: \(oldShown.count)   newShown: \(newShown.count) *** ")
+            
+            if let tableVC = tableVC as? TreeTableVC {
+                tableVC.updateTouchNodes(oldShown,newShown)
+            }
+            (tableVC as? TreeTableVC)?.scrollToNearestTouch(self)
+
+        }
+        
+        maybeTouchInfoFirst(location) { touchedInfo in
+            afterTouchingInfo()
         }
     }
 

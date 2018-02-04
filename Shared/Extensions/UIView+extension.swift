@@ -91,7 +91,6 @@ extension UIView {
         shapeLayer.path = path
 
         self.layer.mask = shapeLayer
-        self.layer.masksToBounds = true
 
     }
     func addDashBorder(color: UIColor, radius:CGFloat) {

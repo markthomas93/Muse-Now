@@ -177,7 +177,7 @@
 		801A788A1FFE986000A11845 /* BubblesPlaying.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801A78891FFE986000A11845 /* BubblesPlaying.swift */; };
 		801A788C1FFEBC8500A11845 /* BubbleSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801A788B1FFEBC8500A11845 /* BubbleSection.swift */; };
 		80203C171FD47DA500CA4D38 /* TreeTableVC+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80203C161FD47DA500CA4D38 /* TreeTableVC+Keyboard.swift */; };
-		80203C1B1FD5A5D400CA4D38 /* TreeTable+PhoneCrown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80203C1A1FD5A5D400CA4D38 /* TreeTable+PhoneCrown.swift */; };
+		80203C1B1FD5A5D400CA4D38 /* TreeTableVC+PhoneCrown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80203C1A1FD5A5D400CA4D38 /* TreeTableVC+PhoneCrown.swift */; };
 		80203C1D1FD5B51A00CA4D38 /* EventRowItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80203C1C1FD5B51A00CA4D38 /* EventRowItem.swift */; };
 		80203C1F1FD7854500CA4D38 /* TreeEditTimeCell+user.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80203C1E1FD7854500CA4D38 /* TreeEditTimeCell+user.swift */; };
 		8025E3791FFBF1F3004B81F4 /* TreeNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8025E3781FFBF1F3004B81F4 /* TreeNodes.swift */; };
@@ -223,15 +223,6 @@
 		806ACFE21FC60D7100220EB6 /* TreeEditWeekdCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806ACFE01FC60D7000220EB6 /* TreeEditWeekdCell.swift */; };
 		806ACFE61FC60EA900220EB6 /* TreeEditCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806ACFE41FC60EA900220EB6 /* TreeEditCell.swift */; };
 		806ACFE91FC624CB00220EB6 /* TreeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806ACFE81FC624CB00220EB6 /* TreeCell.swift */; };
-		806C7A41200BC90A00361281 /* Bubble_iPad_320x320.m4v in Resources */ = {isa = PBXBuildFile; fileRef = 80550150200A6A4A00C390A4 /* Bubble_iPad_320x320.m4v */; };
-		806C7A42200BC90A00361281 /* Bubble_iPhone_320x320.m4v in Resources */ = {isa = PBXBuildFile; fileRef = 80550151200A6A4A00C390A4 /* Bubble_iPhone_320x320.m4v */; };
-		806C7A43200BC90A00361281 /* Bubble_Watch_320x320.m4v in Resources */ = {isa = PBXBuildFile; fileRef = 80550152200A6A4A00C390A4 /* Bubble_Watch_320x320.m4v */; };
-		806C7A44200BC90A00361281 /* PhoneMemo2.m4v in Resources */ = {isa = PBXBuildFile; fileRef = 80550154200A6A4A00C390A4 /* PhoneMemo2.m4v */; };
-		806C7A45200BC90A00361281 /* PhoneSiri2.m4v in Resources */ = {isa = PBXBuildFile; fileRef = 80550155200A6A4A00C390A4 /* PhoneSiri2.m4v */; };
-		806C7A46200BC90A00361281 /* WatchCrown2.m4v in Resources */ = {isa = PBXBuildFile; fileRef = 80550156200A6A4A00C390A4 /* WatchCrown2.m4v */; };
-		806C7A47200BC90A00361281 /* WatchMemo2.m4v in Resources */ = {isa = PBXBuildFile; fileRef = 80550157200A6A4A00C390A4 /* WatchMemo2.m4v */; };
-		806C7A48200BC90A00361281 /* WatchSiri2.m4v in Resources */ = {isa = PBXBuildFile; fileRef = 80550158200A6A4A00C390A4 /* WatchSiri2.m4v */; };
-		806C7A49200BC92D00361281 /* icon-Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 80550153200A6A4A00C390A4 /* icon-Logo.png */; };
 		807643501FACBE55001733C6 /* Muse+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076434B1FACBE55001733C6 /* Muse+Test.swift */; };
 		807643561FACBE55001733C6 /* Muse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076434E1FACBE55001733C6 /* Muse.swift */; };
 		807643581FACBE55001733C6 /* MuseFound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076434F1FACBE55001733C6 /* MuseFound.swift */; };
@@ -242,8 +233,9 @@
 		8076B3371FE6C69A001EDD30 /* BubbleDraw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076B3331FE6C69A001EDD30 /* BubbleDraw.swift */; };
 		8076B3391FE6C69A001EDD30 /* BubbleText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076B3351FE6C69A001EDD30 /* BubbleText.swift */; };
 		8076B33A1FE6C69A001EDD30 /* BubbleVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076B3361FE6C69A001EDD30 /* BubbleVideo.swift */; };
-		8076B33C1FE6C783001EDD30 /* BubbleTour.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076B33B1FE6C783001EDD30 /* BubbleTour.swift */; };
+		8076B33C1FE6C783001EDD30 /* Tour.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076B33B1FE6C783001EDD30 /* Tour.swift */; };
 		8076B33E1FE6D151001EDD30 /* BubbleBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076B33D1FE6D151001EDD30 /* BubbleBase.swift */; };
+		807A59F4201E542C007BCF46 /* MainVC+override.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807A59F3201E542C007BCF46 /* MainVC+override.swift */; };
 		8088149C200941A1008047DA /* FileSync+delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8088149B200941A1008047DA /* FileSync+delegate.swift */; };
 		80920B451FA4F6E4004E4D8B /* ComplicationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80920B441FA4F6E4004E4D8B /* ComplicationProvider.swift */; };
 		809E55631FB4C6A700974CB7 /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809E55621FB4C6A700974CB7 /* Audio.swift */; };
@@ -254,6 +246,8 @@
 		80A3E36C1FC0CABC00195BD3 /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F70E1FA3EE2400F7ED94 /* Actions.swift */; };
 		80A3E36E1FC0D51500195BD3 /* TreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A3E36D1FC0D51500195BD3 /* TreeNode.swift */; };
 		80A87EC32007DC5400FC920D /* Session+File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A87EC22007DC5400FC920D /* Session+File.swift */; };
+		80A91C06201812A300833859 /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A91C05201812A300833859 /* Onboarding.swift */; };
+		80A91C07201812B600833859 /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A91C05201812A300833859 /* Onboarding.swift */; };
 		80AD99891FCBA06B00BECC4A /* TreeTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AD99881FCBA06A00BECC4A /* TreeTitleCell.swift */; };
 		80BD52361FEB695E00EB4F92 /* BubbleCovers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BD52351FEB695E00EB4F92 /* BubbleCovers.swift */; };
 		80C78C821FE37708002E3A95 /* FileSync+Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C78C811FE37708002E3A95 /* FileSync+Session.swift */; };
@@ -263,12 +257,21 @@
 		80D483EC1FCB496800D28095 /* TreeTableVC+override.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D483EB1FCB496800D28095 /* TreeTableVC+override.swift */; };
 		80DF78461FF828690089475E /* BubbleOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DF78451FF828690089475E /* BubbleOptions.swift */; };
 		80DF78481FF828830089475E /* BubbleItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DF78471FF828830089475E /* BubbleItem.swift */; };
-		80E89FE61FED8D96007D874F /* BubbleTour+Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E89FE51FED8D96007D874F /* BubbleTour+Main.swift */; };
-		80E89FE81FED8EC5007D874F /* BubbleTour+Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E89FE71FED8EC5007D874F /* BubbleTour+Menu.swift */; };
+		80E89FE61FED8D96007D874F /* Tour+Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E89FE51FED8D96007D874F /* Tour+Main.swift */; };
+		80E89FE81FED8EC5007D874F /* Tour+Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E89FE71FED8EC5007D874F /* Tour+Menu.swift */; };
 		80F26DBC1FBA07E100C26973 /* Routine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F26DBB1FBA07E100C26973 /* Routine.swift */; };
 		80F26DBD1FBA07E100C26973 /* Routine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F26DBB1FBA07E100C26973 /* Routine.swift */; };
 		80F26DBF1FBA110300C26973 /* Routine.par in Resources */ = {isa = PBXBuildFile; fileRef = 80F26DBE1FBA110300C26973 /* Routine.par */; };
 		80F26DC01FBA110300C26973 /* Routine.par in Resources */ = {isa = PBXBuildFile; fileRef = 80F26DBE1FBA110300C26973 /* Routine.par */; };
+		80F6FF08200FE5A500876207 /* icon-Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 80834017200FE4BA00AD5FF7 /* icon-Logo.png */; };
+		80F6FF09200FE5B400876207 /* Bubble_iPad_320x320.m4v in Resources */ = {isa = PBXBuildFile; fileRef = 80834014200FE4BA00AD5FF7 /* Bubble_iPad_320x320.m4v */; };
+		80F6FF0A200FE5B400876207 /* Bubble_iPhone_320x320.m4v in Resources */ = {isa = PBXBuildFile; fileRef = 80834015200FE4BA00AD5FF7 /* Bubble_iPhone_320x320.m4v */; };
+		80F6FF0B200FE5B400876207 /* Bubble_Watch_320x320.m4v in Resources */ = {isa = PBXBuildFile; fileRef = 80834016200FE4BA00AD5FF7 /* Bubble_Watch_320x320.m4v */; };
+		80F6FF0C200FE5B400876207 /* PhoneMemo2.m4v in Resources */ = {isa = PBXBuildFile; fileRef = 80834018200FE4BA00AD5FF7 /* PhoneMemo2.m4v */; };
+		80F6FF0D200FE5B400876207 /* PhoneSiri2.m4v in Resources */ = {isa = PBXBuildFile; fileRef = 80834019200FE4BA00AD5FF7 /* PhoneSiri2.m4v */; };
+		80F6FF0E200FE5B400876207 /* WatchCrown2.m4v in Resources */ = {isa = PBXBuildFile; fileRef = 8083401A200FE4BA00AD5FF7 /* WatchCrown2.m4v */; };
+		80F6FF0F200FE5B400876207 /* WatchMemo2.m4v in Resources */ = {isa = PBXBuildFile; fileRef = 8083401B200FE4BA00AD5FF7 /* WatchMemo2.m4v */; };
+		80F6FF10200FE5B400876207 /* WatchSiri2.m4v in Resources */ = {isa = PBXBuildFile; fileRef = 8083401C200FE4BA00AD5FF7 /* WatchSiri2.m4v */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -437,7 +440,7 @@
 		80203C121FCDC63900CA4D38 /* ParStr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParStr.swift; sourceTree = "<group>"; };
 		80203C131FCDC63900CA4D38 /* ParWords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParWords.swift; sourceTree = "<group>"; };
 		80203C161FD47DA500CA4D38 /* TreeTableVC+Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TreeTableVC+Keyboard.swift"; sourceTree = "<group>"; };
-		80203C1A1FD5A5D400CA4D38 /* TreeTable+PhoneCrown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TreeTable+PhoneCrown.swift"; sourceTree = "<group>"; };
+		80203C1A1FD5A5D400CA4D38 /* TreeTableVC+PhoneCrown.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TreeTableVC+PhoneCrown.swift"; sourceTree = "<group>"; };
 		80203C1C1FD5B51A00CA4D38 /* EventRowItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventRowItem.swift; sourceTree = "<group>"; };
 		80203C1E1FD7854500CA4D38 /* TreeEditTimeCell+user.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TreeEditTimeCell+user.swift"; sourceTree = "<group>"; };
 		8025E3781FFBF1F3004B81F4 /* TreeNodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeNodes.swift; sourceTree = "<group>"; };
@@ -478,15 +481,6 @@
 		804D5A1C1FA3FCAA0025B724 /* ToggleDot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleDot.swift; sourceTree = "<group>"; };
 		805357B41FDB3798002ED302 /* TreeInfoApproveCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeInfoApproveCell.swift; sourceTree = "<group>"; };
 		8055014D200A624A00C390A4 /* TreeNodes+Table.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TreeNodes+Table.swift"; sourceTree = "<group>"; };
-		80550150200A6A4A00C390A4 /* Bubble_iPad_320x320.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = Bubble_iPad_320x320.m4v; sourceTree = "<group>"; };
-		80550151200A6A4A00C390A4 /* Bubble_iPhone_320x320.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = Bubble_iPhone_320x320.m4v; sourceTree = "<group>"; };
-		80550152200A6A4A00C390A4 /* Bubble_Watch_320x320.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = Bubble_Watch_320x320.m4v; sourceTree = "<group>"; };
-		80550153200A6A4A00C390A4 /* icon-Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-Logo.png"; sourceTree = "<group>"; };
-		80550154200A6A4A00C390A4 /* PhoneMemo2.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = PhoneMemo2.m4v; sourceTree = "<group>"; };
-		80550155200A6A4A00C390A4 /* PhoneSiri2.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = PhoneSiri2.m4v; sourceTree = "<group>"; };
-		80550156200A6A4A00C390A4 /* WatchCrown2.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = WatchCrown2.m4v; sourceTree = "<group>"; };
-		80550157200A6A4A00C390A4 /* WatchMemo2.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = WatchMemo2.m4v; sourceTree = "<group>"; };
-		80550158200A6A4A00C390A4 /* WatchSiri2.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = WatchSiri2.m4v; sourceTree = "<group>"; };
 		80550163200A6C2900C390A4 /* OnboardVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardVC.swift; sourceTree = "<group>"; };
 		80550165200A6C4A00C390A4 /* OnboardPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardPage.swift; sourceTree = "<group>"; };
 		80550167200A6FC800C390A4 /* OnboardVC+delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OnboardVC+delegate.swift"; sourceTree = "<group>"; };
@@ -507,8 +501,18 @@
 		8076B3331FE6C69A001EDD30 /* BubbleDraw.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BubbleDraw.swift; path = MuseNow/Classes/Info/BubbleDraw.swift; sourceTree = SOURCE_ROOT; };
 		8076B3351FE6C69A001EDD30 /* BubbleText.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BubbleText.swift; path = MuseNow/Classes/Info/BubbleText.swift; sourceTree = SOURCE_ROOT; };
 		8076B3361FE6C69A001EDD30 /* BubbleVideo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BubbleVideo.swift; path = MuseNow/Classes/Info/BubbleVideo.swift; sourceTree = SOURCE_ROOT; };
-		8076B33B1FE6C783001EDD30 /* BubbleTour.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleTour.swift; sourceTree = "<group>"; };
+		8076B33B1FE6C783001EDD30 /* Tour.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tour.swift; sourceTree = "<group>"; };
 		8076B33D1FE6D151001EDD30 /* BubbleBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleBase.swift; sourceTree = "<group>"; };
+		807A59F3201E542C007BCF46 /* MainVC+override.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainVC+override.swift"; sourceTree = "<group>"; };
+		80834014200FE4BA00AD5FF7 /* Bubble_iPad_320x320.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = Bubble_iPad_320x320.m4v; sourceTree = "<group>"; };
+		80834015200FE4BA00AD5FF7 /* Bubble_iPhone_320x320.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = Bubble_iPhone_320x320.m4v; sourceTree = "<group>"; };
+		80834016200FE4BA00AD5FF7 /* Bubble_Watch_320x320.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = Bubble_Watch_320x320.m4v; sourceTree = "<group>"; };
+		80834017200FE4BA00AD5FF7 /* icon-Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-Logo.png"; sourceTree = "<group>"; };
+		80834018200FE4BA00AD5FF7 /* PhoneMemo2.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = PhoneMemo2.m4v; sourceTree = "<group>"; };
+		80834019200FE4BA00AD5FF7 /* PhoneSiri2.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = PhoneSiri2.m4v; sourceTree = "<group>"; };
+		8083401A200FE4BA00AD5FF7 /* WatchCrown2.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = WatchCrown2.m4v; sourceTree = "<group>"; };
+		8083401B200FE4BA00AD5FF7 /* WatchMemo2.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = WatchMemo2.m4v; sourceTree = "<group>"; };
+		8083401C200FE4BA00AD5FF7 /* WatchSiri2.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = WatchSiri2.m4v; sourceTree = "<group>"; };
 		8088149B200941A1008047DA /* FileSync+delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileSync+delegate.swift"; sourceTree = "<group>"; };
 		80920B441FA4F6E4004E4D8B /* ComplicationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationProvider.swift; sourceTree = "<group>"; };
 		809E55621FB4C6A700974CB7 /* Audio.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Audio.swift; sourceTree = "<group>"; };
@@ -516,6 +520,7 @@
 		809FA9E81FEC1A6D00AC45B6 /* Bubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bubble.swift; sourceTree = "<group>"; };
 		80A3E36D1FC0D51500195BD3 /* TreeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeNode.swift; sourceTree = "<group>"; };
 		80A87EC22007DC5400FC920D /* Session+File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Session+File.swift"; sourceTree = "<group>"; };
+		80A91C05201812A300833859 /* Onboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
 		80AB3FA71FF9B96100BDD99B /* scratch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = scratch.h; sourceTree = "<group>"; };
 		80AD99881FCBA06A00BECC4A /* TreeTitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeTitleCell.swift; sourceTree = "<group>"; };
 		80BD52351FEB695E00EB4F92 /* BubbleCovers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleCovers.swift; sourceTree = "<group>"; };
@@ -527,8 +532,8 @@
 		80D483EB1FCB496800D28095 /* TreeTableVC+override.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TreeTableVC+override.swift"; sourceTree = "<group>"; };
 		80DF78451FF828690089475E /* BubbleOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleOptions.swift; sourceTree = "<group>"; };
 		80DF78471FF828830089475E /* BubbleItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleItem.swift; sourceTree = "<group>"; };
-		80E89FE51FED8D96007D874F /* BubbleTour+Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BubbleTour+Main.swift"; sourceTree = "<group>"; };
-		80E89FE71FED8EC5007D874F /* BubbleTour+Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BubbleTour+Menu.swift"; sourceTree = "<group>"; };
+		80E89FE51FED8D96007D874F /* Tour+Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tour+Main.swift"; sourceTree = "<group>"; };
+		80E89FE71FED8EC5007D874F /* Tour+Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tour+Menu.swift"; sourceTree = "<group>"; };
 		80F26DBB1FBA07E100C26973 /* Routine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Routine.swift; path = Routine/Routine.swift; sourceTree = "<group>"; };
 		80F26DBE1FBA110300C26973 /* Routine.par */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; path = Routine.par; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -632,6 +637,7 @@
 				8004F7521FA3EE2400F7ED94 /* Session */,
 				8004F7551FA3EE2400F7ED94 /* Transcribe */,
 				80F26DBB1FBA07E100C26973 /* Routine.swift */,
+				80A91C05201812A300833859 /* Onboarding.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -898,8 +904,8 @@
 		803C5F4D1FA3DFBD002A1C11 /* MuseNow */ = {
 			isa = PBXGroup;
 			children = (
+				80834013200FE4BA00AD5FF7 /* Video */,
 				80550162200A6C2900C390A4 /* Onboard */,
-				8055014F200A6A4A00C390A4 /* Video */,
 				8025E37C1FFC0BBD004B81F4 /* Touch */,
 				8076B3321FE6C64C001EDD30 /* Info */,
 				804D59F61FA3FC8B0025B724 /* Classes */,
@@ -940,6 +946,7 @@
 			children = (
 				804D59F71FA3FC8B0025B724 /* AppDelegate.swift */,
 				804D59FB1FA3FC8B0025B724 /* MainVC.swift */,
+				807A59F3201E542C007BCF46 /* MainVC+override.swift */,
 				800D49361FECD9300075AB1A /* LaunchScreen.storyboard */,
 				804D59FC1FA3FC8B0025B724 /* PagesVC.swift */,
 				804D59F91FA3FC8B0025B724 /* Fader.swift */,
@@ -953,7 +960,7 @@
 			isa = PBXGroup;
 			children = (
 				803C5B211FBF622400BA9C6C /* TreeTableVC.swift */,
-				80203C1A1FD5A5D400CA4D38 /* TreeTable+PhoneCrown.swift */,
+				80203C1A1FD5A5D400CA4D38 /* TreeTableVC+PhoneCrown.swift */,
 				80203C161FD47DA500CA4D38 /* TreeTableVC+Keyboard.swift */,
 				80D483EB1FCB496800D28095 /* TreeTableVC+override.swift */,
 				80A3E36D1FC0D51500195BD3 /* TreeNode.swift */,
@@ -997,22 +1004,6 @@
 			path = Table;
 			sourceTree = "<group>";
 		};
-		8055014F200A6A4A00C390A4 /* Video */ = {
-			isa = PBXGroup;
-			children = (
-				80550150200A6A4A00C390A4 /* Bubble_iPad_320x320.m4v */,
-				80550151200A6A4A00C390A4 /* Bubble_iPhone_320x320.m4v */,
-				80550152200A6A4A00C390A4 /* Bubble_Watch_320x320.m4v */,
-				80550153200A6A4A00C390A4 /* icon-Logo.png */,
-				80550154200A6A4A00C390A4 /* PhoneMemo2.m4v */,
-				80550155200A6A4A00C390A4 /* PhoneSiri2.m4v */,
-				80550156200A6A4A00C390A4 /* WatchCrown2.m4v */,
-				80550157200A6A4A00C390A4 /* WatchMemo2.m4v */,
-				80550158200A6A4A00C390A4 /* WatchSiri2.m4v */,
-			);
-			path = Video;
-			sourceTree = "<group>";
-		};
 		80550162200A6C2900C390A4 /* Onboard */ = {
 			isa = PBXGroup;
 			children = (
@@ -1047,13 +1038,29 @@
 				80DF78471FF828830089475E /* BubbleItem.swift */,
 				8076B33D1FE6D151001EDD30 /* BubbleBase.swift */,
 				80BD52351FEB695E00EB4F92 /* BubbleCovers.swift */,
-				8076B33B1FE6C783001EDD30 /* BubbleTour.swift */,
-				80E89FE51FED8D96007D874F /* BubbleTour+Main.swift */,
-				80E89FE71FED8EC5007D874F /* BubbleTour+Menu.swift */,
+				8076B33B1FE6C783001EDD30 /* Tour.swift */,
+				80E89FE51FED8D96007D874F /* Tour+Main.swift */,
+				80E89FE71FED8EC5007D874F /* Tour+Menu.swift */,
 				8076B3361FE6C69A001EDD30 /* BubbleVideo.swift */,
 				8076B3331FE6C69A001EDD30 /* BubbleDraw.swift */,
 			);
 			path = Info;
+			sourceTree = "<group>";
+		};
+		80834013200FE4BA00AD5FF7 /* Video */ = {
+			isa = PBXGroup;
+			children = (
+				80834014200FE4BA00AD5FF7 /* Bubble_iPad_320x320.m4v */,
+				80834015200FE4BA00AD5FF7 /* Bubble_iPhone_320x320.m4v */,
+				80834016200FE4BA00AD5FF7 /* Bubble_Watch_320x320.m4v */,
+				80834017200FE4BA00AD5FF7 /* icon-Logo.png */,
+				80834018200FE4BA00AD5FF7 /* PhoneMemo2.m4v */,
+				80834019200FE4BA00AD5FF7 /* PhoneSiri2.m4v */,
+				8083401A200FE4BA00AD5FF7 /* WatchCrown2.m4v */,
+				8083401B200FE4BA00AD5FF7 /* WatchMemo2.m4v */,
+				8083401C200FE4BA00AD5FF7 /* WatchSiri2.m4v */,
+			);
+			path = Video;
 			sourceTree = "<group>";
 		};
 		809E55651FB4C6EA00974CB7 /* Show */ = {
@@ -1190,15 +1197,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				806C7A49200BC92D00361281 /* icon-Logo.png in Resources */,
-				806C7A41200BC90A00361281 /* Bubble_iPad_320x320.m4v in Resources */,
-				806C7A42200BC90A00361281 /* Bubble_iPhone_320x320.m4v in Resources */,
-				806C7A43200BC90A00361281 /* Bubble_Watch_320x320.m4v in Resources */,
-				806C7A44200BC90A00361281 /* PhoneMemo2.m4v in Resources */,
-				806C7A45200BC90A00361281 /* PhoneSiri2.m4v in Resources */,
-				806C7A46200BC90A00361281 /* WatchCrown2.m4v in Resources */,
-				806C7A47200BC90A00361281 /* WatchMemo2.m4v in Resources */,
-				806C7A48200BC90A00361281 /* WatchSiri2.m4v in Resources */,
+				80F6FF09200FE5B400876207 /* Bubble_iPad_320x320.m4v in Resources */,
+				80F6FF0A200FE5B400876207 /* Bubble_iPhone_320x320.m4v in Resources */,
+				80F6FF0B200FE5B400876207 /* Bubble_Watch_320x320.m4v in Resources */,
+				80F6FF0C200FE5B400876207 /* PhoneMemo2.m4v in Resources */,
+				80F6FF0D200FE5B400876207 /* PhoneSiri2.m4v in Resources */,
+				80F6FF0E200FE5B400876207 /* WatchCrown2.m4v in Resources */,
+				80F6FF0F200FE5B400876207 /* WatchMemo2.m4v in Resources */,
+				80F6FF10200FE5B400876207 /* WatchSiri2.m4v in Resources */,
+				80F6FF08200FE5A500876207 /* icon-Logo.png in Resources */,
 				8076435A1FACBEA8001733C6 /* Muse.par in Resources */,
 				8004F7BB1FA3EE2400F7ED94 /* Blank.fsh in Resources */,
 				80F26DBF1FBA110300C26973 /* Routine.par in Resources */,
@@ -1263,6 +1270,7 @@
 				8018E1A41FC36F8E00F4C0AC /* TreeColorTitleMarkCell.swift in Sources */,
 				8004F7D11FA3EE2400F7ED94 /* Transcribe+SWM.swift in Sources */,
 				8004F7731FA3EE2400F7ED94 /* Dots+Crown.swift in Sources */,
+				80A91C06201812A300833859 /* Onboarding.swift in Sources */,
 				807643501FACBE55001733C6 /* Muse+Test.swift in Sources */,
 				804D5A051FA3FC8B0025B724 /* MainVC.swift in Sources */,
 				8088149C200941A1008047DA /* FileSync+delegate.swift in Sources */,
@@ -1271,7 +1279,7 @@
 				8004F7B31FA3EE2400F7ED94 /* Say+Event.swift in Sources */,
 				8004F78B1FA3EE2400F7ED94 /* Collection+Search.swift in Sources */,
 				8004F7C51FA3EE2400F7ED94 /* Scene+Sprite.swift in Sources */,
-				80E89FE81FED8EC5007D874F /* BubbleTour+Menu.swift in Sources */,
+				80E89FE81FED8EC5007D874F /* Tour+Menu.swift in Sources */,
 				8004F75B1FA3EE2400F7ED94 /* Haptic.swift in Sources */,
 				8004F7831FA3EE2400F7ED94 /* MuEvents+Marks.swift in Sources */,
 				801A788C1FFEBC8500A11845 /* BubbleSection.swift in Sources */,
@@ -1310,6 +1318,7 @@
 				8004F7611FA3EE2400F7ED94 /* TouchDial.swift in Sources */,
 				804D5A241FA3FCAA0025B724 /* EventTable+MuEvent.swift in Sources */,
 				80A87EC32007DC5400FC920D /* Session+File.swift in Sources */,
+				807A59F4201E542C007BCF46 /* MainVC+override.swift in Sources */,
 				804D5A2D1FA3FCAA0025B724 /* ToggleDot.swift in Sources */,
 				8004F7711FA3EE2400F7ED94 /* Dots+Action.swift in Sources */,
 				804D5A271FA3FCAA0025B724 /* EventTable+Select.swift in Sources */,
@@ -1320,7 +1329,7 @@
 				8004F76F1FA3EE2400F7ED94 /* Dot.swift in Sources */,
 				804D5A231FA3FCAA0025B724 /* EventTable+EventCell.swift in Sources */,
 				8004F6E01FA3ED5E00F7ED94 /* String+.swift in Sources */,
-				8076B33C1FE6C783001EDD30 /* BubbleTour.swift in Sources */,
+				8076B33C1FE6C783001EDD30 /* Tour.swift in Sources */,
 				8004F7C71FA3EE2400F7ED94 /* Scene.swift in Sources */,
 				8004F7771FA3EE2400F7ED94 /* Dots.swift in Sources */,
 				803C5B241FBF9A2F00BA9C6C /* TreeTableVC.swift in Sources */,
@@ -1340,7 +1349,7 @@
 				8004F70A1FA3ED5E00F7ED94 /* ParWords.swift in Sources */,
 				8055014E200A624A00C390A4 /* TreeNodes+Table.swift in Sources */,
 				8004F7951FA3EE2400F7ED94 /* UIImage+Circle.swift in Sources */,
-				80E89FE61FED8D96007D874F /* BubbleTour+Main.swift in Sources */,
+				80E89FE61FED8D96007D874F /* Tour+Main.swift in Sources */,
 				8004F7851FA3EE2400F7ED94 /* MuEvents.swift in Sources */,
 				8004F7A91FA3EE2400F7ED94 /* Hear.swift in Sources */,
 				8004F76B1FA3EE2400F7ED94 /* Anim+Scene.swift in Sources */,
@@ -1369,7 +1378,7 @@
 				8004F7081FA3ED5E00F7ED94 /* ParStr.swift in Sources */,
 				8004F6F21FA3ED5E00F7ED94 /* Node+connect.swift in Sources */,
 				8004F7A71FA3EE2400F7ED94 /* Settings.swift in Sources */,
-				80203C1B1FD5A5D400CA4D38 /* TreeTable+PhoneCrown.swift in Sources */,
+				80203C1B1FD5A5D400CA4D38 /* TreeTableVC+PhoneCrown.swift in Sources */,
 				80203C1D1FD5B51A00CA4D38 /* EventRowItem.swift in Sources */,
 				806ACFE91FC624CB00220EB6 /* TreeCell.swift in Sources */,
 				807643561FACBE55001733C6 /* Muse.swift in Sources */,
@@ -1446,6 +1455,7 @@
 				8004F70B1FA3ED5E00F7ED94 /* ParWords.swift in Sources */,
 				809E55641FB4C6A700974CB7 /* Audio.swift in Sources */,
 				8004F7941FA3EE2400F7ED94 /* String+extension.swift in Sources */,
+				80A91C07201812B600833859 /* Onboarding.swift in Sources */,
 				8004F7071FA3ED5E00F7ED94 /* ParStr+Compare.swift in Sources */,
 				8004F79C1FA3EE2400F7ED94 /* Cals.swift in Sources */,
 				8004F7091FA3ED5E00F7ED94 /* ParStr.swift in Sources */,

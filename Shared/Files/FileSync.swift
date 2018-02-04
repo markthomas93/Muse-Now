@@ -91,7 +91,7 @@ class FileSync: NSObject, FileManagerDelegate {
                         let driveUrl = iDriveUrl!.appendingPathComponent(fname)
                         if fileMgr.fileExists(atPath: driveUrl.path) { continue }
                         try FileManager().copyItem(at:removeUrl, to:driveUrl)
-                        //???// try fileMgr.removeItem(at: remURL)
+                        // try fileMgr.removeItem(at: remURL)
                     }
                 }
             }

@@ -3,7 +3,6 @@
 import UIKit
 import EventKit
 
-
 extension TreeTableVC {
 
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -16,7 +15,7 @@ extension TreeTableVC {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let rows = TreeNodes.shared.shownNodes.count
-        //Log("▤ numberOfRowsInSection: \(rows)")
+        Log("▤ numberOfRowsInSection: \(rows)")
         return rows
     }
 

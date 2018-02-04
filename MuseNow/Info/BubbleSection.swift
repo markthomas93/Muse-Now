@@ -1,5 +1,5 @@
 //
-//  BubbleSection.swift
+//  TourSection.swift
 //  MuseNow
 //
 //  Created by warren on 1/4/18.
@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class BubbleSection {
+class TourSection {
 
     var title: String
     var bubbles = [Bubble]()
@@ -25,8 +25,8 @@ class BubbleSection {
                 bubbles.append(bubble)
             }
         }
-        if !tourSet.intersection([.tourMain,.tourMenu]).isEmpty {
-            BubbleTour.shared.tourBubbles.append(contentsOf: bubbles)
+        if !tourSet.intersection([.main,.menu]).isEmpty {
+            Tour.shared.tourBubbles.append(contentsOf: bubbles)
         }
     }
 }

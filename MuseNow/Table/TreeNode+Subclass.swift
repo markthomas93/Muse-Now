@@ -15,7 +15,6 @@ class TreeButtonNode: TreeNode {
         initialize(.titleButton, parent_, TreeSetting(set:1,member:1,title_),tableVC_)
         if let cell = cell as? TreeTitleButtonCell {
             cell.butnTitle = butnTitle
-            cell.butn.titleLabel?.text = butnTitle
             cell.butnAct = act
         }
     }
@@ -50,7 +49,7 @@ class TreeDialColorNode: TreeNode {
         if let cell = cell as? TreeTitleFaderCell {
 
             // intialize fader
-            if let value = Settings.shared.root["dialColor"] {
+            if let value = Settings.shared.settings["dialColor"] {
                 cell.fader.setValue(Float(value)/Float(0xFFFF))
             }
             // callback when starting fade, so freeze scrolling
