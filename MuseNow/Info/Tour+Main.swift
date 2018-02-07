@@ -40,10 +40,8 @@ extension Tour {
 
         let gotoMainPage: CallWait! = { _, finish in
             PagesVC.shared.gotoPageType(.main) {
-                Timer.delay(1.0) {
-                    futureWheel()
-                    finish()
-                }
+                futureWheel()
+                finish()
             }
         }
 
@@ -61,10 +59,15 @@ extension Tour {
 
         // 12: 6  6
 
+        bubItem("Main",  .center,  mainView, mainView, [mainView,panelView], [], [],
+
+                [gotoMainPage, "Here is a brief tour \n shake anytime to stop",4])
+
+
         bubItem("Main",  .below,  mainView, eventBezel, [panelView], [eventBezel], [.highlight,.alpha05],
 
-                [gotoMainPage, "Timeline spans 2 weeks from \n last week to the next",4])
-        
+                ["Timeline spans 2 weeks from \n last week to the next",4])
+
         bubItem("Panel",  .above,  pageView, panelView, [pageView], [panelView], [.highlight],
 
                 ["Control panel puts it all \n under your thumb",2])
@@ -74,35 +77,35 @@ extension Tour {
                 ["with the same look and feel \n as the Apple Watch", 2])
 
         bubVid1("Panel", .center, mainView, eventBezel, [], [], [],
-                
+
                 ["WatchCrown2.m4v", 6])
 
         // 24: 2 2 2 2  2 2 2 2  2 2 2 2
-        
+
         // delayed call
-        
+
         bubItem("Dial", .above, pageView, dialView, [pageView], [], [.highlight, .circular],
 
                 [futureWheel,
                  "See the week in a glance \n as 24 hours times 7 days",2,
                  "for a total of 168 hours \n shown as dots spiralling in",2])
 
-        
+
         bubItem("Dial", .above, pageView, dialView, [], [], [.highlight, .circular],
 
                 [nextEvent, "Touch the dial and spin",1,
                  nextEvent, "around to feel bumps",1,
                  nextEvent, "while crossing an event",1,
                  nextEvent, "to feel key moments.",1])
-        
+
         bubItem("Dial", .above, pageView, dialView, [], [], [.highlight, .circular],
-                
+
                 [toggleEvent, "Force touch (or double tap)",1,
                  toggleEvent, "to bookmark an event",1,
                  toggleEvent, "that pauses while scanning",1,
                  scanEvents,  "as a countdown to moments",1,
                  "in which to focus on "])
-        
+
         bubItem("Dial", .above, pageView, dialView, [], [], [.highlight, .circular],
 
                 [futureWheel,

@@ -180,6 +180,7 @@
 		80203C1B1FD5A5D400CA4D38 /* TreeTableVC+PhoneCrown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80203C1A1FD5A5D400CA4D38 /* TreeTableVC+PhoneCrown.swift */; };
 		80203C1D1FD5B51A00CA4D38 /* EventRowItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80203C1C1FD5B51A00CA4D38 /* EventRowItem.swift */; };
 		80203C1F1FD7854500CA4D38 /* TreeEditTimeCell+user.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80203C1E1FD7854500CA4D38 /* TreeEditTimeCell+user.swift */; };
+		8024D920202AAA6900082D2A /* PagesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D59FC1FA3FC8B0025B724 /* PagesVC.swift */; };
 		8025E3791FFBF1F3004B81F4 /* TreeNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8025E3781FFBF1F3004B81F4 /* TreeNodes.swift */; };
 		8025E3801FFC0C04004B81F4 /* TouchForce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8025E37D1FFC0C04004B81F4 /* TouchForce.swift */; };
 		8025E3811FFC0C04004B81F4 /* TouchDialForce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8025E37E1FFC0C04004B81F4 /* TouchDialForce.swift */; };
@@ -196,7 +197,6 @@
 		804D5A011FA3FC8B0025B724 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D59F71FA3FC8B0025B724 /* AppDelegate.swift */; };
 		804D5A031FA3FC8B0025B724 /* Fader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D59F91FA3FC8B0025B724 /* Fader.swift */; };
 		804D5A051FA3FC8B0025B724 /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D59FB1FA3FC8B0025B724 /* MainVC.swift */; };
-		804D5A061FA3FC8B0025B724 /* PagesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D59FC1FA3FC8B0025B724 /* PagesVC.swift */; };
 		804D5A071FA3FC8B0025B724 /* PhoneCrown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D59FD1FA3FC8B0025B724 /* PhoneCrown.swift */; };
 		804D5A211FA3FCAA0025B724 /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A101FA3FCAA0025B724 /* EventCell.swift */; };
 		804D5A221FA3FCAA0025B724 /* EventTable+EditRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D5A111FA3FCAA0025B724 /* EventTable+EditRow.swift */; };
@@ -1246,11 +1246,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				8004F7001FA3ED5E00F7ED94 /* Par.swift in Sources */,
+				8024D920202AAA6900082D2A /* PagesVC.swift in Sources */,
 				8025E3821FFC0C04004B81F4 /* UITouch+Force.swift in Sources */,
 				8004F7871FA3EE2400F7ED94 /* Array+.swift in Sources */,
 				8004F7C31FA3EE2400F7ED94 /* Polar.swift in Sources */,
 				809FA9E91FEC1A6D00AC45B6 /* Bubble.swift in Sources */,
-				804D5A061FA3FC8B0025B724 /* PagesVC.swift in Sources */,
 				8004F7041FA3ED5E00F7ED94 /* ParObj.swift in Sources */,
 				80DF78461FF828690089475E /* BubbleOptions.swift in Sources */,
 				80465120200278D100121A5A /* TreeTitleButtonCell.swift in Sources */,

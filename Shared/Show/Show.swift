@@ -17,7 +17,7 @@ struct ShowSet: OptionSet {
 class Show {
 
     static let shared = Show()
-    var showSet = ShowSet([.calendar,.reminder])
+    var showSet = ShowSet([.calendar,.reminder,.routine])
 
     func canShow(_ member:ShowSet) -> Bool {
         return showSet.contains(member)

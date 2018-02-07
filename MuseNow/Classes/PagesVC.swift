@@ -1,5 +1,6 @@
 //  Pages.swift
 
+import Foundation
 import UIKit
 
 
@@ -103,12 +104,16 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
 
     func gotoPageType(_ type_:PageType, done:@escaping CallVoid) {
 
-        if pageType == type_ { return done() }
-        let index = type_.rawValue
+        if pageType == type_ {
+            return done()
+        }
+        pageType = type_
+
+        let index = pageType.rawValue
         let nextVC = pages[index]
 
         if !nextVC.isBeingPresented {
-            pageVC.setViewControllers([nextVC],direction: pageType.rawValue < index ? .forward : .reverse, animated: true, completion: {_ in
+            pageVC.setViewControllers([nextVC], direction: (pageType == .main ? .forward : .reverse), animated: true, completion: {_ in
                 done()
             })
         }
@@ -124,7 +129,15 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
         vc.view.layer.borderWidth = width
         vc.view.layer.masksToBounds = true
     }
-    
+
+
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        if completed {
+            if let vc = pageViewController.viewControllers![0] as? PagesVC {
+               pageType = vc.pageType
+            }
+        }
+    }
     func pageViewController(_ pageVC: UIPageViewController, viewControllerBefore vc: UIViewController) -> UIViewController? {
 
         let index = pages.index(of: vc)! - 1

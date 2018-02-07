@@ -23,7 +23,7 @@ extension MainVC {
         pagesVC.updateFrames(pagesFrame.size)
         view.addSubview(pagesVC.view)
         Settings.shared.unarchiveSettings {
-            let onboarding = Onboard.shared.state == .boarding || true //???// 
+            let onboarding = Onboard.shared.state == .boarding //???//  || true
             if  onboarding { self.makeOnboard() }
             else           { self.makePages {} }
         }

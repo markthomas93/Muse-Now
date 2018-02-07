@@ -33,7 +33,7 @@ extension Tour {
         /// called by BubbleBase to goto menu page
         let gotoMenuPage: CallWait! = { _, finish  in
             PagesVC.shared.gotoPageType(.menu) {
-                Timer.delay(1.0, futureWheel )
+                futureWheel()
                 finish()
             }
         }
@@ -48,15 +48,17 @@ extension Tour {
                     node.cell.touchCell(.zero)
                 }
             }
-            Timer.delay(1.0) { finish() }
+            PagesVC.shared.gotoPageType(.main) {
+                finish()
+            }
         }
 
         /// find title, animate Info button, and finish bubble animation afterwards
         func gotoInfo(_ title:String) -> CallWait {
             return { _, finish in
                 TreeNodes.shared.root?.goto(title: title) { treeNode in
-                    treeNode.cell?.animateInfo(newAlpha:1.0, duration:1, delay:0)
-                    Timer.delay(1.0) { finish() }
+                    treeNode?.cell?.animateInfo(newAlpha:1.0, duration:0.5, delay:0)
+                    finish()
                 }
             }
         }
@@ -170,23 +172,27 @@ extension Tour {
 
         sections.append(TourSection("menu",[.menu],[
             bubPage("menu",[gotoMenuPage, "Here is the Menu page to \n filter and announce events",2])
+
             ]))
 
         // show ------------------------------------------------------------
 
-        sections.append(TourSection("show",[.menu],[
-            bubInfo("show",[gotoTitle("show"),"Select which events \n to see and hear",2])
+        sections.append(TourSection("show",[.menu,.information],[
+            bubCell("show",[gotoTitle("show"),"Select which events \n to see and hear",2]),
+             bubInfo("show",[gotoInfo("menu"),
+                             "Info icons often appear \n after a couple seconds",4,
+                             "tap for more details and \n maybe a demo video"])
             ]))
 
         // calendar
         sections.append(TourSection("calendars",[.menu,.information],[
-            bubMark("calendars", [gotoTitle("calendars"),"Show calendar events and \n pause on any changes",2]),
+            bubMark("calendars", [gotoTitle("calendars"),"Show calendar events and \n changes will pause",2]),
             ]))
 
         // reminders
         sections.append(TourSection("reminders",[.menu],[
-            bubMark("reminders",[gotoTitle("reminders"), "Show reminders, which have a time frame",2]),
-            bubInfo("reminders",[gotoInfo("reminders"), "Tap info icon for details \n (after the tour)",1])
+            bubMark("reminders",[gotoTitle("reminders"), "Show reminders \n with deadline",2]),
+            bubInfo("reminders",[gotoInfo("reminders"), "works with Siri \n tap (after the tour)",4])
             ]))
 
         sections.append(TourSection("reminders",[.information],[
@@ -200,28 +206,28 @@ extension Tour {
 
         // routine
         sections.append(TourSection("routine",[.menu],[
-            bubMark("routine",[gotoTitle("routine"), "Your normal routine \n like sleep, meals, work,  ⃨",2])
+            bubMark("routine",[gotoTitle("routine"), "Your normal routine \n like sleep, meals, work,  ⃨",4]),
+            bubInfo("routine",["tap for details \n (after the tour)",1])
             ]))
 
         sections.append(TourSection("routine",[.information],[
             bubMark("routine",[gotoTitle("routine"),
                                "setup your normal routine \n like sleep, meals, work,  ⃨",2,
-                               "to see how events overlap \n with your weekly routine",2]),
-            bubInfo("routine",[gotoInfo("routine"), "Unlimited free trial",1])
+                               "to see how events overlap \n with your weekly routine",2])
             ]))
 
         // memos
         sections.append(TourSection("memos",[.menu],[
 
             bubMark("memos",[gotoTitle("memos"), "record short audio memos \n with location and text",2]),
-            bubInfo("memos",[gotoInfo("memos"), "Tap info icon for details \n (after the tour)",1])
+            bubInfo("memos",[gotoInfo("memos"), "tap info for a demo \n (after the tour)",1])
             ]))
 
         sections.append(TourSection("memos",[.information],[
 
-                bubMark("memos",[gotoTitle("memos"),
-                                 "record short audio memos \n with location and text",2,
-                                 "triple-tap on the dial to \n record what's on your mind",2]),
+            bubMark("memos",[gotoTitle("memos"),
+                             "record short audio memos \n with location and text",2,
+                             "triple-tap on the dial to \n record what's on your mind",2]),
 
             bubMark("memos",["or tilt away and back again \n like throttling a motorcycle", 2], [.nowait]),
             bubVid2("memos",["WatchMemo2.m4v", 12], .diptych12, [.snugAbove, .nowait]),
@@ -231,12 +237,13 @@ extension Tour {
                              "your private memos are \n under your full control ",2,
                              "we never see your data \n and we never will", 2]),
 
-            bubInfo("memos",[gotoInfo("memos"), "Unlimited free trial",2])
-           ]))
+            bubButn("move all",[gotoTitle("move"), "Move memos to iCloud Drive",2])
+            ]))
 
         // dial
         sections.append(TourSection("dial",[.menu, .information],[ // cell
-            bubInfo("dial",[gotoTitle("dial"), "change the dial's appearance",4]),
+
+            bubInfo("dial",[gotoInfo("dial"), "change the dial's appearance",4]),
 
             bubFader("color",[gotoTitle("color"), "fade between",1,
                                makeAniFader(0.0), "heat map ...",1,
@@ -247,26 +254,26 @@ extension Tour {
         // say  --------------------------------------
 
         sections.append(TourSection("say",[.menu],[
-            bubInfo("say",  [gotoTitle("say"),"choose what to say while \n pausing on a bookmark",1])
+            bubInfo("say",  [gotoInfo("say"),"choose what to say while \n pausing on a bookmark",2])
             ]))
 
         sections.append(TourSection("say",[.information],[
-            bubInfo("say",  [gotoTitle("say"),"choose what to say while \n pausing on a bookmark",1]),
+            bubInfo("say",  [gotoTitle("say"),"choose what to say while \n pausing on a bookmark",2]),
             bubMark("event",[gotoTitle("event"),"announce events and reminders",1]),
             bubMark("time", [gotoTitle("time"),"announce times",1]),
-            bubMark("memo", [gotoTitle("memo"),"play audio for memo recordings",1])
+            bubMark("memo", [gotoTitle("memo"),"play audio memo recordings",1])
             ]))
 
         // hear  --------------------------------------
 
         sections.append(TourSection("hear",[.menu],[
 
-            bubInfo("hear",   [gotoTitle("hear"), "Choose whether to hear on \n speakers and/or earbuds",2])
+            bubInfo("hear",   [gotoInfo("hear"), "Choose whether to hear on \n speakers and/or earbuds",2])
             ]))
 
         sections.append(TourSection("hear",[.information],[
 
-            bubInfo("hear",   [gotoTitle("hear"),"Choose whether to hear on \n speakers and/or earbuds",2]),
+            bubInfo("hear",   [gotoInfo("hear"),"Choose whether to hear on \n speakers and/or earbuds",2]),
             bubMark("speaker",[gotoTitle("speaker"),"hear via speaker or handoff \n to connected earbuds",2]),
             bubMark("earbuds",[gotoTitle("earbuds"),
                                "hear only on earbuds for both \n eyes free and hands free",2,
@@ -277,11 +284,11 @@ extension Tour {
         // more --------------------------------------
 
          sections.append(TourSection("more",[.menu,.information],[
-            bubInfo("more",     [gotoTitle("more"),     "here is more about us",2]),
-//            bubCell("about",    [gotoTitle("about"),    "Who is involved with Muse Dot and our products",1]),
-//            bubCell("support",  [gotoTitle("support"),  "Product support.",1]),
-//            bubCell("blog",     [gotoTitle("blog"),     "musings around how and why",1]),
-//            bubButn("tour",     [gotoTitle("tour"),     "to replay this tour",1]),
+            bubInfo("more",     [gotoInfo("more"),     "here is more about us",2]),
+            // bubCell("about",    [gotoTitle("about"),    "A bit more about Muse Dot",1]),
+            // bubCell("support",  [gotoTitle("support"),  "Product support.",1]),
+            // bubCell("blog",     [gotoTitle("blog"),     "musings around how and why",1]),
+            bubButn("tour",     [gotoTitle("tour"),     "to replay this tour",1]),
             bubCell("more",     [gotoTitle("more"),     "and that about wraps it up",1,"for now",2,finishTour])
             ]))
 
