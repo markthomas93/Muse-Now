@@ -125,6 +125,11 @@ class TreeTitleMarkCell: TreeTitleCell {
             mark.alpha = newMarkAlpha
         }
     }
+
+    func setMark(_ isOn:Bool) {
+        (tableVC as? TreeTableVC)?.setTouchedCell(self)
+         mark.setMark(isOn)
+    }
     
     override func touchCell(_ location: CGPoint, isExpandable:Bool) {
 

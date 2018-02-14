@@ -86,7 +86,6 @@ class MainVC: UIViewController {
         pagesVC.updateViews(pagesFrame.size)
     }
 
-
     func makeOnboard() {
 
         onboardVC = OnboardVC()

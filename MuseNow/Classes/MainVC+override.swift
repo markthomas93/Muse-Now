@@ -25,7 +25,7 @@ extension MainVC {
         Settings.shared.unarchiveSettings {
             let onboarding = Onboard.shared.state == .boarding //???//  || true
             if  onboarding { self.makeOnboard() }
-            else           { self.makePages {} }
+            else           { self.makePages {Tour.shared.buildInfoSet() } }
         }
         // Muse.shared.testScript() // for future use of ParGraph
     }

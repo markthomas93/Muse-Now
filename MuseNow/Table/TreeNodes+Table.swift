@@ -60,7 +60,7 @@ extension TreeNodes {
 
         // Memos
 
-        let memos  = TreeActNode(show, "memos", showSet, ShowSet.memo.rawValue, .showMemo, .hideMemo, vc)
+        let memos  = TreeActNode(show, "memo", showSet, ShowSet.memo.rawValue, .showMemo, .hideMemo, vc)
         let _ = TreeButtonNode(memos, "move all", "go", { Actions.shared.doAction(.memoMoveAll) }, vc)
 
         // Dial
@@ -74,7 +74,7 @@ extension TreeNodes {
         let say = TreeNode(.title, root, "say | skip", vc)
         let _  = TreeActNode(say, "event", saySet, SaySet.event.rawValue, .sayEvent, .skipEvent, vc)
         let _  = TreeActNode(say, "time",  saySet, SaySet.time.rawValue,  .sayTime,  .skipTime,  vc)
-        let _  = TreeActNode(say, "memo",  saySet, SaySet.memo.rawValue,  .sayMemo,  .skipMemo,  vc)
+        let _  = TreeActNode(say, "memo",  saySet, SaySet.memo.rawValue,  .sayMemo,  .skipMemo,  vc) // trailing space disambiguates with "memo"
 
         // hear | mute ------------------------------------------------
 

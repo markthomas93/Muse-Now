@@ -40,11 +40,8 @@ class OnboardPage: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         Log("🔰 appear: \(title!)")
         let bubs = Tour.shared.bubsFrom(anys)
-        bubble = Bubble(title!, bubs, .center, .text, CGSize(width:256,height:128), view, view, [], [], [])
-
-        bubble.tourNextBubble {
-
-        }
+        bubble = Bubble(title!, .center, .text, CGSize(width:256,height:128), view, view, [], [], [], bubs)
+        bubble.tourNextBubble { }
     }
     override func viewWillDisappear(_ animated: Bool) {
         bubble?.bubBase?.cancelBubble()

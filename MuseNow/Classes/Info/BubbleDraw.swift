@@ -17,10 +17,11 @@ public enum BubShape { case
 
 class BubbleDraw: UIView {
 
+    var bubble: Bubble! // base view which may contain from in its hierarchy
+
     var bubFrame = CGRect.zero
     var radius  = CGFloat(16)
     var arrowXY = CGPoint.zero
-    var bubble: Bubble! // base view which may contain from in its hierarchy
 
     // 4 corner control points
 

@@ -24,7 +24,7 @@ class TreeCell: MuCell {
     var info: UIImageView!
     var infoIcon = ""
     var infoSection: TourSection!
-    var infoDelay = TimeInterval(2.0)
+    var infoDelay = TimeInterval(0.5)
     var infoTimer = Timer()
 
     var cellFrame = CGRect.zero
@@ -287,15 +287,14 @@ class TreeCell: MuCell {
     }
 
     /**
-     Check whether user either touched a cell with info for the first time,
-     or directly touched the info. If so, then wait
-     until the info has played before conintuing to afterInfo()
+     Check whether user either:
+     1) touched a cell with info for the first time, or
+     2) directly touched the info.
+     If so, then wait until the info has played before conintuing to afterInfo()
      */
     func maybeTouchInfoFirst(_ location: CGPoint,_ done: @escaping CallBool)  {
 
-        if  info.alpha > 0,
-            let treeNode = treeNode,
-            treeNode.showInfo != .nothingHere,
+        if treeNode?.showInfo != .nothingHere,
             info.alpha == 1.0,
             infoTap.contains(location) {
 
@@ -311,7 +310,6 @@ class TreeCell: MuCell {
      Defer to infoCell help bubble for .newInfo or directly touching .oldInfo.
      */
     override func touchCell(_ location: CGPoint, isExpandable:Bool = true) {
-
 
         (tableVC as? TreeTableVC)?.setTouchedCell(self)
 
@@ -351,7 +349,6 @@ class TreeCell: MuCell {
                 tableVC.updateTouchNodes(oldShown,newShown)
             }
             (tableVC as? TreeTableVC)?.scrollToNearestTouch(self)
-
         }
         
         maybeTouchInfoFirst(location) { touchedInfo in

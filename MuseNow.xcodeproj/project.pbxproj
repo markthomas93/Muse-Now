@@ -236,6 +236,7 @@
 		8076B33C1FE6C783001EDD30 /* Tour.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076B33B1FE6C783001EDD30 /* Tour.swift */; };
 		8076B33E1FE6D151001EDD30 /* BubbleBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076B33D1FE6D151001EDD30 /* BubbleBase.swift */; };
 		807A59F4201E542C007BCF46 /* MainVC+override.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807A59F3201E542C007BCF46 /* MainVC+override.swift */; };
+		80869C75203361C10037420A /* TreeNode+find.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80869C74203361C10037420A /* TreeNode+find.swift */; };
 		8088149C200941A1008047DA /* FileSync+delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8088149B200941A1008047DA /* FileSync+delegate.swift */; };
 		80920B451FA4F6E4004E4D8B /* ComplicationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80920B441FA4F6E4004E4D8B /* ComplicationProvider.swift */; };
 		809E55631FB4C6A700974CB7 /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809E55621FB4C6A700974CB7 /* Audio.swift */; };
@@ -513,6 +514,7 @@
 		8083401A200FE4BA00AD5FF7 /* WatchCrown2.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = WatchCrown2.m4v; sourceTree = "<group>"; };
 		8083401B200FE4BA00AD5FF7 /* WatchMemo2.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = WatchMemo2.m4v; sourceTree = "<group>"; };
 		8083401C200FE4BA00AD5FF7 /* WatchSiri2.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = WatchSiri2.m4v; sourceTree = "<group>"; };
+		80869C74203361C10037420A /* TreeNode+find.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "TreeNode+find.swift"; path = "MuseNow/Table/TreeNode+find.swift"; sourceTree = "<group>"; };
 		8088149B200941A1008047DA /* FileSync+delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileSync+delegate.swift"; sourceTree = "<group>"; };
 		80920B441FA4F6E4004E4D8B /* ComplicationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationProvider.swift; sourceTree = "<group>"; };
 		809E55621FB4C6A700974CB7 /* Audio.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Audio.swift; sourceTree = "<group>"; };
@@ -881,6 +883,7 @@
 		803C5F421FA3DFBD002A1C11 = {
 			isa = PBXGroup;
 			children = (
+				80869C74203361C10037420A /* TreeNode+find.swift */,
 				80AB3FA71FF9B96100BDD99B /* scratch.h */,
 				8004F70C1FA3EE2400F7ED94 /* Shared */,
 				803C5F4D1FA3DFBD002A1C11 /* MuseNow */,
@@ -1254,6 +1257,7 @@
 				8004F7041FA3ED5E00F7ED94 /* ParObj.swift in Sources */,
 				80DF78461FF828690089475E /* BubbleOptions.swift in Sources */,
 				80465120200278D100121A5A /* TreeTitleButtonCell.swift in Sources */,
+				80869C75203361C10037420A /* TreeNode+find.swift in Sources */,
 				8004F7B51FA3EE2400F7ED94 /* Say.swift in Sources */,
 				8004F7C91FA3EE2400F7ED94 /* Texture.swift in Sources */,
 				8004F6F41FA3ED5E00F7ED94 /* Node+find.swift in Sources */,

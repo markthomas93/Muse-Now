@@ -67,7 +67,6 @@ class TreeNode {
     }
 
 
-
     @discardableResult func renumber() -> Int {
         depth = 0
         if expanded {
@@ -80,67 +79,7 @@ class TreeNode {
         return depth+1
     }
 
-    func find(title:String) -> TreeCell! {
-        // first search childing, breadth first
-        for child in children {
-            if child.setting.title.starts(with:title) {
-                return child.cell
-            }
-        }
-        // otherwise go broadly deep - O(n) with shortcut for most common match at top
-        for child in children {
-            if let cell = child.find(title: title) {
-                return cell
-            }
-        }
-        return nil
-    }
-
-
-    /**
-     find node matching title, and then animate to that cell, if needed
-    */
-    func goto(title:String, finish:@escaping CallTreeNode) {
-
-        var lineage = [TreeNode]()
-
-        func nextLineage() {
-            let node = lineage.popLast()!
-            if lineage.isEmpty {
-                // always collapse destination to save space
-                node.cell?.touchCell(.zero, isExpandable:false)
-                Timer.delay(0.5) { finish(node) }
-            }
-            else if node.expanded == false {
-                node.cell?.touchCell(.zero)
-                //???// Timer.delay(0.5) {
-                    nextLineage()
-                //???// }
-            }
-            else {
-                nextLineage()
-            }
-        }
-
-        // begin ------------------------------
-
-        if self.setting.title.starts(with: title) {
-            finish(self)
-        }
-        else if let cell = find(title: title) {
-
-            var node = cell.treeNode!
-            while node.parent != nil {
-                lineage.append(node)
-                node = node.parent!
-            }
-            nextLineage()
-        }
-        else {
-            finish(nil)
-        }
-    }
-
+    
    
     func getParentChildOther() -> ParentChildOther {
         if depth == 0, parent?.depth == 1 { return .child }
@@ -235,6 +174,15 @@ class TreeNode {
         cell?.updateOnRatioOfChildrenMarked()
         callback?(self)
         return isOn
+    }
+
+    func set(isOn:Bool) {
+        onRatio = isOn ? 1.0 : 0.0
+        setting.setOn(onRatio > 0) // synch setting with onRatio
+        updateMyChildren()
+        parent?.cell?.updateOnRatioOfChildrenMarked()
+        cell?.updateOnRatioOfChildrenMarked()
+        callback?(self)
     }
 
     /**

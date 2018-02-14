@@ -59,9 +59,6 @@ class Settings: FileSync, Codable {
         When initializing for the first time, no files yet exist, so read from default values in memory
      */
     func settingsFromMemory() { Log ("⧉ Settings::\(#function)")
-        #if os(iOS)
-        settings["tourSet"]    = Tour.shared.tourSet.rawValue
-        #endif
         settings["boarding"] = Onboard.shared.state.rawValue
         settings["showSet"]  = Show.shared.showSet.rawValue
         settings["hearSet"]  = Hear.shared.hearSet.rawValue
@@ -77,9 +74,6 @@ class Settings: FileSync, Codable {
         if let value   = settings["dialColor"]  {
             Actions.shared.dialColor(Float(value)/Float(0xFFFF), isSender:false)
         }
-        #if os(iOS)
-            if let tourSet = settings["tourSet"]    { Tour.shared.tourSet = TourSet(rawValue:tourSet) }
-        #endif
         if let state   = settings["boarding"] { Onboard.shared.state = BoardingState(rawValue:state)! }
         if let saySet  = settings["saySet"]   { Say.shared.saySet   = SaySet(rawValue:saySet) }
         if let hearSet = settings["hearSet"]  { Hear.shared.hearSet = HearSet(rawValue:hearSet) }

@@ -1,6 +1,7 @@
 
 import Foundation
 import UIKit
+import SpriteKit
 
 enum BubContent { case  text, picture, video }
 
@@ -15,9 +16,9 @@ extension UIWindow {
 
 struct TourSet: OptionSet {
     let rawValue: Int
-    static let onboard  = TourSet(rawValue: 1 << 0) // 1
-    static let main     = TourSet(rawValue: 1 << 1) // 2
-    static let menu     = TourSet(rawValue: 1 << 2) // 4
+    static let onboard      = TourSet(rawValue: 1 << 0) // 1
+    static let main         = TourSet(rawValue: 1 << 1) // 2
+    static let menu         = TourSet(rawValue: 1 << 2) // 4
     static let information  = TourSet(rawValue: 1 << 3) // 8
     static let construction = TourSet(rawValue: 1 << 4) // 16
     static let purchase     = TourSet(rawValue: 1 << 5) // 32
@@ -27,25 +28,104 @@ struct TourSet: OptionSet {
 class Tour {
 
     static var shared = Tour()
-    var sections = [TourSection]()    // an array of sections, each may be part of tour or attached toTreeCell
+
+    var sections = [TourSection]()      // an array of sections, each may be part of tour or attached toTreeCell
     var tourBubbles = [Bubble]()        // array of bubbles for tour
     var sectionNow: TourSection!
     var bubbleNow: Bubble!              // current bubble showing for this tour
     var touring = false                 // wait for one tour to finsh before beginning a new one
     var tourSet = TourSet([.onboard,.main,.menu])
+
+    var mainVC: MainVC!
     var mainView: UIView! // full screen view in which to place subview
 
-    /**
-     first time tour
-     */
+    var eventView :UITableView!
+
+    var pagesVC: PagesVC!
+    var pageView: UIView!
+
+    var treeVC: TreeTableVC!
+    var treeView: UIView!
+    var treeRoot: TreeNode!
+
+    var panelView: UIView!
+    var dialView: SKView!
+    var crownLeft: PhoneCrown!
+    var crownRight: PhoneCrown!
+
+    let textSize  = CGSize(width:248,height:64)
+    let videoSize = CGSize(width:248,height:248)
+    let textDelay = TimeInterval(3)
+
+    func initTour() {
+
+        if mainVC != nil { return }
+
+        mainVC = MainVC.shared!
+        mainView = mainVC.view!
+        pagesVC = PagesVC.shared
+        pageView = pagesVC.view!
+
+        eventView = pagesVC.eventVC.tableView!
+
+        treeVC = pagesVC.treeVC!
+        treeView = treeVC.view!
+
+        TreeNodes.shared.initTree(treeVC)
+        treeRoot = TreeNodes.shared.root!
+
+        panelView = MainVC.shared!.panel
+        mainVC = MainVC.shared!
+        dialView = mainVC.skView!
+        crownLeft = mainVC.phoneCrown!
+        crownRight = crownLeft.twin!
+    }
+
+    // callbacks
+
+    let nextEvent   = { PhoneCrown.shared.delegate.phoneCrownDeltaRow(1,true) }
+    let toggleEvent = { PhoneCrown.shared.delegate.phoneCrownToggle(true) }
+    let scanEvents  = { Anim.shared.scanFuture() }
+
+    /// goto menu page
+    let gotoMenuPage: CallWait! = { _, finish  in
+        PagesVC.shared.gotoPageType(.menu) {
+            Actions.shared.doAction(.gotoFuture)
+            finish()
+        }
+    }
+
+    /// goto main page
+    let gotoMainPage: CallWait! = { _, finish in
+        PagesVC.shared.gotoPageType(.main) {
+            if let treeNode = TreeNodes.shared.root?.find(title:"routine")?.treeNode {
+                treeNode.set(isOn: true)
+                Actions.shared.doAction(.gotoFuture)
+                finish()
+            }
+            else {
+                Actions.shared.doAction(.gotoFuture)
+                finish()
+            }
+        }
+    }
+
+    /// Build info section
+    func buildInfoSet() {
+
+        initTour()
+        buildMenuTour(.information)
+        attachInfoSections()
+    }
+
+    /// full tour
     func beginTourSet(_ tourSet_:TourSet) {
 
         tourSet = tourSet_
+        initTour()
 
-        if tourSet.contains([.main]) { buildMainTour() }
-        if tourSet.contains([.menu]) { buildMenuTour() }
-
-        attachInfoSections()
+        //???// if tourSet.contains([.main]) { buildMainTour() }
+        if tourSet.contains([.menu]) { buildMenuTour(.menu) ; attachInfoSections()}
 
         Actions.shared.doAction(.gotoFuture)
         tourBubbles(tourBubbles) { _ in
@@ -55,7 +135,6 @@ class Tour {
 
     func stopTour() {
         BubblesPlaying.shared.cancelBubbles()
-        tourSet = []
         // clear out memory?
         for bubble in tourBubbles {
             bubble.prevBubble = nil
@@ -83,8 +162,8 @@ class Tour {
             case let any as Int:        bubItem?.duration = TimeInterval(any) // modify last item
             case let any as Double:     bubItem?.duration = TimeInterval(any) // modify last item
             case let any as Float:      bubItem?.duration = TimeInterval(any) // modify last item
-            case let any as CallWait:   makeItem("CallWait",0.5,any)
-            case let any as CallVoid:   makeItem("CallWait",0.5,{ _, finish in any() ; finish() })
+            case let any as CallWait:   makeItem("CallWait", 0.5,any)
+            case let any as CallVoid:   makeItem("CallWait", 0.5, { _, finish in any() ; finish() })
             default: continue
             }
         }
@@ -94,11 +173,11 @@ class Tour {
     func doTourAction(_ act:DoAction) {
 
         switch act {
-        case .tourAll:      beginTourSet([.main,.menu])    ; Haptic.play(.start)
-        case .main:     beginTourSet([.main])    ; Haptic.play(.start)
-        case .menu:     beginTourSet([.menu])    ; Haptic.play(.start)
-        case .onboard:  beginTourSet([.onboard]) ; Haptic.play(.start)
-        case .stopTour:     stopTour()                   ; Haptic.play(.stop)
+        case .tourAll:  beginTourSet([.main,.menu]) ; Haptic.play(.start)
+        case .main:     beginTourSet([.main])       ; Haptic.play(.start)
+        case .menu:     beginTourSet([.menu])       ; Haptic.play(.start)
+        case .onboard:  beginTourSet([.onboard])    ; Haptic.play(.start)
+        case .stopTour: stopTour()                  ; Haptic.play(.stop)
         default: break
         }
     }
@@ -144,7 +223,7 @@ class Tour {
     func tourBubbles(_ bubbles:[Bubble],_ done: @escaping CallBool) {
 
         if BubblesPlaying.shared.playing {
-            return done(false)
+           BubblesPlaying.shared.cancelBubbles()
         }
         BubblesPlaying.shared.playing = true
         

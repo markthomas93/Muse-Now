@@ -34,7 +34,6 @@ class Bubble {
     var nextBubble: Bubble!             // next bubble in tour
 
     init(_  title_      : String = "",
-         _  items_      : [BubbleItem],
          _  bubShape_   : BubShape,
          _  bubContent_ : BubContent,
          _  size_       : CGSize = .zero,
@@ -42,7 +41,8 @@ class Bubble {
          _  from_       : UIView!,
          _  front_      : [UIView],
          _  covering_   : [UIView],
-         _  options_    : BubbleOptions) {
+         _  options_    : BubbleOptions,
+         _  items_      : [BubbleItem] ) {
 
         id = Bubble.getNextId()
         title = title_
@@ -56,6 +56,7 @@ class Bubble {
         options = options_
         items = items_
     }
+
 
     /**
     build linked list
