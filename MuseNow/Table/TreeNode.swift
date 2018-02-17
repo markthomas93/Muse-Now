@@ -9,38 +9,54 @@
 import Foundation
 import UIKit
 
-typealias CallTreeNode = ((TreeNode!)->())
-
 class TreeNode {
+
     static var Id = 1
     static func nextId() -> Int { Id += 1 ; return Id }
+
+    var title = ""
+    var nodeType = TreeNodeType.unknown
+    var setting: TreeSetting!
+
     var id = TreeNode.nextId()
-    var type = TreeNodeType.titleMark
     var parent: TreeNode!
     var children = [TreeNode]()
+
     var depth = 0 // how deep do children go
     var level = 0
     var expanded = false
-    var setting: TreeSetting!
     var cell: TreeCell!
     var any: Any! // may contain Cal
     var row = -1
     var onRatio = CGFloat(1.0)
-    var showInfo = ShowInfo.nothingHere
+    
+    var treeCallback: ((TreeNode) -> ())?
+    func addChild(_ treeNode:TreeNode) {
+        children.append(treeNode)
+    }
 
+    convenience init (_ title_:String,_ type_:TreeNodeType, _ parent_:TreeNode!,_ setting_: TreeSetting,_ tableVC_:UITableViewController) {
+        self.init()
+        initialize(title_, type_, parent_, setting_, tableVC_)
+    }
+    convenience init (_ title_:String,_ type_:TreeNodeType, _ parent_:TreeNode!,_ tableVC_:UITableViewController) {
+        self.init()
+        initialize(title_, type_, parent_, TreeSetting(set:1,member:1),tableVC_)
+    }
 
-    func initialize (_ type_:TreeNodeType, _ parent_:TreeNode!,_ setting_: TreeSetting,_ tableVC_:UITableViewController) {
+    func initialize (_ title_: String, _ type_:TreeNodeType, _ parent_:TreeNode!,_ setting_: TreeSetting,_ tableVC_:UITableViewController) {
 
+        title = title_
         parent = parent_
         setting = setting_
-        type = type_
+        nodeType = type_
 
         if let parent = parent {
             level = parent.level+1
-            parent.children.append(self)
+            parent.addChild(self)
         }
 
-        switch type {
+        switch nodeType {
         case .title:            cell = TreeTitleCell(self, tableVC_)
         case .titleButton:      cell = TreeTitleButtonCell(self, tableVC_)
         case .infoApprove:      cell = TreeInfoApproveCell(self, tableVC_)
@@ -57,16 +73,6 @@ class TreeNode {
         }
     }
 
-    convenience init (_ type_:TreeNodeType, _ parent_:TreeNode!,_ setting_: TreeSetting,_ tableVC_:UITableViewController) {
-        self.init()
-        initialize(type_,parent_,setting_,tableVC_)
-    }
-    convenience init (_ type_:TreeNodeType, _ parent_:TreeNode!,_ title:String,_ tableVC_:UITableViewController) {
-        self.init()
-         initialize(type_,parent_, TreeSetting(set:1,member:1,title),tableVC_)
-    }
-
-
     @discardableResult func renumber() -> Int {
         depth = 0
         if expanded {
@@ -79,8 +85,6 @@ class TreeNode {
         return depth+1
     }
 
-    
-   
     func getParentChildOther() -> ParentChildOther {
         if depth == 0, parent?.depth == 1 { return .child }
         else if depth == 1, expanded      { return .parent }
@@ -105,14 +109,18 @@ class TreeNode {
             }
         }
     }
-    var callback: ((TreeNode) -> ())?
 
-    func updateCallback() {
-        callback?(self)
-    }
+
+    /**
+     Determine parents ratios of children checked.
+     Ratio will determin whether parent has a check, minus or blank
+     - blank: n == 0
+     - minus: n > 0 and n < 1
+     - check: n == 1
+     */
     func updateOnRatioFromChildren() {
 
-        if setting.setFrom.contains(.child) {
+        if [.child,.both].contains(setting.setFrom)  {
 
             if children.count > 0 {
 
@@ -120,7 +128,7 @@ class TreeNode {
                 var markCount = CGFloat(0)
                 var isOnCount = CGFloat(0)
                 for child in children {
-                    switch child.type {
+                    switch child.nodeType {
                     case .titleMark,
                          .colorTitleMark:
                         markCount += 1.0
@@ -150,9 +158,10 @@ class TreeNode {
             }
         }
     }
+
     func updateOnFromParent(_ parentOn:Bool) {
 
-        if  setting.setFrom.contains(.parent),
+        if  [.parent,.both].contains(setting.setFrom),
             parentOn != setting.isOn() {
 
             let isOn = setting.flipSet()
@@ -160,7 +169,7 @@ class TreeNode {
             setting.setOn(onRatio > 0) // synch setting with onRatio
             updateMyChildren()
             cell?.updateOnRatioOfChildrenMarked()
-            callback?(self)
+            treeCallback?(self)
         }
     }
 
@@ -172,7 +181,7 @@ class TreeNode {
         updateMyChildren()
         parent?.cell?.updateOnRatioOfChildrenMarked()
         cell?.updateOnRatioOfChildrenMarked()
-        callback?(self)
+        treeCallback?(self)
         return isOn
     }
 
@@ -182,7 +191,7 @@ class TreeNode {
         updateMyChildren()
         parent?.cell?.updateOnRatioOfChildrenMarked()
         cell?.updateOnRatioOfChildrenMarked()
-        callback?(self)
+        treeCallback?(self)
     }
 
     /**
@@ -217,7 +226,6 @@ extension TreeNode: Hashable {
     var hashValue: Int {
         return id
     }
-
     static func == (lhs: TreeNode, rhs: TreeNode) -> Bool {
         return lhs.id == rhs.id
     }

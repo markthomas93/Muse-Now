@@ -80,7 +80,7 @@ extension TreeEditTimeCell: UIPickerViewDelegate, UIPickerViewDataSource {
                 node.routineItem.durMinutes = endMin - bgnMin
                 node.routineItem.updateLabelStrings()
             }
-            treeNode.updateCallback() // refresh dial
+            treeNode.treeCallback?(treeNode) // refresh dial
         }
     }
  }

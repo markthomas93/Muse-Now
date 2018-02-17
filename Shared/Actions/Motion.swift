@@ -77,7 +77,8 @@ class Motion: NSObject {
         return lowerWrist
     }
 
-    /** trigger a wristThrottle when user twists wrist back and forth within 1.0 second
+    /**
+     trigger a wristThrottle when user twists wrist back and forth within 1.0 second
      - via activate
      - note:
      Initial direction of twist can be +/-, paired with opposite -/+ to trigger wristThrottle
@@ -127,14 +128,16 @@ class Motion: NSObject {
                     // for watch, detect wrist lower, in which case
                     // turn off autorotating so when raising wrist
                     // the screen will be rightside up
-                    #if os(watchOS)
+
                         if self.wristLower(motion) {
+                            #if os(watchOS)
                             WKExtension.shared().isAutorotating = false
+                            #endif
                             Record.shared.finishRecording()
                             self.printGravity("wristLower", motion)
                             return
                         }
-                    #endif
+
                     if self.wristThrottle(motion) {
                         Record.shared.recordAudioAction()
                         self.printRotationRate("wristThrottle", motion)

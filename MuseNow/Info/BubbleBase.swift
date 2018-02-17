@@ -61,7 +61,7 @@ class BubbleBase: BubbleDraw {
         }
 
         //sometimes the first callWait is needed to rearrange views before making bubble
-        bubble.items.first?.callWait?(self, { makeMain(0)}) ?? makeMain(-1)
+        bubble.items.first?.callWait?({ makeMain(0)}) ?? makeMain(-1)
 
         /// Some bubbles appear above other bubbles, such as Video.
         func findFromView() {
@@ -184,10 +184,10 @@ class BubbleBase: BubbleDraw {
             // last callWait waits for bubble to tuck in -- //TODO: sync queue this 
             if contenti == bubble.items.count-1 {
                 isEmpty(true)
-                Timer.delay(1.0) { callWait(self) {} }
+                Timer.delay(1.0) { callWait() {} }
             }
             else {
-                callWait(self) { self.nextContentView(isEmpty) }
+                callWait() { self.nextContentView(isEmpty) }
             }
         }
         else {

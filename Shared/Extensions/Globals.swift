@@ -32,21 +32,21 @@ func Log(_ str: String) {
 func DebugLog(_ str: String) -> Bool {
 
     switch str.substring(to: 1) {
-        
-        //case NSLog(str)
 
     case
-    "⧉", // syncfile
-    "🔰": // onboarding pages (japaness beginnner symbol)
+    "▭", // textfield
+    "🔰": // onboarding pages (japanese beginnner symbol)
 
         print(MuDate.getHourMinSecMsec() + ": " + str)
+
         
     case
-
+    "⧉", // syncfile
+    "𐂷", // tree cell
     "*", // TableVC updates
     "⏲", // timing
     "💬", // bubble animation closure
-    "▭", // textfield
+
 
     "⟳", // life cycle
     "⧉", // syncfile
@@ -74,7 +74,6 @@ func DebugLog(_ str: String) -> Bool {
     "👆", // tap action
 
     "✺", // complication
-    "𐂷", // tree cell
     "𝓡", // routine
 
     "✓", // actions

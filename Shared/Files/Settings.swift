@@ -7,7 +7,6 @@ class Settings: FileSync, Codable {
     static let shared = Settings()
 
     var settings = [String:Int]()
-    var settings2 = [String:Int]()
 
     override init() {
         super.init()
@@ -41,14 +40,6 @@ class Settings: FileSync, Codable {
         }
     }
 
-    func pushSettings() {
-        settings2 = settings
-    }
-    func popSettings() {
-        if settings2.count > 0 {
-            settings = settings2
-        }
-    }
     func updateColor(_ value: Any) {
 
         settings["dialColor"] = Int((value as! Float) * 0xFFFF)
@@ -56,7 +47,7 @@ class Settings: FileSync, Codable {
     }
 
     /**
-        When initializing for the first time, no files yet exist, so read from default values in memory
+        When initializing for the first time, there are no files yet, so read from default values in memory
      */
     func settingsFromMemory() { Log ("⧉ Settings::\(#function)")
         settings["boarding"] = Onboard.shared.state.rawValue

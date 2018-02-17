@@ -10,9 +10,10 @@ import Foundation
 import UIKit
 
 class TreeButtonNode: TreeNode {
-    init (_ parent_:TreeNode!,_ title_:String,_ butnTitle:String, _ act:CallVoid!,_ tableVC_:UITableViewController) {
-        super.init()
-        initialize(.titleButton, parent_, TreeSetting(set:1,member:1,title_),tableVC_)
+
+    convenience init(_ title_:String,_ butnTitle:String,_ parent_:TreeNode!, _ act:CallVoid!,_ tableVC_:UITableViewController) {
+        self.init()
+        initialize(title_,.titleButton, parent_, TreeSetting(set:1,member:1),tableVC_)
         if let cell = cell as? TreeTitleButtonCell {
             cell.butnTitle = butnTitle
             cell.butnAct = act
@@ -22,15 +23,15 @@ class TreeButtonNode: TreeNode {
 
 class TreeCalendarNode: TreeNode {
 
-    init (_ parent_:TreeNode!,_ title_:String, _ cal:Cal!,_ tableVC_:UITableViewController) {
-        super.init()
-        initialize(.colorTitleMark, parent_, TreeSetting(set:1,member:1,title_), tableVC_)
+    convenience init(_ title_:String, _ parent_:TreeNode!,_ cal:Cal!,_ tableVC_:UITableViewController) {
+        self.init()
+        initialize(title_,.colorTitleMark, parent_, TreeSetting(set:1,member:1), tableVC_)
 
         if let cell = cell as? TreeColorTitleMarkCell {
             cell.setColor(cal.color)
         }
         any = cal.calId // any makes a copy of Cal, so use calID, instead
-        callback = { treeNode in
+        treeCallback = { treeNode in
 
             if let calId = treeNode.any as? String,
                 let cal = Cals.shared.idCal[calId],
@@ -42,9 +43,9 @@ class TreeCalendarNode: TreeNode {
 }
 class TreeDialColorNode: TreeNode {
 
-    init (_ parent_:TreeNode!,_ title_:String,_ tableVC_:UITableViewController) {
-        super.init()
-        initialize(.titleFader, parent_, TreeSetting(set:0,member:1,title_),tableVC_)
+    convenience init (_ title_:String,_ parent_:TreeNode!,_ tableVC_:UITableViewController) {
+        self.init()
+        initialize(title_,.titleFader, parent_, TreeSetting(set:0,member:1),tableVC_)
 
         if let cell = cell as? TreeTitleFaderCell {
 
@@ -72,39 +73,28 @@ class TreeDialColorNode: TreeNode {
     }
 }
 
-
-
 class TreeActNode: TreeNode {
-    init (_ parent_:TreeNode!,_ title_:String, _ set:Int, _ member: Int,_ onAct:DoAction,_ offAct:DoAction,_ tableVC_:UITableViewController) {
-        super.init()
-        initialize(.titleMark, parent_, TreeSetting(set:set,member:member,title_),tableVC_)
+    convenience init (_ title_:String, _ parent_:TreeNode!,_ set:Int, _ member: Int,_ onAct:DoAction,_ offAct:DoAction,_ tableVC_:UITableViewController) {
+        self.init()
+        initialize(title_,.titleMark, parent_, TreeSetting(set:set,member:member),tableVC_)
 
         // callback to set action message based on isOn()
-        callback = { treeNode in
-            Actions.shared.doAction(treeNode.setting.isOn() ? onAct : offAct )
-        }
+        treeCallback = { treeNode in Actions.shared.doAction(treeNode.setting.isOn() ? onAct : offAct ) }
     }
 }
 
-
 class TreeRoutineCategoryNode: TreeNode {
-    init (_ parent_:TreeNode!,_ title_:String,_ tableVC_:UITableViewController) {
-        super.init()
-        initialize(.colorTitle, parent_, TreeSetting(set:0,member:1,title_), tableVC_)
+    convenience init (_ title_:String,_ parent_:TreeNode!,_ tableVC_:UITableViewController) {
+        self.init()
+        initialize(title_,.colorTitle, parent_, TreeSetting(set:0,member:1), tableVC_)
     }
 }
 class TreeRoutineItemNode: TreeNode {
     var routineItem: RoutineItem!
-    init (_ type_: TreeNodeType,_ parent_:TreeNode!,_ item:RoutineItem,_ tableVC_:UITableViewController) {
-        super.init()
+    convenience init (_ type_: TreeNodeType,_ parent_:TreeNode!,_ item:RoutineItem,_ tableVC_:UITableViewController) {
+        self.init()
         routineItem = item
-        let setting = TreeSetting(set:0, member:1, item.title, [])
-
-        initialize(type_, parent_, setting, tableVC_)
-        // callback to refresh display for changes
-        callback = { treeNode in
-            Actions.shared.doAction(.refresh)
-        }
+        initialize(item.title, type_, parent_, TreeSetting(set:0, member:1, .none), tableVC_)
+        treeCallback = { _ in Actions.shared.doAction(.refresh) }
     }
-
 }

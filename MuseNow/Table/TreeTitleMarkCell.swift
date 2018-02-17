@@ -138,18 +138,9 @@ class TreeTitleMarkCell: TreeTitleCell {
         let toggleX = frame.size.width - frame.size.height
         if location.x > toggleX {
             let isOn = treeNode.toggle()
-            var newInfo: Bool!
-
-            switch treeNode.showInfo {
-            case .information,
-                 .construction,
-                 .purchase:  newInfo = true
-            default:         newInfo = false
-            }
-
-            if isOn && newInfo {
-               super.touchCell(.zero)
-            }
+//            if isOn && [.information,.construction,.purchase].contains(treeNode.setting.showInfo) {
+//               super.touchCell(.zero)
+//            }
             mark.setMark(isOn)
         }
         else {

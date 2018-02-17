@@ -10,14 +10,14 @@ import UIKit
 
 extension Tour {
 
-    func buildMenuTour(_ tourSet:TourSet) {
+    func buildMenuTour(_ tourSet:TourSet,_ sections: inout [TourSection]) {
 
         func addTour(_ title:String,_ thisSet: TourSet,_ bubbles:[Bubble]) {
             if !thisSet.intersection(tourSet).isEmpty {
                 sections.append(TourSection(title,tourSet,bubbles))
             }
         }
-
+        
         addTour("menu",[.menu], [
             menuPage("menu",[],[gotoMenuPage, "Here is the Menu to \n choose and announce events",2])
             ])
@@ -35,18 +35,21 @@ extension Tour {
             ])
 
         // calendar
-        addTour("calendars",[.menu,.information],[
-            menuMark("calendars",[],[gotoPath("calendars"),"Show calendar events and \n changes will pause",2]),
+        addTour("calendars",[.menu],[
+            menuInfo("calendars",[],[gotoPath("calendars"),"Show calendar events and \n changes will pause",2]),
+            ])
+        addTour("calendars",[.information],[
+            menuInfo("calendars",[],[gotoPath("calendars"),"Show calendar events and \n changes will pause",2]),
             ])
 
         // reminders
         addTour("reminders",[.menu],[
-            menuMark("reminders",[],[gotoPath("reminders"), "Show reminders, which have \n a timing deadline",2]),
-            menuInfo("reminders",[],[gotoInfo("reminders"), "works well with Siri \n tap for demo (after tour)",4])
+            menuInfo("reminders",[],[gotoPath("reminders"), "Show reminders, which \n have a deadline",2]),
+            menuInfo("reminders",[],[gotoPath("reminders"), "works well with Siri",2,"tap for demo (after tour)",2])
             ])
 
         addTour("reminders",[.information],[
-            menuMark("reminders", [],[gotoPath("reminders"), "Show timed reminders and \n new reminders will pause",2]),
+            menuInfo("reminders", [],[gotoPath("reminders"), "Show timed reminders and \n new reminders will pause",2]),
             menuInfo("reminders", [],["Add reminders anytime with Siri:",2]),
             menuCell("reminders", [.nowait], ["\"Hey Siri, remind me to pack for trip tomorrow\"",20]),
             menuVid1("reminders",.diptych12, [.snugAbove,.nowait], ["WatchSiri2.m4v", 24]),
@@ -55,25 +58,23 @@ extension Tour {
 
         // routine
         addTour("routine",[.menu],[
-            menuMark("routine",[],[gotoPath("routine"), "Your normal routine \n like sleep, meals, work,  ⃨",4]),
+            menuInfo("routine",[],[gotoPath("routine"), "Your normal routine",2,"like sleep, meals, work,  ⃨",2]),
             menuInfo("routine",[],["tap for details \n (after the tour)",1])
             ])
 
         addTour("routine",[.information],[
             menuInfo("routine",[],[gotoPath("routine"),
-                                "setup your normal routine \n like sleep, meals, work,  ⃨",2,
-                                "to know what will overlap \n with your weekly routine",2
+                                "setup your normal routine \n like sleep, meals, work,  ⃨",4,
+                                "to see how events overlap \n with your weekly routine",4
                 ]),
 
-            menuPanel("routine",[.nowait], [gotoPath("routine"),
-                                              setNode("routine",isOn:false),
+            menuPanel("routine",[.nowait], [setNode("routine",isOn:false),
                                               "here is routine set OFF",2]),
 
             menuDial ("routine", [.highlight,
                                   .circular], ["and how it affects your dial", 2]),
 
-            menuPanel("routine", [.nowait],  [gotoPath("routine"),
-                                              setNode("routine",isOn:true),
+            menuPanel("routine", [.nowait],  [setNode("routine",isOn:true),
                                               "here is routine set ON",2]),
 
             menuDial ("routine", [.highlight,
@@ -84,61 +85,63 @@ extension Tour {
         addTour("memos",[.menu],[
 
             menuMark("memo",[],[gotoPath("show.memo"), "record short audio memos \n with location and text",2]),
-            menuInfo("memo",[],[gotoInfo("show.memo"), "tap for a demo \n (after the tour)",1])
+            menuInfo("memo",[],[gotoPath("memo"), "tap for a demo \n (after the tour)",1])
             ])
 
         addTour("memo",[.information],[
 
-            menuInfo("memo",[],[
-                gotoPath("show.memos"),
-                "record short audio memos \n with location and text",2]),
+            menuInfo("memo",[],[gotoPath("show.memos"),
+                                "record short audio memos \n with location and text",2]),
 
             menuDial("memo", [.highlight, .circular], [
                 {Actions.shared.doAction(.gotoRecordOn)},
                 "triple-tap on the dial \n to record memos",2,
                 ]),
 
-            menuDial("memo", [.highlight, .circular, .overlay], [
-                { Actions.shared.doAction(.gotoRecordOn) },
+            menuDial("memo", [.overlay], [
                 "or nod the device \n like nodding your head", 2,
                 ]),
 
             menuVid1("memo", .diptych12, [.snugAbove, .nowait], ["WatchMemo2.m4v", 12]),
             menuVid1("memo", .diptych22, [.snugAbove],          ["PhoneMemo2.m4v", 12]),
 
-            menuInfo("memo",[],[
-                { Actions.shared.doAction(.gotoFuture)},
-                { Timer.delay(0.5) {Anim.shared.scene?.uFade?.floatValue = 1 }},
-                "Memos are saved in your \n iTunes \"shared files\" folder",4,
-                "your private memos stays \n inside Apple's secure sandbox ",4,
-                "Muse never sees your data \n and we never will", 4]),
+            menuInfo("memo",[],[{ Actions.shared.doAction(.gotoFuture)},
+                                { Timer.delay(0.5) {Anim.shared.scene?.uFade?.floatValue = 1 }},
+                                "Memos are saved in your \n iTunes \"shared files\" folder",4,
+                                "your private memos stays \n inside Apple's secure sandbox ",4,
+                                "Muse never sees your data \n and we never will", 4]),
 
-            menuButn("move all",[],[
-                gotoPath("show.move"),
-                "Move memos to iCloud Drive \n as standard JSON files",4,
-                "to experiment \n with personal AI",4
+            menuButn("move",[],[gotoPath("show.move"),
+                                "Move memos to iCloud Drive \n as standard JSON files",4,
+                                "allowing anyone to experiment \n with personal machine learning",4
                 ])
             ])
 
         // dial
-        addTour("dial",[.menu, .information],[ // cell
+        addTour("dial",[.menu],[ // cell
 
-            menuInfo("dial",[],[
-                gotoInfo("dial"),
-                "change the dial's appearance",4]),
+            menuInfo("dial",[],[gotoInfo("dial"), "change the dial's appearance",4]),
 
             menuFader("color",[],[gotoPath("color"), "fade between", 1,
-                                  makeAniFader(0.0), "heat map ...", 1,
-                                  makeAniFader(0.5), "monochrome ...", 1,
-                                  makeAniFader(1.0), "and event colors", 2 ])
+                                  makeAniFader("color",0.0), "heat map ...", 1,
+                                  makeAniFader("color",0.5), "monochrome ...", 1,
+                                  makeAniFader("color",1.0), "and event colors", 2 ])
+            ])
+
+        addTour("dial",[.information],[ // cell
+
+            menuInfo("dial",[],[gotoPath("dial"), "change the dial's appearance",4]),
+
+            menuFader("color",[],[gotoPath("color"), "fade between", 1,
+                                  makeAniFader("color",0.0), "heat map ...", 1,
+                                  makeAniFader("color",0.5), "monochrome ...", 1,
+                                  makeAniFader("color",1.0), "and event colors", 2 ])
             ])
 
         // say  --------------------------------------
 
         addTour("say",[.menu],[
-            menuInfo("say",[],[
-                gotoInfo("say"),
-                "choose what to say while \n pausing on a bookmark",2])
+            menuInfo("say",[],[gotoInfo("say"), "choose what to say while \n pausing on a bookmark",2])
             ])
 
         addTour("say",[.information],[
@@ -156,7 +159,7 @@ extension Tour {
 
         addTour("hear",[.information],[
 
-            menuInfo("hear",   [],[gotoInfo("hear"),"Choose whether to hear on \n speakers and/or earbuds",2]),
+            menuInfo("hear",   [],[gotoPath("hear"),"Choose whether to hear on \n speakers and/or earbuds",2]),
             menuMark("speaker",[],[gotoPath("hear.speaker"),"hear via speaker or handoff \n to connected earbuds",2]),
             menuMark("earbuds",[],[gotoPath("hearl.earbuds"),
                                    "hear only on earbuds for both \n eyes free and hands free",2,
@@ -166,25 +169,31 @@ extension Tour {
 
         // more --------------------------------------
 
-        addTour("more",[.menu,.information],[
+        addTour("more",[.menu],[
 
             menuInfo("more",     [],[gotoInfo("more"),         "here is more about us", 2]),
             menuCell("about",    [],[gotoPath("more.about"),   "A bit more about Muse Dot", 1]),
             menuCell("support",  [],[gotoPath("more.support"), "Product support.", 1]),
             menuCell("blog",     [],[gotoPath("more.blog"),    "musings around how and why",1]),
             menuButn("tour",     [],[gotoPath("more.tour"),    "to replay this tour",1]),
-
-            menuCell("more",     [],[gotoPath("more"),
-                                     "and that about wraps it up",1,
-                                     "for now",2,
+            menuCell("more",     [],[gotoPath("more"), "and that about wraps it up",1, "for now",2,
                                      menuCollapse("more"),
                                      PagesVC.shared.gotoPageType(.main) {} ])
             ])
+
+        addTour("more",[.information],[
+
+            menuInfo("more",     [],[gotoPath("more"),         "here is more about us", 2]),
+            menuCell("about",    [],[gotoPath("more.about"),   "A bit more about Muse Dot", 1]),
+            menuCell("support",  [],[gotoPath("more.support"), "Product support.", 1]),
+            menuCell("blog",     [],[gotoPath("more.blog"),    "musings around how and why",1]),
+            menuButn("tour",     [],[gotoPath("more.tour"),    "to replay this tour",1])
+            ])
     }
 
-    /// find title, animate Info button, and finish bubble animation afterwards
+    /// goto title, animate Info button, and finish bubble animation afterwards
     func gotoInfo(_ path:String) -> CallWait {
-        return { _, finish in
+        return { finish in
             TreeNodes.shared.root?.goto(path: path) { treeNode in
                 treeNode?.cell?.animateInfo(newAlpha:1.0, duration:0.5, delay:0)
                 finish()
@@ -194,7 +203,7 @@ extension Tour {
 
     /// find title and finish and then finish bubble animation
     func gotoPath(_ path:String) -> CallWait {
-        return { _, finish in
+        return { finish in
             TreeNodes.shared.root?.goto(path: path) {_ in
                 finish()
             }
@@ -202,7 +211,7 @@ extension Tour {
     }
     /// find title and finish and then finish bubble animation
     func setNode(_ title:String, isOn:Bool) -> CallWait {
-        return { _, finish in
+        return { finish in
             if let treeNode = self.treeRoot.find(title:title)?.treeNode {
                 treeNode.set(isOn:isOn)
                 finish()
@@ -213,7 +222,7 @@ extension Tour {
         }
     }
     /// Closure to animate a Fader to value 0...1
-    func makeAniFader(_ value:Float) -> CallWait! {
+    func makeAniFader(_ path:String, _ value:Float) -> CallWait! {
 
         func aniFader(_ fader:Fader, value: Float) {
 
@@ -233,14 +242,15 @@ extension Tour {
             })
         }
         // begin
-        return { bubbleBase, finish in
-            if let fader = bubbleBase.bubble.from as? Fader {
-                aniFader(fader, value: value)
+        return { finish in
+            if  let treeCell = TreeNodes.shared.root?.findPath(path),
+                let faderCell = treeCell as? TreeTitleFaderCell {
+                aniFader(faderCell.fader, value: value)
                 finish()
             }
         }
     }
-
+ 
     /// Highligh dial
     func menuDial(_ title: String, _ options: BubbleOptions,_ anys:[Any]) -> Bubble! {
         return Bubble(title, .above, .text, textSize, pageView, dialView, [], [], [.highlight, .circular], bubsFrom(anys))

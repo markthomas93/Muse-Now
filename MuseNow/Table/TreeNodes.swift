@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-enum TreeNodeType { case
+enum TreeNodeType: Int,Codable { case
     unknown,
     title,
     titleButton,
@@ -24,18 +24,6 @@ enum TreeNodeType { case
     editWeekday,
     editColor
 }
-/**
- Optional info disclosure upon first expand
- - noInfo: do not show "i" icon
- - newInfo: white icon, auto show info on expand
- - oldInfo: gray icon, only show when touching icon
- */
-enum ShowInfo { case
-    nothingHere,
-    information,
-    construction,
-    purchase
-}
 
 class TreeNodes {
 
@@ -45,6 +33,7 @@ class TreeNodes {
     var nextNodes = [TreeNode]() // double buffer update
     var touchedNode: TreeNode! // which node was last touched
     var root: TreeNode!
+    
     /**
      Renumber currently displayed table cells.
      Used for animating expand/collapse of children

@@ -193,6 +193,11 @@
 		803C5F661FA3DFBE002A1C11 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 803C5F651FA3DFBE002A1C11 /* Assets.xcassets */; };
 		803C5F6D1FA3DFBE002A1C11 /* MuseNow WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 803C5F6C1FA3DFBE002A1C11 /* MuseNow WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		803C5F7A1FA3DFBE002A1C11 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 803C5F791FA3DFBE002A1C11 /* Assets.xcassets */; };
+		803D5D7F2034BAAB0082E22D /* EventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803D5D7E2034BAAB0082E22D /* EventType.swift */; };
+		803D5D812034BADA0082E22D /* EventCoord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803D5D802034BADA0082E22D /* EventCoord.swift */; };
+		803D5D822034BB2E0082E22D /* EventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803D5D7E2034BAAB0082E22D /* EventType.swift */; };
+		803D5D832034BB350082E22D /* EventCoord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803D5D802034BADA0082E22D /* EventCoord.swift */; };
+		803D5D852034C8800082E22D /* TreeBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803D5D842034C8800082E22D /* TreeBase.swift */; };
 		80465120200278D100121A5A /* TreeTitleButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8046511F200278D100121A5A /* TreeTitleButtonCell.swift */; };
 		804D5A011FA3FC8B0025B724 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D59F71FA3FC8B0025B724 /* AppDelegate.swift */; };
 		804D5A031FA3FC8B0025B724 /* Fader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804D59F91FA3FC8B0025B724 /* Fader.swift */; };
@@ -459,6 +464,9 @@
 		803C5F6C1FA3DFBE002A1C11 /* MuseNow WatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "MuseNow WatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		803C5F791FA3DFBE002A1C11 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		803C5F7B1FA3DFBE002A1C11 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		803D5D7E2034BAAB0082E22D /* EventType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventType.swift; sourceTree = "<group>"; };
+		803D5D802034BADA0082E22D /* EventCoord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCoord.swift; sourceTree = "<group>"; };
+		803D5D842034C8800082E22D /* TreeBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeBase.swift; sourceTree = "<group>"; };
 		8046511F200278D100121A5A /* TreeTitleButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeTitleButtonCell.swift; sourceTree = "<group>"; };
 		804D59F71FA3FC8B0025B724 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		804D59F91FA3FC8B0025B724 /* Fader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fader.swift; sourceTree = "<group>"; };
@@ -687,6 +695,8 @@
 				8004F7221FA3EE2400F7ED94 /* MuDate.swift */,
 				8004F7231FA3EE2400F7ED94 /* MuEvent+Auth.swift */,
 				8004F7241FA3EE2400F7ED94 /* MuEvent.swift */,
+				803D5D7E2034BAAB0082E22D /* EventType.swift */,
+				803D5D802034BADA0082E22D /* EventCoord.swift */,
 				8004F7251FA3EE2400F7ED94 /* MuEvents+Fake.swift */,
 				8004F7261FA3EE2400F7ED94 /* MuEvents+Marks.swift */,
 				8004F7271FA3EE2400F7ED94 /* MuEvents.swift */,
@@ -966,6 +976,7 @@
 				80203C1A1FD5A5D400CA4D38 /* TreeTableVC+PhoneCrown.swift */,
 				80203C161FD47DA500CA4D38 /* TreeTableVC+Keyboard.swift */,
 				80D483EB1FCB496800D28095 /* TreeTableVC+override.swift */,
+				803D5D842034C8800082E22D /* TreeBase.swift */,
 				80A3E36D1FC0D51500195BD3 /* TreeNode.swift */,
 				8025E3781FFBF1F3004B81F4 /* TreeNodes.swift */,
 				8055014D200A624A00C390A4 /* TreeNodes+Table.swift */,
@@ -1262,6 +1273,7 @@
 				8004F7C91FA3EE2400F7ED94 /* Texture.swift in Sources */,
 				8004F6F41FA3ED5E00F7ED94 /* Node+find.swift in Sources */,
 				8025E3841FFC0C49004B81F4 /* ColorCell.swift in Sources */,
+				803D5D7F2034BAAB0082E22D /* EventType.swift in Sources */,
 				80203C171FD47DA500CA4D38 /* TreeTableVC+Keyboard.swift in Sources */,
 				8004F6E41FA3ED5E00F7ED94 /* Visitor.swift in Sources */,
 				806ACFD71FC5E1D500220EB6 /* TreeEditTimeCell+delegate.swift in Sources */,
@@ -1367,6 +1379,7 @@
 				806ACFDB1FC5FC9300220EB6 /* TreeEditTitleCell.swift in Sources */,
 				8004F7931FA3EE2400F7ED94 /* String+extension.swift in Sources */,
 				8025E3811FFC0C04004B81F4 /* TouchDialForce.swift in Sources */,
+				803D5D852034C8800082E22D /* TreeBase.swift in Sources */,
 				8004F7B71FA3EE2400F7ED94 /* SayCache.swift in Sources */,
 				8076B3371FE6C69A001EDD30 /* BubbleDraw.swift in Sources */,
 				804D5A2C1FA3FCAA0025B724 /* EventTimeCell.swift in Sources */,
@@ -1387,6 +1400,7 @@
 				806ACFE91FC624CB00220EB6 /* TreeCell.swift in Sources */,
 				807643561FACBE55001733C6 /* Muse.swift in Sources */,
 				80550168200A6FC800C390A4 /* OnboardVC+delegate.swift in Sources */,
+				803D5D812034BADA0082E22D /* EventCoord.swift in Sources */,
 				8004F7CD1FA3EE2400F7ED94 /* Session.swift in Sources */,
 				8004F6DE1FA3ED5E00F7ED94 /* Repetitions.swift in Sources */,
 				804D5A291FA3FCAA0025B724 /* EventTable+Update.swift in Sources */,
@@ -1415,6 +1429,7 @@
 				8004F76A1FA3EE2400F7ED94 /* Anim+Closure.swift in Sources */,
 				8004F77C1FA3EE2400F7ED94 /* MuDate.swift in Sources */,
 				8004F7C21FA3EE2400F7ED94 /* Image+context.swift in Sources */,
+				803D5D832034BB350082E22D /* EventCoord.swift in Sources */,
 				8004F7781FA3EE2400F7ED94 /* Dots.swift in Sources */,
 				8004F78A1FA3EE2400F7ED94 /* AVAudio+.swift in Sources */,
 				8004F6F51FA3ED5E00F7ED94 /* Node+find.swift in Sources */,
@@ -1422,6 +1437,7 @@
 				8004F7E31FA3F01600F7ED94 /* WatchCon.swift in Sources */,
 				8004F7BE1FA3EE2400F7ED94 /* DayHour.swift in Sources */,
 				8004F7921FA3EE2400F7ED94 /* Globals.swift in Sources */,
+				803D5D822034BB2E0082E22D /* EventType.swift in Sources */,
 				8004F7AA1FA3EE2400F7ED94 /* Hear.swift in Sources */,
 				8004F7E11FA3F01600F7ED94 /* NotificationController.swift in Sources */,
 				8004F79E1FA3EE2400F7ED94 /* FileMsg.swift in Sources */,

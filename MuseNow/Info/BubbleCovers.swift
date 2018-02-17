@@ -28,7 +28,6 @@ class BubbleCovers {
 
         coverAlpha = alpha_
 
-
         for underView in bub.covering {
 
             if covers[underView] != nil { continue }

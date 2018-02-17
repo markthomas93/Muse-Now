@@ -3,27 +3,6 @@ import Foundation
 import EventKit
 import UIKit
 
-public enum EventType: String, Codable { case
-    unknown     = "unknown",
-    routine     = "routine",
-    ekevent     = "ekevent",    // Apple Calendar events
-    ekreminder  = "ekreminder", // Apple Reminders
-    note        = "note",
-    memo        = "memo",
-    time        = "time"
-}
-
-struct Coordinate: Codable {
-    var latitude: Double
-    var longitude: Double
-
-    init(_ lat:Double,_ lon:Double) {
-        latitude = lat
-        longitude = lon
-    }
-}
-
-
 //@objc(MuEvent) // data compatible between iPhone and appleWatch
 open class MuEvent: Codable {
 
@@ -43,7 +22,6 @@ open class MuEvent: Codable {
         }
     }
 
-    
     var eventId  = ""
     var title    = "" // title from ekEvent or sttApple or sttSwm
     var notes    = "" // notes from ekEvent

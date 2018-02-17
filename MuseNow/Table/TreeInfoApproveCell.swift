@@ -36,7 +36,7 @@ class TreeInfoApproveCell: TreeCell {
         title = UILabel(frame:titleFrame)
 
         title.backgroundColor = .clear
-        let txt = treeNode.setting?.title ?? ""
+        let txt = treeNode.title
         title.text = txt // + txt
         title.adjustsFontSizeToFitWidth = true
         title.lineBreakMode = .byTruncatingTail

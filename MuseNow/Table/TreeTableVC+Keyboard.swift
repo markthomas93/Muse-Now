@@ -12,30 +12,34 @@ extension TreeTableVC {
 
     @objc func keyboardWillShow(_ notification: Notification) {
 
-        if !blockKeyboard,
-            let touchedCell = touchedCell,
-            let frameVal: NSValue = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue,
-            let tableView = tableView {
+        func scrollCellAboveKeyboard(_ kbdOrigin:CGPoint) {
 
-            blockKeyboard = true
+            if  let cell = touchedCell,
+                let tableView = tableView {
 
-            let keybY   = tableView.convert(frameVal.cgRectValue.origin, to: nil).y
-            let cellY   = tableView.convert(touchedCell.frame.origin, to: nil).y
-            let tableY  = tableView.convert(tableView.frame.origin, to: nil).y
-            let scrollY = tableView.contentOffset.y + tableY - headerY
+                let kbdY   = kbdOrigin.y
+                let cellY = cell.convert(tableView.frame.origin, to: tableView).y
+                let cellH = cell.frame.size.height
+                let deltaY = kbdY - cellY 
 
-            let cellH  = touchedCell.height
-            let deltaY = cellY + cellH - keybY
-
-            Log ("▭ \(#function) \(cellY) + \(cellH) - \(keybY) => \(deltaY) ")
-            UIView.animate(withDuration: 0.5, delay: 0.0, options:.curveEaseInOut, animations: {
-                tableView.contentOffset.y = scrollY + deltaY
-            }, completion:{ _ in
-                let cellY = touchedCell.convert(touchedCell.frame.origin, to: nil).y
-                Log ("▭ \(#function) \(cellY)")
-                self.blockKeyboard = false
-            })
+                Log ("▭ \(#function) \(cellY) + \(cellH) - \(kbdY) => \(deltaY) ")
+                UIView.animate(withDuration: 0.5, delay: 0.0, options:.curveEaseInOut, animations: {
+                    tableView.contentOffset.y += deltaY
+                }, completion:{ _ in
+                    self.blockKeyboard = false
+                })
+            }
         }
+        // begin ---------------
+
+//        if !blockKeyboard,
+//           let kbdVal: NSValue = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue {
+//            blockKeyboard = true
+//
+//            let kbdOrigin = kbdVal.cgRectValue.origin
+//            Timer.delay(1.0) { scrollCellAboveKeyboard(kbdOrigin)}
+//
+//        }
     }
 
     @objc func keyboardWillHide(_ notification: Notification) {
@@ -44,7 +48,7 @@ extension TreeTableVC {
                 let lastSiblingCell = lastSiblingNode.cell {
 
                 let _ = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: {_ in
-                    self.scrollToMakeVisibleCell(lastSiblingCell,lastSiblingNode.row)
+                    //self.scrollToMakeVisibleCell(lastSiblingCell,lastSiblingNode.row)
                 })
             }
         }

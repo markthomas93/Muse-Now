@@ -9,18 +9,27 @@ import UIKit
  - parent: toggle ✓/☐ will set all children ✓/☐
  - child: toggle  ✓/☐ will parent to  ✓/-/☐
  */
-struct SetFrom: OptionSet {
-    let rawValue: Int
-    static let parent = SetFrom(rawValue: 1 << 0) // 1
-    static let child  = SetFrom(rawValue: 1 << 1) // 2
+public enum SetFrom: Int, Codable { case none, parent, child, both }
+
+/**
+ Optional info disclosure upon first expand
+ - noInfo: do not show "i" icon
+ - newInfo: white icon, auto show info on expand
+ - oldInfo: gray icon, only show when touching icon
+ */
+enum ShowInfo: Int, Codable { case
+    infoNone,       // no info attached to this celll
+    information,    // not yet touched, so play bubble before expanding
+    construction,
+    purchase
 }
 
-public class TreeSetting {
+public class TreeSetting: Codable {
 
-    var member = 0
-    var set = 0
-    var title = "title"
-    var setFrom = SetFrom([.parent,.child])
+    var member  = 0         // member of set (using OptionSet bit flags)
+    var set     = 0         // OptionSet bit flags
+    var setFrom = SetFrom.both // modifyable from { none,child,parent,both }
+    var showInfo = ShowInfo.infoNone
 
     func isOn() -> Bool {
         return set & member != 0
@@ -39,12 +48,12 @@ public class TreeSetting {
         return isOn()
     }
 
-    init(set set_:Int, member member_:Int, _ title_:String = "",_ setFrom_:SetFrom = [.parent,.child]) {
+    init(set set_:Int, member member_:Int,_ setFrom_:SetFrom = .both, _ showInfo_:ShowInfo = .infoNone) {
 
-        set = set_
-        setFrom = setFrom_
-        member = member_
-        title = title_
+        set      = set_
+        setFrom  = setFrom_
+        member   = member_
+        showInfo = showInfo_
     }
 
 }

@@ -153,7 +153,7 @@ class TreeEditWeekdayCell: TreeEditCell {
                 }
             }
         }
-        treeNode.updateCallback() // refresh dial
+        treeNode.treeCallback?(treeNode) // refresh dial
     }
  }
 

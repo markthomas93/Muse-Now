@@ -29,7 +29,7 @@ class Tour {
 
     static var shared = Tour()
 
-    var sections = [TourSection]()      // an array of sections, each may be part of tour or attached toTreeCell
+    //var sections = [TourSection]()      // an array of sections, each may be part of tour or attached toTreeCell
     var tourBubbles = [Bubble]()        // array of bubbles for tour
     var sectionNow: TourSection!
     var bubbleNow: Bubble!              // current bubble showing for this tour
@@ -88,7 +88,7 @@ class Tour {
     let scanEvents  = { Anim.shared.scanFuture() }
 
     /// goto menu page
-    let gotoMenuPage: CallWait! = { _, finish  in
+    let gotoMenuPage: CallWait! = { finish  in
         PagesVC.shared.gotoPageType(.menu) {
             Actions.shared.doAction(.gotoFuture)
             finish()
@@ -96,7 +96,7 @@ class Tour {
     }
 
     /// goto main page
-    let gotoMainPage: CallWait! = { _, finish in
+    let gotoMainPage: CallWait! = { finish in
         PagesVC.shared.gotoPageType(.main) {
             if let treeNode = TreeNodes.shared.root?.find(title:"routine")?.treeNode {
                 treeNode.set(isOn: true)
@@ -114,8 +114,9 @@ class Tour {
     func buildInfoSet() {
 
         initTour()
-        buildMenuTour(.information)
-        attachInfoSections()
+        var sections = [TourSection]()
+        buildMenuTour(.information,&sections)
+        attachInfoSections(&sections)
     }
 
     /// full tour
@@ -123,9 +124,9 @@ class Tour {
 
         tourSet = tourSet_
         initTour()
-
-        //???// if tourSet.contains([.main]) { buildMainTour() }
-        if tourSet.contains([.menu]) { buildMenuTour(.menu) ; attachInfoSections()}
+        var sections = [TourSection]()
+        if tourSet.contains([.main]) { buildMainTour(&sections) }
+        if tourSet.contains([.menu]) { buildMenuTour(.menu,&sections) }
 
         Actions.shared.doAction(.gotoFuture)
         tourBubbles(tourBubbles) { _ in
@@ -163,7 +164,7 @@ class Tour {
             case let any as Double:     bubItem?.duration = TimeInterval(any) // modify last item
             case let any as Float:      bubItem?.duration = TimeInterval(any) // modify last item
             case let any as CallWait:   makeItem("CallWait", 0.5,any)
-            case let any as CallVoid:   makeItem("CallWait", 0.5, { _, finish in any() ; finish() })
+            case let any as CallVoid:   makeItem("CallWait", 0.5, { finish in any() ; finish() })
             default: continue
             }
         }
@@ -182,7 +183,7 @@ class Tour {
         }
     }
 
-    func attachInfoSections() {
+    func attachInfoSections(_ sections: inout [TourSection]) {
         if let root = TreeNodes.shared.root {
             for section in sections {
                 if !section.tourSet.intersection([.information,.purchase,.construction]).isEmpty {
@@ -201,7 +202,6 @@ class Tour {
     func cancelSection(_ section:TourSection) {
         if sectionNow?.title == section.title {
             if BubblesPlaying.shared.playing {
-
                 BubblesPlaying.shared.cancelBubbles()
             }
             sectionNow = nil

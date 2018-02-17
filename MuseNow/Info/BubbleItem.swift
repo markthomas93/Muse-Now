@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-typealias CallWait = (_ bubbleBase: BubbleBase,_ finished: @escaping CallVoid)->()
+typealias CallWait = (_ finished: @escaping CallVoid)->()
 /**
  Each bubble may have a series of items to display withing itself
  */

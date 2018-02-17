@@ -12,7 +12,7 @@ extension TreeNode {
     func find(title:String) -> TreeCell! {
         // first search childing, breadth first
         for child in children {
-            if child.setting.title.starts(with:title) {
+            if child.title.starts(with:title) {
                 return child.cell
             }
         }
@@ -25,7 +25,7 @@ extension TreeNode {
         return nil
     }
 
-    func find(path:String) -> TreeCell! {
+    func findPath(_ path:String) -> TreeCell! {
         let paths = path.split {$0 == "."}.map(String.init)
         return TreeNodes.shared.root?.find(paths,0) ?? nil
     }
@@ -42,7 +42,7 @@ extension TreeNode {
 
     /// find node matching title, and then animate to that cell, if needed
 
-    func goto(path:String, finish:@escaping CallTreeNode) {
+    func goto(path:String, finish:@escaping ((TreeNode!)->())) {
 
         var lineage = [TreeNode]()
 
@@ -64,10 +64,10 @@ extension TreeNode {
 
         // begin ------------------------------
 
-        if self.setting.title.starts(with: path) {
+        if title.starts(with: path) {
             finish(self)
         }
-        else if let cell = find(path: path) {
+        else if let cell = findPath(path) {
 
             var node = cell.treeNode!
             while node.parent != nil {

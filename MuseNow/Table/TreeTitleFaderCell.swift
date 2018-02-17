@@ -20,7 +20,7 @@ class TreeTitleFaderCell: TreeTitleCell {
         treeNode = treeNode_
         let width = tableVC.view.frame.size.width
         frame.size = CGSize(width:width, height:height)
-        let str = treeNode.setting?.title ?? "Unknown"
+        let str = treeNode.title
         titleW = str.width(withConstraintedHeight: height, font:  UILabel().font!)
         buildViews(width)
     }

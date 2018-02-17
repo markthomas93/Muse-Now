@@ -31,7 +31,7 @@ class TreeTitleCell: TreeCell {
         // title
         title = UILabel(frame:titleFrame)
         title.backgroundColor = .clear
-        title.text = treeNode.setting?.title ?? ""
+        title.text = treeNode.title
         title.textColor = .white
         title.highlightedTextColor = .white
         title.layer.cornerRadius = innerH/4

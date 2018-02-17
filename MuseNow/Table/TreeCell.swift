@@ -40,6 +40,7 @@ class TreeCell: MuCell {
     let marginH = CGFloat(4)    //
     let oldInfoAlpha = CGFloat(0.25)
     var touched = false         // last touched cell, updated durning renumber calling setParentChildOther
+    var isTouring = false       // currently touring, prevent circular references
 
     var parentChild = ParentChildOther.other
     var lastLocationInTable = CGPoint.zero
@@ -76,7 +77,7 @@ class TreeCell: MuCell {
         left.alpha = 0.0 // refreshNodeCells() will setup left's alpha for the whole tree
 
         // make this cell searchable within static cells
-        PagesVC.shared.treeVC.cells[treeNode.setting.title] = self //TODO: move this to caller
+        PagesVC.shared.treeVC.cells[treeNode.title] = self //TODO: move this to caller
 
         // bezel for title
         bezel = UIView(frame:bezelFrame)
@@ -119,20 +120,21 @@ class TreeCell: MuCell {
 
         if let tourSet = infoSection_.tourSet {
             infoSection = infoSection_
-            if      tourSet.contains(.information)  { treeNode?.showInfo = .information  }
-            else if tourSet.contains(.purchase)     { treeNode?.showInfo = .purchase     }
-            else if tourSet.contains(.construction) { treeNode?.showInfo = .construction }
-            else                                    { treeNode?.showInfo = .nothingHere  }
+            if      tourSet.contains(.information)  { treeNode?.setting.showInfo = .information }
+            else if tourSet.contains(.purchase)     { treeNode?.setting.showInfo = .purchase }
+            else if tourSet.contains(.construction) { treeNode?.setting.showInfo = .construction }
+            else                                    { treeNode?.setting.showInfo = .infoNone  }
 
-            if let showInfo = treeNode?.showInfo {
+            if let showInfo = treeNode?.setting.showInfo {
 
                 //infoAlpha = 0
 
                 switch showInfo {
+
                 case .information:  infoIcon = "icon-Information.png"
                 case .construction: infoIcon = "icon-Construction.png"
                 case .purchase:     infoIcon = "icon-Dollar.png" //  "icon-Cart.png"
-                case .nothingHere:  return
+                case .infoNone:     return
                 }
                 info.image = UIImage(named:infoIcon)
             }
@@ -167,7 +169,7 @@ class TreeCell: MuCell {
 
             var expandable = false
 
-            switch treeNode.type {
+            switch treeNode.nodeType {
 
             case .infoApprove:
 
@@ -242,7 +244,7 @@ class TreeCell: MuCell {
             else        { info.alpha = 1.0  }
         }
         else {
-             //??// Tour.shared.cancelSection(infoSection)
+            infoSection?.cancel()
             if animated { animateInfo(newAlpha: 0.0, duration: 0.25, delay: 0)}
             else        { info.alpha = 0.0 }
         }
@@ -255,12 +257,12 @@ class TreeCell: MuCell {
             infoTimer.invalidate()
             infoTimer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false, block: { _ in
 
-                Log("⏲ animateInfo \(self.treeNode.setting.title) alpha: \(newAlpha)")
+                Log("⏲ animateInfo \(self.treeNode.title) alpha: \(newAlpha)")
 
                 UIView.animate(withDuration: duration, delay: 0, options: [.allowUserInteraction,.beginFromCurrentState], animations: {
                     self.info.alpha = newAlpha
                 }, completion:{ completed in
-                    Log("⏲ animateInfo \(self.treeNode.setting.title) alpha: \(self.info.alpha) completed:\(completed)")
+                    Log("⏲ animateInfo \(self.treeNode.title) alpha: \(self.info.alpha) completed:\(completed)")
                 })
             })
         }
@@ -292,17 +294,60 @@ class TreeCell: MuCell {
      2) directly touched the info.
      If so, then wait until the info has played before conintuing to afterInfo()
      */
+
     func maybeTouchInfoFirst(_ location: CGPoint,_ done: @escaping CallBool)  {
 
-        if treeNode?.showInfo != .nothingHere,
+        // begin
+        if  !isTouring,
             info.alpha == 1.0,
             infoTap.contains(location) {
+            isTouring = false
 
             Tour.shared.tourSection(infoSection, done)
+            TreeBases.shared.archiveTree {}
         }
         else {
             done(false)
         }
+        isTouring = false
+    }
+
+    func afterTouchingInfo(_ isExpandable:Bool) {
+
+        let oldShown = TreeNodes.shared.shownNodes
+        Log ("𐂷 oldShown: \(oldShown.count) *** ")
+
+        let wasExpanded = treeNode.expanded
+        if let row = treeNode?.row {
+            lastLocationInTable = tableVC.tableView.rectForRow(at: IndexPath(row:row, section:0)).origin
+        }
+        // collapse any sibling that is expanded
+        if treeNode.parent != nil {
+            for sib in treeNode.parent.children {
+                if sib.expanded {
+                    sib.cell.collapseAllTheWayDown()
+                    break
+                }
+            }
+        }
+
+        // expand me when I have children and status wasn't change by collapsing siblings
+        let expandMe = (treeNode.children.count > 0) && (wasExpanded == treeNode.expanded) && isExpandable
+        if expandMe {
+            treeNode.expanded = true
+            updateLeft(animate:true)
+        }
+        else {
+            setHighlight(.forceHigh)
+        }
+        TreeNodes.shared.renumber()
+        let newShown = TreeNodes.shared.shownNodes
+        Log ("*** oldShown: \(oldShown.count)   newShown: \(newShown.count) *** ")
+
+        if let tableVC = tableVC as? TreeTableVC {
+            tableVC.updateTouchNodes(oldShown,newShown)
+        }
+        (tableVC as? TreeTableVC)?.scrollToNearestTouch(self)
     }
 
     /**
@@ -311,48 +356,12 @@ class TreeCell: MuCell {
      */
     override func touchCell(_ location: CGPoint, isExpandable:Bool = true) {
 
+        //???// if [.high,.forceHigh].contains(highlighting) { return }
+
         (tableVC as? TreeTableVC)?.setTouchedCell(self)
 
-        func afterTouchingInfo() {
-
-            let oldShown = TreeNodes.shared.shownNodes
-            Log ("*** oldShown: \(oldShown.count) *** ")
-
-            let wasExpanded = treeNode.expanded
-            if let row = treeNode?.row {
-                lastLocationInTable = tableVC.tableView.rectForRow(at: IndexPath(row:row, section:0)).origin
-            }
-            // collapse any sibling that is expanded
-            if treeNode.parent != nil {
-                for sib in treeNode.parent.children {
-                    if sib.expanded {
-                        sib.cell.collapseAllTheWayDown()
-                        break
-                    }
-                }
-            }
-
-            // expand me when I have children and status wasn't change by collapsing siblings
-            let expandMe = (treeNode.children.count > 0) && (wasExpanded == treeNode.expanded) && isExpandable
-            if expandMe {  
-                treeNode.expanded = true
-                updateLeft(animate:true)
-            }
-            else {
-                setHighlight(.forceHigh)
-            }
-            TreeNodes.shared.renumber()
-            let newShown = TreeNodes.shared.shownNodes
-             Log ("*** oldShown: \(oldShown.count)   newShown: \(newShown.count) *** ")
-            
-            if let tableVC = tableVC as? TreeTableVC {
-                tableVC.updateTouchNodes(oldShown,newShown)
-            }
-            (tableVC as? TreeTableVC)?.scrollToNearestTouch(self)
-        }
-        
-        maybeTouchInfoFirst(location) { touchedInfo in
-            afterTouchingInfo()
+        maybeTouchInfoFirst(location) { _ in
+            self.afterTouchingInfo(isExpandable)
         }
     }
 

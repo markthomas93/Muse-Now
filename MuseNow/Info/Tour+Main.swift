@@ -3,9 +3,8 @@
 //  MuseNow
 //
 //  Created by warren on 12/22/17.
-//  Copyright © 2017 Muse. All rights reserved.new
+//  Copyright © 2017 Muse. All rights reserved
 
-//
 
 import Foundation
 import UIKit
@@ -19,20 +18,18 @@ extension Tour {
         tourBubbles.append(Bubble(title, bubShape, .text, textSize, base, from, front, covers, options, bubsFrom(anys)))
     }
 
-    func buildMainTour() {
+    func buildMainTour(_ sections:inout [TourSection]) {
   
          let eventBezel = UIView(frame: eventView.frame)
         eventBezel.frame.origin.y += 44 // kludge
 
         let spineBezel = UIView(frame: eventView.convert(pagesVC.spine.frame, to: eventView))
 
-        // start ----
-
-        // 12: 6  6
-
         mainItem("Main",  .center,  mainView, mainView, [mainView,panelView], [], [],
 
-                [gotoMainPage, "Here is a brief tour \n shake anytime to stop",4])
+                [gotoMainPage,
+                 "Here is a brief tour",2,
+                 "shake anytime to stop",2])
 
         mainItem("Main",  .below,  mainView, eventBezel, [panelView], [eventBezel], [.highlight, .alpha05],
 
@@ -49,10 +46,6 @@ extension Tour {
         mainVid1("Panel", .center, mainView, eventBezel, [], [], [],
 
                 ["WatchCrown2.m4v", 6])
-
-        // 24: 2 2 2 2  2 2 2 2  2 2 2 2
-
-        // delayed call
 
         mainItem("Dial", .above, pageView, dialView, [pageView], [], [.highlight, .circular],
 
@@ -81,8 +74,6 @@ extension Tour {
                  "no need to see or touch \n anything to stay current",2,
                  {Actions.shared.doAction(.gotoFuture)}])
 
-        // 12: 2 2 2 2  8
-
         mainItem("Crown", .above, pageView, crownRight, [pageView], [], [.highlight,.circular, .nowait],
 
                 ["The virtual crown acts \n just like the Apple Watch",2,
@@ -92,8 +83,6 @@ extension Tour {
 
             ["WatchCrown2.m4v",8])
 
-        // 12:
-        
         mainItem("Page", .below, mainView, spineBezel, [panelView], [], [.highlight],
 
                 ["To filter events either \n tap the spine or swipe right",2])
