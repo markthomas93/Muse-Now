@@ -95,6 +95,7 @@ extension TreeNodes {
                 // block collapsing cell from cancelling tour
                 cell.infoSection?.blockCancel(duration: 2.0)
                 Actions.shared.doAction(.tourAll)
+                PagesVC.shared.gotoPageType(.main) {}
             }
         }
 

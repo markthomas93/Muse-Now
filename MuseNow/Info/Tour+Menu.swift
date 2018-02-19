@@ -169,6 +169,7 @@ extension Tour {
 
         // more --------------------------------------
 
+        
         addTour("more",[.menu],[
 
             menuInfo("more",     [],[gotoInfo("more"),         "here is more about us", 2]),
@@ -176,9 +177,11 @@ extension Tour {
             menuCell("support",  [],[gotoPath("more.support"), "Product support.", 1]),
             menuCell("blog",     [],[gotoPath("more.blog"),    "musings around how and why",1]),
             menuButn("tour",     [],[gotoPath("more.tour"),    "to replay this tour",1]),
-            menuCell("more",     [],[gotoPath("more"), "and that about wraps it up",1, "for now",2,
+            menuCell("more",     [],[gotoPath("more"),
+                                     "and that about wraps it up",1,
+                                     "for now",2,
                                      menuCollapse("more"),
-                                     PagesVC.shared.gotoPageType(.main) {} ])
+                                     {PagesVC.shared.gotoPageType(.main) {}} ])
             ])
 
         addTour("more",[.information],[

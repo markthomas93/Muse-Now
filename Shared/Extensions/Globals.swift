@@ -34,13 +34,13 @@ func DebugLog(_ str: String) -> Bool {
     switch str.substring(to: 1) {
 
     case
-    "▭", // textfield
+     "⊕", // motion
     "🔰": // onboarding pages (japanese beginnner symbol)
 
         print(MuDate.getHourMinSecMsec() + ": " + str)
 
-        
     case
+    "▭", // textfield
     "⧉", // syncfile
     "𐂷", // tree cell
     "*", // TableVC updates
@@ -80,7 +80,7 @@ func DebugLog(_ str: String) -> Bool {
     "⎚", // scene animation
     "⚆", // wheel spoke animation
 
-    "⊕", // motion
+
     "𐆄", // execute closure during animation pause
     "🎞", // texture
     "⚇", // dot
