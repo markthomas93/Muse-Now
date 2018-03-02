@@ -24,7 +24,7 @@ class OnboardPage: UIViewController {
 
         super.viewDidLoad()
 
-        view.backgroundColor = .darkGray
+        view.backgroundColor = .clear
 
         let label = UILabel()
         view.addSubview(label)

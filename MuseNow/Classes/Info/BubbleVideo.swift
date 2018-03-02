@@ -6,12 +6,11 @@
 //  Copyright © 2017 Muse. All rights reserved.
 
 import Foundation
-import UIKit
 import AVFoundation
+import UIKit
 
 class BubbleVideo: BubbleBase {
 
-    var player: AVPlayer?
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -82,17 +81,10 @@ class BubbleVideo: BubbleBase {
             }
         }
     }
-    /**
-     timer for duration has expired
-     */
-    @objc override func timedOut() {
-
-        if cancelling { return }
+    func killTime() {
+        cancelling = true
         NotificationCenter.default.removeObserver(self)
-        Log(bubble.logString("💬 Video::timedOut"))
-        killTime()
-        player?.pause()
-        tuckIn(timeout:true)
+        timer.invalidate()
     }
 
     /**
@@ -115,12 +107,7 @@ class BubbleVideo: BubbleBase {
         killTime()
         tuckIn(timeout:false)
     }
-    func killTime() {
-        cancelling = true
-        NotificationCenter.default.removeObserver(self)
-        timer.invalidate()
-    }
-    override func cancelBubble() {
+      override func cancelBubble() {
         killTime()
 
         player?.pause()

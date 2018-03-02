@@ -13,8 +13,15 @@ class BubblesPlaying {
 
     static var shared = BubblesPlaying()
     var playSet = Set<Bubble>()
+
     var nudging = false
     var playing = false
+
+    func muteBubbles(on:Bool) {
+        for bubble in playSet {
+            bubble.bubBase?.player?.isMuted = on
+        }
+    }
 
     func cancelBubbles() {
         for bubble in playSet {
@@ -49,7 +56,7 @@ class BubblesPlaying {
     }
     func addBubble(_ bubble:Bubble) {
         playSet.insert(bubble)
-        TouchScreen.shared.redirect(began:{touches,_ in
+        TouchScreen.shared.redirect(began: { touches,_ in
             if let touchPoint = touches.first?.location(in: nil),
                 let winView = MyApplication.shared.delegate?.window! {
 

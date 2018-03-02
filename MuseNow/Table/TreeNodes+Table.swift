@@ -74,7 +74,7 @@ extension TreeNodes {
         let say = TreeNode("say | skip", .title, root, vc)
         let _  = TreeActNode("event", say, saySet, SaySet.event.rawValue, .sayEvent, .skipEvent, vc)
         let _  = TreeActNode("time",  say, saySet, SaySet.time.rawValue,  .sayTime,  .skipTime,  vc)
-        let _  = TreeActNode("memo",  say, saySet, SaySet.memo.rawValue,  .sayMemo,  .skipMemo,  vc) // trailing space disambiguates with "memo"
+        let _  = TreeActNode("memo",  say, saySet, SaySet.memo.rawValue,  .sayMemo,  .skipMemo,  vc) 
 
         // hear | mute ------------------------------------------------
 

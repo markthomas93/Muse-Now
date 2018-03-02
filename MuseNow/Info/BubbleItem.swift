@@ -16,6 +16,7 @@ typealias CallWait = (_ finished: @escaping CallVoid)->()
 class BubbleItem {
 
     var str: String!                 // either text for bubble or filename
+    var audioFile: String!           // name of companion audio file
     var duration: TimeInterval
     var callWait: CallWait! // buildup before displaying bubble
 

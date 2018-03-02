@@ -17,7 +17,7 @@ public enum DoAction : Int { case
 
     // hear
     hearEarbuds, hearSpeaker,
-    muteEarbuds, muteSpeaker,
+    muteEarbuds, muteSpeaker, 
 
     // tour
     tourAll, main, menu, onboard, stopTour,

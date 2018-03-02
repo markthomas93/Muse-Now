@@ -34,18 +34,23 @@ func DebugLog(_ str: String) -> Bool {
     switch str.substring(to: 1) {
 
     case
-     "⊕", // motion
+    
+    "🎧", // Hear Via
+    "💬", // bubble animation closure
     "🔰": // onboarding pages (japanese beginnner symbol)
 
         print(MuDate.getHourMinSecMsec() + ": " + str)
 
     case
+    "⚡️", // startup
+    "⊕", // motion
+    "∿",  // audio recorder
     "▭", // textfield
     "⧉", // syncfile
     "𐂷", // tree cell
     "*", // TableVC updates
     "⏲", // timing
-    "💬", // bubble animation closure
+
 
 
     "⟳", // life cycle
@@ -64,8 +69,8 @@ func DebugLog(_ str: String) -> Bool {
 
     "🗣", // Say TTS
     "🔈", // Audio
-    "🎧", // Hear Via
-    "∿",  // audio recorder
+
+
 
     "▣", // observe main window bounds
     "◰", // view layout

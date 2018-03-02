@@ -25,18 +25,6 @@ class Record: NSObject, CLLocationManagerDelegate {
         AVEncoderAudioQualityKey : NSNumber(value: Int32(AVAudioQuality.medium.rawValue))]
 
 
-//    let audioSession = AVAudioSession.sharedInstance()
-//    if let desc = audioSession.availableInputs?.first(where: { (desc) -> Bool in
-//        return desc.portType == AVAudioSessionPortUSBAudio
-//    }){
-//        do{
-//            try audioSession.setPreferredInput(desc)
-//        } catch let error{
-//            print(error)
-//        }
-//    }
-
-
     // Audio -----------------------------------
 
     func recordAudioAction() {
@@ -59,7 +47,7 @@ class Record: NSObject, CLLocationManagerDelegate {
         do {
             try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
             try audioSession.setActive(true)
-         }
+        }
         catch { Log("∿∿∿ \(#function) !!! catch") }
     }
     func deactivateAudio() { Log("∿∿∿ \(#function)")
@@ -67,7 +55,7 @@ class Record: NSObject, CLLocationManagerDelegate {
         catch { Log("∿∿∿ \(#function) !!! catch") }
     }
 
-     /**
+    /**
      Setup multithread queue to prepare, animate, start locacation,
      which all must finish before startRecording()
      */
@@ -86,6 +74,7 @@ class Record: NSObject, CLLocationManagerDelegate {
             audioRecorder?.prepareToRecord()
             done()
         }
+
         func animateRecording(_ done: @escaping () -> ()) {
 
             Anim.shared.gotoRecordSpoke(on:true)
@@ -93,64 +82,65 @@ class Record: NSObject, CLLocationManagerDelegate {
                 done()
             }
         }
+
         func startRecording() {
             audioRecorder?.record()
             audioTimer = Timer.scheduledTimer(timeInterval: recDur, target: self, selector: #selector(finishRecording), userInfo: nil, repeats: false)
         }
 
+        // begin
+
         if isRecording {  return }
         isRecording = true
         activateAudio()
-        let queue = DispatchQueue(label: "com.muse.recordAudio", attributes: .concurrent, target: .main)
-        let group = DispatchGroup()
 
-        Log("∿∿∿ \(#function)")
+        DispatchQueue.global(qos: .utility).async {
 
-         // prepare recording
-        group.enter()
-        queue.async (group: group) {
+            let group = DispatchGroup()
+
+            // prepare recording
+            group.enter()
             prepareRecording() {
-                 Log("∿ prepareRecording() done")
+                Log("∿ prepareRecording() done")
                 group.leave()
             }
-        }
-        // animate recording
-        group.enter()
-        queue.async (group: group) {
+            // animate recording
+            group.enter()
             animateRecording {
-                 Log("∿ \(#function)")
+                Log("∿ \(#function)")
                 group.leave()
             }
-        }
-        // location
-        group.enter()
-        queue.async (group: group) {
-             Location.shared.requestLocation() {
+            // location
+            group.enter()
+            Location.shared.requestLocation() {
                 Log("∿ Location done")
                 group.leave()
             }
+            let result  = group.wait(timeout: .now() + 2.0)
+            Log("∿ wait: \(result)")
+
+            DispatchQueue.main.async {
+                Log("∿ startRecording() done")
+                startRecording()
+            }
         }
-        // events + reminders done
-        group.notify(queue: queue, execute: {
-            Log("∿∿∿ startRecording() done")
-            startRecording()
-        })
     }
 
-
-    func stopRecording() -> Bool { Log("∿∿∿ \(#function)")
-
-        let wasRecording = isRecording
+    func stopRecording() -> Bool {
+        
         if isRecording {
+            Log("∿∿∿ \(#function)")
             isRecording = false
             audioTimer.invalidate()
             audioRecorder?.stop()
             deactivateAudio()
+            return true
         }
-        return wasRecording
+        return false
     }
 
     @objc func cancelRecording() { Log("∿∿∿ \(#function)")
+
         if stopRecording() {
             audioRecorder?.deleteRecording()
         }
@@ -192,8 +182,9 @@ class Record: NSObject, CLLocationManagerDelegate {
             }
         }
     }
-    
+
     func recordAudioFinish() {
+        Log("∿ \(#function)")
 
         let coord = Location.shared.getLocation()
         let event = MuEvent(.memo, "Memo", recTime, recName, coord, .white)
@@ -207,7 +198,14 @@ class Record: NSObject, CLLocationManagerDelegate {
         #endif
     }
 
-    
-  }
+    func recordAudioDelete() {
+        Log("∿ \(#function)")
+        if isRecording {
+            finishRecording()
+            Haptic.play(.failure)
+        }
+    }
+
+}
 
 

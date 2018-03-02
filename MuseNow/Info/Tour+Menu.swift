@@ -19,87 +19,97 @@ extension Tour {
         }
         
         addTour("menu",[.menu], [
-            menuPage("menu",[],[gotoMenuPage, "Here is the Menu to \n choose and announce events",2])
+            menuPage("menu",[],[
+                gotoMenuPage,
+                "Here is the Menu to \n choose and announce events","Menu_00.mp3"])
             ])
 
         // show ------------------------------------------------------------
 
         addTour("show",[.menu],[
             menuInfo("show",[],[gotoPath("show"),
-                                "Choose what to \n see and hear",2,
-                                "tap on any ⓘ icon \n for more information",2])
+                                "Choose what to \n see and hear","Menu_01.mp3",
+                                "By the way, whenever \n you see an ⓘ icon","Menu_02.mp3",
+                                "you can tap for more info \n (after the tour)","Menu_03.mp3"])
             ])
 
         addTour("show",[.information],[
-            menuInfo("show",[],[gotoPath("show"),"Choose what to \n see and hear",2]),
+            menuInfo("show",[],[gotoPath("show"),"Choose what to \n see and hear","Info_00.mp3"]),
             ])
 
         // calendar
         addTour("calendars",[.menu],[
-            menuInfo("calendars",[],[gotoPath("calendars"),"Show calendar events and \n changes will pause",2]),
+            menuInfo("calendars",[], [gotoPath("calendars"),
+                                      "Show calendar events and \n changes will pause","Menu_04.mp3"]),
             ])
         addTour("calendars",[.information],[
-            menuInfo("calendars",[],[gotoPath("calendars"),"Show calendar events and \n changes will pause",2]),
+            menuInfo("calendars",[],[gotoPath("calendars"),
+                                     "Show calendar events and \n changes will pause","Info_01.mp3"]),
             ])
 
         // reminders
         addTour("reminders",[.menu],[
-            menuInfo("reminders",[],[gotoPath("reminders"), "Show reminders, which \n have a deadline",2]),
-            menuInfo("reminders",[],[gotoPath("reminders"), "works well with Siri",2,"tap for demo (after tour)",2])
+            menuInfo("reminders",[],[gotoPath("reminders"),
+                                     "Show reminders, which \n have a deadline","Menu_05.mp3"]),
+            menuInfo("reminders",[],[gotoPath("reminders"),
+                                     "works well with Siri","Menu_06.mp3",
+                                     "tap for a demo \n (after the tour)","Menu_07.mp3"])
             ])
 
         addTour("reminders",[.information],[
-            menuInfo("reminders", [],[gotoPath("reminders"), "Show timed reminders and \n new reminders will pause",2]),
-            menuInfo("reminders", [],["Add reminders anytime with Siri:",2]),
-            menuCell("reminders", [.nowait], ["\"Hey Siri, remind me to pack for trip tomorrow\"",20]),
+            menuInfo("reminders", [],[gotoPath("reminders"),
+                                      "Show timed reminders and \n new reminders will pause","Info_02.mp3"]),
+            menuInfo("reminders", [],["Add reminders anytime with Siri:","Info_03.mp3"]),
+            menuCell("reminders", [.nowait], ["\"Hey Siri, remind me to pack for trip tomorrow\"","Info_04.mp3",20]),
             menuVid1("reminders",.diptych12, [.snugAbove,.nowait], ["WatchSiri2.m4v", 24]),
             menuVid1("reminders",.diptych22, [.snugAbove],         ["PhoneSiri2.m4v", 24])
             ])
 
         // routine
         addTour("routine",[.menu],[
-            menuInfo("routine",[],[gotoPath("routine"), "Your normal routine",2,"like sleep, meals, work,  ⃨",2]),
-            menuInfo("routine",[],["tap for details \n (after the tour)",1])
+            menuInfo("routine",[],[gotoPath("routine"),
+                                   "Your normal routine \n like sleep, meals, work,  ⃨","Menu_08.mp3"]),
+            menuInfo("routine",[],["tap for details \n (after the tour)","Menu_09.mp3"])
             ])
 
         addTour("routine",[.information],[
             menuInfo("routine",[],[gotoPath("routine"),
-                                "setup your normal routine \n like sleep, meals, work,  ⃨",4,
-                                "to see how events overlap \n with your weekly routine",4
+                                   "setup your normal routine \n like sleep, meals, work,  ⃨","Info_05.mp3",
+                                   "to see how events overlap \n with your weekly routine",4,
                 ]),
 
             menuPanel("routine",[.nowait], [setNode("routine",isOn:false),
-                                              "here is routine set OFF",2]),
+                                            "here is routine set OFF","Info_06.mp3"]),
 
             menuDial ("routine", [.highlight,
                                   .circular], ["and how it affects your dial", 2]),
 
-            menuPanel("routine", [.nowait],  [setNode("routine",isOn:true),
-                                              "here is routine set ON",2]),
+            menuPanel("routine", [.nowait],  [setNode("routine",isOn:true), "here is routine set ON","Info_07.mp3"]),
 
             menuDial ("routine", [.highlight,
                                   .circular], ["showing what may overlap", 2])
             ])
 
         // memos
-        addTour("memos",[.menu],[
+        addTour("memo",[.menu],[
 
-            menuMark("memo",[],[gotoPath("show.memo"), "record short audio memos \n with location and text",2]),
-            menuInfo("memo",[],[gotoPath("memo"), "tap for a demo \n (after the tour)",1])
+            menuMark("memo",[],[gotoPath("show.memo"),
+                                "record short audio memos \n with location and text","Menu_10.mp3"]),
+            menuInfo("memo",[],[gotoPath("memo"),
+                                "tap for a demo \n (after the tour)","Menu_09.mp3"])
             ])
 
         addTour("memo",[.information],[
 
-            menuInfo("memo",[],[gotoPath("show.memos"),
-                                "record short audio memos \n with location and text",2]),
+            menuInfo("memo",[],[gotoPath("show.memo"), "record short audio memos \n with location and text","Info_08.mp3"]),
 
             menuDial("memo", [.highlight, .circular], [
                 {Actions.shared.doAction(.gotoRecordOn)},
-                "triple-tap on the dial \n to record memos",2,
+                "triple-tap on the dial \n to record memos","Info_09.mp3",
                 ]),
 
             menuDial("memo", [.overlay], [
-                "or nod the device \n like nodding your head", 2,
+                "or nod the device \n like nodding your head", "Info_10.mp3",
                 ]),
 
             menuVid1("memo", .diptych12, [.snugAbove, .nowait], ["WatchMemo2.m4v", 12]),
@@ -107,90 +117,81 @@ extension Tour {
 
             menuInfo("memo",[],[{ Actions.shared.doAction(.gotoFuture)},
                                 { Timer.delay(0.5) {Anim.shared.scene?.uFade?.floatValue = 1 }},
-                                "Memos are saved in your \n iTunes \"shared files\" folder",4,
-                                "your private memos stays \n inside Apple's secure sandbox ",4,
-                                "Muse never sees your data \n and we never will", 4]),
+                                "Memos are saved in your \n iTunes \"shared files\" folder","Info_11.mp3",
+                                "your private memos stays \n inside Apple's secure sandbox ","Info_12.mp3",
+                                "Muse never sees your timeline \n and we never will", "Info_13.mp3"]),
 
             menuButn("move",[],[gotoPath("show.move"),
-                                "Move memos to iCloud Drive \n as standard JSON files",4,
-                                "allowing anyone to experiment \n with personal machine learning",4
+                                "Move memos to iCloud Drive \n as standard JSON files","Info_14.mp3",
+                                "allowing anyone to experiment \n with personal machine learning","Info_15.mp3"
                 ])
             ])
 
         // dial
-        addTour("dial",[.menu],[ // cell
+        addTour("dial",[.menu, .information],[ // cell
 
-            menuInfo("dial",[],[gotoInfo("dial"), "change the dial's appearance",4]),
+            menuInfo("dial",[],[gotoInfo("dial"), "change the dial's appearance","Menu_11.mp3"]),
 
-            menuFader("color",[],[gotoPath("color"), "fade between", 1,
-                                  makeAniFader("color",0.0), "heat map ...", 1,
-                                  makeAniFader("color",0.5), "monochrome ...", 1,
-                                  makeAniFader("color",1.0), "and event colors", 2 ])
+            menuFader("color",[],[gotoPath("color"), "fade between", "Menu_12.mp3",
+                                  makeAniFader("color",0.0), "heat map ...", "Menu_13.mp3",
+                                  makeAniFader("color",0.5), "monochrome ...", "Menu_14.mp3",
+                                  makeAniFader("color",1.0), "and event colors", "Menu_15.mp3" ])
             ])
 
-        addTour("dial",[.information],[ // cell
-
-            menuInfo("dial",[],[gotoPath("dial"), "change the dial's appearance",4]),
-
-            menuFader("color",[],[gotoPath("color"), "fade between", 1,
-                                  makeAniFader("color",0.0), "heat map ...", 1,
-                                  makeAniFader("color",0.5), "monochrome ...", 1,
-                                  makeAniFader("color",1.0), "and event colors", 2 ])
-            ])
 
         // say  --------------------------------------
 
         addTour("say",[.menu],[
-            menuInfo("say",[],[gotoInfo("say"), "choose what to say while \n pausing on a bookmark",2])
+            menuInfo("say",[],[gotoInfo("say"),
+                               "choose what to say while \n pausing on a bookmark","Menu_16.mp3"])
             ])
 
         addTour("say",[.information],[
-            menuInfo("say",  [],[gotoPath("say"),"choose what to say while \n pausing on a bookmark",2]),
-            menuMark("event",[],[gotoPath("say.event"),"announce events and reminders",1]),
-            menuMark("time", [],[gotoPath("say.time"),"announce times",1]),
-            menuMark("memo", [],[gotoPath("say.memo"),"play audio memo recordings",1]) // trailing space disambiguates with "memo"
+            menuInfo("say",  [],[gotoPath("say"),"choose what to say while \n pausing on a bookmark","Info_16.mp3"]),
+            menuMark("event",[],[gotoPath("say.event"),"announce an event or reminder","Info_17.mp3"]),
+            menuMark("time", [],[gotoPath("say.time"),"announce an event's time","Info_18.mp3"]),
+            menuMark("say.memo", [],[gotoPath("say.memo"),"play audio memo recording","Info_19.mp3"])
             ])
 
         // hear  --------------------------------------
 
         addTour("hear",[.menu],[
-            menuInfo("hear",[],[gotoInfo("hear"), "Choose whether to hear on \n speakers and/or earbuds",2])
+            menuInfo("hear",[],[gotoInfo("hear"),
+                                "Choose whether to hear on \n speakers and/or earbuds","Info_20.mp3"])
             ])
 
         addTour("hear",[.information],[
 
-            menuInfo("hear",   [],[gotoPath("hear"),"Choose whether to hear on \n speakers and/or earbuds",2]),
-            menuMark("speaker",[],[gotoPath("hear.speaker"),"hear via speaker or handoff \n to connected earbuds",2]),
+            menuInfo("hear",   [],[gotoPath("hear"),"Choose whether to hear on \n speakers and/or earbuds","Info_20.mp3"]),
+            menuMark("speaker",[],[gotoPath("hear.speaker"),"hear via speaker or handoff \n to connected earbuds","Info_21.mp3"]),
             menuMark("earbuds",[],[gotoPath("hearl.earbuds"),
-                                   "hear only on earbuds for both \n eyes free and hands free",2,
-                                   "with Apple Watch + Airpods \n simply lift your wrist to hear",2,
-                                   "what's next while keeping \n focus on the road ahead",2])
+                                   "hear only on earbuds for both \n eyes free and hands free","Info_22.mp3",
+                                   "with Apple Watch + Airpods \n simply lift your wrist to hear","Info_23.mp3","Info_24.mp3",
+                                   "what's next while keeping \n focus on the road ahead","Info_25.mp3"])
             ])
 
         // more --------------------------------------
 
-        
+
         addTour("more",[.menu],[
 
-            menuInfo("more",     [],[gotoInfo("more"),         "here is more about us", 2]),
-            menuCell("about",    [],[gotoPath("more.about"),   "A bit more about Muse Dot", 1]),
-            menuCell("support",  [],[gotoPath("more.support"), "Product support.", 1]),
-            menuCell("blog",     [],[gotoPath("more.blog"),    "musings around how and why",1]),
-            menuButn("tour",     [],[gotoPath("more.tour"),    "to replay this tour",1]),
-            menuCell("more",     [],[gotoPath("more"),
-                                     "and that about wraps it up",1,
-                                     "for now",2,
+            menuInfo("more",     [],[gotoInfo("more"),          "here is more about us", "Menu_18.mp3"]),
+            menuCell("about",    [],[gotoPath("more.about"),    "A bit more about \n Muse Dot Company", "Menu_19.mp3"]),
+            menuCell("support",  [],[gotoPath("more.support"),  "product support", "Menu_20.mp3"]),
+            menuCell("blog",     [],[gotoPath("more.blog"),     "more musings \n about whatever","Menu_21.mp3"]),
+            menuButn("tour",     [],[gotoPath("more.tour"),     "to replay this tour","Menu_22.mp3"]),
+            menuCell("more",     [],[gotoPath("more"),          "and that about wraps it up","Menu_23.mp3","for now","Menu_24.mp3",
                                      menuCollapse("more"),
-                                     {PagesVC.shared.gotoPageType(.main) {}} ])
+                                     { PagesVC.shared.gotoPageType(.main) {} }])
             ])
 
-        addTour("more",[.information],[
+            addTour("more",[.information],[
 
-            menuInfo("more",     [],[gotoPath("more"),         "here is more about us", 2]),
-            menuCell("about",    [],[gotoPath("more.about"),   "A bit more about Muse Dot", 1]),
-            menuCell("support",  [],[gotoPath("more.support"), "Product support.", 1]),
-            menuCell("blog",     [],[gotoPath("more.blog"),    "musings around how and why",1]),
-            menuButn("tour",     [],[gotoPath("more.tour"),    "to replay this tour",1])
+            menuInfo("more",     [],[gotoPath("more"),         "here is more about us", "Menu_18.mp3"]),
+            menuCell("about",    [],[gotoPath("more.about"),   "A bit more about Muse Dot", "Menu_19.mp3"]),
+            menuCell("support",  [],[gotoPath("more.support"), "Product support.", "Menu_20.mp3"]),
+            menuCell("blog",     [],[gotoPath("more.blog"),    "musings around how and why","Menu_21.mp3"]),
+            menuButn("tour",     [],[gotoPath("more.tour"),    "tour main and menu pages","Menu_22.mp3"])
             ])
     }
 
@@ -253,7 +254,7 @@ extension Tour {
             }
         }
     }
- 
+
     /// Highligh dial
     func menuDial(_ title: String, _ options: BubbleOptions,_ anys:[Any]) -> Bubble! {
         return Bubble(title, .above, .text, textSize, pageView, dialView, [], [], [.highlight, .circular], bubsFrom(anys))
@@ -295,12 +296,20 @@ extension Tour {
         return nil
     }
     /// bubble above mark
-    func menuMark(_ title:String, _ options: BubbleOptions,_ anys:[Any]) -> Bubble! {
-        if let cell = treeRoot.find(title:title) as? TreeTitleMarkCell, let mark = cell.mark {
-            return Bubble(title, .above, .text, textSize, treeView, mark, [cell], [treeView, panelView], options, bubsFrom(anys))
+    func menuMark(_ path:String, _ options: BubbleOptions,_ anys:[Any]) -> Bubble! {
+        if let cell = treeRoot.findPath(path) as? TreeTitleMarkCell, let mark = cell.mark {
+            return Bubble(path, .above, .text, textSize, treeView, mark, [cell], [treeView, panelView], options, bubsFrom(anys))
         }
         return nil
     }
+    /// bubble above mark
+    func menuMark2(_ path:String, _ options: BubbleOptions,_ anys:[Any]) -> Bubble! {
+        if let cell = treeRoot.findPath(path) as? TreeTitleMarkCell, let mark = cell.mark {
+            return Bubble(path, .above, .text, textSize, treeView, mark, [cell], [treeView, panelView], options, bubsFrom(anys))
+        }
+        return nil
+    }
+
     /// bubble above
     func menuPanel(_ title:String,_ options: BubbleOptions,_ anys:[Any]) -> Bubble! {
         if let cell = treeRoot.find(title:title) as? TreeTitleMarkCell, let mark = cell.mark {

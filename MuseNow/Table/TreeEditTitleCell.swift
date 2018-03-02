@@ -43,7 +43,7 @@ class TreeEditTitleCell: TreeEditCell {
 
         // text clear button inside bezel
         textClear = UIImageView(frame:clearFrame)
-        textClear.image = UIImage(named: "Icon-X-plus.png")
+        textClear.image = UIImage(named: "icon-X-plus.png")
         textClear.isUserInteractionEnabled = false
         textClear.isHidden = true
 

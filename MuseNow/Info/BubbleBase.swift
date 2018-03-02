@@ -6,7 +6,7 @@
 
 import Foundation
 import UIKit
-
+import AVFoundation
 
 enum BubblePhase { case poppedOut, tuckedIn, nudged }
 
@@ -14,6 +14,7 @@ typealias CallBubblePhase = ((BubblePhase)->())
 
 class BubbleBase: BubbleDraw {
 
+    var player: AVPlayer?
     var fromBezel: UIView!         // optional bezel from which to spring bubble
 
     var contentFrame = CGRect.zero  // frame for content inside bubble
@@ -147,20 +148,72 @@ class BubbleBase: BubbleDraw {
      Timer for duration of bubble. Maybe be cancelled
      */
     func setTimeOut() {
-        let duration = (0 ..< bubble.items.count).contains(contenti)
-            ? bubble.items[contenti].duration
-            : TimeInterval(1)
 
+        func duration(for resource: String) -> Double {
+            let asset = AVURLAsset(url: URL(fileURLWithPath: resource))
+            return Double(CMTimeGetSeconds(asset.duration))
+        }
+
+        var duration = TimeInterval(1)
+
+        if  contenti > -1, contenti < bubble.items.count  {
+
+            let item = bubble.items[contenti]
+
+            if  let audioFile = item.audioFile,
+                let audioURL = Bundle.main.url(forResource: audioFile, withExtension: "") as NSURL? {
+//
+//                let audioAsset = AVURLAsset(url: audioURL)
+//                duration = Double(CMTimeGetSeconds(audioURL.duration))
+
+                player = AVPlayer.init(playerItem: AVPlayerItem.init(url: audioURL as URL))
+                player?.actionAtItemEnd = .none
+                player?.isMuted = !Hear.shared.hearSet.contains(.speaker)
+                player?.play()
+                NotificationCenter.default.addObserver(self, selector:#selector(self.audioFinishedPlaying), name: .AVPlayerItemDidPlayToEndTime, object: nil)
+                return
+            }
+            else {
+                duration = item.duration
+            }
+        }
         timer = Timer.scheduledTimer(timeInterval: duration, target: self,
                                      selector: #selector(timedOut), userInfo: nil, repeats: false)
     }
-    @objc func timedOut() {
-        Log(bubble.logString("💬 base::timedOut"))
+
+   /**
+     Process notification that audio has finished
+    */
+    @objc func audioFinishedPlaying() {
+
         if cancelling { return }
-        self.tuckIn(timeout:true)
+
+        NotificationCenter.default.removeObserver(self)
+        timer.invalidate()
+
+        // with duration > 0,  timer completes.
+        if contenti < bubble.items.count {
+            let item = bubble.items[contenti]
+            if item.duration > 0, timer.isValid {
+                Log(bubble.logString("💬 Player::audioFinished CONTINUE"))
+                return
+            }
+        }
+        Log(bubble.logString("💬 Player::audioFinished DONE"))
+        tuckIn(timeout:false)
     }
-    
-    /**
+     /**
+     timer for duration has expired
+     */
+    @objc func timedOut() {
+
+        if cancelling { return }
+        NotificationCenter.default.removeObserver(self)
+        Log(bubble.logString("💬 Player::timedOut"))
+        player?.pause()
+        tuckIn(timeout:true)
+    }
+   /**
      Prepare next contentView
      */
     func nextContentView(_ isEmpty:@escaping CallBool) {
@@ -375,6 +428,7 @@ class BubbleBase: BubbleDraw {
                 tuckInContinue()
             }
         }
+        
         func tuckInContinue() {
 
             // overlay waits for new bubble to appear on top
@@ -402,6 +456,7 @@ class BubbleBase: BubbleDraw {
         }
     }
 
+   
     /**
      When tapping on screen continue with normal animation with shortened duration
      */

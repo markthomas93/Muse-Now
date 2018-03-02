@@ -15,10 +15,10 @@ struct HearSet: OptionSet {
 class Hear {
 
     static let shared = Hear()
-    var hearSet = HearSet([.earbuds]) // user options -- manually set
+    var hearSet = HearSet([.earbuds])   // user options -- manually set
     var route   = HearSet([])
-    var local   = HearSet([.speaker])     // this device's harware route
-    var reason  = "unknown reason"   // reason for change
+    var local   = HearSet([.speaker])   // this device's hardware route
+    var reason  = "unknown reason"      // reason for change
 
     init() {
 
@@ -135,7 +135,7 @@ class Hear {
 
         case .muteSpeaker:  hearSet.remove(.speaker)
         case .muteEarbuds:  hearSet.remove(.earbuds)
- 
+
         default: break
         }
         Settings.shared.settingsFromMemory()

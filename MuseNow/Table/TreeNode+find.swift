@@ -51,7 +51,7 @@ extension TreeNode {
             if lineage.isEmpty {
                 // always collapse destination to save space
                 node.cell?.touchCell(.zero, isExpandable:false)
-                Timer.delay(0.5) { finish(node) }
+                Timer.delay(0.25) { finish(node) }
             }
             else if node.expanded == false {
                 node.cell?.touchCell(.zero)

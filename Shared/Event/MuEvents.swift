@@ -25,7 +25,7 @@ class MuEvents {
 
     /**
      Main entry for updating events
-        - via: Actions.doRefresh
+     - via: Actions.doRefresh
      */
     func updateEvents(_ completion: @escaping () -> Void) {
 
@@ -77,95 +77,96 @@ class MuEvents {
                     }
                 }
             }
-             Marks.shared.sendSyncFile() // with outer device
+            Marks.shared.sendSyncFile() // with outer device
             Actions.shared.doAction(.refresh)
         }
     }
 
-
     /**
-    Get events from several data sources, each on its own thread
-    */
+     Get events from several data sources, each on its own thread
+     */
+
     func getRealEvents(_ set:ShowSet, _ completion: @escaping (
         _ ekEvents      : [MuEvent],
         _ ekReminders   : [MuEvent],
         _ memos         : [MuEvent],
         _ routine       : [MuEvent]
         ) -> Void) -> Void  {
-        
-        let queue = DispatchQueue(label: "com.muse.getRealEvents", attributes: .concurrent, target: .main)
-        let group = DispatchGroup()
-        
-        var ekEvents    = [MuEvent]()
-        var ekReminders = [MuEvent]()
-        var memos       = [MuEvent]()
-        var routine     = [MuEvent]()
 
-        // ekevents
-        if Show.shared.canShow(.calendar) {
-            group.enter()
-            queue.async (group: group) {
+        DispatchQueue.global(qos: .utility).async {
+            
+            let group = DispatchGroup()
+
+            var ekEvents    = [MuEvent]()
+            var ekReminders = [MuEvent]()
+            var memos       = [MuEvent]()
+            var routine     = [MuEvent]()
+
+            // ekevents
+            if Show.shared.canShow(.calendar) {
+                group.enter()
                 self.getEkEvents() { result in
                     ekEvents = result
+                    Log("⚡️ events")
                     group.leave()
                 }
             }
-        }
-        // ekreminders
-        if Show.shared.canShow(.reminder) {
-            group.enter()
-            queue.async (group: group) {
+            // ekreminders
+            if Show.shared.canShow(.reminder) {
+                group.enter()
                 self.getEkReminders() { result in
                     ekReminders = result
+                    Log("⚡️ reminders")
                     group.leave()
                 }
             }
-        }
-        // memos
-        if Show.shared.canShow(.memo) {
-            group.enter()
-            queue.async (group: group) {
+            // memos
+            if Show.shared.canShow(.memo) {
+                group.enter()
                 self.memos.unarchiveMemos() { result in
                     memos = result
+                    Log("⚡️ memos")
                     group.leave()
                 }
             }
-        }
-        // routine
-        if Show.shared.canShow(.routine) {
-            group.enter()
-            queue.async (group: group) {
+            // routine
+            if Show.shared.canShow(.routine) {
+                group.enter()
                 Routine.shared.getRoutineEvents() { result in
                     routine = result
+                    Log("⚡️ routine")
                     group.leave()
                 }
             }
-        }
-
-        // marks
-        group.enter()
-        queue.async (group: group) {
+            // marks
+            group.enter()
             self.marks.unarchiveMarks() {
+                Log("⚡️ marks")
                 group.leave()
             }
+
+            let result = group.wait(timeout: .now() + 2.0)
+            Log("⚡️ wait: \(result)")
+
+            DispatchQueue.main.async {
+                Log("⚡️ notify")
+                completion(ekEvents, ekReminders, memos, routine)
+            }
         }
-        // events + reminders done
-        group.notify(queue: queue, execute: {
-            completion(ekEvents,ekReminders, memos, routine)
-        })
     }
-    
+
+
     /**
      Get EventKit events after getting permission
-    */
+     */
     func getEkEvents(completion: @escaping (_ result:[MuEvent]) -> Void) {
-        
+
         let store = EKEventStore()
-        
+
         store.requestAccess(to: .event) { (accessGranted: Bool, error: Error?) in
-            
+
             DispatchQueue.main.async {
-                
+
                 if let error = error {
                     print("there was an errror \(error.localizedDescription)")
                 }
@@ -211,7 +212,7 @@ class MuEvents {
 
     /**
      Get EventKit reminders after getting permission
-    */
+     */
     func getEkReminders(completion: @escaping (_ result:[MuEvent]) -> Void) -> Void {
         
         let store = EKEventStore()
@@ -248,7 +249,7 @@ class MuEvents {
     
     /**
      -via: Actions.doAddEvent
-    */
+     */
     func addEvent(_ event:MuEvent) {
 
         events.append(event)

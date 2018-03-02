@@ -96,6 +96,7 @@ class WatchCon: WKInterfaceController {
 
     @IBAction func sliderAction(_ sender: Any) {
 
+        #if false
         if let pan = sender as? WKPanGestureRecognizer {
 
             let pos1 = pan.locationInObject()
@@ -110,6 +111,7 @@ class WatchCon: WKInterfaceController {
             default: break
             }
         }
+        #endif
     }
 
 

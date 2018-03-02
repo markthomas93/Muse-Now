@@ -53,6 +53,7 @@ class Tour {
     var crownLeft: PhoneCrown!
     var crownRight: PhoneCrown!
 
+    var isSpeakerOn = true
     let textSize  = CGSize(width:248,height:64)
     let videoSize = CGSize(width:248,height:248)
     let textDelay = TimeInterval(3)
@@ -76,7 +77,7 @@ class Tour {
 
         panelView = MainVC.shared!.panel
         mainVC = MainVC.shared!
-        dialView = mainVC.skView!
+        dialView = mainVC.skView
         crownLeft = mainVC.phoneCrown!
         crownRight = crownLeft.twin!
     }
@@ -129,7 +130,7 @@ class Tour {
         if tourSet.contains([.menu]) { buildMenuTour(.menu,&sections) }
 
         Actions.shared.doAction(.gotoFuture)
-        tourBubbles(tourBubbles) { _ in
+        tourBubbles(tourBubbles) {
             self.stopTour()
         }
     }
@@ -146,15 +147,19 @@ class Tour {
 
     // parse content list ------------------------------------
 
-
     func bubsFrom(_ anys:[Any]) -> [BubbleItem] {
 
         var bubItems = [BubbleItem]()
         var bubItem: BubbleItem!
 
         func makeItem(_ str:String,_ dur: TimeInterval,_ call:CallWait!) {
-            bubItem = BubbleItem(str,dur,call)
-            bubItems.append(bubItem)
+            if str.contains(".mp3") {
+                bubItem?.audioFile = str
+            }
+            else  {
+                bubItem = BubbleItem(str,dur,call)
+                bubItems.append(bubItem)
+            }
         }
 
         for any in anys {
@@ -163,7 +168,7 @@ class Tour {
             case let any as Int:        bubItem?.duration = TimeInterval(any) // modify last item
             case let any as Double:     bubItem?.duration = TimeInterval(any) // modify last item
             case let any as Float:      bubItem?.duration = TimeInterval(any) // modify last item
-            case let any as CallWait:   makeItem("CallWait", 0.5,any)
+            case let any as CallWait:   makeItem("CallWait", 0.5, any)
             case let any as CallVoid:   makeItem("CallWait", 0.5, { finish in any() ; finish() })
             default: continue
             }
@@ -210,7 +215,7 @@ class Tour {
     /**
      Called from TreeCell, when user tapped on info
      */
-    func tourSection(_ section:TourSection,_ done: @escaping CallBool)  {
+    func tourSection(_ section:TourSection,_ done: @escaping CallVoid)  {
         if BubblesPlaying.shared.playing {
            BubblesPlaying.shared.cancelBubbles()
         }
@@ -220,7 +225,7 @@ class Tour {
     /**
      tour a chain of bubbles. Block multiple tours from occuring at same time
      */
-    func tourBubbles(_ bubbles:[Bubble],_ done: @escaping CallBool) {
+    func tourBubbles(_ bubbles:[Bubble],_ done: @escaping CallVoid) {
 
         if BubblesPlaying.shared.playing {
            BubblesPlaying.shared.cancelBubbles()
@@ -243,7 +248,7 @@ class Tour {
             BubblesPlaying.shared.playing = false
             self.touring = false //?? why are there two states?
             self.sectionNow = nil
-            done(true)
+            done()
         }
     }
 

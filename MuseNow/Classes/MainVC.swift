@@ -110,6 +110,7 @@ class MainVC: UIViewController {
             }, completion:{ _ in
                 self.onboardVC.view.removeFromSuperview()
                 Tour.shared.beginTourSet([.main,.menu])
+                Timer.delay(4) {Tour.shared.buildInfoSet()}
             })
         }
     }

@@ -8,7 +8,6 @@ public enum GestureType: String { case
     shake1  = "shake1",
     shake2  = "shake2",
     nod     = "nod",
-    tilt    = "tilt",
     lower   = "lower"
 }
 
@@ -29,21 +28,10 @@ class Motion: NSObject {
     var nodPlusT = TimeInterval(0)
     var nodNegT = TimeInterval(0)
 
-    // for TestTilt user Acceleration
-    var yThreshold = 0.618
-    var zThreshold = 0.618
-    var tiltWindow = TimeInterval(0.3) // time window where y -> z -> y
-    var yTiltT1 = TimeInterval(0)    // 1st part of y -> z -> y
-    var zTiltT2 = TimeInterval(0)    // 2nd part of y -> z -> y
-
-    // for TestShake user Acceleration
+      // for TestShake user Acceleration
     var shakeBothThreshold = 1.2
     var shakeWindow = TimeInterval(0.3) // time window where y -> z -> y
-    var shakePrev: CMAcceleration!
-    var yShakeV1 = 0.0
-    var yShakeT1 = TimeInterval(0)    // 1st part of y -> y, where abs(t1-t1) > 1.5
 
-    // TestShake2
     var shakePlusV = 0.0
     var shakeNegV = 0.0
     var shakePlusT = TimeInterval(0)
@@ -53,9 +41,7 @@ class Motion: NSObject {
     var shake1Timer = Timer()
 
     var gestureType = GestureType.none
-     var gestureTime = TimeInterval(0)
-
-
+    var gestureTime = TimeInterval(0)
 
     override init() {
         
@@ -95,7 +81,11 @@ class Motion: NSObject {
       func testShake(_ motion:CMDeviceMotion!) -> Bool {
 
         let nowTime = Date().timeIntervalSince1970
-        let y = motion.userAcceleration.y
+        #if os(watchOS)
+            let m = motion.userAcceleration.y
+        #else
+            let m = motion.userAcceleration.x
+        #endif
 
         // fire when extremes exceed threshold
         func triggerShake() -> Bool {
@@ -118,16 +108,16 @@ class Motion: NSObject {
         }
 
         // sample extreme ranges
-        if y > shakePlusThreshold {
-            if  shakePlusV < y {
-                shakePlusV = y
+        if m > shakePlusThreshold {
+            if  shakePlusV < m {
+                shakePlusV = m
                 shakePlusT = nowTime
                 return triggerShake()
             }
         }
-        else if y < shakeNegTheshold {
-            if  shakeNegV > y {
-                shakeNegV = y
+        else if m < shakeNegTheshold {
+            if  shakeNegV > m {
+                shakeNegV = m
                 shakeNegT = nowTime
                 return triggerShake()
             }
@@ -135,30 +125,6 @@ class Motion: NSObject {
         return false
     }
 
-     func testTilt(_ motion:CMDeviceMotion!) -> Bool {
-        
-        let nowTime = Date().timeIntervalSince1970
-
-        let y = motion.userAcceleration.y
-        let z = motion.userAcceleration.z
-        
-        // did triger y after triggering z?
-        if  abs(y) > yThreshold {
-            if nowTime - zTiltT2 < tiltWindow {
-                return true
-            }
-            else {
-                yTiltT1 = nowTime
-                return false
-            }
-        }
-        // crossed z after y
-        if  abs(z) > zThreshold,
-            nowTime - yTiltT1 < tiltWindow {
-            zTiltT2 = nowTime
-        }
-        return false
-    }
 
     /// monitor gravity changes for watch, to allow throttle motion to start recording
     func testLower (_ motion: CMDeviceMotion!) -> Bool {
@@ -234,11 +200,12 @@ class Motion: NSObject {
     }
     // gesture actions
 
-    func shake1Action() { Record.shared.recordAudioAction() }
-    func shake2Action() {}
-    func tiltAction()   { Record.shared.recordAudioAction() }
+
+
+    func shake1Action() { Record.shared.finishRecording() }
+    func shake2Action() { Record.shared.recordAudioDelete() }
     func nodAction()    { Record.shared.recordAudioAction() }
-    func lowerAction()  { Record.shared.recordAudioAction() }
+    func lowerAction()  { Record.shared.finishRecording() }
 
     // translate motino into gesture
     // for watch, detect wrist lower, in which case
@@ -282,7 +249,8 @@ class Motion: NSObject {
             return
         }
         // lowering wrist is same a
-        if testLower(motion) {
+        if gestureType != .lower,
+            testLower(motion) {
 
             printGravity("lower",motion)
             triggerGesture(.lower)
@@ -300,14 +268,7 @@ class Motion: NSObject {
                 self.shake1Action()
             })
         }
-            // tilt wrist back up
-        else if testTilt(motion) {
-
-            printAccleration("tilt", motion)
-            triggerGesture(.tilt)
-            tiltAction()
-        }
-            // nod wrist slowley
+              // nod wrist slowley
         else if testNod(motion) {
 
             printRotationRate("nod",motion)
@@ -316,7 +277,7 @@ class Motion: NSObject {
         }
             // trace events not captures by gesture
         else {
-            printAccleration("",motion)
+            //???// nprintAccleration("",motion)
         }
     }
 

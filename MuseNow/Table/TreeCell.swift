@@ -295,7 +295,7 @@ class TreeCell: MuCell {
      If so, then wait until the info has played before conintuing to afterInfo()
      */
 
-    func maybeTouchInfoFirst(_ location: CGPoint,_ done: @escaping CallBool)  {
+    func maybeTouchInfoFirst(_ location: CGPoint,_ done: @escaping CallVoid)  {
 
         // begin
         if  !isTouring,
@@ -307,7 +307,7 @@ class TreeCell: MuCell {
             TreeBases.shared.archiveTree {}
         }
         else {
-            done(false)
+            done()
         }
         isTouring = false
     }
@@ -360,7 +360,7 @@ class TreeCell: MuCell {
 
         (tableVC as? TreeTableVC)?.setTouchedCell(self)
 
-        maybeTouchInfoFirst(location) { _ in
+        maybeTouchInfoFirst(location) {
             self.afterTouchingInfo(isExpandable)
         }
     }
