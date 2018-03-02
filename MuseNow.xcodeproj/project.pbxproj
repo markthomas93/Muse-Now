@@ -708,7 +708,6 @@
 		806ACFE81FC624CB00220EB6 /* TreeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeCell.swift; sourceTree = "<group>"; };
 		8076434B1FACBE55001733C6 /* Muse+Test.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Muse+Test.swift"; sourceTree = "<group>"; };
 		8076434C1FACBE55001733C6 /* Muse.par */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; path = Muse.par; sourceTree = "<group>"; };
-		8076434D1FACBE55001733C6 /* Muse.par2 */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; path = Muse.par2; sourceTree = "<group>"; };
 		8076434E1FACBE55001733C6 /* Muse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Muse.swift; sourceTree = "<group>"; };
 		8076434F1FACBE55001733C6 /* MuseFound.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuseFound.swift; sourceTree = "<group>"; };
 		8076435D1FACDB63001733C6 /* TreeTitleFaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeTitleFaderCell.swift; sourceTree = "<group>"; };
@@ -1384,7 +1383,6 @@
 				80F26DBE1FBA110300C26973 /* Routine.par */,
 				8076434B1FACBE55001733C6 /* Muse+Test.swift */,
 				8076434C1FACBE55001733C6 /* Muse.par */,
-				8076434D1FACBE55001733C6 /* Muse.par2 */,
 				8076434E1FACBE55001733C6 /* Muse.swift */,
 				8076434F1FACBE55001733C6 /* MuseFound.swift */,
 			);
