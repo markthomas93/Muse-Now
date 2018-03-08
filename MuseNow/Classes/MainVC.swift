@@ -88,7 +88,9 @@ class MainVC: UIViewController {
 
     func makeOnboard() {
 
-        onboardVC = OnboardVC()
+        if onboardVC == nil {
+            onboardVC = OnboardVC()
+        }
         onboardVC.view.alpha = 0
         view.addSubview(self.onboardVC.view)
 
@@ -101,7 +103,7 @@ class MainVC: UIViewController {
 
         Onboard.shared.state = .completed
         settings.settings["boarding"] = Onboard.shared.state.rawValue
-        settings.archiveSettings {}
+        settings.archiveSettings()
         
         makePages() {
             Actions.shared.doAction(.refresh)

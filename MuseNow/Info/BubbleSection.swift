@@ -29,7 +29,7 @@ class TourSection {
                 bubbles.append(bubble)
             }
         }
-        if !tourSet.intersection([.main,.menu]).isEmpty {
+        if !tourSet.intersection([.main,.menu,.detail]).isEmpty {
             Tour.shared.tourBubbles.append(contentsOf: bubbles)
         }
     }

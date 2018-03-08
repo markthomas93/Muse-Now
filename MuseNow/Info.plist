@@ -17,9 +17,9 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2018.01.12</string>
+	<string>2018.03.08</string>
 	<key>CFBundleVersion</key>
-	<string>2</string>
+	<string>3</string>
 	<key>CLKComplicationPrincipalClass</key>
 	<string>$(PRODUCT_MODULE_NAME).Complication</string>
 	<key>CLKComplicationSupportedFamilies</key>
@@ -49,12 +49,26 @@
 	<string>Access to Microphone</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Access to Photos</string>
+	<key>NSPrincipalClass</key>
+	<string>MyApplication</string>
 	<key>NSRemindersUsageDescription</key>
 	<string>Access to Reminders</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>Access to Speech</string>
 	<key>NSSpeechRecognitionUsageDescription - 2</key>
 	<string>Access to Speech</string>
+	<key>NSUbiquitousContainers</key>
+	<dict>
+		<key>iCloud.com.muse.MuseNow</key>
+		<dict>
+			<key>NSUbiquitousContainerIsDocumentScopePublic</key>
+			<true/>
+			<key>NSUbiquitousContainerName</key>
+			<string>MuseNow</string>
+			<key>NSUbiquitousContainerSupportedFolderLevels</key>
+			<string>Any</string>
+		</dict>
+	</dict>
 	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -80,19 +94,5 @@
 	</array>
 	<key>WKCompanionAppBundleIdentifier</key>
 	<string>com.muse.MuseNow</string>
-	<key>NSPrincipalClass</key>
-	<string>MyApplication</string>
-	<key>NSUbiquitousContainers</key>
-	<dict>
-		<key>iCloud.com.muse.MuseNow</key>
-		<dict>
-			<key>NSUbiquitousContainerIsDocumentScopePublic</key>
-			<true/>
-			<key>NSUbiquitousContainerName</key>
-			<string>MuseNow</string>
-			<key>NSUbiquitousContainerSupportedFolderLevels</key>
-			<string>Any</string>
-		</dict>
-	</dict>
 </dict>
 </plist>

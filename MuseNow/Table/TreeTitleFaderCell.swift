@@ -32,7 +32,8 @@ class TreeTitleFaderCell: TreeTitleCell {
         self.frame = cellFrame
 
         fader = Fader(frame:faderFrame)
-        fader.setValue(Anim.shared.scene?.uFade?.floatValue ?? 0)
+        let fadeValue = Anim.shared.scene?.uFade?.floatValue ?? 1.0
+        fader.setValue(fadeValue)
 
         fader.clipsToBounds = false
         bezel.layer.masksToBounds = false // needed for demo

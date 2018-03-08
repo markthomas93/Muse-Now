@@ -9,19 +9,20 @@ extension UIWindow {
     open override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
         super.motionEnded(motion, with: event)
         if motion == .motionShake {
-            Actions.shared.doAction(.stopTour)
+            Actions.shared.doAction(.tourStop)
         }
     }
 }
 
 struct TourSet: OptionSet {
     let rawValue: Int
-    static let onboard      = TourSet(rawValue: 1 << 0) // 1
-    static let main         = TourSet(rawValue: 1 << 1) // 2
-    static let menu         = TourSet(rawValue: 1 << 2) // 4
-    static let information  = TourSet(rawValue: 1 << 3) // 8
-    static let construction = TourSet(rawValue: 1 << 4) // 16
-    static let purchase     = TourSet(rawValue: 1 << 5) // 32
+    static let intro    = TourSet(rawValue: 1 << 0) // 1
+    static let main     = TourSet(rawValue: 1 << 1) // 2
+    static let menu     = TourSet(rawValue: 1 << 2) // 4
+    static let info     = TourSet(rawValue: 1 << 3) // 8
+    static let detail   = TourSet(rawValue: 1 << 4) // 16
+    static let buy      = TourSet(rawValue: 1 << 5) // 32
+    static let beta     = TourSet(rawValue: 1 << 6) // 64
     static let size = 6
 }
 
@@ -34,7 +35,7 @@ class Tour {
     var sectionNow: TourSection!
     var bubbleNow: Bubble!              // current bubble showing for this tour
     var touring = false                 // wait for one tour to finsh before beginning a new one
-    var tourSet = TourSet([.onboard,.main,.menu])
+    var tourSet = TourSet([.intro,.main,.menu])
 
     var mainVC: MainVC!
     var mainView: UIView! // full screen view in which to place subview
@@ -116,7 +117,7 @@ class Tour {
 
         initTour()
         var sections = [TourSection]()
-        buildMenuTour(.information,&sections)
+        buildMenuTour(.info,&sections)
         attachInfoSections(&sections)
     }
 
@@ -126,12 +127,16 @@ class Tour {
         tourSet = tourSet_
         initTour()
         var sections = [TourSection]()
-        if tourSet.contains([.main]) { buildMainTour(&sections) }
-        if tourSet.contains([.menu]) { buildMenuTour(.menu,&sections) }
+        tourBubbles = [Bubble]()
+        if tourSet.contains([.main])   { buildMainTour(&sections) }
+        if tourSet.contains([.menu])   { buildMenuTour(.menu,&sections) }
+        if tourSet.contains([.detail]) { buildMenuTour(.detail,&sections) }
 
         Actions.shared.doAction(.gotoFuture)
+        Settings.shared.prepareDemoSettings()
         tourBubbles(tourBubbles) {
             self.stopTour()
+            Settings.shared.finishDemoSettings()
         }
     }
 
@@ -143,6 +148,7 @@ class Tour {
         }
         tourBubbles.removeAll()
         TouchScreen.shared.endRedirecting()
+        Settings.shared.finishDemoSettings()
     }
 
     // parse content list ------------------------------------
@@ -153,7 +159,7 @@ class Tour {
         var bubItem: BubbleItem!
 
         func makeItem(_ str:String,_ dur: TimeInterval,_ call:CallWait!) {
-            if str.contains(".mp3") {
+            if str.contains(".aif") {
                 bubItem?.audioFile = str
             }
             else  {
@@ -179,19 +185,21 @@ class Tour {
     func doTourAction(_ act:DoAction) {
 
         switch act {
-        case .tourAll:  beginTourSet([.main,.menu]) ; Haptic.play(.start)
-        case .main:     beginTourSet([.main])       ; Haptic.play(.start)
-        case .menu:     beginTourSet([.menu])       ; Haptic.play(.start)
-        case .onboard:  beginTourSet([.onboard])    ; Haptic.play(.start)
-        case .stopTour: stopTour()                  ; Haptic.play(.stop)
-        default: break
+        case .tourAll:    beginTourSet([.main,.menu])
+        case .tourMain:   beginTourSet([.main])
+        case .tourMenu:   beginTourSet([.menu])
+        case .tourDetail: beginTourSet([.detail])
+        case .tourIntro:  beginTourSet([.intro])
+        case .tourStop:   stopTour() ; Haptic.play(.stop) ; return
+        default: return
         }
+        Haptic.play(.start)
     }
 
     func attachInfoSections(_ sections: inout [TourSection]) {
         if let root = TreeNodes.shared.root {
             for section in sections {
-                if !section.tourSet.intersection([.information,.purchase,.construction]).isEmpty {
+                if !section.tourSet.intersection([.info,.buy,.beta]).isEmpty {
                     if let cell = root.find(title:section.title) {
                         cell.addInfoBubble(section)
                     }

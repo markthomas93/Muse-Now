@@ -120,10 +120,10 @@ class TreeCell: MuCell {
 
         if let tourSet = infoSection_.tourSet {
             infoSection = infoSection_
-            if      tourSet.contains(.information)  { treeNode?.setting.showInfo = .information }
-            else if tourSet.contains(.purchase)     { treeNode?.setting.showInfo = .purchase }
-            else if tourSet.contains(.construction) { treeNode?.setting.showInfo = .construction }
-            else                                    { treeNode?.setting.showInfo = .infoNone  }
+            if      tourSet.contains(.info) { treeNode?.setting.showInfo = .information }
+            else if tourSet.contains(.buy)  { treeNode?.setting.showInfo = .purchase }
+            else if tourSet.contains(.beta) { treeNode?.setting.showInfo = .construction }
+            else                            { treeNode?.setting.showInfo = .infoNone  }
 
             if let showInfo = treeNode?.setting.showInfo {
 

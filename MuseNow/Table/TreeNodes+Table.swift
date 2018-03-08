@@ -61,7 +61,7 @@ extension TreeNodes {
         // Memos
 
         let memos  = TreeActNode("memo", show, showSet, ShowSet.memo.rawValue, .showMemo, .hideMemo, vc)
-        let _ = TreeButtonNode("move all", "go", memos, { Actions.shared.doAction(.memoMoveAll) }, vc)
+        let _ = TreeButtonNode("move to iCloud Drive", memos, { Actions.shared.doAction(.memoMoveAll) }, vc)
 
         // Dial
 
@@ -89,15 +89,18 @@ extension TreeNodes {
         let _    = TreeNode("about",   .title, more, vc)
         let _    = TreeNode("support", .title, more, vc)
         let _    = TreeNode("blog",    .title, more, vc)
-        let tour = TreeButtonNode("tour", "go", more,  {}, vc)
-        if let cell = tour.cell as? TreeTitleButtonCell {
-            cell.butnAct = {
-                // block collapsing cell from cancelling tour
-                cell.infoSection?.blockCancel(duration: 2.0)
-                Actions.shared.doAction(.tourAll)
-                PagesVC.shared.gotoPageType(.main) {}
+
+        func goTour(_ act:DoAction,_ page:PageType) -> CallVoid {
+            return {
+            Actions.shared.doAction(act)
+            PagesVC.shared.gotoPageType(page) {}
             }
         }
+
+        let tour = TreeNode("tour", .title, more, vc)
+        let _ = TreeButtonNode("main panel",  tour, goTour(.tourMain,.main), vc)
+        let _ = TreeButtonNode("menu details", tour, goTour(.tourDetail,.menu), vc)
+        let _ = TreeButtonNode("introduction", tour, goTour(.tourIntro,.onboard), vc)
 
         // setup table cells from current st
         root!.refreshNodeCells()

@@ -44,6 +44,7 @@ class OnboardPage: UIViewController {
         bubble.tourNextBubble { }
     }
     override func viewWillDisappear(_ animated: Bool) {
+        Log("🔰 disappear: \(title!)")
         bubble?.bubBase?.cancelBubble()
         super.viewWillDisappear(animated)
     }

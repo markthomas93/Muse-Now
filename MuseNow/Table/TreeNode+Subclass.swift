@@ -11,12 +11,16 @@ import UIKit
 
 class TreeButtonNode: TreeNode {
 
-    convenience init(_ title_:String,_ butnTitle:String,_ parent_:TreeNode!, _ act:CallVoid!,_ tableVC_:UITableViewController) {
+    convenience init(_ title_:String,_ parent_:TreeNode!, _ act:CallVoid!,_ tableVC_:UITableViewController) {
         self.init()
         initialize(title_,.titleButton, parent_, TreeSetting(set:1,member:1),tableVC_)
         if let cell = cell as? TreeTitleButtonCell {
-            cell.butnTitle = butnTitle
-            cell.butnAct = act
+            
+            cell.butnTitle = "go"
+            cell.butnAct = {  // block collapsing cell from cancelling tour
+                cell.infoSection?.blockCancel(duration: 2.0)
+                act()
+            }
         }
     }
 }

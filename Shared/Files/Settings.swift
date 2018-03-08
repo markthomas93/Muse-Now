@@ -13,7 +13,7 @@ class Settings: FileSync, Codable {
         fileName = "Settings.json"
     }
 
-    func archiveSettings(done:@escaping CallVoid) {
+    func archiveSettings() {
 
         if let data = try? JSONEncoder().encode(settings) {
 
@@ -43,7 +43,7 @@ class Settings: FileSync, Codable {
     func updateColor(_ value: Any) {
 
         settings["dialColor"] = Int((value as! Float) * 0xFFFF)
-        archiveSettings {}
+        archiveSettings()
     }
 
     /**
@@ -54,19 +54,32 @@ class Settings: FileSync, Codable {
         settings["showSet"]  = Show.shared.showSet.rawValue
         settings["hearSet"]  = Hear.shared.hearSet.rawValue
         settings["saySet"]   = Say.shared.saySet.rawValue
-        settings["dialColor"] = Int((Actions.shared.scene?.uFade?.floatValue ?? 0) * 0xFFFF)
-        archiveSettings {}
+        settings["dialColor"] = Int((Actions.shared.scene?.uFade?.floatValue ?? 1.0) * 0xFFFF)
+        archiveSettings()
     }
 
+    var beforeDemoSettings: [String:Int]!
+    func prepareDemoSettings() {
+        // push settings to beforeDemoSettings
+        beforeDemoSettings = settings
+        // new demo Settings
+        Show.shared.showSet = [.calendar,.reminder,.routine,.memo]
+        Say.shared.saySet = []
+        Actions.shared.dialColor(1.0, isSender: true)
+    }
+    
+    func finishDemoSettings() {
+        settings = beforeDemoSettings
+        archiveSettings()
+        Actions.shared.doAction(.refresh)
+    }
     /**
      After first time, values were saved to file, so read from default values from settings value
      */
     func settingsFromRoot() { Log ("⧉ Settings::\(#function)")
-        if let value   = settings["dialColor"]  {
-            Actions.shared.dialColor(Float(value)/Float(0xFFFF), isSender:false)
-        }
+        if let value   = settings["dialColor"] { Actions.shared.dialColor(Float(value)/Float(0xFFFF), isSender:false) }
         if let state   = settings["boarding"] { Onboard.shared.state = BoardingState(rawValue:state)! }
-        if let saySet  = settings["saySet"]   { Say.shared.saySet   = SaySet(rawValue:saySet) }
+        if let saySet  = settings["saySet"]   { Say.shared.saySet = SaySet(rawValue:saySet) }
         if let hearSet = settings["hearSet"]  { Hear.shared.hearSet = HearSet(rawValue:hearSet) }
         if let showSet = settings["showSet"]  { Show.shared.showSet = ShowSet(rawValue:showSet) }
        }

@@ -27,22 +27,20 @@ extension Tour {
 
         mainItem("Main",  .center,  mainView, mainView, [mainView,panelView], [], [],
 
-                 [gotoMainPage,
-                  "Here is a brief tour","Main_00.mp3",
-                  "shake anytime to stop","Main_01.mp3"
+                 [gotoMainPage, "Here is a brief tour","v_032.aif", "shake anytime to stop","v_033.aif"
             ])
 
         mainItem("Main",  .below,  mainView, eventBezel, [panelView], [eventBezel], [.highlight, .alpha05],
 
-                 ["Timeline spans 2 weeks from \n last week to the next","Main_02.mp3"])
+                 ["Timeline spans two weeks \n from last week to next week","v_034.aif"])
 
         mainItem("Panel",  .above,  pageView, panelView, [pageView], [panelView], [.highlight],
 
-                 ["Control panel puts it all \n under your thumb","Main_03.mp3"])
+                 ["Control panel puts it all \n under your thumb","v_035.aif"])
 
         mainItem("Panel",  .above,  pageView, panelView, [eventView], [panelView], [.highlight, .overlay, .nowait],
 
-                 ["with the same look and feel \n as the Apple Watch", "Main_04.mp3"])
+                 ["with the same look and feel \n as the Apple Watch", "v_036.aif"])
 
         mainVid1("Panel", .center, mainView, eventBezel, [], [], [],
 
@@ -51,34 +49,34 @@ extension Tour {
         mainItem("Dial", .above, pageView, dialView, [pageView], [], [.highlight, .circular],
 
                  [ {Actions.shared.doAction(.gotoFuture) },
-                   "See the week in a glance \n as 24 hours times 7 days","Main_05.mp3",
-                   "for a total of 168 hours \n shown as dots spiralling in","Main_06.mp3"])
+                   "See the week in a glance \n as 24 hours times 7 days","v_037.aif",
+                   "for a total of 168 hours \n shown as dots spiralling in","v_038.aif"])
 
 
         mainItem("Dial", .above, pageView, dialView, [], [], [.highlight, .circular],
 
-                 [nextEvent, "Touch the dial and spin","Main_07.mp3",
-                  nextEvent, "around to feel bumps","Main_08.mp3",
-                  nextEvent, "while crossing an event","Main_09.mp3",
-                  nextEvent, "to feel key moments.","Main_10.mp3"])
+                 [nextEvent, "Touch the dial and spin","v_039.aif",
+                  nextEvent, "around to feel bumps","v_040.aif",
+                  nextEvent, "while crossing an event","v_041.aif",
+                  nextEvent, "to feel key moments.","v_042.aif"])
 
         mainItem("Dial", .above, pageView, dialView, [], [], [.highlight, .circular],
 
-                 [toggleEvent, "Force touch (or double tap)","Main_11.mp3",
-                  toggleEvent, "to bookmark an event ","Main_12.mp3",
-                  toggleEvent, "that pauses while scanning","Main_13.mp3",
-                  scanEvents,  "as a countdown \n to what's next","Main_14.mp3",12])
+                 [toggleEvent, "Force touch (or double tap)","v_043.aif",
+                  toggleEvent, "to bookmark an event ","v_044.aif",
+                  toggleEvent, "that pauses while scanning","v_045.aif",
+                  scanEvents,  "as a countdown \n to what's next","v_046.aif",12])
 
         mainItem("Dial", .above, pageView, dialView, [], [], [.highlight, .circular],
 
-                 ["Hear a countdown when \n you raise your wrist","Main_15.mp3",
-                  "no need to see or touch \n anything to stay current","Main_16.mp3",
+                 ["Hear a countdown when \n you raise your wrist","v_047.aif",
+                  "no need to see or touch \n anything to stay current","v_048.aif",
                   { Actions.shared.doAction(.gotoFuture) }])
 
         mainItem("Crown", .above, pageView, crownRight, [pageView], [], [.highlight,.circular, .nowait],
 
-                 ["The virtual crown acts \n just like the Apple Watch","Main_17.mp3",
-                  "sliding up and down in time \n to skip through events","Main_18.mp3"])
+                 ["The virtual crown acts \n just like the Apple Watch","v_049.aif",
+                  "sliding up and down in time \n to skip through events","v_050.aif"])
 
         mainVid1("Crown", .center, mainView, eventBezel, [], [], [],
 
@@ -86,8 +84,7 @@ extension Tour {
 
         mainItem("Page", .below, mainView, spineBezel, [panelView], [], [.highlight],
 
-                 ["To filter events either \n tap the spine or swipe right",2])
-
+                 ["To filter events either \n tap the spine or swipe right","v_051.aif"])
     }
 
 }

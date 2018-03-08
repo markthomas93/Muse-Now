@@ -451,7 +451,7 @@ class BubbleBase: BubbleDraw {
         if !cancelling {
             cancelling = true
             timer.invalidate()
-
+            player?.pause()
             animateIn(duration: 0.5, delay: 0, finished:{})
         }
     }

@@ -108,6 +108,10 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
             return done()
         }
         pageType = type_
+        if pageType == .onboard {
+            MainVC.shared?.makeOnboard()
+            return done()
+        }
 
         let index = pageType.rawValue
         let nextVC = pages[index]
@@ -130,7 +134,6 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
         vc.view.layer.masksToBounds = true
     }
 
-
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         if completed {
             if let vc = pageViewController.viewControllers![0] as? PagesVC {
@@ -138,6 +141,7 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
             }
         }
     }
+
     func pageViewController(_ pageVC: UIPageViewController, viewControllerBefore vc: UIViewController) -> UIViewController? {
 
         let index = pages.index(of: vc)! - 1
