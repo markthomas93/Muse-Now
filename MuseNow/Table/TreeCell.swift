@@ -120,9 +120,9 @@ class TreeCell: MuCell {
 
         if let tourSet = infoSection_.tourSet {
             infoSection = infoSection_
-            if      tourSet.contains(.info) { treeNode?.setting.showInfo = .information }
+            if      tourSet.contains(.beta) { treeNode?.setting.showInfo = .construction }
             else if tourSet.contains(.buy)  { treeNode?.setting.showInfo = .purchase }
-            else if tourSet.contains(.beta) { treeNode?.setting.showInfo = .construction }
+            else if tourSet.contains(.info) { treeNode?.setting.showInfo = .information }
             else                            { treeNode?.setting.showInfo = .infoNone  }
 
             if let showInfo = treeNode?.setting.showInfo {
@@ -131,9 +131,9 @@ class TreeCell: MuCell {
 
                 switch showInfo {
 
-                case .information:  infoIcon = "icon-Information.png"
                 case .construction: infoIcon = "icon-Construction.png"
                 case .purchase:     infoIcon = "icon-Dollar.png" //  "icon-Cart.png"
+                case .information:  infoIcon = "icon-Information.png"
                 case .infoNone:     return
                 }
                 info.image = UIImage(named:infoIcon)
@@ -294,7 +294,6 @@ class TreeCell: MuCell {
      2) directly touched the info.
      If so, then wait until the info has played before conintuing to afterInfo()
      */
-
     func maybeTouchInfoFirst(_ location: CGPoint,_ done: @escaping CallVoid)  {
 
         // begin
@@ -315,7 +314,7 @@ class TreeCell: MuCell {
     func afterTouchingInfo(_ isExpandable:Bool) {
 
         let oldShown = TreeNodes.shared.shownNodes
-        Log ("𐂷 oldShown: \(oldShown.count) *** ")
+        //Log("𐂷 oldShown: \(oldShown.count) *** ")
 
         let wasExpanded = treeNode.expanded
         if let row = treeNode?.row {

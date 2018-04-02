@@ -25,9 +25,7 @@ class WatchCon: WKInterfaceController {
 
     override func awake(withContext context: Any?) { Log("⟳ \(#function) context:\(context ?? "nil")")
         //Muse.shared.testScript()
-        let ext = WKExtension.shared()
-        ext.isAutorotating = true
-        ext.isFrontmostTimeoutExtended = true
+        WKExtension.shared().isFrontmostTimeoutExtended = true
 
         initScene()
         crown.updateCrown()

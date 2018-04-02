@@ -52,11 +52,11 @@ extension TreeEditTitleCell: UITextFieldDelegate {
         if textField.text == nil || textField.text! == "" {
             textField.text = prevText
             changeParentText(prevText)
-            treeNode.treeCallback?(treeNode)
         }
         else {
             prevText = textField.text ?? prevText
         }
+        treeNode.treeCallback?(treeNode)
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

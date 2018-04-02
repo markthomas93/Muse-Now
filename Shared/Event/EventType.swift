@@ -10,10 +10,10 @@ import Foundation
 
 public enum EventType: String, Codable { case
     unknown     = "unknown",
-    routine     = "routine",
     ekevent     = "ekevent",    // Apple Calendar events
     ekreminder  = "ekreminder", // Apple Reminders
     note        = "note",
     memo        = "memo",
+    routine     = "routine",
     time        = "time"
 }

@@ -2,10 +2,20 @@
 
 import Foundation
 
+struct MemoSet: OptionSet, Codable {
+    let rawValue: Int
+    static let saveWhere = MemoSet(rawValue: 1 << 0) // 1
+    static let autoRec   = MemoSet(rawValue: 1 << 1) // 2
+    static let size = 2
+}
+
+
 class Memos: FileSync, Codable {
     
     static let shared = Memos()
+
     var items = [MuEvent]()
+    var memoSet = MemoSet([.autoRec, .saveWhere])
     
     override init() {
         super.init()
@@ -20,11 +30,16 @@ class Memos: FileSync, Codable {
             let _ = saveData(data, Date().timeIntervalSince1970)
         }
         Marks.shared.sendSyncFile()
+        done()
     }
+    
     func unarchiveMemos(_ completion: @escaping (_ result:[MuEvent]) -> Void) -> Void {
+
         unarchiveData() { data in
+
             if let data = data,
                 let newItems = try? JSONDecoder().decode([MuEvent].self, from:data) {
+                
                 self.items.removeAll()
                 let weekSecs: TimeInterval = (7*24+1)*60*60 // 168+1 hours as seconds
                 let lastWeekSecs = Date().timeIntervalSince1970 - weekSecs
@@ -39,13 +54,29 @@ class Memos: FileSync, Codable {
         }
     }
 
-    
-    func moveAll() {
-        archiveMemos {
-            self.moveAllDocPrefix("Memo_")
+    func doAction(_ act:DoAction,_ isSender:Bool) {
+        switch act {
+        case .memoWhereOn:    memoSet.insert(.saveWhere)
+        case .memoWhereOff:   memoSet.remove(.saveWhere)
+        case .memoAutoRecOn:    memoSet.insert(.autoRec)
+        case .memoAutoRecOff:   memoSet.remove(.autoRec)
+
+        case .memoMoveAll:
+            let isSender = true
+            Actions.shared.markAction(.memoMoveAll, nil, 0, isSender)
+            archiveMemos {
+                self.moveAllDocPrefix("Memo_")
+                Actions.shared.doRefresh(isSender)
+            }
+        default: return
+        }
+        Settings.shared.settingsFromMemory()
+        if isSender {
+            Session.shared.sendMsg(["class"   : "MemoSet",
+                                    "putSet"  : memoSet.rawValue])
         }
     }
-    
+
     func purgeStale(_ staleItems:[MuEvent]) {
         //TODO remove items that are older than 1 week
     }

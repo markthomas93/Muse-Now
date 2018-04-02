@@ -7,11 +7,13 @@ import AVFoundation
 
 struct ShowSet: OptionSet {
     let rawValue: Int
-    static let calendar = ShowSet(rawValue: 1 << 0) // 1
-    static let reminder = ShowSet(rawValue: 1 << 1) // 2
-    static let routine  = ShowSet(rawValue: 1 << 2) // 4
-    static let memo     = ShowSet(rawValue: 1 << 3) // 8
-    static let size = 4
+    static let calendar = ShowSet(rawValue: 1 << 0) //  1
+    static let reminder = ShowSet(rawValue: 1 << 1) //  2
+    static let memo     = ShowSet(rawValue: 1 << 2) //  4
+    static let routine  = ShowSet(rawValue: 1 << 3) //  8 -- routine on dial
+    static let routList = ShowSet(rawValue: 1 << 4) //  16 -- routine on list
+    static let routDemo = ShowSet(rawValue: 1 << 5) //  32 -- routine demo version
+    static let size = 5
 }
 
 class Show {
@@ -31,8 +33,8 @@ class Show {
         var strActs = [StrAct]()
         strActs.append(showSet.contains(.calendar) ? StrAct("hide calendar" , .hideCalendar) : StrAct("show calendar" , .showCalendar))
         strActs.append(showSet.contains(.reminder) ? StrAct("hide reminder" , .hideReminder) : StrAct("show reminder" , .showReminder))
-        strActs.append(showSet.contains(.routine)  ? StrAct("hide routine"  , .hideRoutine)  : StrAct("show routine"  , .showRoutine))
         strActs.append(showSet.contains(.memo)     ? StrAct("hide memo"     , .hideMemo)     : StrAct("show memo"     , .showMemo))
+        //strActs.append(showSet.contains(.routine)  ? StrAct("hide routine"  , .hideRoutine)  : StrAct("show routine"  , .showRoutine))
         return strActs
     }
 
@@ -42,13 +44,15 @@ class Show {
 
         case .hideCalendar:  showSet.remove(.calendar)
         case .hideReminder:  showSet.remove(.reminder)
-        case .hideRoutine:   showSet.remove(.routine)
         case .hideMemo:      showSet.remove(.memo)
+        case .hideRoutine:   showSet.remove(.routine)
+        case .hideRoutList:  showSet.remove(.routList)
 
         case .showCalendar:  showSet.insert(.calendar)
         case .showReminder:  showSet.insert(.reminder)
-        case .showRoutine:   showSet.insert(.routine)
         case .showMemo:      showSet.insert(.memo)
+        case .showRoutine:   showSet.insert(.routine)
+        case .showRoutList:  showSet.insert(.routList)
 
         default: break
         }

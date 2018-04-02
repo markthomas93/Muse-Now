@@ -75,7 +75,7 @@ class TreeColorTitleMarkCell: TreeTitleMarkCell {
         titleFrame = CGRect(x: titleX, y: 0,      width: titleW, height: bezelH)
         bezelFrame = CGRect(x: bezelX, y: bezelY, width: bezelW, height: bezelH)
         infoFrame  = CGRect(x: infoX,  y: infoY,  width: infoW,  height: infoW)
-        infoTap    = CGRect(x: infoTx, y:0,       width: height, height: height)
+        infoTap    = CGRect(x: infoTx, y: 0,      width: height, height: height)
         markFrame  = CGRect(x: markX,  y: markY,  width: markW , height: markH)
     }
 

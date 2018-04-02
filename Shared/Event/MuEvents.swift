@@ -12,34 +12,32 @@ class MuEvents {
     let session = Session.shared
     let memos = Memos.shared
     let marks = Marks.shared
-
+    
     var calendars = [EKCalendar]()
     var events = [MuEvent]()
     var idEvents = [String:MuEvent]() // find event based on eventId
     var timeEvent: MuEvent!         // unique event for displaying time
     var timeEventIndex : Int = -1   // index of timeEvent in muEvents
-
+    
     let eventStore = EKEventStore()
     var refreshTimer = Timer()
-
-
+    
+    
     /**
      Main entry for updating events
      - via: Actions.doRefresh
      */
     func updateEvents(_ completion: @escaping () -> Void) {
-
+        
         // real events used for production
         getRealEvents(Show.shared.showSet) { ekEvents, ekReminds, memos, routine in
-
+            
             self.events.removeAll()
             self.events = ekEvents + ekReminds + memos + routine //+ self.getNearbyEvents()
             self.idEvents = self.events.reduce(into: [String: MuEvent]()) { $0[$1.eventId] = $1 }
             self.sortTimeEventsStart()
             self.applyMarks()
-            self.marks.sendSyncFile()
-            self.memos.sendSyncFile()
-            Cals.shared.sendSyncFile()
+            Active.shared.sendSyncRequest()
             completion()
         }
         NotificationCenter.default.removeObserver(self)
@@ -47,24 +45,24 @@ class MuEvents {
     }
     
     @objc private func EkNotification(notification: NSNotification) {
-
+        
         Log("📅 notification:\(notification.name.rawValue)")
-
+        
         // often, more than one notification comes in a batch, so defer multiple refreshes
         refreshTimer.invalidate()
         refreshTimer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false, block: {_ in
             Anim.shared.addClosure(title:"markCalendarAdditions") { self.markCalendarAdditions() }
         })
     }
-
+    
     /**
      After Notification, mark any events that were added or changed
      - via: EkNotification
      */
     func markCalendarAdditions() {
-
+        
         getRealEvents([.calendar,.reminder]) { ekEvents, ekReminds, memos, routine in
-
+            
             for nowEvents in [ekEvents,ekReminds] {
                 for event in nowEvents {
                     // new event added
@@ -81,27 +79,28 @@ class MuEvents {
             Actions.shared.doAction(.refresh)
         }
     }
-
+    
     /**
      Get events from several data sources, each on its own thread
      */
-
     func getRealEvents(_ set:ShowSet, _ completion: @escaping (
         _ ekEvents      : [MuEvent],
         _ ekReminders   : [MuEvent],
         _ memos         : [MuEvent],
         _ routine       : [MuEvent]
         ) -> Void) -> Void  {
-
+        
+        
+        Log("⚡️ getRealEvents")
         DispatchQueue.global(qos: .utility).async {
             
             let group = DispatchGroup()
-
+            
             var ekEvents    = [MuEvent]()
             var ekReminders = [MuEvent]()
             var memos       = [MuEvent]()
             var routine     = [MuEvent]()
-
+            
             // ekevents
             if Show.shared.canShow(.calendar) {
                 group.enter()
@@ -138,6 +137,7 @@ class MuEvents {
                     group.leave()
                 }
             }
+            
             // marks
             group.enter()
             self.marks.unarchiveMarks() {
@@ -154,19 +154,19 @@ class MuEvents {
             }
         }
     }
-
-
+    
+    
     /**
      Get EventKit events after getting permission
      */
     func getEkEvents(completion: @escaping (_ result:[MuEvent]) -> Void) {
-
+        
         let store = EKEventStore()
-
+        
         store.requestAccess(to: .event) { (accessGranted: Bool, error: Error?) in
-
+            
             DispatchQueue.main.async {
-
+                
                 if let error = error {
                     print("there was an errror \(error.localizedDescription)")
                 }
@@ -179,7 +179,7 @@ class MuEvents {
             }
         }
     }
-
+    
     func readEkEvents(_ store: EKEventStore, _ completion: @escaping (_ result:[MuEvent]) -> Void) {
         
         let store = EKEventStore()
@@ -209,7 +209,7 @@ class MuEvents {
             completion(events)
         }
     }
-
+    
     /**
      Get EventKit reminders after getting permission
      */
@@ -225,7 +225,7 @@ class MuEvents {
                     print("there was an errror \(error.localizedDescription)")
                 }
                 if accessGranted {
-
+                    
                     let (bgnTime,endTime) = MuDate.prevNextWeek()
                     let pred = store.predicateForIncompleteReminders(withDueDateStarting: bgnTime!, ending:endTime!, calendars: nil)
                     
@@ -251,9 +251,9 @@ class MuEvents {
      -via: Actions.doAddEvent
      */
     func addEvent(_ event:MuEvent) {
-
+        
         events.append(event)
-
+        
         if event.type == .memo {
             memos.addMemoEvent(event)
         }
@@ -265,7 +265,7 @@ class MuEvents {
     func updateEvent(_ updateEvent:MuEvent) {
         
         var index = events.binarySearch({$0.bgnTime < updateEvent.bgnTime})
-
+        
         while index < events.count {
             let event = events[index]
             if events[index].bgnTime != updateEvent.bgnTime {
@@ -278,21 +278,6 @@ class MuEvents {
                 return
             }
             index += 1
-        }
-    }
-
-    /// fake events used for testing
-    func updateFakeEvents(_ completion: @escaping () -> Void) -> Void {
-        
-        getFakeEvents() { events_ in
-
-            self.events.removeAll()
-            self.events = events_
-            self.sortTimeEventsStart()
-            self.marks.sendSyncFile()
-            self.memos.sendSyncFile()
-            Cals.shared.sendSyncFile()
-            completion()
         }
     }
     
@@ -314,21 +299,21 @@ class MuEvents {
      Find nearest time index
      - calls: Collection+Search binarySearch
      */
-
+    
     func getTimeIndex(_ insertTime: TimeInterval) -> Int {
         let result = events.binarySearch({$0.bgnTime < insertTime})
         return result
     }
-
+    
     /**
      Attempt to get next mark, if non then next event
      previous marked event, or previus event of none were marked
      */
     func getLastNextEvents() -> (MuEvent?, MuEvent?) {
-
+        
         var lastEvent: MuEvent!
         var nextEvent: MuEvent!
-
+        
         let timeNow = Date().timeIntervalSince1970
         for event in events {
             if event.bgnTime < timeNow {
@@ -350,7 +335,7 @@ class MuEvents {
         }
         return (lastEvent, nextEvent)
     }
-
+    
     func minuteTimerTick() {
         
         if timeEvent == nil { return }

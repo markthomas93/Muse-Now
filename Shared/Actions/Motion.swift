@@ -48,7 +48,7 @@ class Motion: NSObject {
         super.init()
         if manager.isAccelerometerAvailable {
             //manager.accelerometerUpdateInterval = 0.01 // 100 fps
-            manager.deviceMotionUpdateInterval = 1.0/30.0
+            manager.deviceMotionUpdateInterval = 1.0/60.0
             //manager.gyroUpdateInterval = 1.0/5.0
         }
     }
@@ -174,6 +174,10 @@ class Motion: NSObject {
      */
     func testNod(_ motion: CMDeviceMotion!) -> Bool {
 
+        if !Memos.shared.memoSet.contains(.autoRec) {
+            return false
+        }
+
         let nowTime = Date().timeIntervalSince1970
 
         if let motion = motion {
@@ -198,9 +202,8 @@ class Motion: NSObject {
         }
         return false
     }
+
     // gesture actions
-
-
 
     func shake1Action() { Record.shared.finishRecording() }
     func shake2Action() { Record.shared.recordAudioDelete() }
@@ -310,7 +313,7 @@ class Motion: NSObject {
         startAccelerometer()
 
         #if os(watchOS)
-            WKExtension.shared().isAutorotating = true
+            //?? WKExtension.shared().isAutorotating = true
         #endif
     }
 

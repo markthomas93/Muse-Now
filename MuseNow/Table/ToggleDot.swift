@@ -29,20 +29,21 @@ class ToggleDot: UIView {
         dot.backgroundColor = .clear
         self.addSubview(dot)
     }
+
     func setMark(_ isOn_:Bool) {
         isOn = isOn_
         dot.backgroundColor = isOn ? .white : .clear
         event?.mark = isOn
     }
+
     func toggle() {
         setMark(!isOn)
     }
-     
 }
 
 class ToggleCheck: UIView {
     
-    enum MarkType { case none, dash, check, question }
+    enum MarkType { case none, dash, check }
     var check : UIImageView!
     var event : MuEvent!
     var mark = MarkType.none
@@ -72,7 +73,7 @@ class ToggleCheck: UIView {
         
     }
     
-    func setGray(_ alpha_:CGFloat) {
+    func setGray(_ alpha_:Float) {
 
         if alpha_ == 1.0 {
             check.image = UIImage(named: "icon-check.png")!

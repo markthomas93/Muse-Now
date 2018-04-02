@@ -9,7 +9,13 @@ import UIKit
  - parent: toggle ✓/☐ will set all children ✓/☐
  - child: toggle  ✓/☐ will parent to  ✓/-/☐
  */
-public enum SetFrom: Int, Codable { case none, parent, child, both }
+
+struct SetFrom: OptionSet, Codable {
+    let rawValue: UInt
+    static let parent = SetFrom(rawValue: 1 << 0) //  1
+    static let child  = SetFrom(rawValue: 1 << 1) //  2
+}
+
 
 /**
  Optional info disclosure upon first expand
@@ -28,7 +34,7 @@ public class TreeSetting: Codable {
 
     var member  = 0         // member of set (using OptionSet bit flags)
     var set     = 0         // OptionSet bit flags
-    var setFrom = SetFrom.both // modifyable from { none,child,parent,both }
+    var setFrom = SetFrom([])  // modifyable from { none,child,parent,both }
     var showInfo = ShowInfo.infoNone
 
     func isOn() -> Bool {
@@ -48,7 +54,7 @@ public class TreeSetting: Codable {
         return isOn()
     }
 
-    init(set set_:Int, member member_:Int,_ setFrom_:SetFrom = .both, _ showInfo_:ShowInfo = .infoNone) {
+    init(set set_:Int, member member_:Int,_ setFrom_:SetFrom = [.parent,.child], _ showInfo_:ShowInfo = .infoNone) {
 
         set      = set_
         setFrom  = setFrom_

@@ -85,6 +85,7 @@ extension Anim {
         }
             // finish animation
         else if abs(sceneFrame) >= Anidex.animEnd.rawValue {
+            execClosures()
             gotoStartupAnim()
         }
              // animNow over hour dots, so pause for any marks

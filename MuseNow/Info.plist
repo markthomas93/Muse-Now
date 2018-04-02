@@ -17,9 +17,9 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2018.03.08</string>
+	<string>2118.09</string>
 	<key>CFBundleVersion</key>
-	<string>3</string>
+	<string>9</string>
 	<key>CLKComplicationPrincipalClass</key>
 	<string>$(PRODUCT_MODULE_NAME).Complication</string>
 	<key>CLKComplicationSupportedFamilies</key>
@@ -59,7 +59,7 @@
 	<string>Access to Speech</string>
 	<key>NSUbiquitousContainers</key>
 	<dict>
-		<key>iCloud.com.muse.MuseNow</key>
+ 		<key>iCloud.com.muse.MuseNow</key>
 		<dict>
 			<key>NSUbiquitousContainerIsDocumentScopePublic</key>
 			<true/>
@@ -67,6 +67,8 @@
 			<string>MuseNow</string>
 			<key>NSUbiquitousContainerSupportedFolderLevels</key>
 			<string>Any</string>
+            <key>NSUbiquitousContainerName</key>
+            <string>MuseNow</string>
 		</dict>
 	</dict>
 	<key>UIFileSharingEnabled</key>
@@ -92,6 +94,8 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<true/>
 	<key>WKCompanionAppBundleIdentifier</key>
 	<string>com.muse.MuseNow</string>
 </dict>

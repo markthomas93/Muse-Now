@@ -59,12 +59,14 @@ class Active {
         }
         anim.gotoStartupAnim()
     }
+
     func sendSyncRequest() {
 
         Settings.shared.sendSyncFile()
         MuEvents.shared.marks.sendSyncFile()
         MuEvents.shared.memos.sendSyncFile()
         Cals.shared.sendSyncFile()
+        Routine.shared.sendSyncFile()
     }
 
     /**

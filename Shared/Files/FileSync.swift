@@ -17,13 +17,13 @@ class FileSync: NSObject, FileManagerDelegate {
      - via: remote device, which then calls doRefresh
      */
 
-    func saveData(_ data:Data!, _ fileTime:TimeInterval) -> Bool {
+    func saveData(_ data:Data!, _ fileName_:String, _ fileTime:TimeInterval) -> Bool {
 
         let deltaTime = fileTime - memoryTime
         if deltaTime > 0 {
-            Log ("⧉ saveData \(fileName) \(memoryTime) ➛ \(fileTime) 𝚫\(deltaTime)")
+            Log ("⧉ saveData \(fileName_) \(memoryTime) ➛ \(fileTime) 𝚫\(deltaTime)")
             do {
-                let url = FileManager.documentUrlFile(self.fileName)
+                let url = FileManager.documentUrlFile(fileName_)
                 try data.write(to:url)
                 //TODO setup before write
                 var fileAttributes = try FileManager.default.attributesOfItem(atPath:url.path)
@@ -37,16 +37,23 @@ class FileSync: NSObject, FileManagerDelegate {
             }
         }
         else {
-            Log ("⧉ saveData \(fileName) No Change 𝚫\(deltaTime)")
+            Log ("⧉ saveData \(fileName_) No Change 𝚫\(deltaTime)")
         }
         return false
     }
+    func saveData(_ data:Data!, _ fileTime:TimeInterval) -> Bool {
+        return saveData(data,fileName,fileTime)
+    }
+
     /**
      Read file into data
      */
     func unarchiveData(completion: @escaping (_ data: Data?) -> Void) {
+
         let url = FileManager.documentUrlFile(self.fileName)
+
         if let data = NSData(contentsOf: url as URL) as Data? {
+
             memoryTime = getFileTime()
             Log ("⧉ unarchiveData:\(fileName) memoryTime:\(memoryTime) count:\(data)")
             completion(data)
@@ -71,7 +78,6 @@ class FileSync: NSObject, FileManagerDelegate {
         return false
     }
 
-
     /**
      Move all files that match a prefix string, such as "Memo_" to iCloudDrive directory
      */
@@ -82,21 +88,23 @@ class FileSync: NSObject, FileManagerDelegate {
             let fileMgr = FileManager.default
             fileMgr.delegate = self
             let documentUrl = FileManager.documentURL()
-            let iDriveUrl = FileManager.iCloudDriveURL()
+            if let iDriveUrl = FileManager.iCloudDriveURL() {
 
-            do { let files = try fileMgr.contentsOfDirectory(atPath: documentUrl.path)
-                 for fname in files {
-                    if fname.hasPrefix(prefix) {
-                        let removeUrl = documentUrl.appendingPathComponent(fname)
-                        let driveUrl = iDriveUrl!.appendingPathComponent(fname)
-                        if fileMgr.fileExists(atPath: driveUrl.path) { continue }
-                        try FileManager().copyItem(at:removeUrl, to:driveUrl)
-                        // try fileMgr.removeItem(at: remURL)
+                do { let files = try fileMgr.contentsOfDirectory(atPath: documentUrl.path)
+                    for fname in files {
+                        if fname.hasPrefix(prefix) {
+                            let removeUrl = documentUrl.appendingPathComponent(fname)
+                            let driveUrl = iDriveUrl.appendingPathComponent(fname)
+                            if fileMgr.fileExists(atPath: driveUrl.path) { continue }
+                            try FileManager().copyItem(at:removeUrl, to:driveUrl)
+                            // try fileMgr.removeItem(at: remURL)
+                        }
                     }
                 }
+                catch { print("moveAllDocPrefix: error:\(error)") }
             }
-            catch { print("\(#function): error:\(error)") }
         }
+
         DispatchQueue.global(qos: .background).async { dispatch() }
     }
 

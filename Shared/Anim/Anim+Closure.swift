@@ -31,10 +31,8 @@ extension Anim {
 
         switch animNow {
             
-        case .futrPause,
-             .pastPause,
-             .pastMark,
-             .futrMark: execClosure(closure) // no need to wait while pausing
+        case .futrPause, .futrMark,
+             .pastPause, .pastMark: execClosure(closure) // no need to wait while pausing
             
         default:        closures.append(closure)
         /**/            Log("𐆄 \(#function)")

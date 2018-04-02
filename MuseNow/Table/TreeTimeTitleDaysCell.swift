@@ -80,7 +80,7 @@ class TreeTimeTitleDaysCell: TreeTitleCell {
         let bezelH = height - marginH
         let bezelW = width - bezelX
 
-        let timeX  = marginW
+         let timeX  = marginW
         let timeY  = bezelY + marginH/2
         let timeH  = bezelH - marginH
 
@@ -97,7 +97,7 @@ class TreeTimeTitleDaysCell: TreeTitleCell {
         leftFrame  = CGRect(x: leftX,  y: leftY,  width: leftW,  height: leftW)
         timeFrame  = CGRect(x: timeX,  y: timeY,  width: timeW,  height: timeH)
         titleFrame = CGRect(x: titleX, y: titleY, width: titleW, height: titleH)
-        daysFrame  = CGRect(x: daysX,  y: daysY,  width: daysW , height: daysH)
+        daysFrame  = CGRect(x: daysX,  y: daysY,  width: daysW,  height: daysH)
         bezelFrame = CGRect(x: bezelX, y: bezelY, width: bezelW, height: bezelH)
     }
 
@@ -105,13 +105,13 @@ class TreeTimeTitleDaysCell: TreeTitleCell {
         
         updateFrames(width)
         
-        self.frame = cellFrame
-        left.frame = leftFrame
-        time.frame = timeFrame
+        self.frame  = cellFrame
+        left.frame  = leftFrame
+        time.frame  = timeFrame
         title.frame = titleFrame
-        days.frame = daysFrame
+        days.frame  = daysFrame
         bezel.frame = bezelFrame
-    
+
     }
 
 }

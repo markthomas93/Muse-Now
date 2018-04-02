@@ -13,19 +13,17 @@ extension WatchCon  {
         let heightStr = String(format:"height:%.f",height)
         let heightMsg = ["size":heightStr as AnyObject]
         
-        var sending = Session.shared.sendMessage(widthMsg, errorHandler: { (error) -> Void in
-            print ("↔︎ testSession width error:\(error)")
+         Session.shared.sendMessage(
+            widthMsg,
+            replyHandler: {_ in },
+            errorHandler: { err in print ("↔︎ testSession width error:\(err)")
         })
-        if !sending {
-              print ("↔︎ testSession UNSENT")
-        }
-        sending = Session.shared.sendMessage(heightMsg, errorHandler: { (error) -> Void in
-            print ("testSession height error:\(error)")
-        })
-        if !sending {
-            print ("↔︎ testSession UNSENT")
-        }
 
+        Session.shared.sendMessage(
+            heightMsg,
+            replyHandler: {_ in },
+            errorHandler: { err in print ("↔︎ testSession height error:\(err)")
+        })
     }
     
     func testApplicationContext() {

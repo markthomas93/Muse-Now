@@ -34,20 +34,26 @@ func DebugLog(_ str: String) -> Bool {
     switch str.substring(to: 1) {
 
     case
-    
-    "🎧", // Hear Via
-    "💬", // bubble animation closure
-    "🔰": // onboarding pages (japanese beginnner symbol)
+     "⊕", // motion
+    "⚡️", // startup
+    "⧉", // syncfile
+    "←", // session receiving
+    "↔︎", // session activation state
+    "→": // session sending
 
         print(MuDate.getHourMinSecMsec() + ": " + str)
 
     case
-    "⚡️", // startup
+    "𐂷", // tree cell
+    "🎧", // Hear Via
+    "💬", // bubble animation closure
+    "🔰", // onboarding pages (japanese beginnner symbol)
+
+
     "⊕", // motion
     "∿",  // audio recorder
     "▭", // textfield
-    "⧉", // syncfile
-    "𐂷", // tree cell
+
     "*", // TableVC updates
     "⏲", // timing
 

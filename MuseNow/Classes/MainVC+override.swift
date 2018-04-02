@@ -19,6 +19,7 @@ extension MainVC {
         view.accessibilityIgnoresInvertColors = true  // stay dark in invert mode
         view.backgroundColor = .black
 
+
         updateFrames(view.bounds.size)
         pagesVC.updateFrames(pagesFrame.size)
         view.addSubview(pagesVC.view)
@@ -28,7 +29,16 @@ extension MainVC {
             else           { self.makePages {Timer.delay(4) {Tour.shared.buildInfoSet()}} }
 
         }
-        Muse.shared.testScript() // for future use of ParGraph
+        //Muse.shared.testScript() // for future use of ParGraph
+    }
+
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        if UIAccessibilityIsInvertColorsEnabled() {
+            return .default
+        }
+        else {
+            return .lightContent
+        }
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {

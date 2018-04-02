@@ -23,7 +23,7 @@ struct TourSet: OptionSet {
     static let detail   = TourSet(rawValue: 1 << 4) // 16
     static let buy      = TourSet(rawValue: 1 << 5) // 32
     static let beta     = TourSet(rawValue: 1 << 6) // 64
-    static let size = 6
+    static let size = 7
 }
 
 class Tour {
@@ -117,7 +117,7 @@ class Tour {
 
         initTour()
         var sections = [TourSection]()
-        buildMenuTour(.info,&sections)
+        buildMenuTour([.beta, .info],&sections)
         attachInfoSections(&sections)
     }
 
@@ -136,7 +136,6 @@ class Tour {
         Settings.shared.prepareDemoSettings()
         tourBubbles(tourBubbles) {
             self.stopTour()
-            Settings.shared.finishDemoSettings()
         }
     }
 

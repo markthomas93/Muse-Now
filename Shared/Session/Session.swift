@@ -13,10 +13,13 @@ class Session: NSObject, WCSessionDelegate {
         
         #if os(iOS)
             // watch is paired and app is installed ?
-            if let session = session, session.isPaired && session.isWatchAppInstalled {
-                if session.isReachable {
-                    return session
-                }
+            if
+                let session = session,
+                session.isWatchAppInstalled,
+                session.isPaired,
+                session.isReachable {
+                
+                return session
             }
             return nil /* ask to install watch app? */
         #elseif os(watchOS)
@@ -73,9 +76,6 @@ extension Session {
             catch let error {
                 Log("→ \(#function) error:\(error)")
             }
-        }
-        else {
-            Log("→ \(#function) invalid session")
         }
     }
     
@@ -150,7 +150,35 @@ extension Session {
     // Receiver
     
     func session(_ session: WCSession, didReceive file: WCSessionFile) {
-        
+
+        func moveFileToDoc(_ srcURL: URL, _ fileName: String, _ time: TimeInterval = 0) {
+            let dstURL = FileManager.documentUrlFile(fileName)
+            if let _ = try? FileManager().moveItem(at:srcURL, to:dstURL) {
+                if time != 0 {
+                    //setFileDate(time, dstURL)
+                }
+                DispatchQueue.main.async {
+                    Log("⧉ ← \(#function) moved file:\(fileName)")
+                }
+            }
+            else {
+                Log("⧉ ← \(#function) could NOT move file:\(fileName) !!!")
+            }
+        }
+
+        func setFileDate(_ date: TimeInterval,_ url: URL) {
+
+            let attributes = [
+                FileAttributeKey.creationDate: date,
+                FileAttributeKey.modificationDate: date ]
+
+            do { try FileManager.default.setAttributes(attributes, ofItemAtPath: url.path) }
+            catch { print(error) }
+        }
+
+
+        // begin --------------------
+
         //if let srcStr = try? String(contentsOf:file.fileURL) {
         let srcURL = file.fileURL// URL(string:srcStr)
         if let metadata = file.metadata as [String:AnyObject]? {
@@ -165,32 +193,7 @@ extension Session {
         }
     }
 
-
-      func moveFileToDoc(_ srcURL: URL, _ fileName: String, _ time: TimeInterval = 0) {
-        let dstURL = FileManager.documentUrlFile(fileName)
-        if let _ = try? FileManager().moveItem(at:srcURL, to:dstURL) {
-            if time != 0 {
-                //setFileDate(time, dstURL)
-            }
-            DispatchQueue.main.async {
-                Log("⧉ ← \(#function) moved file:\(fileName)")
-            }
-        }
-        else {
-            Log("⧉ ← \(#function) could NOT move file:\(fileName) !!!")
-        }
-    }
-    
-    func setFileDate(_ date: TimeInterval,_ url: URL) {
-        
-        let attributes = [
-            FileAttributeKey.creationDate: date,
-            FileAttributeKey.modificationDate: date ]
-        
-        do { try FileManager.default.setAttributes(attributes, ofItemAtPath: url.path) }
-        catch { print(error) }
-    }
-}
+  }
 
 // MARK: Interactive  -----------------------
 
@@ -198,13 +201,14 @@ extension Session {
     
     // Sender
     
-    func sendMessage(_ message: [String : Any],  errorHandler: ((Error) -> Void)? = nil) -> Bool {
+    func sendMessage(_ message: [String : Any],  replyHandler: (([String : Any]) -> Void), errorHandler: ((Error) -> Void)? = nil){
         
         if let session = validSession {
             session.sendMessage(message, replyHandler: nil, errorHandler: errorHandler)
-            return true
         }
-        return false
+        else {
+            replyHandler(["reply":"no session"])
+        }
     }
     
     // Receiver
@@ -215,7 +219,7 @@ extension Session {
             Log("← didReceiveMessage: " + self.dumpDict(message))
             self.parseMsg(message)
         }
-        replyHandler(["reply":"yo"])
+        replyHandler(["reply":"didReceiveMessage"])
     }
     
     func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {

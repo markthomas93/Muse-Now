@@ -12,7 +12,6 @@ class Settings: FileSync, Codable {
         super.init()
         fileName = "Settings.json"
     }
-
     func archiveSettings() {
 
         if let data = try? JSONEncoder().encode(settings) {
@@ -22,21 +21,26 @@ class Settings: FileSync, Codable {
         Marks.shared.sendSyncFile()
     }
 
-    func unarchiveSettings(_ completion: @escaping () -> Void) {
-        
+    func unarchiveSettings(_ done: @escaping () -> Void) {
+
+        Log ("⧉⧉ Settings::unarchiveSettings")
+
+        // begin --------------------
         unarchiveData() { data in
+
             if  let data = data,
                 let newRoot = try? JSONDecoder().decode([String:Int].self, from:data) {
 
-                    self.settings.removeAll()
-                    self.settings = newRoot
-
-                    if self.settings.count == 0 { self.settingsFromMemory() }
-                    else                        { self.settingsFromRoot() }
-
-                    return completion()
+                for (key,value) in newRoot {
+                    self.settings[key] = value
+                }
+                self.settingsFromRoot()
+                done()
             }
-            completion()
+            else {
+                self.settingsFromMemory()
+                done()
+            }
         }
     }
 
@@ -49,39 +53,31 @@ class Settings: FileSync, Codable {
     /**
         When initializing for the first time, there are no files yet, so read from default values in memory
      */
-    func settingsFromMemory() { Log ("⧉ Settings::\(#function)")
-        settings["boarding"] = Onboard.shared.state.rawValue
-        settings["showSet"]  = Show.shared.showSet.rawValue
-        settings["hearSet"]  = Hear.shared.hearSet.rawValue
-        settings["saySet"]   = Say.shared.saySet.rawValue
+    func settingsFromMemory() {
+        settings["boarding"]  = Onboard.shared.state.rawValue
+        settings["showSet"]   = Show.shared.showSet.rawValue
+        settings["hearSet"]   = Hear.shared.hearSet.rawValue
+        settings["saySet"]    = Say.shared.saySet.rawValue
+        settings["memoSet"]   = Memos.shared.memoSet.rawValue
         settings["dialColor"] = Int((Actions.shared.scene?.uFade?.floatValue ?? 1.0) * 0xFFFF)
+
+        Log ("⧉ Settings::\(#function) memoSet:\(settings["memoSet"]!)")
         archiveSettings()
     }
 
-    var beforeDemoSettings: [String:Int]!
-    func prepareDemoSettings() {
-        // push settings to beforeDemoSettings
-        beforeDemoSettings = settings
-        // new demo Settings
-        Show.shared.showSet = [.calendar,.reminder,.routine,.memo]
-        Say.shared.saySet = []
-        Actions.shared.dialColor(1.0, isSender: true)
-    }
-    
-    func finishDemoSettings() {
-        settings = beforeDemoSettings
-        archiveSettings()
-        Actions.shared.doAction(.refresh)
-    }
+
     /**
      After first time, values were saved to file, so read from default values from settings value
      */
-    func settingsFromRoot() { Log ("⧉ Settings::\(#function)")
-        if let value   = settings["dialColor"] { Actions.shared.dialColor(Float(value)/Float(0xFFFF), isSender:false) }
-        if let state   = settings["boarding"] { Onboard.shared.state = BoardingState(rawValue:state)! }
-        if let saySet  = settings["saySet"]   { Say.shared.saySet = SaySet(rawValue:saySet) }
-        if let hearSet = settings["hearSet"]  { Hear.shared.hearSet = HearSet(rawValue:hearSet) }
-        if let showSet = settings["showSet"]  { Show.shared.showSet = ShowSet(rawValue:showSet) }
-       }
+    func settingsFromRoot() {
+        if let value    = settings["dialColor"] { Actions.shared.dialColor(Float(value)/Float(0xFFFF), isSender:false) }
+        if let state    = settings["boarding"]  { Onboard.shared.state = BoardingState(rawValue:state)! }
+        if let saySet   = settings["saySet"]    { Say.shared.saySet = SaySet(rawValue:saySet) }
+        if let hearSet  = settings["hearSet"]   { Hear.shared.hearSet = HearSet(rawValue:hearSet) }
+        if let showSet  = settings["showSet"]   { Show.shared.showSet = ShowSet(rawValue:showSet) }
+        if let memoSet  = settings["memoSet"]   { Memos.shared.memoSet = MemoSet(rawValue:memoSet) }
+        Log ("⧉ Settings::\(#function) showSet:\(settings["showSet"]!)")
+
+    }
 }
 

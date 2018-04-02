@@ -13,11 +13,12 @@ class FileMsg:  NSObject {
      */
     class func parseMsg(_ msg: [String : Any]) {
         
-        let memos = Memos.shared
-        let marks = Marks.shared
-        let cals = Cals.shared
-        let anim = Anim.shared
-        let setn = Settings.shared
+        let memos       = Memos.shared
+        let marks       = Marks.shared
+        let cals        = Cals.shared
+        let anim        = Anim.shared
+        let settings    = Settings.shared
+        let routine     = Routine.shared
 
         if // other device has updated a file, such as Memos.plist, Marks.plist
             let postFile = msg["postFile"] as? String,
@@ -25,10 +26,11 @@ class FileMsg:  NSObject {
             let data     = msg["data"] as? Data {
             
             switch postFile {
-            case memos.fileName: memos.receiveFile(data, fileTime)
-            case marks.fileName: marks.receiveFile(data, fileTime)
-            case cals.fileName:  cals.receiveFile(data,  fileTime)
-            case setn.fileName:  setn.receiveFile(data,  fileTime)
+            case memos.fileName:    memos.receiveFile(data, fileTime)
+            case marks.fileName:    marks.receiveFile(data, fileTime)
+            case cals.fileName:     cals.receiveFile(data,  fileTime)
+            case settings.fileName: settings.receiveFile(data, fileTime)
+            case routine.fileName:  routine.receiveFile(data, fileTime)
             default: break
             }
         }
@@ -37,10 +39,11 @@ class FileMsg:  NSObject {
             let getFile = msg["getFile"] as? String {
             
             switch getFile {
-            case memos.fileName: anim.addClosure(title:"getFile memos") { memos.sendPostFile() }
-            case marks.fileName: anim.addClosure(title:"getFile marks") { marks.sendPostFile() }
-            case cals.fileName:  anim.addClosure(title:"getFile cals")  { cals.sendPostFile() }
-            case setn.fileName:  anim.addClosure(title:"getFile setn")  { setn.sendPostFile() }
+            case memos.fileName:    anim.addClosure(title:"getFile memos")      { memos.sendPostFile() }
+            case marks.fileName:    anim.addClosure(title:"getFile marks")      { marks.sendPostFile() }
+            case cals.fileName:     anim.addClosure(title:"getFile cals")       { cals.sendPostFile() }
+            case settings.fileName: anim.addClosure(title:"getFile settings")   { settings.sendPostFile() }
+            case routine.fileName:  anim.addClosure(title:"getFile routine")    { routine.sendPostFile() }
             default: break
             }
         }
@@ -50,10 +53,11 @@ class FileMsg:  NSObject {
             let fileTime = msg["fileTime"] as? TimeInterval{
             
             switch syncFile {
-            case marks.fileName: anim.addClosure(title:"syncFile marks") { marks.recvSyncFile(fileTime) }
-            case memos.fileName: anim.addClosure(title:"syncFile memos") { memos.recvSyncFile(fileTime) }
-            case cals.fileName:  anim.addClosure(title:"syncFile cals") { cals.recvSyncFile(fileTime) }
-            case setn.fileName:  anim.addClosure(title:"syncFile setn") { setn.recvSyncFile(fileTime) }
+            case marks.fileName:    anim.addClosure(title:"syncFile marks")     { marks.recvSyncFile(fileTime) }
+            case memos.fileName:    anim.addClosure(title:"syncFile memos")     { memos.recvSyncFile(fileTime) }
+            case cals.fileName:     anim.addClosure(title:"syncFile cals")      { cals.recvSyncFile(fileTime) }
+            case settings.fileName: anim.addClosure(title:"syncFile settings")  { settings.recvSyncFile(fileTime) }
+            case routine.fileName:  anim.addClosure(title:"syncFile settings")  { routine.recvSyncFile(fileTime) }
             default: break
             }
         }

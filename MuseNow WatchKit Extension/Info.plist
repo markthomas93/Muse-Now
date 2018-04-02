@@ -17,9 +17,9 @@
 	<key>CFBundlePackageType</key>
 	<string>XPC!</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2018.03.08</string>
+	<string>2118.09</string>
 	<key>CFBundleVersion</key>
-	<string>3</string>
+	<string>9</string>
 	<key>CLKComplicationPrincipalClass</key>
 	<string>$(PRODUCT_MODULE_NAME).Complication</string>
 	<key>CLKComplicationSupportedFamilies</key>

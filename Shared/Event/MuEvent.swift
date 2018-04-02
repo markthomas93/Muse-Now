@@ -34,6 +34,7 @@ open class MuEvent: Codable {
     var alarm    = false
     var coord    = Coordinate(0,0)
     var mark     = false // only used by MuseNow, not part of EventKit
+    var show     = true // show on table 
 
     convenience init(reminder : EKReminder) {
         
@@ -62,7 +63,6 @@ open class MuEvent: Codable {
         // location = evnt.location
         // allDay   = evnt.isAllDay
     }
-    
     
     convenience init( _ type_: EventType, _ title_:String) {
         
@@ -111,6 +111,7 @@ open class MuEvent: Codable {
         endTime = bgnTime + TimeInterval(item.durMinutes * 60)
         rgb     = rgb_
         mark    = false
+        show    = false
         eventId = makeEventId()
     }
 

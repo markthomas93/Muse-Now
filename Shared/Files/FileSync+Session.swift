@@ -13,12 +13,13 @@ extension FileSync {
      Send File to another device. Process in the background
      */
     func sendPostFile() {
+
         func dispatch() {
 
             let fileTime = getFileTime()
             if fileTime > 0 {
 
-                Log ("⧉ \(#function) fileName:\(fileName) fileTime:\(fileTime) ")
+                Log ("⧉ sendPostFile fileName:\(fileName) fileTime:\(fileTime) ")
                 let url = FileManager.documentUrlFile(fileName)
                 if let data = NSData(contentsOf: url) {
 
@@ -27,11 +28,10 @@ extension FileSync {
                         "postFile" : fileName,
                         "fileTime" : fileTime,
                         "data"     : data ])
-
                 }
             }
         }
-        DispatchQueue.global(qos: .background).async { dispatch() }
+        DispatchQueue.global(qos: .userInitiated).async { dispatch() }
     }
 
     /**
@@ -47,7 +47,8 @@ extension FileSync {
                 }
             }
         }
-        DispatchQueue.global(qos: .background).async { dispatch() }
+        // begin -------------
+        DispatchQueue.global(qos: .userInitiated).async { dispatch() }
     }
 
     /**
@@ -63,7 +64,8 @@ extension FileSync {
                 "getFile"   : fileName,
                 "fileTime"  : memoryTime])
         }
-        DispatchQueue.global(qos: .background).async { dispatch() }
+        // begin -------------
+        DispatchQueue.global(qos: .userInitiated).async { dispatch() }
     }
 
     /**
@@ -73,14 +75,13 @@ extension FileSync {
     func recvSyncFile(_ updateTime: TimeInterval) {
         func dispatch() {
             let deltaTime = updateTime - memoryTime
-
-            Log ("⧉ \(#function) fileName:\(fileName) \(memoryTime)⟺\(updateTime) 𝚫\(deltaTime)")
-
+            Log ("⧉ recvSyncFile fileName:\(fileName) \(memoryTime)⟺\(updateTime) 𝚫\(deltaTime)")
             if      deltaTime < 0 { sendPostFile() }
             else if deltaTime > 0 { sendGetFile() }
             else                  { /* already in sync */ }
         }
-        DispatchQueue.global(qos: .background).async { dispatch() }
+        // begin -------------
+        DispatchQueue.global(qos: .userInitiated).async { dispatch() }
     }
 
     /**
@@ -91,13 +92,13 @@ extension FileSync {
     func sendSyncFile() {
         func dispatch() {
             memoryTime = getFileTime()
-            Log ("⧉ \(#function) fileName:\(fileName) memoryTime:\(memoryTime)⟺???")
+            Log ("⧉ sendSyncFile fileName:\(fileName) memoryTime:\(memoryTime)⟺???")
             session.sendMsg([
                 "class"      : "FileMsg",
                 "syncFile"   : fileName,
                 "fileTime"   : memoryTime])
         }
-        DispatchQueue.global(qos: .background).async { dispatch() }
+        DispatchQueue.global(qos: .userInitiated).async { dispatch() }
     }
 
 }

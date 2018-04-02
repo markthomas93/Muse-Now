@@ -28,6 +28,7 @@ class BubblesPlaying {
             bubble.bubBase?.cancelBubble()
         }
         BubbleCovers.shared.fadeRemoveRemainingCovers()
+        Show.shared.showSet.remove(.routine)
         playing = false
     }
     /**

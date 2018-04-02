@@ -22,7 +22,7 @@ class Cals: FileSync {
     // EKCalendar --------------------------------------------
 
     /// read selected calendars from file and filter from current set of eventKit Calendars
-    func unarchiveCals(_ store: EKEventStore, _ completion: @escaping () ->Void) {
+    func unarchiveCals(_ store: EKEventStore, _ done: @escaping () ->Void) {
         
         // clear everything
         ekCals.removeAll()
@@ -60,15 +60,16 @@ class Cals: FileSync {
 
             if  let data = data,
                 let fileCals = try? JSONDecoder().decode([Cal].self, from:data) {
+
                 for fileCal in fileCals {
                     if let memCal = self.idCal[fileCal.calId] {
                         memCal.isOn = fileCal.isOn
                     }
                 }
-                return completion()
+                done()
             }
             else {
-                completion()
+                done()
             }
         }
     }
@@ -78,12 +79,15 @@ class Cals: FileSync {
     func archiveCals(done:@escaping CallVoid) {
 
         if let data = try? JSONEncoder().encode(cals) {
+
             let _ = saveData(data, Date().timeIntervalSince1970)
             Actions.shared.doRefresh(/*isSender*/false)
             sendSyncFile()
-            return done()
+            done()
         }
-        done()
+        else {
+            done()
+        }
     }
 
 

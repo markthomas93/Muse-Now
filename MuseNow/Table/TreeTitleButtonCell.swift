@@ -113,7 +113,7 @@ class TreeTitleButtonCell: TreeTitleCell {
                       alpha:        newAlpha,
                       animated:     animated)
 
-        newAlpha = newAlpha * newAlpha
+        //newAlpha = newAlpha * newAlpha
         let isHigh = [.forceHigh,.high].contains(highlighting)
         let newColor = isHigh ? .lightGray : background
         if animated {
@@ -130,11 +130,14 @@ class TreeTitleButtonCell: TreeTitleCell {
 
     override func touchCell(_ location: CGPoint, isExpandable:Bool) {
 
+        let wasHighlighted = [.high,.forceHigh].contains(highlighting)
         super.touchCell(location, isExpandable:isExpandable)
 
         let toggleX = frame.size.width - frame.size.height
         if location.x > toggleX {
-            butnAct?()
+            if wasHighlighted {
+                butnAct?()
+            }
         }
     }
 

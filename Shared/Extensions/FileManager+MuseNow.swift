@@ -32,12 +32,16 @@ import Foundation
      iCloud Drive Directory for Documents
     */
     static func iCloudDriveURL() -> URL! {
-        let fileMan = FileManager.default
-        if  let ubiqURL = fileMan.url(forUbiquityContainerIdentifier: nil) {
+
+        let fileMananger = FileManager.default
+        if  let ubiqURL = fileMananger.url(forUbiquityContainerIdentifier: nil) {
+
             let iCloudURL = ubiqURL.appendingPathComponent("Documents")
-            if !fileMan.fileExists(atPath: iCloudURL.path, isDirectory: nil) {
-                do { try fileMan.createDirectory(at: iCloudURL, withIntermediateDirectories: true, attributes: nil) }
-                catch let error as NSError { print(error) }
+            if !fileMananger.fileExists(atPath: iCloudURL.path, isDirectory: nil) {
+                do { try fileMananger.createDirectory(at: iCloudURL, withIntermediateDirectories: true, attributes: nil) }
+                catch let error as NSError {
+                    print(error)
+                }
             }
             return iCloudURL
         }

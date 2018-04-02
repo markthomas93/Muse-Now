@@ -65,6 +65,9 @@ extension UIView {
         return path
     }
 
+    /**
+     Used for shaping a button
+    */
     func addSolidBorder(color: UIColor, radius:CGFloat) {
         let lineWidth = CGFloat(1)
         let m = lineWidth // margin

@@ -18,9 +18,15 @@ extension EventTableVC {
         dateEvents.removeAll()
         
         var posY = CGFloat(0)
-        
+
+        let noRoutineList = Show.shared.showSet.intersection(.routList).isEmpty
+
         for event in events {
-            
+
+            if event.type == .routine && noRoutineList {
+                continue
+            }
+
             let bgnDate = Date(timeIntervalSince1970:event.bgnTime)
             let bgnDayComps = cal.components([.year, .month, .day, .timeZone], from: bgnDate)
             let bgnDayDate  = cal.date(from: bgnDayComps)
@@ -55,7 +61,4 @@ extension EventTableVC {
         self.tableView.reloadData()
         updating = false
     }
-    
- 
-
 }

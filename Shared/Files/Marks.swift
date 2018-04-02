@@ -61,15 +61,20 @@ class Marks: FileSync, Codable {
         Marks.shared.sendSyncFile()
     }
 
-    func unarchiveMarks(_ completion: @escaping () -> Void) {
+    func unarchiveMarks(_ done: @escaping () -> Void) {
+        
         unarchiveData() { data in
             if let data = data,
                 let newIdMark = try? JSONDecoder().decode([String:Mark].self, from:data) {
+
                 self.idMark.removeAll()
                 self.idMark = newIdMark
-                return completion()
+                done()
             }
-            completion()
+            else {
+                done()
+            }
+
         }
 
     }

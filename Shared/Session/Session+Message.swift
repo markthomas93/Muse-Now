@@ -10,10 +10,11 @@ extension Session {
      - via: Record.(recordMenu).setAction
      */
     func sendMsg(_ msg: [String : Any]) { Log("→ \(#function) " + dumpDict(msg))
-        let _ = sendMessage( msg, errorHandler: { error in
-            // if cannot sent to live app, then cache it for later
-            self.cacheMsg(msg) // Log("→ \(#function) error:\(error.localizedDescription)")
-        })
+        sendMessage(
+            msg,
+            replyHandler: { _ in },
+            errorHandler: { error in self.cacheMsg(msg) } // Log("→ \(#function) error:\(error.localizedDescription)")
+        )
     }
     
     /**

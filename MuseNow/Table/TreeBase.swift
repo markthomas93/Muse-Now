@@ -23,7 +23,7 @@ class TreeBases: FileSync {
             for nodeChild in node.children {
                 if nodeChild.title == baseChild.name {
                     nodeChild.setting = baseChild.setting
-                    Log("𐂷 merge \(nodeChild.title)")
+                    //Log("𐂷 merge \(nodeChild.title)")
                     merge(nodeChild,baseChild)
                     break
                 }

@@ -26,13 +26,16 @@ public enum DoAction : Int { case
     showCalendar, hideCalendar,
     showReminder, hideReminder,
     showRoutine,  hideRoutine,
-    showMemo,     hideMemo,
+    showRoutList, hideRoutList,
 
+    showMemo,      hideMemo,
+    memoWhereOn,    memoWhereOff,
+    memoAutoRecOn, memoAutoRecOff,
+    memoMoveAll,   memoCopyAll, memoClearAll,
     dialColor,
 
     showEvents, showAlarms, showMarks,showTime,
-    markOn, markOff,
-    memoMoveAll, markClearAll,
+    markOn, markOff, markClearAll,
     noteAdd, noteRemove,
     //chimeOff, chimeLow, chimeMedium, chimeHigh, chimeOn,
     debugOn, debugOff,
@@ -101,9 +104,7 @@ class Actions {
      */
     func doRefresh(_ isSender:Bool) {
 
-        scene?.pauseScene()
-
-        Settings.shared.unarchiveSettings {
+        func refreshEvents() {
 
             MuEvents.shared.updateEvents() {
 
@@ -120,15 +121,19 @@ class Actions {
                 #if os(watchOS)
                     Crown.shared.updateCrown()
                 #endif
+                if isSender {
+                    Active.shared.sendSyncRequest()
+                    Session.shared.sendMsg(
+                        ["class"   : "Actions",
+                         "refresh" : "yo"])
+                }
             }
-             Settings.shared.sendSyncFile()
         }
-        
-        if isSender {
-            
-            Session.shared.sendMsg(
-                ["class"   : "Actions",
-                 "refresh" : "yo"])
+
+        // begin ---------------------------
+        scene?.pauseScene()
+        Settings.shared.unarchiveSettings {
+            refreshEvents()
         }
     }
 
@@ -157,7 +162,7 @@ class Actions {
         tableDelegate?.updateTable(MuEvents.shared.events)
         scene.updateSceneFinish()
         if event.type == .memo {
-            Memos.shared.updateMemoArchive()
+            Memos.shared.archiveMemos {}
         }
         if isSender,
             let data = try? JSONEncoder().encode(event) {
@@ -219,7 +224,7 @@ class Actions {
         strActs.append(contentsOf:Say.shared.getMenus())
         
         strActs.append(StrAct("clear all marks",.markClearAll))
-        strActs.append(StrAct("clear all memos",.memoMoveAll))
+        strActs.append(StrAct("clear all memos",.memoClearAll))
         strActs.append(StrAct("refresh",.refresh))
     }
 
@@ -246,8 +251,9 @@ class Actions {
         case  // show
         .showCalendar, .hideCalendar,
         .showReminder, .hideReminder,
+        .showMemo,     .hideMemo,
         .showRoutine,  .hideRoutine,
-        .showMemo,     .hideMemo:
+        .showRoutList, .hideRoutList:
 
             Show.shared.doShowAction(act, isSender: true)
 
@@ -280,17 +286,19 @@ class Actions {
             Anim.shared.touchDialGotoTime(event?.bgnTime ?? 0)
 
         case .gotoRecordOn:
+
             Anim.shared.gotoRecordSpoke(on:true)
 
              // animate dial to show whole week
         case .gotoFuture:
+
             Anim.shared.wheelTime = 0
             Anim.shared.animNow = .futrWheel
             Anim.shared.userDotAction()
 
-        case .memoMoveAll:  markAction(act, event, index, isSender)
-        /**/                Memos.shared.moveAll()
-        /**/                doRefresh(isSender)
+        case .memoCopyAll,   .memoMoveAll, .memoClearAll,
+             .memoWhereOn,   .memoWhereOff,
+             .memoAutoRecOn, .memoAutoRecOff: Memos.shared.doAction(act, isSender)
             
         case .refresh:      doRefresh(isSender)
             
