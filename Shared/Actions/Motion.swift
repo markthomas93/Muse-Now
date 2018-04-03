@@ -174,7 +174,7 @@ class Motion: NSObject {
      */
     func testNod(_ motion: CMDeviceMotion!) -> Bool {
 
-        if !Memos.shared.memoSet.contains(.autoRec) {
+        if !Memos.shared.memoSet.contains(.nod2Rec) {
             return false
         }
 
@@ -184,7 +184,7 @@ class Motion: NSObject {
             
             let rotateX = motion.rotationRate.x
 
-            if abs(rotateX) > 8.0 {
+            if abs(rotateX) > 7.0 {
 
                 if rotateX > 0  {
 
@@ -280,7 +280,7 @@ class Motion: NSObject {
         }
             // trace events not captures by gesture
         else {
-            //???// nprintAccleration("",motion)
+            // printAccleration("",motion)
         }
     }
 

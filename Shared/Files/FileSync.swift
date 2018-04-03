@@ -81,7 +81,7 @@ class FileSync: NSObject, FileManagerDelegate {
     /**
      Move all files that match a prefix string, such as "Memo_" to iCloudDrive directory
      */
-    func moveAllDocPrefix(_ prefix:String) {
+    func copyAllDocPrefix(_ prefix:String, done: @escaping () -> ()) {
         
         func dispatch() {
 
@@ -97,16 +97,48 @@ class FileSync: NSObject, FileManagerDelegate {
                             let driveUrl = iDriveUrl.appendingPathComponent(fname)
                             if fileMgr.fileExists(atPath: driveUrl.path) { continue }
                             try FileManager().copyItem(at:removeUrl, to:driveUrl)
-                            // try fileMgr.removeItem(at: remURL)
                         }
                     }
+                    done()
                 }
-                catch { print("moveAllDocPrefix: error:\(error)") }
+                catch {
+                    print("copyAllDocPrefix: error:\(error)")
+                    done()
+                }
             }
         }
 
         DispatchQueue.global(qos: .background).async { dispatch() }
     }
+
+    /**
+     Move all files that match a prefix string, such as "Memo_" to iCloudDrive directory
+     */
+    func clearAllDocPrefix(_ prefix:String, done: @escaping () -> ()) {
+
+        func dispatch() {
+
+            let fileMgr = FileManager.default
+            fileMgr.delegate = self
+            let documentUrl = FileManager.documentURL()
+
+            do { let files = try fileMgr.contentsOfDirectory(atPath: documentUrl.path)
+                for fname in files {
+                    if fname.hasPrefix(prefix) {
+                        let removeUrl = documentUrl.appendingPathComponent(fname)
+                        try fileMgr.removeItem(at: removeUrl)
+                    }
+                }
+                done()
+            }
+            catch {
+                print("clearAllDocPrefix: error:\(error)")
+                done()
+            }
+        }
+        DispatchQueue.global(qos: .background).async { dispatch() }
+    }
+
 
     /**
      Get creation date from file. This is explicitely set and should match between devices.

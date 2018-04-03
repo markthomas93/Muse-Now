@@ -29,7 +29,7 @@
     static let shared = Say()
 
     var saySet = SaySet([.memo,.event, .time])
-    var sayVolume = Float(1.0)
+    var sayVolume = Float(0.5)
 
     #if os(watchOS)
     let itemDuration = TimeInterval(2) // duration when not speaking

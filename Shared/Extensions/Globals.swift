@@ -34,7 +34,8 @@ func DebugLog(_ str: String) -> Bool {
     switch str.substring(to: 1) {
 
     case
-     "⊕", // motion
+
+    "⊕", // motion
     "⚡️", // startup
     "⧉", // syncfile
     "←", // session receiving
@@ -44,6 +45,8 @@ func DebugLog(_ str: String) -> Bool {
         print(MuDate.getHourMinSecMsec() + ": " + str)
 
     case
+
+    "🗣", // Say TTS
     "𐂷", // tree cell
     "🎧", // Hear Via
     "💬", // bubble animation closure

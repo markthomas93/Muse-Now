@@ -42,55 +42,42 @@ extension Tour {
 
         // calendar
         addTour("calendar",[.menu, .info, .detail],[
-            menuMark("calendar",[], [gotoPath("calendar"), "Show calendar events and \n changes will pause","v_056.aif"]), //"v_083.aif"
-            ])
+            menuMark("calendar",[], [gotoPath("calendar"), "Show calendar events and \n changes will pause","v_056.aif"]),
+        ])
 
-        // reminders
-        addTour("reminder",[.menu],[
+        // reminder
+        addTour("reminders",[.menu, .info, .detail],[
             menuMark("reminders",[],[gotoPath("reminder"), "Show reminders, which \n have a deadline","v_057.aif"]),
-            ])
-
-        addTour("reminder",[.info, .detail],[
-            menuMark("reminder", [],[gotoPath("reminder"), "Show timed reminders and \n new reminders will pause","v_084.aif"]),
-            menuInfo("reminder", [],["Add reminders anytime with Siri:","v_085.aif"]),
-            menuCell("reminder", [.nowait], ["\"Hey Siri, remind me to pack for trip tomorrow\"","v_086.aif",20]),
+            menuMark("reminder", [],["Add reminders anytime with Siri:","v_085.aif"]),
+            menuMark("reminder", [.overlay], ["\"Hey Siri, remind me to pack for trip tomorrow\"","v_086.aif"]),
             menuVid1("reminder",.diptych12, [.snugAbove,.nowait], ["WatchSiri2.m4v", 24]),
             menuVid1("reminder",.diptych22, [.snugAbove],         ["PhoneSiri2.m4v", 24])
             ])
 
-           // memos
-        addTour("memos",[.menu],[
+        // memos
+        addTour("memos",[.menu, .info, .detail],[
 
             menuMark("memos",[],[gotoPath("memos"), "record short audio memos \n with location and text","v_201.aif"]),
-            ])
-
-        addTour("memos",[.info, .detail],[
-
-            menuInfo("memos",[],[gotoPath("memos"), "record short audio memos \n with location and text","v_201.aif"]),
-
-//            menuDial("memos", [.highlight, .circular], [ {Actions.shared.doAction(.gotoRecordOn)},
-//                                                        "triple-tap on the dial \n to record memos","v_092.aif",
-//                                                        { Actions.shared.doAction(.gotoFuture)},
-//                                                        { Timer.delay(0.5) {Anim.shared.scene?.uFade?.floatValue = 1 }},
-//                                                        ]),
-//            menuMark("memos.nod", [.overlay], [gotoPath("memos.nod"), "record a memo by nodding \n like nodding your head", "v_211.aif"]),
-//
-//            menuVid1("memos", .diptych12, [.nowait], ["WatchMemo2.m4v", 12]),
-//            menuVid1("memos", .diptych22, [],        ["PhoneMemo2.m4v", 12]),
-
-//            menuButn("show.memo",[],[gotoPath("show.memo"),
-//                                     { Actions.shared.doAction(.gotoFuture)},
-//                                     { Timer.delay(0.5) { Anim.shared.scene?.uFade?.floatValue = 1 }},
-//                                     "Move memos to iCloud Drive \n as standard JSON files","v_097.aif",
-//                                     "allowing anyone to experiment \n with personal machine learning","v_098.aif"
-//                ])
+        
+            menuDial("memos", [.highlight, .circular], [ {Actions.shared.doAction(.gotoRecordOn)},
+                                                        "triple-tap on the dial \n to record memos","v_092.aif",
+                                                        { Actions.shared.doAction(.gotoFuture)},
+                                                        { Timer.delay(0.5) {Anim.shared.scene?.uFade?.floatValue = 1 }},
+                                                        ]),
+            menuMark("memos.nod", [.overlay], [gotoPath("memos.nod"), "record a memo by nodding your wrist", "v_211.aif"]),
+            menuVid1("memos", .diptych12, [.nowait], ["WatchMemo2.m4v", 12]),
+            menuVid1("memos", .diptych22, [],        ["PhoneMemo2.m4v", 12]),
+            menuButn("files",[],[gotoPath("files"),
+                                     { Actions.shared.doAction(.gotoFuture)},
+                                     { Timer.delay(0.5) { Anim.shared.scene?.uFade?.floatValue = 1 }},
+                                     "Save memos to iCloud Drive \n as standard JSON files","v_097.aif"
+                                     //"allowing anyone to experiment \n with personal machine learning","v_098.aif"
+                ])
             ])
 
         // routine
-        addTour("routine",[.info, .detail],[
-            menuMark("routine",[],[gotoPath("routine"),
-                                   "Colorize with your routine \n like sleep, meals, work,  ⃨","v_202.aif",
-                                   "to see how events overlap \n with your weekly routine","v_203.aif"]),
+        addTour("routine",[.beta, .detail],[
+            menuMark("routine",[],[gotoPath("routine"), "Preview colorizing the dial with your weekly routine","v_202.aif"]),
 
             menuPanel("routine",[.nowait], [setNode("routine",isOn:false), "here is routine set OFF","v_089.aif"]),
             menuDial ("routine", [.highlight, .circular], ["and how it affects your dial", 6]),
@@ -98,7 +85,7 @@ extension Tour {
             menuPanel("routine", [.nowait],  [setNode("routine",isOn:true), "here is routine set ON","v_090.aif"]),
             menuDial ("routine", [.highlight, .circular], ["showing what may overlap",6]),
 
-            //menuMark("routine.on",[],["routine.on", "Show routine on list of events",8]),
+            menuMark("routine.show",[],[gotoPath("routine.show"), "Show your routine on the timeline of events","v_203.aif"]),
             ])
 
 
@@ -151,7 +138,7 @@ extension Tour {
 //            ])
 
         addTour("tour",[.menu, .info, .detail],[
-            menuInfo("tour",      [],[gotoInfo("tour"),         "to repeat parts of this tour",         "v_123.aif"]),
+            menuInfo("tour", [],[gotoInfo("tour"),         "to replay parts of this tour",         "v_123.aif"]),
             ])
 
         addTour("more",[.menu,.detail],[

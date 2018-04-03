@@ -26,10 +26,7 @@ extension TreeNodes {
         // Calendars  ------------------------------------------------
 
         let showCal = ShowSet.calendar.rawValue
-        let calendars = TreeActNode("calendar & reminders", root, showSet, showCal, .showCalendar , .hideCalendar, [.child], vc)
-
-        // Reminders
-        let _ = TreeActNode("reminders", calendars, showSet, ShowSet.reminder.rawValue, .showReminder, .hideReminder, [.parent], vc)
+        let calendars = TreeActNode("calendar", root, showSet, showCal, .showCalendar , .hideCalendar, [.child], vc)
 
         // cal list
         for (key,cals) in Cals.shared.sourceCals {
@@ -38,17 +35,19 @@ extension TreeNodes {
             }
         }
 
+        // Reminders
+        let _ = TreeActNode("reminders", root, showSet, ShowSet.reminder.rawValue, .showReminder, .hideReminder, [.parent], vc)
+
 
         // Memos
         let showsMemo = ShowSet.memo.rawValue
         let memoSet   = Memos.shared.memoSet.rawValue
         let saveWhere = MemoSet.saveWhere.rawValue
-        let autoRec   = MemoSet.autoRec.rawValue
+        let nod2Rec   = MemoSet.nod2Rec.rawValue
 
         let memos = TreeActNode("memos",     root,  showSet, showsMemo, .showMemo,      .hideMemo,       [], vc)
-        let _ = TreeActNode("auto record",   memos, memoSet, autoRec,   .memoAutoRecOn, .memoAutoRecOff, [], vc)
-        let _ = TreeActNode("save location", memos, memoSet, saveWhere, .memoWhereOn,   .memoWhereOff, [], vc)
-
+        let _ = TreeActNode("nod to record",   memos, memoSet, nod2Rec, .memoNod2RecOn, .memoNod2RecOff, [], vc)
+        //let _ = TreeActNode("save location", memos, memoSet, saveWhere, .memoWhereOn,   .memoWhereOff, [], vc)
 
         let _ = TreeButtonNode("files ", memos, alert: "Memos", "", [
             "Copy to iCloud Drive", { Actions.shared.doAction(.memoCopyAll) },
@@ -62,7 +61,7 @@ extension TreeNodes {
         let routine = TreeActNode("routine", root, showSet, ShowSet.routine.rawValue, .showRoutine, .hideRoutine, [], vc)
 
         // show on list
-        let showOnList = TreeActNode("show on list", routine, showSet, ShowSet.routList.rawValue, .showRoutList, .hideRoutList, [], vc)
+        let showOnList = TreeActNode("show on timeline", routine, showSet, ShowSet.routList.rawValue, .showRoutList, .hideRoutList, [], vc)
         routine.setting.setFrom = []
         showOnList.setting.setFrom = []
 
@@ -87,15 +86,16 @@ extension TreeNodes {
         let dial = TreeNode("dial", .title, more, vc)
         let _ =  TreeDialColorNode("color", dial, vc)
 
-        // hear | mute
-
-//        let saySet = Say.shared.saySet.rawValue
-//        let _  = TreeActNode("event", hear, saySet, SaySet.event.rawValue, .sayEvent, .skipEvent, vc)
-//        let _  = TreeActNode("time",  hear, saySet, SaySet.time.rawValue,  .sayTime,  .skipTime,  vc)
-//        let _  = TreeActNode("memos",  hear, saySet, SaySet.memo.rawValue,  .sayMemo,  .skipMemo,  vc)
+        // hear
 
         let hearSet = Hear.shared.hearSet.rawValue
         let hear = TreeNode("hear", .title, more, vc)
+
+        let saySet = Say.shared.saySet.rawValue
+        let _  = TreeActNode("event",   hear, saySet,  SaySet.event.rawValue, .sayEvent, .skipEvent, [], vc)
+        let _  = TreeActNode("time",    hear, saySet,  SaySet.time.rawValue,  .sayTime,  .skipTime,  [], vc)
+        let _  = TreeActNode("memos",   hear, saySet,  SaySet.memo.rawValue,  .sayMemo,  .skipMemo,  [], vc)
+
         let _  = TreeActNode("speaker", hear, hearSet, HearSet.speaker.rawValue, .hearSpeaker , .muteSpeaker, [], vc)
         let _  = TreeActNode("earbuds", hear, hearSet, HearSet.earbuds.rawValue, .hearEarbuds , .muteEarbuds, [], vc)
 

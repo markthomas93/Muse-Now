@@ -293,6 +293,9 @@ class Dot {
                 else {
                     for eventi in range {
                         let event = events[eventi]
+                        if event.type == .routine {
+                            continue
+                        }
                         if startsThisHour(event) {
                             return event
                         }

@@ -5,7 +5,7 @@ import Foundation
 struct MemoSet: OptionSet, Codable {
     let rawValue: Int
     static let saveWhere = MemoSet(rawValue: 1 << 0) // 1
-    static let autoRec   = MemoSet(rawValue: 1 << 1) // 2
+    static let nod2Rec   = MemoSet(rawValue: 1 << 1) // 2
     static let size = 2
 }
 
@@ -15,7 +15,7 @@ class Memos: FileSync, Codable {
     static let shared = Memos()
 
     var items = [MuEvent]()
-    var memoSet = MemoSet([.autoRec, .saveWhere])
+    var memoSet = MemoSet([.nod2Rec, .saveWhere])
     
     override init() {
         super.init()
@@ -58,15 +58,25 @@ class Memos: FileSync, Codable {
         switch act {
         case .memoWhereOn:    memoSet.insert(.saveWhere)
         case .memoWhereOff:   memoSet.remove(.saveWhere)
-        case .memoAutoRecOn:    memoSet.insert(.autoRec)
-        case .memoAutoRecOff:   memoSet.remove(.autoRec)
+        case .memoNod2RecOn:    memoSet.insert(.nod2Rec)
+        case .memoNod2RecOff:   memoSet.remove(.nod2Rec)
 
-        case .memoMoveAll:
+        case .memoClearAll:
             let isSender = true
-            Actions.shared.markAction(.memoMoveAll, nil, 0, isSender)
-            archiveMemos {
-                self.moveAllDocPrefix("Memo_")
-                Actions.shared.doRefresh(isSender)
+            Actions.shared.markAction(.memoClearAll, nil, 0, isSender)
+            clearAllDocPrefix("Memo_") {
+                self.items.removeAll()
+                self.archiveMemos {
+                    Actions.shared.doRefresh(isSender)
+                }
+            }
+        case .memoCopyAll:
+            let isSender = true
+            Actions.shared.markAction(.memoCopyAll, nil, 0, isSender)
+            copyAllDocPrefix("Memo_") {
+                self.archiveMemos {
+                    Actions.shared.doRefresh(isSender)
+                }
             }
         default: return
         }

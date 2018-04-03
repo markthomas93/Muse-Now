@@ -61,7 +61,7 @@ class Settings: FileSync, Codable {
         settings["memoSet"]   = Memos.shared.memoSet.rawValue
         settings["dialColor"] = Int((Actions.shared.scene?.uFade?.floatValue ?? 1.0) * 0xFFFF)
 
-        Log ("⧉ Settings::\(#function) memoSet:\(settings["memoSet"]!)")
+        Log ("⧉ Settings::\(#function) saySet:\(settings["saySet"]!)")
         archiveSettings()
     }
 
@@ -76,7 +76,7 @@ class Settings: FileSync, Codable {
         if let hearSet  = settings["hearSet"]   { Hear.shared.hearSet = HearSet(rawValue:hearSet) }
         if let showSet  = settings["showSet"]   { Show.shared.showSet = ShowSet(rawValue:showSet) }
         if let memoSet  = settings["memoSet"]   { Memos.shared.memoSet = MemoSet(rawValue:memoSet) }
-        Log ("⧉ Settings::\(#function) showSet:\(settings["showSet"]!)")
+        Log ("⧉ Settings::\(#function) saySet:\(settings["saySet"]!)")
 
     }
 }

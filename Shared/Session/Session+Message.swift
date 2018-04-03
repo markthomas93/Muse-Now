@@ -150,7 +150,8 @@ extension Session {
             case "\(DoAction.markOn)":       return .markOn
             case "\(DoAction.markOff)":      return .markOff
             case "\(DoAction.markClearAll)": return .markClearAll
-            case "\(DoAction.memoMoveAll)": return .memoMoveAll
+            case "\(DoAction.memoCopyAll)":  return .memoCopyAll
+            case "\(DoAction.memoClearAll)": return .memoClearAll
             case "\(DoAction.noteAdd)":      return .noteAdd
             case "\(DoAction.noteRemove)":   return .noteRemove
             case "\(DoAction.refresh)":      return .refresh
@@ -164,7 +165,9 @@ extension Session {
               if // invoke action on a specific event
                 let eventId = msg["eventId"] as? String,
                 let bgnTime = msg["bgnTime"] as? TimeInterval {
+
                 let (event,index) = Dots.shared.findEvent(eventId, bgnTime)
+                
                 if let event = event {
                     
                     let act = parseAction(action)

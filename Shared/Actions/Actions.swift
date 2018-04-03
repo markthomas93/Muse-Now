@@ -30,8 +30,8 @@ public enum DoAction : Int { case
 
     showMemo,      hideMemo,
     memoWhereOn,    memoWhereOff,
-    memoAutoRecOn, memoAutoRecOff,
-    memoMoveAll,   memoCopyAll, memoClearAll,
+    memoNod2RecOn, memoNod2RecOff,
+    memoCopyAll, memoClearAll,
     dialColor,
 
     showEvents, showAlarms, showMarks,showTime,
@@ -296,9 +296,9 @@ class Actions {
             Anim.shared.animNow = .futrWheel
             Anim.shared.userDotAction()
 
-        case .memoCopyAll,   .memoMoveAll, .memoClearAll,
+        case .memoCopyAll,   .memoClearAll,
              .memoWhereOn,   .memoWhereOff,
-             .memoAutoRecOn, .memoAutoRecOff: Memos.shared.doAction(act, isSender)
+             .memoNod2RecOn, .memoNod2RecOff: Memos.shared.doAction(act, isSender)
             
         case .refresh:      doRefresh(isSender)
             
@@ -355,7 +355,7 @@ class Actions {
         case .markOn:       markEvent = dot.setMark(true, event)
         case .markOff:      markEvent = dot.setMark(false, event)
         case .markClearAll: break //!!!! Dots.shared.hideEventsWith(type:.mark)
-        case .memoMoveAll: Dots.shared.hideEventsWith(type:.memo)
+        case .memoCopyAll: Dots.shared.hideEventsWith(type:.memo)
         default: break
         }
         

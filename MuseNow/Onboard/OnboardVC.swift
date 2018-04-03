@@ -134,66 +134,56 @@ class OnboardVC: UIPageViewController {
             finish()
         }
 
-
+        
         onboardPages = [
-            OnboardPage(" What is Muse Now", [
-
-
-                "Muse Now is clock that catches your thoughts.",
+            OnboardPage("A clock that collects your thoughts", [
+                
+                "Muse Now is little clock that collects your thoughts.",
                 "v_301.aif",
-
-                "The clock shows what's next: " +
-                "just raise your wrist to see or hear " +
-                "a countdown to your next event.",
+                
+                "Just raise your wrist to see what's next and " +
+                "nod your wrist to record what you're thinking.",
                 "v_302.aif",
-
-                "Now, while focusing on what's next, " +
-                "say whatever is on your mind, and your " +
-                "thoughts are saved to a private history.",
+                
+                "Over time, your collection of thoughts " +
+                "grows into a private history",
                 "v_303.aif",
 
-
-                "Over time, your private history will help " +
-                "connect: where you were, who you're with, " +
+                "connecting: " +
+                 "where you were, who you're with, " +
                 "what you're doing, and why it matters.",
                 "v_304.aif",
-
-
-                "Ultimately, this history of yours " +
-                "will help you obtain nearly perfect recall: " +
-                "just ask about any person, place or thing.",
+                
+                "This history of yours will help you " +
+                "obtain nearly perfect recall. Just ask " +
+                "about any person, place or thing.",
                 "v_305.aif",
-
-
-                "Moreover, your history will help connect " +
-                "what you say to what you really want " +
+                
+                "Ultimately, your history will help connect " +
+                    "what you say to what you really want " +
                 "from any outside service.",
                 "v_306.aif",
-
-
-
-                "That's our long term goal, but for now: " +
-                "we start with a simple little clock" +
-                "that records your thoughts.",
+                
+                "That's our long term goal. But, for now, " +
+                    "we start small: with a simple little clock " +
+                    "that shows you what's next and " +
+                "collect your thoughts.",
                 "v_307.aif",
-
-
+                
                 nextPage]),
-
-
+            
             OnboardPage("Permissions", [
 
                 "Here is our guarantee",
                 "v_308.aif",
 
-                "You own your own history, " +
-                "which only *you* can see; " +
-                "Muse never sees your history.",
+                "You own your own history, which only *you* can see. " +
+                "Muse never sees your history, and we never will.",
                 "v_309.aif",
 
                 "Instead, your history is kept " +
                 "inside Apple's privacy sandbox, on " +
-                "your iDevices and on Apple's iCloud Drive",
+                "your iDevices and on Apple's iCloud Drive.",
                 "v_310.aif",
 
 

@@ -36,11 +36,12 @@ class Active {
         throttleTimer.invalidate()
         Motion.shared.startMotion()
 
-        // if !Record.shared.isRecording {
-        //     activateAudioTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: {_ in
-        //         Record.shared.activateAudio()
-        //     })
-        // }
+        
+         if !Record.shared.isRecording {
+             activateAudioTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: {_ in
+                 Record.shared.activateAudio()
+             })
+         }
 
         // sometimes, immediately after deactivate, a spurious willActivate is called, so ignore
         let thisTime =  Date().timeIntervalSince1970
