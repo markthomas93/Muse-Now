@@ -326,6 +326,12 @@
 		80C78C821FE37708002E3A95 /* FileSync+Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C78C811FE37708002E3A95 /* FileSync+Session.swift */; };
 		80C78C831FE37708002E3A95 /* FileSync+Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C78C811FE37708002E3A95 /* FileSync+Session.swift */; };
 		80C78C851FE44BE2002E3A95 /* TreeNode+Subclass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C78C841FE44BE2002E3A95 /* TreeNode+Subclass.swift */; };
+		80CDB71A2076A04A0037B181 /* Motion+Print.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80CDB7192076A04A0037B181 /* Motion+Print.swift */; };
+		80CDB71C2076A0970037B181 /* Motion+Gesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80CDB71B2076A0970037B181 /* Motion+Gesture.swift */; };
+		80CDB71E2076A1050037B181 /* Motion+Values.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80CDB71D2076A1050037B181 /* Motion+Values.swift */; };
+		80CDB71F2076A1050037B181 /* Motion+Values.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80CDB71D2076A1050037B181 /* Motion+Values.swift */; };
+		80CDB7202076A16C0037B181 /* Motion+Gesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80CDB71B2076A0970037B181 /* Motion+Gesture.swift */; };
+		80CDB7212076A16F0037B181 /* Motion+Print.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80CDB7192076A04A0037B181 /* Motion+Print.swift */; };
 		80D483EA1FCB3BBD00D28095 /* TreeColorTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D483E91FCB3BBD00D28095 /* TreeColorTitleCell.swift */; };
 		80D483EC1FCB496800D28095 /* TreeTableVC+override.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D483EB1FCB496800D28095 /* TreeTableVC+override.swift */; };
 		80DF78461FF828690089475E /* BubbleOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DF78451FF828690089475E /* BubbleOptions.swift */; };
@@ -677,6 +683,9 @@
 		80BD52351FEB695E00EB4F92 /* BubbleCovers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleCovers.swift; sourceTree = "<group>"; };
 		80C78C811FE37708002E3A95 /* FileSync+Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileSync+Session.swift"; sourceTree = "<group>"; };
 		80C78C841FE44BE2002E3A95 /* TreeNode+Subclass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TreeNode+Subclass.swift"; sourceTree = "<group>"; };
+		80CDB7192076A04A0037B181 /* Motion+Print.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Motion+Print.swift"; sourceTree = "<group>"; };
+		80CDB71B2076A0970037B181 /* Motion+Gesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Motion+Gesture.swift"; sourceTree = "<group>"; };
+		80CDB71D2076A1050037B181 /* Motion+Values.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Motion+Values.swift"; sourceTree = "<group>"; };
 		80CE545E1FA3E0C7005C4D96 /* MuseNow WatchKit App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "MuseNow WatchKit App.entitlements"; sourceTree = "<group>"; };
 		80CE545F1FA3E0CE005C4D96 /* MuseNow WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "MuseNow WatchKit Extension.entitlements"; sourceTree = "<group>"; };
 		80D483E91FCB3BBD00D28095 /* TreeColorTitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeColorTitleCell.swift; sourceTree = "<group>"; };
@@ -816,6 +825,9 @@
 				8004F70E1FA3EE2400F7ED94 /* Actions.swift */,
 				8004F70F1FA3EE2400F7ED94 /* Haptic.swift */,
 				8004F7101FA3EE2400F7ED94 /* Motion.swift */,
+				80CDB7192076A04A0037B181 /* Motion+Print.swift */,
+				80CDB71B2076A0970037B181 /* Motion+Gesture.swift */,
+				80CDB71D2076A1050037B181 /* Motion+Values.swift */,
 				8004F7111FA3EE2400F7ED94 /* Taps.swift */,
 				8004F7121FA3EE2400F7ED94 /* TouchDial.swift */,
 				8004F7131FA3EE2400F7ED94 /* TouchMove.swift */,
@@ -1706,6 +1718,8 @@
 				804D5A281FA3FCAA0025B724 /* EventTable+TimeCell.swift in Sources */,
 				806ACFDB1FC5FC9300220EB6 /* TreeEditTitleCell.swift in Sources */,
 				8004F7931FA3EE2400F7ED94 /* String+extension.swift in Sources */,
+				80CDB71E2076A1050037B181 /* Motion+Values.swift in Sources */,
+				80CDB71A2076A04A0037B181 /* Motion+Print.swift in Sources */,
 				8025E3811FFC0C04004B81F4 /* TouchDialForce.swift in Sources */,
 				803D5D852034C8800082E22D /* TreeBase.swift in Sources */,
 				8004F7B71FA3EE2400F7ED94 /* SayCache.swift in Sources */,
@@ -1736,6 +1750,7 @@
 				800C51B91FC221EF00904121 /* TreeTitleMarkCell.swift in Sources */,
 				8004F6FC1FA3ED5E00F7ED94 /* NodeAnys.swift in Sources */,
 				8076B33E1FE6D151001EDD30 /* BubbleBase.swift in Sources */,
+				80CDB71C2076A0970037B181 /* Motion+Gesture.swift in Sources */,
 				8004F7C11FA3EE2400F7ED94 /* Image+context.swift in Sources */,
 				80AD99891FCBA06B00BECC4A /* TreeTitleCell.swift in Sources */,
 				80550164200A6C2900C390A4 /* OnboardVC.swift in Sources */,
@@ -1752,6 +1767,7 @@
 				8004F7C81FA3EE2400F7ED94 /* Scene.swift in Sources */,
 				8004F7A81FA3EE2400F7ED94 /* Settings.swift in Sources */,
 				8004F7011FA3ED5E00F7ED94 /* Par.swift in Sources */,
+				80CDB7212076A16F0037B181 /* Motion+Print.swift in Sources */,
 				8004F7051FA3ED5E00F7ED94 /* ParObj.swift in Sources */,
 				8004F76A1FA3EE2400F7ED94 /* Anim+Closure.swift in Sources */,
 				8004F77C1FA3EE2400F7ED94 /* MuDate.swift in Sources */,
@@ -1764,6 +1780,7 @@
 				8004F7E31FA3F01600F7ED94 /* WatchCon.swift in Sources */,
 				8022924E2056DDA300594C70 /* RoutineItem.swift in Sources */,
 				8004F7BE1FA3EE2400F7ED94 /* DayHour.swift in Sources */,
+				80CDB7202076A16C0037B181 /* Motion+Gesture.swift in Sources */,
 				8004F7921FA3EE2400F7ED94 /* Globals.swift in Sources */,
 				803D5D822034BB2E0082E22D /* EventType.swift in Sources */,
 				8004F7AA1FA3EE2400F7ED94 /* Hear.swift in Sources */,
@@ -1800,6 +1817,7 @@
 				8004F78E1FA3EE2400F7ED94 /* Dictionary+FileManager.swift in Sources */,
 				8004F7661FA3EE2400F7ED94 /* Active.swift in Sources */,
 				8004F7601FA3EE2400F7ED94 /* Taps.swift in Sources */,
+				80CDB71F2076A1050037B181 /* Motion+Values.swift in Sources */,
 				8004F7961FA3EE2400F7ED94 /* UIImage+Circle.swift in Sources */,
 				8004F70B1FA3ED5E00F7ED94 /* ParWords.swift in Sources */,
 				809E55641FB4C6A700974CB7 /* Audio.swift in Sources */,

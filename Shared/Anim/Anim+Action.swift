@@ -157,6 +157,7 @@ extension Anim {
 
  
     func shutdownAnimation() {  Log("⎚⎚ \(#function)")
+        
         finishTimer.invalidate()
         dots.selectTime(Date().timeIntervalSince1970)
         dots.dotNow = 0.1

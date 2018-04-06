@@ -1,35 +1,63 @@
-10:01:29.640: ⧉ Settings::prepareDemoSettings()
-10:01:29.641: ⧉⧉ Settings::backupSettings to file: Settings.json.backup
-10:01:29.642: ⧉ saveData Settings.json.backup 1522342839.43683 ➛ 1522342889.64215 𝚫50.2053160667419
-10:01:29.651: ⧉ Settings::settingsFromMemory() showSet:31
-10:01:29.651: ⧉ saveData Settings.json 1522342889.64215 ➛ 1522342889.65142 𝚫0.00926804542541504
-10:01:29.656: ⧉⧉ Settings::unarchiveSettings
-10:01:29.656: ⧉ sendSyncFile fileName:Marks.json memoryTime:1522342517.47107⟺???
-10:01:29.657: → sendMsg [syncFile:Marks.json, class:FileMsg, fileTime:1522342517.47107]
-10:01:29.658: ⧉ unarchiveData:Settings.json memoryTime:1522342889.65142 count:92 bytes
-10:01:29.659: ⧉ Settings::settingsFromRoot() showSet:31
-10:01:29.659: ⚡️ getRealEvents
-10:01:29.663: ⧉ unarchiveData:Memos.json memoryTime:1522207748.0481 count:2356 bytes
-10:01:29.666: ⧉ Memos::unarchiveMemos items:7  memoryTime:1522207748.0481
-10:01:29.667: ⚡️ memos
-10:01:29.668: ⧉ unarchiveData:Routine.json memoryTime:1522342839.43157 count:2585 bytes
-10:01:29.673: ⧉ Routine::unarchiveRoutine(done:) catalog:5 memoryTime:1522342839.43157
-10:01:29.674: ⚡️ routine
-10:01:29.676: ⧉ unarchiveData:Marks.json memoryTime:1522342517.47107 count:1721 bytes
-10:01:29.680: ⚡️ marks
-10:01:29.696: ⧉ unarchiveData:Calendars.json memoryTime:1522337716.80289 count:622 bytes
-10:01:29.707: ⚡️ events
-10:01:29.727: ⚡️ reminders
-10:01:29.727: ⚡️ wait: success
-10:01:29.728: ⚡️ notify
-10:01:29.729: ⧉ sendSyncFile fileName:Calendars.json memoryTime:1522337716.80289⟺???
-10:01:29.730: → sendMsg [syncFile:Calendars.json, class:FileMsg, fileTime:1522337716.80289]
-10:01:29.730: ⧉ sendSyncFile fileName:Marks.json memoryTime:1522342517.47107⟺???
-10:01:29.730: ⧉ sendSyncFile fileName:Settings.json memoryTime:1522342889.65142⟺???
-10:01:29.730: ⧉ sendSyncFile fileName:Memos.json memoryTime:1522207748.0481⟺???
-10:01:29.730: → sendMsg [syncFile:Marks.json, class:FileMsg, fileTime:1522342517.47107]
-10:01:29.732: → sendMsg [syncFile:Memos.json, class:FileMsg, fileTime:1522207748.0481]
-10:01:29.730: ⧉ sendSyncFile fileName:Routine.json memoryTime:1522342839.43157⟺???
-10:01:29.732: → sendMsg [syncFile:Settings.json, class:FileMsg, fileTime:1522342889.65142]
-10:01:29.733: → sendMsg [syncFile:Routine.json, class:FileMsg, fileTime:1522342839.43157]
-2018-03-29 10:01:30.087416-0700 MuseNow[6264:5389201] [WC] WCSession counterpart app not installed
+2018-04-06 08:59:45.774554-0700 MuseNow[799:804676] [DYMTLInitPlatform] platform initialization successful
+init() Error:Error Domain=NSOSStatusErrorDomain Code=-50 "(null)"
+2018-04-06 08:59:46.438665-0700 MuseNow[799:804631] Metal GPU Frame Capture Enabled
+2018-04-06 08:59:46.440785-0700 MuseNow[799:804631] Metal API Validation Enabled
+2018-04-06 08:59:46.606695-0700 MuseNow[799:804679] [WC] WCSession counterpart app not installed
+2018-04-06 09:00:02.232334-0700 MuseNow[799:804631] Presenting view controllers on detached view controllers is discouraged <MuseNow.TreeTableVC: 0x102213b00>.
+9:00:03.647: 💬✏︎ makeBubFrame delta:(-124.0, -32.0) fo:(0.0, 0.0) xywh:(36.0,252.0),(248.0,64.0) bwh:320.0,568.0 bubFrame:(36.0, 252.0),(248.0, 64.0)
+9:00:06.456: 💬 Player::audioFinished DONE        28:"CallWait" ➛ 29:"Timeline spans t…"
+9:00:08.945: 💬 Player::audioFinished DONE        28:"CallWait" ➛ 29:"Timeline spans t…"
+9:00:08.947: 💬 Covers::fadeOut                   28:"CallWait" ➛ 29:"Timeline spans t…"
+9:00:09.952: 💬 Covers::maybeRemoveFromSuper      28:"CallWait" ➛ 29:"Timeline spans t…"
+9:00:09.954: 💬✏︎ makeBubFrame delta:(-124.0, 0.0) fo:(0.0, 44.0) xywh:(36.0,319.0),(248.0,80.0) bwh:320.0,568.0 bubFrame:(36.0, 319.0),(248.0, 80.0)
+9:00:14.836: 💬 Player::audioFinished DONE        29:"Timeline spans t…" ➛ 30:"Control panel pu…"
+9:00:14.837: 💬 Covers::fadeOut                   29:"Timeline spans t…" ➛ 30:"Control panel pu…"
+***
+winPoint  (264.0, 282.5)
+bubFrame  (36.0, 319.0) = false
+bubFrame1 (0.0, -44.0) = false
+bubFrame2 (72.0, 682.0) = false
+bubFrame3 (36.0, 319.0) = false
+bubFrame4 (36.0, 319.0) = false
+***
+9:00:15.083: 💬 removing                          29:"Timeline spans t…" ➛ 30:"Control panel pu…"
+9:00:15.085: 💬 Covers::fadeOut                   29:"Timeline spans t…" ➛ 30:"Control panel pu…"
+9:00:15.087: 💬 Covers::fadeRemoveRemainingCovers() covers:1
+9:00:15.088: 💬 Covers::maybeRemoveFromSuper      29:"Timeline spans t…" ➛ 30:"Control panel pu…"
+9:00:15.089: 💬✏︎ makeBubFrame delta:(-124.0, -80.0) fo:(0.0, 376.0) xywh:(36.0,-80.0),(248.0,80.0) bwh:320.0,568.0 bubFrame:(36.0, -80.0),(248.0, 80.0)
+9:00:15.090: 💬 makeAbove viewPoint:(160.0, 0.0) delta:(-124.0, -80.0) bubFrame:(36.0, -80.0, 248.0, 80.0) arrowXY:(124.0, 80.0)
+9:00:15.095: 💬 Covers::maybeRemoveFromSuper      29:"Timeline spans t…" ➛ 30:"Control panel pu…"
+9:00:15.097: 💬✏︎ makeBubFrame delta:(-124.0, -80.0) fo:(0.0, 376.0) xywh:(36.0,-80.0),(248.0,80.0) bwh:320.0,568.0 bubFrame:(36.0, -80.0),(248.0, 80.0)
+9:00:15.097: 💬 makeAbove viewPoint:(160.0, 0.0) delta:(-124.0, -80.0) bubFrame:(36.0, -80.0, 248.0, 80.0) arrowXY:(124.0, 80.0)
+9:00:19.225: 💬 Player::audioFinished DONE        30:"Control panel pu…" ➛ 31:"with the same lo…"
+9:00:19.228: 💬✏︎ makeBubFrame delta:(-124.0, -80.0) fo:(0.0, 376.0) xywh:(36.0,-80.0),(248.0,80.0) bwh:320.0,568.0 bubFrame:(36.0, -80.0),(248.0, 80.0)
+9:00:19.229: 💬 makeAbove viewPoint:(160.0, 0.0) delta:(-124.0, -80.0) bubFrame:(36.0, -80.0, 248.0, 80.0) arrowXY:(124.0, 80.0)
+9:00:19.232: 💬 Player::audioFinished DONE        30:"Control panel pu…" ➛ 31:"with the same lo…"
+9:00:19.233: 💬✏︎ makeBubFrame delta:(-124.0, -80.0) fo:(0.0, 376.0) xywh:(36.0,-80.0),(248.0,80.0) bwh:320.0,568.0 bubFrame:(36.0, -80.0),(248.0, 80.0)
+9:00:19.235: 💬 makeAbove viewPoint:(160.0, 0.0) delta:(-124.0, -80.0) bubFrame:(36.0, -80.0, 248.0, 80.0) arrowXY:(124.0, 80.0)
+9:00:20.249: 💬 base::goBubble ➛ onGoing          31:"with the same lo…" ➛ 32:"WatchCrown2.m4v"
+
+yo
+9:08:25.198: 💬✏︎ makeBubFrame delta:(-124.0, -252.0) fo:(0.0, 44.0) xywh:(36.0,-92.5),(248.0,248.0) bwh:320.0,568.0 bubFrame:(36.0, -92.5),(248.0, 248.0)
+9:08:25.203: 💬 Video::goBubble                   32:"WatchCrown2.m4v" ➛ 33:"CallWait"
+9:10:12.740: 💬 base::goBubble ➛ onGoing          31:"with the same lo…" ➛ 32:"WatchCrown2.m4v"
+yo
+9:10:12.745: 💬✏︎ makeBubFrame delta:(-124.0, -252.0) fo:(0.0, 44.0) xywh:(36.0,-92.5),(248.0,248.0) bwh:320.0,568.0 bubFrame:(36.0, -92.5),(248.0, 248.0)
+9:10:12.748: 💬 Video::goBubble                   32:"WatchCrown2.m4v" ➛ 33:"CallWait"
+***
+winPoint  (188.5, 177.5)
+bubFrame  (36.0, -92.5) = true
+bubFrame1 (0.0, -44.0) = true
+bubFrame2 (72.0, -141.0) = false
+bubFrame3 (36.0, -92.5) = true
+bubFrame4 (36.0, -92.5) = false
+***
+9:10:13.828: 💬 removing                          32:"WatchCrown2.m4v" ➛ 33:"CallWait"
+9:10:13.830: 💬 Covers::fadeOut                   32:"WatchCrown2.m4v" ➛ 33:"CallWait"
+9:10:13.831: 💬 removing                          31:"with the same lo…" ➛ 32:"WatchCrown2.m4v"
+9:10:13.832: 💬 Covers::fadeRemoveRemainingCovers() covers:1
+9:10:13.834: 💬 Covers::maybeRemoveFromSuper      32:"WatchCrown2.m4v" ➛ 33:"CallWait"
+9:10:13.835: 💬✏︎ makeBubFrame delta:(-124.0, -80.0) fo:(74.0, 376.0) xywh:(-38.0,-80.0),(248.0,80.0) bwh:320.0,568.0 bubFrame:(-38.0, -80.0),(248.0, 80.0)
+9:10:13.836: 💬 makeAbove viewPoint:(86.0, 0.0) delta:(-124.0, -80.0) bubFrame:(-38.0, -80.0, 248.0, 80.0) arrowXY:(124.0, 80.0)
+9:10:16.075: 💬 Player::audioFinished DONE        31:"with the same lo…" ➛ 32:"WatchCrown2.m4v"
+9:10:16.076: 💬 Player::audioFinished DONE        33:"CallWait" ➛ 34:"CallWait"

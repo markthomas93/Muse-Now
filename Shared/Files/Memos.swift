@@ -102,21 +102,7 @@ class Memos: FileSync, Codable {
         archiveMemos {}
     }
 
-    /**
-     |    Actions.doUpdateEvent
-     |        Transcribe.shared.appleSttFile
-     |            #ios:Memos.doTranscribe
-     |                Record.recordAudioFinish -> see addMemoEvent
-     |                   Record.finishRecording
-     |                        Record.startRecording.audioTimer({})
-     |                        Record.startRecording.recordAudioAction({})
-     |            #watchOS:Session.parseTranscribe
-     */
-
-    func updateMemoArchive() {
-        archiveMemos {}
-    }
-
+ 
     /**
      convert audio to text
      - parameter event: MuEvent captures result

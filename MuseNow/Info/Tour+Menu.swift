@@ -58,20 +58,21 @@ extension Tour {
         addTour("memos",[.menu, .info, .detail],[
 
             menuMark("memos",[],[gotoPath("memos"), "record short audio memos \n with location and text","v_201.aif"]),
-        
+
             menuDial("memos", [.highlight, .circular], [ {Actions.shared.doAction(.gotoRecordOn)},
-                                                        "triple-tap on the dial \n to record memos","v_092.aif",
-                                                        { Actions.shared.doAction(.gotoFuture)},
-                                                        { Timer.delay(0.5) {Anim.shared.scene?.uFade?.floatValue = 1 }},
-                                                        ]),
+                                                         "triple-tap on the dial \n to record memos","v_092.aif",
+                                                         { Actions.shared.doAction(.gotoFuture)},
+                                                         { Timer.delay(0.5) {Anim.shared.scene?.uFade?.floatValue = 1 }},
+                                                         ]),
             menuMark("memos.nod", [.overlay], [gotoPath("memos.nod"), "record a memo by nodding your wrist", "v_211.aif"]),
             menuVid1("memos", .diptych12, [.nowait], ["WatchMemo2.m4v", 12]),
             menuVid1("memos", .diptych22, [],        ["PhoneMemo2.m4v", 12]),
-            menuButn("files",[],[gotoPath("files"),
-                                     { Actions.shared.doAction(.gotoFuture)},
-                                     { Timer.delay(0.5) { Anim.shared.scene?.uFade?.floatValue = 1 }},
-                                     "Save memos to iCloud Drive \n as standard JSON files","v_097.aif"
-                                     //"allowing anyone to experiment \n with personal machine learning","v_098.aif"
+
+            menuButn("memos.files",[],[gotoPath("memos.files"),
+                                 { Actions.shared.doAction(.gotoFuture)},
+                                 { Timer.delay(0.5) { Anim.shared.scene?.uFade?.floatValue = 1 }},
+                                 "Save memos to iCloud Drive \n as standard JSON files","v_097.aif"
+                //"allowing anyone to experiment \n with personal machine learning","v_098.aif"
                 ])
             ])
 
@@ -122,6 +123,7 @@ extension Tour {
 
 
             menuMark("speaker",[],[gotoPath("hear.speaker"),"play via speaker or handoff \n to connected earbuds","v_208.aif"]),
+
             menuMark("earbuds",[],[gotoPath("hear.earbuds"), "play only on earbuds for both \n eyes free and hands free","v_209.aif",
                                    // "with Apple Watch + Airpods \n simply lift your wrist to hear",  "v_111.aif",
                                    // "what's next while keeping \n focus on the road ahead",          "v_112.aif"
@@ -138,7 +140,7 @@ extension Tour {
 //            ])
 
         addTour("tour",[.menu, .info, .detail],[
-            menuInfo("tour", [],[gotoInfo("tour"),         "to replay parts of this tour",         "v_123.aif"]),
+            menuButn("tour", [],[gotoInfo("tour"),         "to replay parts of this tour",         "v_123.aif"]),
             ])
 
         addTour("more",[.menu,.detail],[
@@ -146,7 +148,7 @@ extension Tour {
               menuCell("more",  [],[gotoPath("more"),
                                     "and that about wraps it up", "v_121.aif",
                                     "for now","v_122.aif",
-                                    menuCollapse("more"), { PagesVC.shared.gotoPageType(.main) {} }])
+                                    menuCollapse("more"), {  }])
             ])
     }
 

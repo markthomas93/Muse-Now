@@ -210,7 +210,8 @@ class BubbleDraw: UIView {
             let y = max(0,(fromH-subH)/2)
             
             viewPoint = CGPoint(x: x+subW/2, y: y+subH/2)
-            let delta = bubble.options.contains(.snugAbove)
+            let snugAbove = bubble.options.contains(.snugAbove)
+            let delta = snugAbove
                 ? CGPoint(x: -subW/2, y: -subH - subM)
                 : CGPoint(x: -subW/2, y: -subH/2)
 
@@ -229,7 +230,11 @@ class BubbleDraw: UIView {
         default:
 
             viewPoint = CGPoint(x: fromW/2, y: fromH/2)
-            let delta = bubble.options.contains(.snugAbove)
+            let snugAbove = bubble.options.contains(.snugAbove)
+            if snugAbove {
+                print("yo")
+            }
+            let delta = snugAbove
                 ? CGPoint(x: -size.width/2, y: -size.height - subM)
                 : CGPoint(x: -size.width/2, y: -size.height/2)
             let bubSize = size

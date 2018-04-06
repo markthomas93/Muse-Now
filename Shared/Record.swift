@@ -11,11 +11,10 @@ class Record: NSObject, CLLocationManagerDelegate {
     var audioRecorder: AVAudioRecorder?
 
     let recDur = TimeInterval(30) // recording duration
-    var recTime = TimeInterval(0)
+    var recBgnTime = TimeInterval(0)
+    var recEndTime = TimeInterval(0)
     var recName = ""
     var groupURL: URL?
-
-    var isRecording  = false
     var audioTimer   = Timer() // audio note timer
 
     let recordSettings = [
@@ -24,6 +23,10 @@ class Record: NSObject, CLLocationManagerDelegate {
         AVNumberOfChannelsKey : NSNumber(value: Int32(1)),
         AVEncoderAudioQualityKey : NSNumber(value: Int32(AVAudioQuality.medium.rawValue))]
 
+    func isRecording() -> Bool {
+        return recEndTime < recBgnTime
+    }
+
 
     // Audio -----------------------------------
 
@@ -31,7 +34,7 @@ class Record: NSObject, CLLocationManagerDelegate {
         
         Log("∿ \(#function)")
         
-        if isRecording {
+        if isRecording() {
             finishRecording()
             Haptic.play(.stop)
         }
@@ -42,17 +45,22 @@ class Record: NSObject, CLLocationManagerDelegate {
         }
     }
 
+    var isAudioActivated = false
     func activateAudio() { Log("∿∿∿ \(#function)")
-
-        do {
-            try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
-            try audioSession.setActive(true)
+        if !isAudioActivated {
+            do {
+                try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
+                try audioSession.setActive(true)
+                isAudioActivated = true
+            }
+            catch { Log("∿∿∿ \(#function) !!! catch") }
         }
-        catch { Log("∿∿∿ \(#function) !!! catch") }
     }
+
     func deactivateAudio() { Log("∿∿∿ \(#function)")
         do { try audioSession.setActive(false) }
         catch { Log("∿∿∿ \(#function) !!! catch") }
+        isAudioActivated = false
     }
 
     /**
@@ -68,69 +76,35 @@ class Record: NSObject, CLLocationManagerDelegate {
             let date = Date()
             let timeStr = dateFormatter.string(from: date)
             recName = "Memo_" + timeStr + ".m4a"
-            recTime = Date().timeIntervalSince1970
             groupURL = FileManager.museGroupURL().appendingPathComponent(recName)
             try? audioRecorder = AVAudioRecorder(url: groupURL!, settings: recordSettings)
             audioRecorder?.prepareToRecord()
             done()
         }
 
-        func animateRecording(_ done: @escaping () -> ()) {
-
-            Anim.shared.gotoRecordSpoke(on:true)
-            Anim.shared.setRecordingClosure {
-                done()
-            }
-        }
-
-        func startRecording() {
+        func beginRecording() {
             audioRecorder?.record()
+            recBgnTime = Date().timeIntervalSince1970
             audioTimer = Timer.scheduledTimer(timeInterval: recDur, target: self, selector: #selector(finishRecording), userInfo: nil, repeats: false)
+            Location.shared.requestLocation() {}
         }
 
         // begin
 
-        if isRecording {  return }
-        isRecording = true
-        activateAudio()
-
-        DispatchQueue.global(qos: .utility).async {
-
-            let group = DispatchGroup()
-
-            // prepare recording
-            group.enter()
+        if !isRecording() {
+            activateAudio()
+            Anim.shared.gotoRecordSpoke(on:true)
             prepareRecording() {
-                Log("∿ prepareRecording() done")
-                group.leave()
-            }
-            // animate recording
-            group.enter()
-            animateRecording {
-                Log("∿ \(#function)")
-                group.leave()
-            }
-            // location
-            group.enter()
-            Location.shared.requestLocation() {
-                Log("∿ Location done")
-                group.leave()
-            }
-            let result  = group.wait(timeout: .now() + 2.0)
-            Log("∿ wait: \(result)")
-
-            DispatchQueue.main.async {
-                Log("∿ startRecording() done")
-                startRecording()
+                beginRecording()
             }
         }
     }
 
     func stopRecording() -> Bool {
         
-        if isRecording {
+        if isRecording() {
             Log("∿∿∿ \(#function)")
-            isRecording = false
+            recEndTime = Date().timeIntervalSince1970
             audioTimer.invalidate()
             audioRecorder?.stop()
             deactivateAudio()
@@ -165,7 +139,7 @@ class Record: NSObject, CLLocationManagerDelegate {
                 // Move  file to documents directory so that WatchConnectivity can transfer it.
                 let docURL = FileManager.documentUrlFile(recName)
                 let metaData = ["fileName" : recName as AnyObject,
-                                "fileDate" : recTime as AnyObject]
+                                "fileDate" : recBgnTime as AnyObject]
 
                 if  let _ = try? FileManager().moveItem(at:groupURL, to:docURL) {
                     #if os(watchOS)
@@ -184,10 +158,11 @@ class Record: NSObject, CLLocationManagerDelegate {
     }
 
     func recordAudioFinish() {
+
         Log("∿ \(#function)")
 
         let coord = Location.shared.getLocation()
-        let event = MuEvent(.memo, "Memo", recTime, recName, coord, .white)
+        let event = MuEvent(.memo, "Memo", recBgnTime, recName, coord, .white)
 
         Actions.shared.doAddEvent(event, isSender:true)
         Memos.doTranscribe(event, recName, isSender:true)
@@ -200,7 +175,7 @@ class Record: NSObject, CLLocationManagerDelegate {
 
     func recordAudioDelete() {
         Log("∿ \(#function)")
-        if isRecording {
+        if isRecording() {
             finishRecording()
             Haptic.play(.failure)
         }

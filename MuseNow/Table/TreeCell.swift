@@ -235,6 +235,11 @@ class TreeCell: MuCell {
                             alpha:        alpha,
                             animated:     animated)
 
+        if let treeNode = treeNode,
+            highlighting_ == .forceHigh {
+            Log("𐂷 setHighlight:\(highlighting_) \(treeNode.title) *** ")
+        }
+
         infoTimer.invalidate()
 
         let isHigh =  [.forceHigh,.high].contains(highlighting)
@@ -355,7 +360,7 @@ class TreeCell: MuCell {
      */
     override func touchCell(_ location: CGPoint, isExpandable:Bool = true) {
 
-        //???// if [.high,.forceHigh].contains(highlighting) { return }
+       //let wasHigh = [.high,.forceHigh].contains(highlighting) //{ return }  //????//
 
         (tableVC as? TreeTableVC)?.setTouchedCell(self)
 

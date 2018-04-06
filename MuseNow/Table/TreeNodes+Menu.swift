@@ -108,8 +108,9 @@ extension TreeNodes {
 
         func goTour(_ act:DoAction,_ page:PageType) -> CallVoid {
             return {
-            Actions.shared.doAction(act)
-            PagesVC.shared.gotoPageType(page) {}
+                PagesVC.shared.gotoPageType(page) {
+                    Actions.shared.doAction(act)
+                }
             }
         }
 
@@ -119,7 +120,6 @@ extension TreeNodes {
             "Onboarding",   goTour(.tourIntro,.onboard),
             "Cancel", {}
             ], vc)
-
 
         // setup table cells from current st
         root!.refreshNodeCells()

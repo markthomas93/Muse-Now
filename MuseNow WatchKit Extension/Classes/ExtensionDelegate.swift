@@ -11,27 +11,27 @@ import ClockKit
 
 class ExtensionDelegate: NSObject, WKExtensionDelegate {
 
-    func applicationDidFinishLaunching() { Log("⟳⌚︎ \(#function)")
+    func applicationDidFinishLaunching() { //Log("⟳⌚︎ \(#function)")
         let _ = Timer.scheduledTimer(withTimeInterval: 5, repeats: false, block: {_ in
             Complicated.shared.reloadTimelines()
         })
     }
 
-    func applicationWillEnterForeground()  {  Log("⟳⌚︎ \(#function)")
+    func applicationWillEnterForeground()  {  //Log("⟳⌚︎ \(#function)")
     }
 
-    func applicationDidEnterBackground()  { Log("⟳⌚︎ \(#function)")
+    func applicationDidEnterBackground()  { //Log("⟳⌚︎ \(#function)")
     }
 
-    func applicationDidBecomeActive() {  Log("⟳⌚︎ \(#function)")
+    func applicationDidBecomeActive() {  //Log("⟳⌚︎ \(#function)")
         // both becomming active and unactive, bug?
     }
 
-    func applicationWillResignActive() {  Log("⟳⌚︎ \(#function)")
+    func applicationWillResignActive() {  //Log("⟳⌚︎ \(#function)")
         // menus or other interruptions
     }
 
-    func handle(_ backgroundTasks: Set<WKRefreshBackgroundTask>) {  Log("⟳⌚︎ \(#function)")
+    func handle(_ backgroundTasks: Set<WKRefreshBackgroundTask>) {  // Log("⟳⌚︎ \(#function)")
 
         for task in backgroundTasks {
 

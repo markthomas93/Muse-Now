@@ -37,21 +37,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        return true
 //    }
 
-    func applicationWillResignActive(_ application: UIApplication) { Log("⟳☎︎ \(#function)")
+    func applicationWillResignActive(_ application: UIApplication) { //Log("⟳☎︎ \(#function)")
         MainVC.shared?.active?.stopActive()
         didStopActive = true
     }
-    func applicationDidBecomeActive(_ application: UIApplication) { Log("⟳☎︎ \(#function)")
+    func applicationDidBecomeActive(_ application: UIApplication) { //Log("⟳☎︎ \(#function)")
         if didStopActive {
             didStopActive = false
             MainVC.shared?.active?.startActive()
         }
     }
-    func applicationDidEnterBackground(_ application: UIApplication) { Log("⟳☎︎ \(#function)")
+    func applicationDidEnterBackground(_ application: UIApplication) { //Log("⟳☎︎ \(#function)")
     }
-    func applicationWillEnterForeground(_ application: UIApplication) { Log("⟳☎︎ \(#function)")
+    func applicationWillEnterForeground(_ application: UIApplication) { //Log("⟳☎︎ \(#function)")
     }
-    func applicationWillTerminate(_ application: UIApplication) { Log("⟳☎︎ \(#function)")
+    func applicationWillTerminate(_ application: UIApplication) { //Log("⟳☎︎ \(#function)")
     }
 }
 
