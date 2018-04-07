@@ -77,7 +77,7 @@ extension Tour {
             ])
 
         // routine
-        addTour("routine",[.beta, .detail],[
+        addTour("routine",[.menu, .beta, .detail],[
             menuMark("routine",[],[gotoPath("routine"), "Preview colorizing the dial with your weekly routine","v_202.aif"]),
 
             menuPanel("routine",[.nowait], [setNode("routine",isOn:false), "here is routine set OFF","v_089.aif"]),
@@ -105,22 +105,22 @@ extension Tour {
 
         // hear  --------------------------------------
 
-//        addTour("hear",[.menu],[
-//            menuInfo("hear",[],[gotoInfo("hear"),  "Choose what to hear and \n where to play it","v_204.aif"])
-//            ])
+        addTour("hear",[.menu, .info, .detail],[
+            menuInfo("hear",[],[gotoInfo("hear"),  "Choose what to hear and \n where to play it","v_204.aif"]),
 
-        addTour("hear",[.info, .detail],[
 
-            menuInfo("hear",   [],[gotoPath("hear"), "Choose what to hear and \n where to play it","v_204.aif"]),
 
-//            menuMark("hear.event",[],[gotoPath("hear.event"), "hear an event's title","v_205.aif"]),
-//            menuMark("hear.time", [],[gotoPath("hear.time"), "hear an event's time","v_206.aif"]),
 
-//            menuMark("hear.memo", [],[gotoPath("hear.memo"), "hear a memo's audio recording","v_207.aif",
-//                "Memos are saved in your \n iTunes \"shared files\" folder","v_094.aif",
-//                "your private memos stays \n inside Apple's secure sandbox ","v_095.aif",
-//                "Muse never sees your timeline \n and we never will", "v_096.aif"]),
 
+
+
+            menuMark("hear.event",[],[gotoPath("hear.event"), "hear an event's title","v_205.aif"]),
+            menuMark("hear.time", [],[gotoPath("hear.time"), "hear an event's time","v_206.aif"]),
+
+            menuMark("hear.memo", [],[gotoPath("hear.memo"), "hear a memo's audio recording","v_207.aif",
+                "Memos are saved in your \n iTunes \"shared files\" folder","v_094.aif",
+                "your private memos stays \n inside Apple's secure sandbox ","v_095.aif",
+                "Muse never sees your timeline \n and we never will", "v_096.aif"]),
 
             menuMark("speaker",[],[gotoPath("hear.speaker"),"play via speaker or handoff \n to connected earbuds","v_208.aif"]),
 
