@@ -442,11 +442,11 @@ class Dot {
     
 
      /// - via: Scene.markAction -> dots.clearAllMarks()
-    func hideEventsWith(type hideType: EventType) {
+    func hideEvents(with hideTypes: [EventType]) {
         
         var hasTypeEvent = false
         for event in events {
-            if event.type == hideType {
+            if hideTypes.contains(event.type) {
                 hasTypeEvent = true
                 break
             }
@@ -459,7 +459,7 @@ class Dot {
             elapse0 = TimeInterval(Double.greatestFiniteMagnitude)
             var newEvents = [MuEvent]()
             for event in events {
-                if event.type != hideType {
+                if !hideTypes.contains(event.type) {
                     newEvents.append(event)
                     let eventElapse = (event.bgnTime - timeHour) / 60
                     elapse0 = min(elapse0,eventElapse)
@@ -470,44 +470,5 @@ class Dot {
         eventi = min(max(0, eventi), events.count-1)
     }
 
-     /// - via: Scene.markAction-> dots.clearAllMarks()
-     /// - via: self.setMark
-
-    func addNote(_ event: MuEvent) -> MuEvent! {
-        
-        let timeNow = Date().timeIntervalSince1970
-        let timeElapse = (timeNow - timeHour) / 60
-        
-        if timeElapse >= 0 && timeElapse < 60 {
-            
-            elapse0 = min(elapse0,timeElapse)
-            event.bgnTime = timeNow
-
-            if events.count == 0 {
-                events.append(event)
-                event.mark = true
-                return event
-            }
-            else  {
-                for i in 0 ..< events.count {
-                    let eventi = events[i]
-                    if eventi.bgnTime >= event.bgnTime {
-                        events.insert(event, at: i)
-                        event.mark = true
-                        return event
-                    }
-                }
-            }
-            events.append(event)
-            return event
-        }
-        else {
-            elapse0 = 0
-            event.bgnTime = timeHour
-            events.insert(event, at: 0)
-            event.mark = true
-            return event
-        }
-    }
-    
+     
 }

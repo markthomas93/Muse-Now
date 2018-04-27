@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class BubbleText: BubbleBase  {
+class BubbleText: BubbleView  {
 
     var labelX = CGFloat(8)
     var labelY = CGFloat(0)

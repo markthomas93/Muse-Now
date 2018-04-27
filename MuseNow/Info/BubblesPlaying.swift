@@ -19,13 +19,13 @@ class BubblesPlaying {
 
     func muteBubbles(on:Bool) {
         for bubble in playSet {
-            bubble.bubBase?.player?.isMuted = on
+            bubble.bubbleView?.audioPlayer?.isMuted = on
         }
     }
 
     func cancelBubbles() {
         for bubble in playSet {
-            bubble.bubBase?.cancelBubble()
+            bubble.bubbleView?.cancelBubble()
         }
         BubbleCovers.shared.fadeRemoveRemainingCovers()
         Show.shared.showSet.remove(.routine)
@@ -50,7 +50,7 @@ class BubblesPlaying {
                     lastBubble = bubble
                 }
                 Log(bubble.logString("💬 removing"))
-                bubble.bubBase.nudgeBubble()
+                bubble.bubbleView.nudgeBubble()
             }
             //??// lastBubble.gotoNext()
         }
@@ -61,14 +61,14 @@ class BubblesPlaying {
             if let touchPoint = touches.first?.location(in: nil),
                 let winView = MyApplication.shared.delegate?.window! {
 
-                let bubBase  = bubble.bubBase!
-                let bubFrame = bubBase.frame
+                let bubbleView  = bubble.bubbleView!
+                let bubFrame = bubbleView.frame
 
                 let winPoint = winView.convert(touchPoint, from:nil)
                 //let winFrame = winView.frame
 
-                let bubFrame1 = bubBase.convert(bubFrame, from:nil)
-                let bubFrame2 = bubBase.convert(bubFrame, to:nil)
+                let bubFrame1 = bubbleView.convert(bubFrame, from:nil)
+                let bubFrame2 = bubbleView.convert(bubFrame, to:nil)
 
                 let bubFrame3 = winView.convert(bubFrame, from:nil)
                 let bubFrame4 = winView.convert(bubFrame, to:nil)

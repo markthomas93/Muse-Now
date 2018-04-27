@@ -30,7 +30,11 @@ class MainVC: UIViewController {
     
     var skView: SKView!
 
-    let dialSize = CGSize(width: 172, height: 172)
+    let dialSize = (UIDevice().userInterfaceIdiom == .phone &&
+                    UIScreen.main.nativeBounds.height == 2436)
+    ? CGSize(width: 168, height: 168) // iphone x
+    : CGSize(width: 154, height: 154) // everything else
+
 
     var pagesFrame = CGRect.zero
     var panelFrame = CGRect.zero
@@ -41,27 +45,22 @@ class MainVC: UIViewController {
     var observer: NSKeyValueObservation?
 
     func updateFrames(_ size:CGSize) {
-        
-        let height = size.height
-        let width  = size.width
-        let statusH = UIApplication.shared.statusBarFrame.height
 
-        let isPad = UIDevice.current.userInterfaceIdiom == .pad
-        let isPanel = isPad && width < height // is panel inside ipad app
-        let isPortrait = height > width // is portrait mode
-        let viewY   = CGFloat(isPanel ? 0 : isPad ? 18 : isPortrait ? statusH : 0)
-        let viewH   = height - viewY
+        //let statusH = UIApplication.shared.statusBarFrame.height
+        let bottomH = UIApplication.shared.windows.first?.safeAreaInsets.bottom ?? 0
+        let height = size.height - bottomH
+        let width  = size.width
 
         let dialW  = dialSize.width
         let dialH  = dialSize.height
-        let bottomH = view.safeAreaInsets.bottom
-        let panelY = viewH - dialH - bottomH // start of touch panel
+        let dialY = height - dialH  // start of touch panel
+
         let crownW = (width - dialW)/2
         let crownR = width - crownW
-        let pagesH = height - dialH - viewY
+        let pagesH = height - dialH
 
         pagesFrame      = CGRect(x: 0,      y:0,      width: width,  height: pagesH)
-        panelFrame      = CGRect(x: 0,      y:panelY, width: width,  height: dialH)
+        panelFrame      = CGRect(x: 0,      y:dialY,  width: width,  height: dialH)
 
         touchFrame      = CGRect(x: 0,      y:0,      width: dialW,  height: dialH)
         skViewFrame     = CGRect(x: crownW, y:0,      width: dialW,  height: dialH)

@@ -9,8 +9,10 @@ import Foundation
 import AVFoundation
 import UIKit
 
-class BubbleVideo: BubbleBase {
+class BubbleVideo: BubbleView {
 
+    var videoPlayer: AVPlayer?
+    var videoTimer = Timer()
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -32,24 +34,7 @@ class BubbleVideo: BubbleBase {
 
         let contentView = UIView(frame:contentFrame)
 
-        if  let fileName = bubble.items.first?.str,
-            let videoURL = Bundle.main.url(forResource: fileName, withExtension: "") as NSURL? {
-
-            player = AVPlayer(url: videoURL as URL)
-            player?.actionAtItemEnd = .none
-            player?.isMuted = true // Hear.shared.hearSet.isEmpty
-
-            let playerLayer = AVPlayerLayer(player: player)
-            playerLayer.videoGravity = .resizeAspect
-            playerLayer.zPosition = -1
-            playerLayer.frame = contentFrame
-            playerLayer.frame.origin = .zero
-
-            contentView.layer.addSublayer(playerLayer)
-            contentView.layer.cornerRadius = radius
-            contentView.layer.masksToBounds = true
-        }
-        return contentView
+          return contentView
     }
 
     /**
@@ -58,60 +43,39 @@ class BubbleVideo: BubbleBase {
     override func goBubble(_ onGoing_: @escaping CallBubblePhase) {
 
         onGoing = onGoing_
+        cancelling = false
+
         Log(bubble.logString("💬 Video::goBubble"))
-        popOut() {
-            self.onGoing?(.poppedOut)
-            playVideo()
-        }
 
-        /// Continue with video after popping out bubble
-        func playVideo() {
+        popOut() { popOutContinue() }
 
-            // set time limit
-            if contenti < bubble.items.count {
-                setTimeOut()
-            }
-            // start playing
-            Log(bubble.logString("💬 Video::player?.play()"))
-            player?.play()
-
-            // finished video notification
-            if contenti == 0 {
-                NotificationCenter.default.addObserver(self, selector:#selector(self.videoFinishedPlaying), name: .AVPlayerItemDidPlayToEndTime, object: nil)
-            }
+        func popOutContinue() {
+            onGoing?(.poppedOut)
+            playItemVideo()
         }
     }
-    func killTime() {
+    /**
+     BubbleView and BubbleVideo play different media
+     */
+    override func fadeInCompleted(completed:Bool) {
+        if completed {
+            playItemVideo()
+        }
+    }
+
+    override func killTimeOut() { Log(bubble.logString("💬 Video::\(#function) CANCEL"))
         cancelling = true
         NotificationCenter.default.removeObserver(self)
-        timer.invalidate()
+        videoTimer.invalidate()
+        audioPlayer?.pause()
+        videoPlayer?.pause()
+        audioPlayer = nil
+        videoPlayer = nil
     }
 
-    /**
-     Process notification that video has finished
-     */
-    @objc func videoFinishedPlaying() {
-       
-        if cancelling { return }
-         NotificationCenter.default.removeObserver(self)
+    override func cancelBubble() { Log(bubble.logString("💬 Video::\(#function) CANCEL"))
 
-        // with duration > 0,  timer completes.
-        if contenti < bubble.items.count {
-            let item = bubble.items[contenti]
-            if item.duration > 0, timer.isValid {
-                Log(bubble.logString("💬 Video::videoFinished CONTINUE"))
-                return
-            }
-        }
-        Log(bubble.logString("💬 Video::videoFinished DONE"))
-        killTime()
-        tuckIn(timeout:false)
-    }
-      override func cancelBubble() {
-        killTime()
-
-        player?.pause()
-        player = nil
+        killTimeOut()
         animateIn(duration: 0.5, delay: 0, finished:{})
     }
 

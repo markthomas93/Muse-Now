@@ -37,7 +37,6 @@ class MuEvents {
             self.idEvents = self.events.reduce(into: [String: MuEvent]()) { $0[$1.eventId] = $1 }
             self.sortTimeEventsStart()
             self.applyMarks()
-            Active.shared.sendSyncRequest()
             completion()
         }
         NotificationCenter.default.removeObserver(self)
@@ -75,7 +74,6 @@ class MuEvents {
                     }
                 }
             }
-            Marks.shared.sendSyncFile() // with outer device
             Actions.shared.doAction(.refresh)
         }
     }
@@ -254,7 +252,7 @@ class MuEvents {
         
         events.append(event)
         
-        if event.type == .memo {
+        if [.memoRecord,.memoTrans,.memoTrash].contains(event.type) { 
             memos.addMemoEvent(event)
         }
         events.sort { lhs, rhs in

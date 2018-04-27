@@ -36,7 +36,6 @@ public enum DoAction : Int { case
 
     showEvents, showAlarms, showMarks,showTime,
     markOn, markOff, markClearAll,
-    noteAdd, noteRemove,
     //chimeOff, chimeLow, chimeMedium, chimeHigh, chimeOn,
     debugOn, debugOff,
     refresh
@@ -122,10 +121,8 @@ class Actions {
                     Crown.shared.updateCrown()
                 #endif
                 if isSender {
-                    Active.shared.sendSyncRequest()
-                    Session.shared.sendMsg(
-                        ["class"   : "Actions",
-                         "refresh" : "yo"])
+                    Session.shared.sendMsg(["class"   : "Actions",
+                                            "refresh" : "yo"])
                 }
             }
         }
@@ -148,9 +145,8 @@ class Actions {
         
         if isSender {
             if let data = try? JSONEncoder().encode(event) {
-                Session.shared.sendMsg(
-                    ["class" : "MuseEvent",
-                     "addEvent" : data])
+                Session.shared.sendMsg(["class"    : "MuseEvent",
+                                        "addEvent" : data])
             }
         }
     }
@@ -161,7 +157,7 @@ class Actions {
         MuEvents.shared.updateEvent(event)
         tableDelegate?.updateTable(MuEvents.shared.events)
         scene.updateSceneFinish()
-        if event.type == .memo {
+        if [.memoRecord,.memoTrans,.memoTrash].contains(event.type) {
             Memos.shared.archiveMemos {}
         }
         if isSender,
@@ -276,7 +272,7 @@ class Actions {
             Hear.shared.doHearAction(act, isSender:true)
 
         // mark a dot
-        case .markOn, .markOff, .markClearAll, .noteRemove, .noteAdd:
+        case .markOn, .markOff, .markClearAll:
 
             markAction(act, event, index, isSender)
 
@@ -339,23 +335,13 @@ class Actions {
         
         let dot = Dots.shared.getDot(index)
         
-        // set a time for note that is in the future or past
-        if event != nil && event.type == .note {
-            if index != 0 {
-                event.bgnTime = dot.timeHour
-                event.endTime = dot.timeHour
-            }
-        }
-        
         var markEvent = event
         
         switch act {
-        case .noteAdd:      markEvent = dot.addNote(event)
-        case .noteRemove:   dot.removeEvent(event)
         case .markOn:       markEvent = dot.setMark(true, event)
         case .markOff:      markEvent = dot.setMark(false, event)
         case .markClearAll: break //!!!! Dots.shared.hideEventsWith(type:.mark)
-        case .memoCopyAll: Dots.shared.hideEventsWith(type:.memo)
+        case .memoCopyAll: Dots.shared.hideEvents(with:[.memoRecord,.memoTrans,.memoTrash])
         default: break
         }
         

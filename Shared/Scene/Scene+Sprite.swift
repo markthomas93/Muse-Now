@@ -20,11 +20,12 @@ extension Scene {
         #endif
     }
     func initSprite() {
-        
+
         complications = Texture.makeComplication(dayHour.days, size, lineWidth:0.125, maskFactor:0.90, margin:16)
         dialMask = Texture.makeDialMask(dayHour.days, hour:0, size, margin:8, lineWidth:0.25, dotFactor: 0.62, maskFactor: 0.50) as! [SKTexture]
-        sprite = SKSpriteNode(texture: dialMask[0], color: UIColor.black, size:size)
+        sprite = SKSpriteNode(texture: dialMask[0], color: .black, size:size)
         sprite.position = CGPoint(x:center.x, y:center.y)
+        sprite.color = .black
 
         uAnim  = SKUniform(name:"u_anim",  texture:futrAniTex)
         uMask  = SKUniform(name:"u_mask",  texture:dialMask[1])

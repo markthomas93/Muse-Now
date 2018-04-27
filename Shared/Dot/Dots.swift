@@ -107,24 +107,14 @@ class Dots {
     // choose the best color for dot for all hours of the past and future week
     func makeSelectFade() {
     
-        for i in 0 ..< future.count {
-            
-           future[i].makeRgb()
-        }
-        for i in 0 ..< past.count {
-            
-             past[i].makeRgb()
-        }
+        for i in 0 ..< future.count { future[i].makeRgb() }
+        for i in 0 ..< past.count   { past[i].makeRgb() }
     }
     
-    func hideEventsWith(type hideType:EventType) {
+    func hideEvents(with hideTypes:[EventType]) {
         
-        for dot in future {
-            dot.hideEventsWith(type:hideType)
-        }
-        for dot in past {
-             dot.hideEventsWith(type:hideType)
-        }
+        for dot in future { dot.hideEvents(with: hideTypes) }
+        for dot in past   { dot.hideEvents(with: hideTypes) }
     }
     
     // Events ------------------------------------------------

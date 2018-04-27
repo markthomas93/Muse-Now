@@ -2,6 +2,7 @@
 import WatchKit
 import UIKit
 import AVFoundation
+import CoreAudio
 
 class Record: NSObject, CLLocationManagerDelegate {
 
@@ -13,11 +14,13 @@ class Record: NSObject, CLLocationManagerDelegate {
     let recDur = TimeInterval(30) // recording duration
     var recBgnTime = TimeInterval(0)
     var recEndTime = TimeInterval(0)
+    var abortTime = TimeInterval(0)
     var recName = ""
     var groupURL: URL?
-    var audioTimer   = Timer() // audio note timer
+    var audioTimer = Timer() // audio note timer
 
     let recordSettings = [
+        
         AVSampleRateKey : NSNumber(value: Float(16000.0)),
         AVFormatIDKey : NSNumber(value:Int32(kAudioFormatMPEG4AAC)),
         AVNumberOfChannelsKey : NSNumber(value: Int32(1)),
@@ -30,47 +33,95 @@ class Record: NSObject, CLLocationManagerDelegate {
 
     // Audio -----------------------------------
 
-    func recordAudioAction() {
-        
-        Log("∿ \(#function)")
-        
-        if isRecording() {
-            finishRecording()
-            Haptic.play(.stop)
+    let waitingPeriod = TimeInterval(2.0)
+    let minimumDuration = TimeInterval(1.0)
+
+    func recordAfterInterruption() -> Bool {
+        let deltaEnd = Date().timeIntervalSince1970 - recEndTime
+        let lastDur = recEndTime - recBgnTime // last duration < 1 was aborted
+
+        if deltaEnd < waitingPeriod,
+            lastDur < minimumDuration {
+            toggleRecordAction()
+            return true
         }
-            // only allow recording if "show memo" is set
-        else if Show.shared.canShow(.memo) {
-            Haptic.play(.start)
-            queueRecording()
+        return false
+    }
+    func recordAfterWaitingPeriod() {
+
+        if isRecording() {
+            Log("∿ \(#function) isRecording")
+            toggleRecordAction()
+        }
+        else {
+
+            let deltaEnd = Date().timeIntervalSince1970 - recEndTime
+
+            Log(String(format:"∿ \(#function) delta:%.2f dur:%.2f",deltaEnd, recEndTime - recBgnTime))
+
+            if deltaEnd > waitingPeriod {
+                toggleRecordAction()
+            }
         }
     }
+    
+    // activate audio ---------------------
 
-    var isAudioActivated = false
-    func activateAudio() { Log("∿∿∿ \(#function)")
+    private var isAudioActivated = false
+
+    private func activateAudio() {
+
         if !isAudioActivated {
+            isAudioActivated = true
+
+            Log("∿ \(#function)")
             do {
                 try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
                 try audioSession.setActive(true)
-                isAudioActivated = true
             }
-            catch { Log("∿∿∿ \(#function) !!! catch") }
+            catch { Log("∿ \(#function) !!! catch") }
         }
     }
 
-    func deactivateAudio() { Log("∿∿∿ \(#function)")
-        do { try audioSession.setActive(false) }
-        catch { Log("∿∿∿ \(#function) !!! catch") }
-        isAudioActivated = false
+    private func deactivateAudio() {
+
+        if isAudioActivated {
+
+            isAudioActivated = false
+            Log("∿ \(#function)")
+            do { try audioSession.setActive(false) }
+            catch { Log("∿ \(#function) !!! catch") }
+        }
+    }
+
+    // user action ------------------------------------
+
+    /**
+    user initiated gesture to either start or finish recording
+     */
+    func toggleRecordAction() {
+
+        if isRecording() { Log("∿ \(#function) -> finish")
+            if finishRecording() {
+                Haptic.play(.success)
+            }
+        }
+            // only allow recording if "show memo" is set
+        else if Show.shared.canShow(.memo) { Log("∿ \(#function) -> start")
+            Haptic.play(.start)
+            startRecording()
+        }
     }
 
     /**
      Setup multithread queue to prepare, animate, start locacation,
-     which all must finish before startRecording()
+     which all must finish before beginRecording()
      */
-    func queueRecording() {
+    func startRecording() {
         
         func prepareRecording(_ done: @escaping () -> ()) {
 
+            activateAudio() // this should already been started, so somewhat reundundant
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd__HH.mm.ss"
             let date = Date()
@@ -82,101 +133,191 @@ class Record: NSObject, CLLocationManagerDelegate {
             done()
         }
 
+        /**
+         Start recoding session if still active. Sometimes the watch will deactivate after starting the preparations.
+         */
         func beginRecording() {
-            audioRecorder?.record()
-            recBgnTime = Date().timeIntervalSince1970
-            audioTimer = Timer.scheduledTimer(timeInterval: recDur, target: self, selector: #selector(finishRecording), userInfo: nil, repeats: false)
-            Location.shared.requestLocation() {}
+
+            if Active.shared.isOn { Log("∿ \(#function) Active.isOn")
+                // when recBgnTime < recEndTime, isRecording() returns true
+                recBgnTime = Date().timeIntervalSince1970
+                audioRecorder?.record()
+                audioTimer = Timer.scheduledTimer(timeInterval: recDur, target: self, selector: #selector(timedOutRecording), userInfo: nil, repeats: false)
+                Anim.shared.gotoRecordSpoke(on:true)
+            }
+                // became unactive while setting up
+            else { Log("∿ \(#function) aborting")
+                abortTime = Date().timeIntervalSince1970
+            }
         }
 
-        // begin
+        // begin ---------------------------------
 
-        if !isRecording() {
-            activateAudio()
-            Anim.shared.gotoRecordSpoke(on:true)
-            prepareRecording() {
+        if isRecording() { return }
+
+        Location.shared.requestLocation() {}
+
+        DispatchQueue.global(qos: .utility).async {
+
+            let group = DispatchGroup()
+
+            // prepare recording
+            group.enter()
+            prepareRecording() { // Log("∿ prepareRecording done")
+                group.leave()
+            }
+
+            let _ = group.wait(timeout: .now() + 2.0)
+
+            DispatchQueue.main.async {
                 beginRecording()
             }
         }
     }
 
-    func stopRecording() -> Bool {
-        
-        if isRecording() {
-            Log("∿∿∿ \(#function)")
-            recEndTime = Date().timeIntervalSince1970
-            audioTimer.invalidate()
-            audioRecorder?.stop()
-            deactivateAudio()
-            return true
-        }
-        return false
+    /**
+     Stop the audio recorder and animation.
+     - via finishRecording
+     - via deleteRecording
+     */
+    private func stopRecording() { Log("∿ \(#function)")
+
+        recEndTime = Date().timeIntervalSince1970
+
+        audioTimer.invalidate()
+        audioRecorder?.stop()
+        Anim.shared.gotoRecordSpoke(on: false)
     }
 
-    @objc func cancelRecording() { Log("∿∿∿ \(#function)")
 
-        if stopRecording() {
+
+    /**
+     Finish and save recording
+     - via: user triple-tapped or nodded device
+     - via: audioTimer fired after recDur seconds
+     */
+    func finishRecording() -> Bool {  Log("∿ \(#function)")
+
+        if !isRecording() { return false }
+
+        stopRecording()
+
+        let deltaTime = recEndTime - recBgnTime
+        if deltaTime < minimumDuration {
+            Log("∿ \(#function) abort \(deltaTime)")
             audioRecorder?.deleteRecording()
+            return false
+        }
+        else {
+            Log("∿ \(#function) save \(deltaTime)")
+            saveRecording()
+            return true
+        }
+    }
+    @objc func timedOutRecording() {  Log("∿ \(#function)")
+        let _ = finishRecording()
+    }
+
+
+    /**
+     when watch screen becomes inactive, abort a freshly started recording.
+     and if so, stop it
+     -via: Active::stopActive
+     */
+    func maybeStopRecording() {
+
+        if !isRecording() { // Log("∿ \(#function) -> NOT recording")
+            return
+        }
+
+        if finishRecording() { // Log("∿ \(#function) -> success")
+             Haptic.play(.success)
+        }
+        else { // Log("∿ \(#function) -> abort")
+            abortTime = Date().timeIntervalSince1970
+        }
+        deactivateAudio()
+    }
+
+    /**
+     when watch screen becomes inactive for a short time after aborting a recording, restart recording.
+     -via: Active::stopActive
+     */
+    func maybeRestartRecording() {
+
+        let timeNow = Date().timeIntervalSince1970
+        let deltaTime = (timeNow - abortTime)
+        if  deltaTime < waitingPeriod {
+            Log("∿ \(#function) restarting \(deltaTime)")
+            startRecording() // will call activateAudio()
+        }
+        else {
+            Log("∿ \(#function) NOT \(deltaTime)")
+            DispatchQueue.main.async {
+                self.activateAudio()
+            }
         }
     }
 
     /**
-     Finish and save recording, via:
-     - user tapped or twisted device
-     - audioTimer fired after recDur seconds
+     Move temp file to documents. For watch: transfer to iPhone
+     - via: finishRecording
      */
-    @objc func finishRecording() {  Log("∿∿∿ \(#function)")
+    func saveRecording() {
 
-        if !stopRecording() { return }
-        Anim.shared.gotoRecordSpoke(on: false)
-
+        let duration = recEndTime - recBgnTime
+        if duration < minimumDuration { // ignore zero duration recordings
+            return Log("∿ duration <  \(minimumDuration)")
+        }
         if let groupURL = groupURL {
 
-            if FileManager.getFileSize(groupURL) < 26000 { // ignore zero duration recordings
-                Log("∿ filesize < 26000 for groupURL:\(recName)")
+            // Move  file to documents directory so that WatchConnectivity can transfer it.
+            let docURL = FileManager.documentUrlFile(recName)
+            let metaData = ["fileName" : recName as AnyObject,
+                            "fileDate" : recBgnTime as AnyObject]
+
+            if  let _ = try? FileManager().moveItem(at:groupURL, to:docURL) {
+                #if os(watchOS)
+                    Log("→ \(#function) transfer recName:\(recName)")
+                    if !Session.shared.transferFile(docURL, metadata:metaData) {
+                        Log("∿ \(#function) Failed !!! could not transfer file \n   to:\(docURL)")
+                    }
+                #endif
+                Log("∿ \(#function): \(recName)")
             }
             else {
-                // Move  file to documents directory so that WatchConnectivity can transfer it.
-                let docURL = FileManager.documentUrlFile(recName)
-                let metaData = ["fileName" : recName as AnyObject,
-                                "fileDate" : recBgnTime as AnyObject]
-
-                if  let _ = try? FileManager().moveItem(at:groupURL, to:docURL) {
-                    #if os(watchOS)
-                        if !Session.shared.transferFile(docURL, metadata:metaData) {
-                            Log("∿ \(#function) Failed !!! could not transfer file \n   to:\(docURL)")
-                        }
-                    #endif
-                    Log("∿ \(#function): \(recName)")
-                }
-                else {
-                    Log("∿ \(#function) Failed !!! \n   from:\(groupURL) \n   to:\(docURL)")
-                }
-                recordAudioFinish()
+                Log("∿ \(#function) Failed !!! \n   from:\(groupURL) \n   to:\(docURL)")
             }
+            createMemoEvent()
         }
     }
-
-    func recordAudioFinish() {
-
-        Log("∿ \(#function)")
+    /**
+     After saving a recording file, create a Memo event for timeline, and attempt to transcribe audio speech to text.
+     - via: saveRecording
+     */
+    func createMemoEvent() { Log("∿ \(#function)")
 
         let coord = Location.shared.getLocation()
-        let event = MuEvent(.memo, "Memo", recBgnTime, recName, coord, .white)
+        let event = MuEvent(.memoRecord, "Memo", recBgnTime, recName, coord, .white)
 
         Actions.shared.doAddEvent(event, isSender:true)
         Memos.doTranscribe(event, recName, isSender:true)
-        Haptic.play(.success)
 
         #if os(watchOS)
             Crown.shared.updateCrown()
         #endif
     }
 
-    func recordAudioDelete() {
-        Log("∿ \(#function)")
-        if isRecording() {
-            finishRecording()
+    /**
+     User shaked device to delete recording
+     -via: Motion.shake2
+     */
+    @objc func deleteRecording() {
+
+        if  isRecording() { Log("∿ \(#function)")
+
+            stopRecording()
+            audioRecorder?.deleteRecording()
             Haptic.play(.failure)
         }
     }

@@ -26,6 +26,7 @@ class Show {
     }
     func updateSetFromSession(_ showSet_:ShowSet) {
         showSet = showSet_
+        Settings.shared.updateShowSet(showSet_)
     }
 
     func getMenus() -> [StrAct] {

@@ -15,10 +15,8 @@ class Settings: FileSync, Codable {
     func archiveSettings() {
 
         if let data = try? JSONEncoder().encode(settings) {
-
-            let _ = saveData(data, Date().timeIntervalSince1970)
+            let _ = saveData(data)
         }
-        Marks.shared.sendSyncFile()
     }
 
     func unarchiveSettings(_ done: @escaping () -> Void) {
@@ -42,6 +40,21 @@ class Settings: FileSync, Codable {
                 done()
             }
         }
+    }
+    // update item ----------------------
+    
+    func updateHearSet(_ hearSet: HearSet) {
+        settings["hearSet"] = hearSet.rawValue
+        archiveSettings()
+    }
+    func updateSaySet(_ saySet: SaySet) {
+        settings["saySet"] = saySet.rawValue
+        archiveSettings()
+    }
+
+    func updateShowSet(_ showSet: ShowSet) {
+        settings["showSet"] = showSet.rawValue
+        archiveSettings()
     }
 
     func updateColor(_ value: Any) {

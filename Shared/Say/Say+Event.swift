@@ -36,8 +36,13 @@ extension Say {
     func sayDotEvent(_ event: MuEvent!, isTouching:Bool, via:String) {
         Log("🗣 sayDotEvent(via:\(via)) .\(event.type)")
         switch event.type {
-        case .time: sayCurrentTime(event, isTouching) // announce time
-        case .memo: sayRecording(event)    // play recording
+
+        case .time:         sayCurrentTime(event, isTouching) // announce time
+
+        case .memoRecord,
+             .memoTrans,
+             .memoTrash:    sayRecording(event)    // play recording
+
         default:
             if event.mark { sayElapseTime(event) } // elapsed time for marked events
             else          { sayBeginTime(event)  } // begin time for unmarked events

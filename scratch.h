@@ -1,63 +1,80 @@
-2018-04-06 08:59:45.774554-0700 MuseNow[799:804676] [DYMTLInitPlatform] platform initialization successful
 init() Error:Error Domain=NSOSStatusErrorDomain Code=-50 "(null)"
-2018-04-06 08:59:46.438665-0700 MuseNow[799:804631] Metal GPU Frame Capture Enabled
-2018-04-06 08:59:46.440785-0700 MuseNow[799:804631] Metal API Validation Enabled
-2018-04-06 08:59:46.606695-0700 MuseNow[799:804679] [WC] WCSession counterpart app not installed
-2018-04-06 09:00:02.232334-0700 MuseNow[799:804631] Presenting view controllers on detached view controllers is discouraged <MuseNow.TreeTableVC: 0x102213b00>.
-9:00:03.647: 💬✏︎ makeBubFrame delta:(-124.0, -32.0) fo:(0.0, 0.0) xywh:(36.0,252.0),(248.0,64.0) bwh:320.0,568.0 bubFrame:(36.0, 252.0),(248.0, 64.0)
-9:00:06.456: 💬 Player::audioFinished DONE        28:"CallWait" ➛ 29:"Timeline spans t…"
-9:00:08.945: 💬 Player::audioFinished DONE        28:"CallWait" ➛ 29:"Timeline spans t…"
-9:00:08.947: 💬 Covers::fadeOut                   28:"CallWait" ➛ 29:"Timeline spans t…"
-9:00:09.952: 💬 Covers::maybeRemoveFromSuper      28:"CallWait" ➛ 29:"Timeline spans t…"
-9:00:09.954: 💬✏︎ makeBubFrame delta:(-124.0, 0.0) fo:(0.0, 44.0) xywh:(36.0,319.0),(248.0,80.0) bwh:320.0,568.0 bubFrame:(36.0, 319.0),(248.0, 80.0)
-9:00:14.836: 💬 Player::audioFinished DONE        29:"Timeline spans t…" ➛ 30:"Control panel pu…"
-9:00:14.837: 💬 Covers::fadeOut                   29:"Timeline spans t…" ➛ 30:"Control panel pu…"
-***
-winPoint  (264.0, 282.5)
-bubFrame  (36.0, 319.0) = false
-bubFrame1 (0.0, -44.0) = false
-bubFrame2 (72.0, 682.0) = false
-bubFrame3 (36.0, 319.0) = false
-bubFrame4 (36.0, 319.0) = false
-***
-9:00:15.083: 💬 removing                          29:"Timeline spans t…" ➛ 30:"Control panel pu…"
-9:00:15.085: 💬 Covers::fadeOut                   29:"Timeline spans t…" ➛ 30:"Control panel pu…"
-9:00:15.087: 💬 Covers::fadeRemoveRemainingCovers() covers:1
-9:00:15.088: 💬 Covers::maybeRemoveFromSuper      29:"Timeline spans t…" ➛ 30:"Control panel pu…"
-9:00:15.089: 💬✏︎ makeBubFrame delta:(-124.0, -80.0) fo:(0.0, 376.0) xywh:(36.0,-80.0),(248.0,80.0) bwh:320.0,568.0 bubFrame:(36.0, -80.0),(248.0, 80.0)
-9:00:15.090: 💬 makeAbove viewPoint:(160.0, 0.0) delta:(-124.0, -80.0) bubFrame:(36.0, -80.0, 248.0, 80.0) arrowXY:(124.0, 80.0)
-9:00:15.095: 💬 Covers::maybeRemoveFromSuper      29:"Timeline spans t…" ➛ 30:"Control panel pu…"
-9:00:15.097: 💬✏︎ makeBubFrame delta:(-124.0, -80.0) fo:(0.0, 376.0) xywh:(36.0,-80.0),(248.0,80.0) bwh:320.0,568.0 bubFrame:(36.0, -80.0),(248.0, 80.0)
-9:00:15.097: 💬 makeAbove viewPoint:(160.0, 0.0) delta:(-124.0, -80.0) bubFrame:(36.0, -80.0, 248.0, 80.0) arrowXY:(124.0, 80.0)
-9:00:19.225: 💬 Player::audioFinished DONE        30:"Control panel pu…" ➛ 31:"with the same lo…"
-9:00:19.228: 💬✏︎ makeBubFrame delta:(-124.0, -80.0) fo:(0.0, 376.0) xywh:(36.0,-80.0),(248.0,80.0) bwh:320.0,568.0 bubFrame:(36.0, -80.0),(248.0, 80.0)
-9:00:19.229: 💬 makeAbove viewPoint:(160.0, 0.0) delta:(-124.0, -80.0) bubFrame:(36.0, -80.0, 248.0, 80.0) arrowXY:(124.0, 80.0)
-9:00:19.232: 💬 Player::audioFinished DONE        30:"Control panel pu…" ➛ 31:"with the same lo…"
-9:00:19.233: 💬✏︎ makeBubFrame delta:(-124.0, -80.0) fo:(0.0, 376.0) xywh:(36.0,-80.0),(248.0,80.0) bwh:320.0,568.0 bubFrame:(36.0, -80.0),(248.0, 80.0)
-9:00:19.235: 💬 makeAbove viewPoint:(160.0, 0.0) delta:(-124.0, -80.0) bubFrame:(36.0, -80.0, 248.0, 80.0) arrowXY:(124.0, 80.0)
-9:00:20.249: 💬 base::goBubble ➛ onGoing          31:"with the same lo…" ➛ 32:"WatchCrown2.m4v"
+12:35:51.171: ∿ maybeRestartRecording() NOT 1524771351.16915
+12:35:51.247: ↔︎ session(_:activationDidCompleteWith:error:) state:WCSessionActivationState
+12:35:51.274: ⧉⧉ Settings::unarchiveSettings
+12:35:51.318: ⧉ unarchiveData:Settings.json memoryTime:1524764931.28233 count:80 bytes
+12:35:51.361: ⧉ Settings::settingsFromRoot() saySet:0
+2018-04-26 12:35:51.369288-0700 MuseNow WatchKit Extension[212:13545] [default] -[SPInterfaceViewController performBlockOnViewDidAppear:]:1258: Tried to set _didAppearBlock but we already have one! <SPInterfaceViewController: 0x172f9a00>
+12:35:51.437: ∿ activateAudio()
+12:35:52.009: ⧉ unarchiveData:Memos.json memoryTime:1524768293.39773 count:2364 bytes
+12:35:52.677: ⧉ Memos::unarchiveMemos items:8  memoryTime:1524768293.39773
+12:35:52.735: ⧉ unarchiveData:Marks.json count:0
+12:35:52.921: ⧉ unarchiveData:Calendars.json count:0
+12:35:53.424: ⧉ sendSyncFile fileName:Marks.json memoryTime:0.0⟺???
+12:35:53.429: ⧉ sendSyncFile fileName:Settings.json memoryTime:1524764931.28233⟺???
+12:35:53.435: ⧉ sendSyncFile fileName:Memos.json memoryTime:1524768293.39773⟺???
+12:35:53.445: ⧉ sendSyncFile fileName:Routine.json memoryTime:1524764931.27775⟺???
+12:35:53.447: ⧉ sendSyncFile fileName:Calendars.json memoryTime:0.0⟺???
+12:35:53.467: → cacheMsg FileMsg [syncFile:Marks.json, fileTime:0.0]
+12:35:53.461: → cacheMsg FileMsg [syncFile:Settings.json, fileTime:1524764931.28233]
+12:35:53.473: → cacheMsg FileMsg [syncFile:Memos.json, fileTime:1524768293.39773]
+12:35:53.482: → cacheMsg FileMsg [syncFile:Routine.json, fileTime:1524764931.27775]
+12:35:53.487: → cacheMsg FileMsg [syncFile:Calendars.json, fileTime:0.0]
+12:35:54.056: ⧉ sendSyncFile fileName:Settings.json memoryTime:1524764931.28233⟺???
+12:35:54.079: ⧉ sendSyncFile fileName:Memos.json memoryTime:1524768293.39773⟺???
+12:35:54.095: ⧉ sendSyncFile fileName:Calendars.json memoryTime:0.0⟺???
+12:35:54.108: ⧉ sendSyncFile fileName:Routine.json memoryTime:1524764931.27775⟺???
+12:35:54.110: ⧉ sendSyncFile fileName:Marks.json memoryTime:0.0⟺???
+12:35:54.114: → cacheMsg FileMsg [syncFile:Memos.json, fileTime:1524768293.39773]
+12:35:54.123: → cacheMsg FileMsg [syncFile:Settings.json, fileTime:1524764931.28233]
+12:35:54.124: → cacheMsg FileMsg [syncFile:Calendars.json, fileTime:0.0]
+12:35:54.127: → cacheMsg FileMsg [syncFile:Routine.json, fileTime:1524764931.27775]
+12:35:54.127: → cacheMsg FileMsg [syncFile:Marks.json, fileTime:0.0]
 
-yo
-9:08:25.198: 💬✏︎ makeBubFrame delta:(-124.0, -252.0) fo:(0.0, 44.0) xywh:(36.0,-92.5),(248.0,248.0) bwh:320.0,568.0 bubFrame:(36.0, -92.5),(248.0, 248.0)
-9:08:25.203: 💬 Video::goBubble                   32:"WatchCrown2.m4v" ➛ 33:"CallWait"
-9:10:12.740: 💬 base::goBubble ➛ onGoing          31:"with the same lo…" ➛ 32:"WatchCrown2.m4v"
-yo
-9:10:12.745: 💬✏︎ makeBubFrame delta:(-124.0, -252.0) fo:(0.0, 44.0) xywh:(36.0,-92.5),(248.0,248.0) bwh:320.0,568.0 bubFrame:(36.0, -92.5),(248.0, 248.0)
-9:10:12.748: 💬 Video::goBubble                   32:"WatchCrown2.m4v" ➛ 33:"CallWait"
-***
-winPoint  (188.5, 177.5)
-bubFrame  (36.0, -92.5) = true
-bubFrame1 (0.0, -44.0) = true
-bubFrame2 (72.0, -141.0) = false
-bubFrame3 (36.0, -92.5) = true
-bubFrame4 (36.0, -92.5) = false
-***
-9:10:13.828: 💬 removing                          32:"WatchCrown2.m4v" ➛ 33:"CallWait"
-9:10:13.830: 💬 Covers::fadeOut                   32:"WatchCrown2.m4v" ➛ 33:"CallWait"
-9:10:13.831: 💬 removing                          31:"with the same lo…" ➛ 32:"WatchCrown2.m4v"
-9:10:13.832: 💬 Covers::fadeRemoveRemainingCovers() covers:1
-9:10:13.834: 💬 Covers::maybeRemoveFromSuper      32:"WatchCrown2.m4v" ➛ 33:"CallWait"
-9:10:13.835: 💬✏︎ makeBubFrame delta:(-124.0, -80.0) fo:(74.0, 376.0) xywh:(-38.0,-80.0),(248.0,80.0) bwh:320.0,568.0 bubFrame:(-38.0, -80.0),(248.0, 80.0)
-9:10:13.836: 💬 makeAbove viewPoint:(86.0, 0.0) delta:(-124.0, -80.0) bubFrame:(-38.0, -80.0, 248.0, 80.0) arrowXY:(124.0, 80.0)
-9:10:16.075: 💬 Player::audioFinished DONE        31:"with the same lo…" ➛ 32:"WatchCrown2.m4v"
-9:10:16.076: 💬 Player::audioFinished DONE        33:"CallWait" ➛ 34:"CallWait"
+startup
+2018-04-26 12:36:36.144679-0700 MuseNow WatchKit Extension[212:13545] AVSpeechSynthesizer Audio interruption notification: {
+    AVAudioSessionInterruptionTypeKey = 1;
+    AVAudioSessionInterruptionWasSuspendedKey = 1;
+}
+2018-04-26 12:36:36.189571-0700 MuseNow WatchKit Extension[212:13545] AVSpeechSynthesizer Audio interruption notification: {
+    AVAudioSessionInterruptionOptionKey = 0;
+    AVAudioSessionInterruptionTypeKey = 0;
+}
+12:36:36.391: ∿ maybeRestartRecording() NOT 1524771396.39046
+12:36:40.428: ⧉ sendSyncFile fileName:Marks.json memoryTime:0.0⟺???
+12:36:40.433: ⧉ sendSyncFile fileName:Settings.json memoryTime:1524764931.28233⟺???
+12:36:40.449: ⧉ sendSyncFile fileName:Calendars.json memoryTime:0.0⟺???
+12:36:40.448: ⧉ sendSyncFile fileName:Memos.json memoryTime:1524768293.39773⟺???
+12:36:40.466: ⧉ sendSyncFile fileName:Routine.json memoryTime:1524764931.27775⟺???
+12:36:40.477: → cacheMsg FileMsg [syncFile:Marks.json, fileTime:0.0]
+12:36:40.480: → cacheMsg FileMsg [syncFile:Settings.json, fileTime:1524764931.28233]
+12:36:40.492: → cacheMsg FileMsg [syncFile:Calendars.json, fileTime:0.0]
+12:36:40.495: → cacheMsg FileMsg [syncFile:Memos.json, fileTime:1524768293.39773]
+12:36:40.497: → cacheMsg FileMsg [syncFile:Routine.json, fileTime:1524764931.27775]
+startup
+12:36:58.067: ∿ recordAfterWaitingPeriod() delta:1524771418.07 dur:0.00
+12:36:58.071: ∿ toggleRecordAction() -> start
+12:37:00.113: ∿ beginRecording() Active.isOn
+12:37:04.744: ∿ recordAfterWaitingPeriod() isRecording
+12:37:04.748: ∿ toggleRecordAction() -> finish
+12:37:04.751: ∿ finishRecording()
+12:37:04.754: ∿ stopRecording()
+12:37:04.813: ∿ finishRecording() save 4.64411211013794
+12:37:04.822: → saveRecording() transfer recName:Memo_2018-04-26__12.36.58.m4a
+12:37:04.830: ∿ saveRecording(): Memo_2018-04-26__12.36.58.m4a
+12:37:04.832: ∿ createMemoEvent()
+12:37:04.859: ⧉ saveData Memos.json 1524768293.39773 ➛ 1524771424.85898 𝚫3131.46124887466
+
+12:37:07.179: ⧉ saveData Memos.json 1524771424.85898 ➛ 1524771427.17882 𝚫2.31984090805054
+12:37:07.476: ⧉ recvSyncFile fileName:Memos.json 1524771427.17882⟺1524771425.83476 𝚫-1.34406089782715
+12:37:07.494: ⧉ sendPostFile fileName:Memos.json fileTime:1524771427.17882
+12:37:07.515: → cacheMsg FileMsg [fileTime:1524771427.17882, data:<data>, postFile:Memos.json]
+test 54321
+// iphone
+
+12:39:30.878: ⧉ unarchiveData:Memos.json memoryTime:1524771427.17882 count:2667 bytes
+
+12:39:31.030: ⧉ sendSyncFile fileName:Memos.json memoryTime:1524771427.17882⟺???
+
+12:39:34.792: ⧉ sendSyncFile fileName:Memos.json memoryTime:1524771427.17882⟺???
+

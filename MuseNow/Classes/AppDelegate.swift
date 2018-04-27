@@ -24,6 +24,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var didStopActive = false // prevent multiple calls to startActive()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        if let window = self.window {
+            window.makeKeyAndVisible()
+        }
         return true
     }
 

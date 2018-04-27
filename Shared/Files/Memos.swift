@@ -26,10 +26,8 @@ class Memos: FileSync, Codable {
     func archiveMemos(done:@escaping CallVoid) {
 
         if let data = try? JSONEncoder().encode(items) {
-
-            let _ = saveData(data, Date().timeIntervalSince1970)
+            let _ = saveData(data)
         }
-        Marks.shared.sendSyncFile()
         done()
     }
     
@@ -62,7 +60,6 @@ class Memos: FileSync, Codable {
         case .memoNod2RecOff:   memoSet.remove(.nod2Rec)
 
         case .memoClearAll:
-            let isSender = true
             Actions.shared.markAction(.memoClearAll, nil, 0, isSender)
             clearAllDocPrefix("Memo_") {
                 self.items.removeAll()
@@ -71,7 +68,7 @@ class Memos: FileSync, Codable {
                 }
             }
         case .memoCopyAll:
-            let isSender = true
+
             Actions.shared.markAction(.memoCopyAll, nil, 0, isSender)
             copyAllDocPrefix("Memo_") {
                 self.archiveMemos {
@@ -95,14 +92,13 @@ class Memos: FileSync, Codable {
      |   memos.addEvent
      |        MuEvents.shared.addEvent
      |            Actions.doAddEvent
-     |                Record.recordAudioFinish -> see updateMemoArchive
+     |                Record.createMemoEvent -> see updateMemoArchive
      */
     func addMemoEvent(_ event:MuEvent) {
         items.append(event)
         archiveMemos {}
     }
 
- 
     /**
      convert audio to text
      - parameter event: MuEvent captures result

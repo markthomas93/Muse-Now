@@ -12,9 +12,10 @@ extension EventTableVC {
         if let cell = tableView.cellForRow(at: indexPath) as? MuCell,
             cell != prevCell {
             
-            if let event = cell.event, event.type == .memo, event.title == "Memo" {
-                print("✏ stt:\(event.sttApple) ✏ swm:\(event.sttSwm)")
+            if let event = cell.event, [.memoRecord,.memoTrans,.memoTrash].contains(event.type) {
+                Log("✏ stt:\(event.sttApple) \(event.type.rawValue)")
             }
+            Say.shared.cancelSpeech()
             nextMuCell(cell)
             prevIndexPath = indexPath
         }

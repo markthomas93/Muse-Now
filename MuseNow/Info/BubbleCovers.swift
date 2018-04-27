@@ -57,7 +57,7 @@ class BubbleCovers {
     }
     
     func fadeIn(_ bubble:Bubble,_ duration:TimeInterval,_ delay:TimeInterval) {
-        if canFadeIn(bubble) { //Log(bubble.logString("💬 Covers::fadeIn"))
+        if canFadeIn(bubble) { Log(bubble.logString("⿴ BubbleCovers::fadeIn"))
             for (key,value) in self.covers {
                 if let tableView = key as? UITableView {
                     value.frame.origin = tableView.contentOffset
@@ -73,7 +73,7 @@ class BubbleCovers {
     }
     
     func fadeOut(_ bubble: Bubble,_ duration:TimeInterval,_ delay:TimeInterval) {
-        if canFadeOut(bubble) { Log(bubble.logString("💬 Covers::fadeOut"))
+        if canFadeOut(bubble) { Log(bubble.logString("⿴ BubbleCovers::fadeOut"))
             UIView.animate(withDuration: duration, delay: delay, options: [.curveLinear], animations: {
                 self.covers.values.forEach { $0.alpha = 0.0}
             })
@@ -88,11 +88,11 @@ class BubbleCovers {
         remove.removeAll()
     }
     func maybeRemoveFromSuper(_ bubble:Bubble) {
-        if canFadeOut(bubble) { Log(bubble.logString("💬 Covers::\(#function)"))
+        if canFadeOut(bubble) { Log(bubble.logString("⿴ BubbleCovers::\(#function)"))
             removeFromSuper()
         }
     }
-    func fadeRemoveRemainingCovers() { Log("💬 Covers::\(#function) covers:\(covers.count)")
+    func fadeRemoveRemainingCovers() { Log("⿴ BubbleCovers::\(#function) covers:\(covers.count)")
         if covers.count > 0 {
             UIView.animate(withDuration:1.0, animations: {
                 self.covers.values.forEach { $0.alpha = 0 }

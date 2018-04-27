@@ -17,6 +17,10 @@ public protocol MuseTableDelegate : NSObjectProtocol {
 
 class Scene: SKScene  {
 
+    static var nextId = 0
+    static func getNextId() -> Int { nextId += 1 ; return nextId }
+
+    let id = Scene.getNextId()
     let actions  = Actions.shared
     let dayHour  = DayHour.shared
     let muEvents = MuEvents.shared
@@ -52,17 +56,24 @@ class Scene: SKScene  {
     var recPalTex  : SKTexture! // recording texture
     
     var indexWidth = 170 // 24 hours * 7 days + rim + hub
-    
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    override init(size:CGSize) {
+        super.init(size:size)
+        backgroundColor = .black
+        scaleMode = .aspectFill
+        initSprite()
+    }
     override func sceneDidLoad() {
         
         Log("⎚ \(#function)")
         anim.scene = self
         center = CGPoint(x: size.width/2, y: size.height/2)
         radius =  min(size.width, size.height)/2
-        scaleMode = .aspectFill
-        backgroundColor = .black
         dayHour.updateTime()
-        initSprite()
+
     }
 
     /// - via: Active.checkForNewHour
@@ -96,10 +107,12 @@ class Scene: SKScene  {
         updateUniforms()
         updatePastFutr()
     }
-    
 
-        
     // SKScene callback game loop -------------------
+
+    #if os(watchOS)
+    var countdown = 2 // kludge to overcome white flash on apple watch
+    #endif
 
     override func update(_ currentTime: TimeInterval) {
 
@@ -108,7 +121,14 @@ class Scene: SKScene  {
             uFrame?.floatValue = (abs(anim.sceneFrame)+0.5)/Float(Anidex.animEnd.rawValue)
             updatePastFutr()
         }
-
+        #if os(watchOS)
+            if countdown > 0 {
+                countdown -= 1
+                if countdown == 0 {
+                    WatchCon.shared.skInterface.setAlpha(1)
+                }
+            }
+        #endif
         if debugUpdate {
             let time = String(format:"%.2f",currentTime)
             actions.doSetTitle("\(anim.animNow):\(time)")

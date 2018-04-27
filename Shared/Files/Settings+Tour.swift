@@ -16,7 +16,7 @@ extension Settings {
         if let data = try? JSONEncoder().encode(settings) {
             let backName = fileName+".backup"
             Log ("⧉⧉ Settings::backupSettings to file: \(backName)")
-            let _ = saveData(data, backName, Date().timeIntervalSince1970)
+            let _ = saveData(data, backName)
         }
     }
 

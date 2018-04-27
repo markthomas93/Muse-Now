@@ -87,6 +87,7 @@
 
     func updateSetFromSession(_ saySet_:SaySet) {
         saySet = saySet_
+        Settings.shared.updateSaySet(saySet_)
     }
 
 
@@ -122,7 +123,7 @@
         }
         sayItem = nil
     }
-      /**
+    /**
      Some SayItems will kick out other say times, like a day change kicking out a "past" "future". SayItem
      So, clear out the kicked items. And cancel current sayItem if it is one of those items.
      */
@@ -265,7 +266,7 @@
 
         func playMemo(_ item: SayItem) {
 
-            Transcribe.shared.transcribe(item) // transcribe item if
+            Transcribe.shared.transcribe(item) // transcribe item if no already
 
             if Say.shared.saySet.contains(.memo) && Hear.shared.canPlay() {
                 self.synth.stopSpeaking(at: .immediate) //?? remove?

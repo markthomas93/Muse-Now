@@ -39,19 +39,26 @@ extension Tour {
 //        addTour("show",[.info, .detail],[
 //            menuInfo("show",[],[gotoPath("show"),"Choose what to \n see and hear","v_082.aif"]),
 //            ])
-
-        // calendar
-        addTour("calendar",[.menu, .info, .detail],[
-            menuMark("calendar",[], [gotoPath("calendar"), "Show calendar events and \n changes will pause","v_056.aif"]),
-        ])
+//
+//        // calendar
+//        addTour("calendar",[.menu, .info, .detail],[
+//            menuMark("calendar",[], [gotoPath("calendar"), "Show calendar events and \n changes will pause","v_056.aif"]),
+//        ])
 
         // reminder
         addTour("reminders",[.menu, .info, .detail],[
-            menuMark("reminders",[],[gotoPath("reminder"), "Show reminders, which \n have a deadline","v_057.aif"]),
-            menuMark("reminder", [],["Add reminders anytime with Siri:","v_085.aif"]),
-            menuMark("reminder", [.overlay], ["\"Hey Siri, remind me to pack for trip tomorrow\"","v_086.aif"]),
-            menuVid1("reminder",.diptych12, [.snugAbove,.nowait], ["WatchSiri2.m4v", 24]),
-            menuVid1("reminder",.diptych22, [.snugAbove],         ["PhoneSiri2.m4v", 24])
+            menuMark("reminders",[],[
+
+                gotoPath("reminder"),
+                "Show reminders, which \n have a deadline","v_057.aif",
+                "Add reminders anytime with Siri:","v_085.aif"]),
+            
+            menuMark("reminders", [.overlay,.nowait], [
+
+                "\"Hey Siri, remind me to pack for trip tomorrow\"","v_086.aif",27]),
+
+            menuVid1("reminders",.diptych12, [.snugAbove,.nowait], ["WatchSiri2.m4v", 24]),
+            menuVid1("reminders",.diptych22, [.snugAbove],         ["PhoneSiri2.m4v", 24])
             ])
 
         // memos
@@ -64,21 +71,25 @@ extension Tour {
                                                          { Actions.shared.doAction(.gotoFuture)},
                                                          { Timer.delay(0.5) {Anim.shared.scene?.uFade?.floatValue = 1 }},
                                                          ]),
-            menuMark("memos.nod", [.overlay], [gotoPath("memos.nod"), "record a memo by nodding your wrist", "v_211.aif"]),
-            menuVid1("memos", .diptych12, [.nowait], ["WatchMemo2.m4v", 12]),
-            menuVid1("memos", .diptych22, [],        ["PhoneMemo2.m4v", 12]),
+            menuMark("memos.nod", [.overlay,.nowait],
+
+                     [gotoPath("memos.nod"),
+                      "record a memo by nodding your wrist", "v_211.aif",13]), ///
+
+            menuVid1("memos", .diptych12, [.snugAbove,.nowait], ["WatchMemo2.m4v", 12]),
+            menuVid1("memos", .diptych22, [.snugAbove],         ["PhoneMemo2.m4v", 12]),
 
             menuButn("memos.files",[],[gotoPath("memos.files"),
                                  { Actions.shared.doAction(.gotoFuture)},
                                  { Timer.delay(0.5) { Anim.shared.scene?.uFade?.floatValue = 1 }},
-                                 "Save memos to iCloud Drive \n as standard JSON files","v_097.aif"
-                //"allowing anyone to experiment \n with personal machine learning","v_098.aif"
+                                 "Save memos to iCloud Drive \n as standard JSON files","v_097.aif",///
+                "allowing anyone to experiment \n with personal machine learning","v_098.aif"
                 ])
             ])
 
         // routine
         addTour("routine",[.menu, .beta, .detail],[
-            menuMark("routine",[],[gotoPath("routine"), "Preview colorizing the dial with your weekly routine","v_202.aif"]),
+            menuMark("routine",[],[gotoPath("routine"), "Preview colorizing the dial with your weekly routine","v_202.aif"]), ///
 
             menuPanel("routine",[.nowait], [setNode("routine",isOn:false), "here is routine set OFF","v_089.aif"]),
             menuDial ("routine", [.highlight, .circular], ["and how it affects your dial", 6]),
@@ -86,7 +97,7 @@ extension Tour {
             menuPanel("routine", [.nowait],  [setNode("routine",isOn:true), "here is routine set ON","v_090.aif"]),
             menuDial ("routine", [.highlight, .circular], ["showing what may overlap",6]),
 
-            menuMark("routine.show",[],[gotoPath("routine.show"), "Show your routine on the timeline of events","v_203.aif"]),
+            menuMark("routine.show",[],[gotoPath("routine.show"),  "Show your routine on the timeline of events","v_203.aif"]), ///
             ])
 
 
@@ -106,25 +117,19 @@ extension Tour {
         // hear  --------------------------------------
 
         addTour("hear",[.menu, .info, .detail],[
-            menuInfo("hear",[],[gotoInfo("hear"),  "Choose what to hear and \n where to play it","v_204.aif"]),
+            menuInfo("hear",[],[gotoInfo("hear"),  "Choose what to hear and \n where to play it","v_204.aif"]), ///
 
+            menuMark("hear.event",[],[gotoPath("hear.event"), "hear an event's title","v_205.aif"]), ///
+            menuMark("hear.time", [],[gotoPath("hear.time"), "hear an event's time","v_206.aif"]), ///
 
-
-
-
-
-
-            menuMark("hear.event",[],[gotoPath("hear.event"), "hear an event's title","v_205.aif"]),
-            menuMark("hear.time", [],[gotoPath("hear.time"), "hear an event's time","v_206.aif"]),
-
-            menuMark("hear.memo", [],[gotoPath("hear.memo"), "hear a memo's audio recording","v_207.aif",
+            menuMark("hear.memo", [],[gotoPath("hear.memo"), "hear a memo's audio recording","v_207.aif", ///
                 "Memos are saved in your \n iTunes \"shared files\" folder","v_094.aif",
                 "your private memos stays \n inside Apple's secure sandbox ","v_095.aif",
                 "Muse never sees your timeline \n and we never will", "v_096.aif"]),
 
-            menuMark("speaker",[],[gotoPath("hear.speaker"),"play via speaker or handoff \n to connected earbuds","v_208.aif"]),
+            menuMark("speaker",[],[gotoPath("hear.speaker"),"play via speaker or handoff \n to connected earbuds","v_208.aif"]), ///
 
-            menuMark("earbuds",[],[gotoPath("hear.earbuds"), "play only on earbuds for both \n eyes free and hands free","v_209.aif",
+            menuMark("earbuds",[],[gotoPath("hear.earbuds"), "play only on earbuds for both \n eyes free and hands free","v_209.aif", ///
                                    // "with Apple Watch + Airpods \n simply lift your wrist to hear",  "v_111.aif",
                                    // "what's next while keeping \n focus on the road ahead",          "v_112.aif"
                 ])

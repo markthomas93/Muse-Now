@@ -169,7 +169,7 @@ class Tour {
 
         for any in anys {
             switch any {
-            case let any as String:     makeItem(any,2.0,nil)
+            case let any as String:     makeItem(any,0,nil)
             case let any as Int:        bubItem?.duration = TimeInterval(any) // modify last item
             case let any as Double:     bubItem?.duration = TimeInterval(any) // modify last item
             case let any as Float:      bubItem?.duration = TimeInterval(any) // modify last item

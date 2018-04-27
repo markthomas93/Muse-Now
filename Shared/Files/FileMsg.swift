@@ -49,17 +49,9 @@ class FileMsg:  NSObject {
         }
 
         else if // determine which device's file is more recent
-            let syncFile = msg["syncFile"] as? String,
-            let fileTime = msg["fileTime"] as? TimeInterval{
+            let namesTimes = msg["namesTimes"] as? [String:TimeInterval] {
+            FilesSync.shared.syncFiles(namesTimes)
             
-            switch syncFile {
-            case marks.fileName:    anim.addClosure(title:"syncFile marks")     { marks.recvSyncFile(fileTime) }
-            case memos.fileName:    anim.addClosure(title:"syncFile memos")     { memos.recvSyncFile(fileTime) }
-            case cals.fileName:     anim.addClosure(title:"syncFile cals")      { cals.recvSyncFile(fileTime) }
-            case settings.fileName: anim.addClosure(title:"syncFile settings")  { settings.recvSyncFile(fileTime) }
-            case routine.fileName:  anim.addClosure(title:"syncFile settings")  { routine.recvSyncFile(fileTime) }
-            default: break
-            }
         }
     }
 }

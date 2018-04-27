@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="13528" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="E5x-Cp-nxC">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="13771" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="E5x-Cp-nxC">
+    <device id="watch38" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13526"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="13506"/>
+        <deployment identifier="watchOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="13756"/>
     </dependencies>
     <scenes>
         <!--MuseNow-->
@@ -10,7 +14,7 @@
             <objects>
                 <controller title="MuseNow" spacing="0.0" id="E5x-Cp-nxC" customClass="WatchCon" customModule="MuseNow_WatchKit_App" customModuleProvider="target">
                     <items>
-                        <spriteKitScene width="134" height="134" alignment="center" preferredFramesPerSecond="60" scene="Dial" id="na6-Wm-W5t">
+                        <spriteKitScene width="134" height="134" alignment="center" hidden="YES" preferredFramesPerSecond="60" scene="Dial" id="na6-Wm-W5t">
                             <gestureRecognizers>
                                 <panGestureRecognizer delaysTouchesEnded="NO" id="jcj-Ni-bpU" userLabel="Pan">
                                     <connections>
@@ -65,7 +69,7 @@
                             </mask>
                         </variation>
                     </menu>
-                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="skInterface" destination="na6-Wm-W5t" id="LIr-2s-dBH"/>
                     </connections>

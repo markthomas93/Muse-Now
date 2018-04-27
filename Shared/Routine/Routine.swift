@@ -21,13 +21,12 @@ class Routine: FileSync, Codable {
     func archiveRoutine(done:@escaping CallVoid) {
 
         if let data = try? JSONEncoder().encode(self) {
-            let _ = saveData(data, Date().timeIntervalSince1970)
+            let _ = saveData(data)
             done()
         }
         else {
             done()
         }
-        sendSyncFile()
     }
 
 

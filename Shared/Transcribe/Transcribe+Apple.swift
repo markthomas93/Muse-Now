@@ -48,17 +48,17 @@ extension Transcribe {
                 if museFound.str != nil {
                     Session.shared.sendMsg( ["class"  : "Transcribe",
                                              "result" : museFound.str])
-                     print("✏ muse: \(museFound.str)")
+                     Log("✏ muse: \(museFound.str)")
                 }
                     // does not match a muse template, so send unmatched result
                 else {
                     Session.shared.sendMsg( ["class"  : "Transcribe",
                                              "result" : result.bestTranscription])
-                    print("✏ stt: \(result.bestTranscription)")
+                    Log("✏ stt: \(result.bestTranscription)")
                 }
             }
             else if let error = error {
-                print("✏ \(#function) \(error.localizedDescription)")
+                Log("✏ \(#function) \(error.localizedDescription)")
             }
         }
     }
@@ -94,11 +94,11 @@ extension Transcribe {
 
     func appleSttUrl(_ url: URL, _ completion: @escaping (_ found: MuseFound) -> Void) {
 
-        var museFound = MuseFound("Memo",nil,Int.max)
+        var museFound = MuseFound("Memo", nil, Int.max)
 
         if !recognizer.isAvailable {
             
-            print("✏ \(#function) recognizer is NOT available")
+            Log("✏ \(#function) recognizer is NOT available")
             completion(museFound)
             return
         }
@@ -123,19 +123,19 @@ extension Transcribe {
     }
 
     func appleSttFile(_ recName: String, _ event:MuEvent! = nil)  {
-        
-        let docURL = FileManager.documentUrlFile(recName)
-        //print ("✏ \(#function) url:\(docURL)")
-        appleSttUrl(docURL) { matchFound in
-            if  let _ = matchFound.str,
-                let event = event {
 
-                event.title = matchFound.str
-                event.sttApple = matchFound.str
+        if let event = event {
+            let docURL = FileManager.documentUrlFile(recName)
+            Log("✏ \(#function) recName:\(recName)")
+            appleSttUrl(docURL) { matchFound in
+
+                event.type      = .memoTrans
+                event.title     = matchFound.str
+                event.sttApple  = matchFound.str
+
+                Muse.shared.execFound(matchFound, event)
+                Actions.shared.doUpdateEvent(event, isSender:true)
             }
-            Muse.shared.execFound(matchFound, event)
-            Actions.shared.doUpdateEvent(event, isSender:true)
         }
     }
-
 }

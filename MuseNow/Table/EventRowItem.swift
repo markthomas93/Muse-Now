@@ -52,8 +52,7 @@ class EventRowItem {
      */
 
     func isAfterTime(_ testTime:TimeInterval) -> Bool {
-        if let event = event,
-            event.type == .memo {
+       if let event = event, [.memoRecord,.memoTrans,.memoTrash].contains(event.type) {
             return rowTime >= testTime + 60
         }
         else {

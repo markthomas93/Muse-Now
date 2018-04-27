@@ -124,6 +124,7 @@ extension Session {
     func transferFile(_ url: URL, metadata: [String : AnyObject]) -> Bool {
         if let session = validSession {
             session.transferFile(url, metadata: metadata)
+
             return true
         }
         else {
@@ -138,10 +139,10 @@ extension Session {
         else {
             let metadata = fileTransfer.file.metadata
             if let fileName = metadata?["fileName"] {
-                Log("→ \(#function) transferred file:\(fileName)")
+                Log("→ \(#function) transfering file:\(fileName)")
             }
             else {
-                Log("→ \(#function) success!")
+                Log("→ \(#function) could not find metaData's fileName")
             }
             
         }
@@ -216,7 +217,7 @@ extension Session {
     func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void) {
         
         DispatchQueue.main.async {
-            Log("← didReceiveMessage: " + self.dumpDict(message))
+            Log("← recvMsg: " + self.dumpDict(message))
             self.parseMsg(message)
         }
         replyHandler(["reply":"didReceiveMessage"])

@@ -19,7 +19,6 @@ extension MainVC {
         view.accessibilityIgnoresInvertColors = true  // stay dark in invert mode
         view.backgroundColor = .black
 
-
         updateFrames(view.bounds.size)
         pagesVC.updateFrames(pagesFrame.size)
         view.addSubview(pagesVC.view)
@@ -53,7 +52,6 @@ extension MainVC {
 
     override func viewWillDisappear(_ animated: Bool) {
         observer?.invalidate()
-        //...
     }
 
     override func prefersHomeIndicatorAutoHidden() -> Bool {

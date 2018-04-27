@@ -150,12 +150,12 @@ class OnboardVC: UIPageViewController {
                 "v_303.aif",
 
                 "connecting: " +
-                 "where you were, who you're with, " +
+                    "where you were, who you're with, " +
                 "what you're doing, and why it matters.",
                 "v_304.aif",
                 
                 "This history of yours will help you " +
-                "obtain nearly perfect recall. Just ask " +
+                    "obtain nearly perfect recall. Just ask " +
                 "about any person, place or thing.",
                 "v_305.aif",
                 
@@ -172,7 +172,7 @@ class OnboardVC: UIPageViewController {
                 
                 nextPage]),
             
-            OnboardPage("Permissions", [
+            OnboardPage("Privacy", [
 
                 "Here is our guarantee",
                 "v_308.aif",
@@ -182,18 +182,21 @@ class OnboardVC: UIPageViewController {
                 "v_309.aif",
 
                 "Instead, your history is kept " +
-                "inside Apple's privacy sandbox, on " +
+                    "inside Apple's privacy sandbox, on " +
                 "your iDevices and on Apple's iCloud Drive.",
                 "v_310.aif",
 
 
                 "Moreover, your history is in an open format. " +
-                "So, you're free to use any open source tool " +
+                    "So, you're free to use any open source tool " +
                 "to learn new insights.",
                 "v_311.aif",
 
                 "With that in mind",
                 "v_312.aif",
+                nextPage]),
+
+            OnboardPage("Permissions", [
 
                 approvals,
                 nextPage]),

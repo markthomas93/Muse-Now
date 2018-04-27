@@ -32,7 +32,7 @@ class Taps {
 
         switch tapCount {
         case 1: wasPausing = anim.pauseAnimation()
-        case 3: Record.shared.recordAudioAction() ; doneTapping() ; return
+        case 3: Record.shared.toggleRecordAction() ; doneTapping() ; return
         default: break
         }
         waitTimer = Timer.scheduledTimer(timeInterval: waitTime, target: self, selector: #selector(finishTaps), userInfo: nil, repeats: false)

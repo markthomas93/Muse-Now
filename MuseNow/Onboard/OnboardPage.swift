@@ -45,7 +45,7 @@ class OnboardPage: UIViewController {
     }
     override func viewWillDisappear(_ animated: Bool) {
         Log("🔰 disappear: \(title!)")
-        bubble?.bubBase?.cancelBubble()
+        bubble?.bubbleView?.cancelBubble()
         super.viewWillDisappear(animated)
     }
 

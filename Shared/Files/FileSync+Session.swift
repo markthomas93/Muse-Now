@@ -41,7 +41,7 @@ extension FileSync {
      */
     func receiveFile(_ data:Data, _ updateTime: TimeInterval) {
         func dispatch() {
-            if saveData(data, updateTime) {
+            if saveData(data, fileName, updateTime) {
                 Anim.shared.addClosure(title:"doRefresh(false)") {
                     Actions.shared.doRefresh(false)
                 }
@@ -59,7 +59,7 @@ extension FileSync {
 
     func sendGetFile() { Log ("⧉ \(#function) fileName:\(fileName) memoryTime:\(memoryTime)")
         func dispatch() {
-            session.sendMsg([
+            session.cacheMsg([
                 "class"     : "FileMsg",
                 "getFile"   : fileName,
                 "fileTime"  : memoryTime])
@@ -84,21 +84,5 @@ extension FileSync {
         DispatchQueue.global(qos: .userInitiated).async { dispatch() }
     }
 
-    /**
-     Send request to compare file times and have remote send if newer
-     - via: Session+Message
-     */
-
-    func sendSyncFile() {
-        func dispatch() {
-            memoryTime = getFileTime()
-            Log ("⧉ sendSyncFile fileName:\(fileName) memoryTime:\(memoryTime)⟺???")
-            session.sendMsg([
-                "class"      : "FileMsg",
-                "syncFile"   : fileName,
-                "fileTime"   : memoryTime])
-        }
-        DispatchQueue.global(qos: .userInitiated).async { dispatch() }
-    }
-
+  
 }

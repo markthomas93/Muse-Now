@@ -161,7 +161,6 @@ extension Anim {
 
         if finishTime == 0 {
             finishTime = Date.timeIntervalSinceReferenceDate
-            recSpokeFade = scene.uFade?.floatValue ?? 1.0
             finishFrame = sceneFrame
             recSpokeStart = true
             scene.uPal?.textureValue = scene.recPalTex
@@ -327,15 +326,7 @@ extension Anim {
         }
          //Log(String(format:"⚆ animOut %.1f ➛ %.1f xScale:%.0f dotNow:%.1f (%.1f / %.2f / %.1f) -> %.1f", sceneFrame,nextFrame,xScale,dots.dotNow, distance,timeRemain,fps, increment))
     }
-    func gotoRecFinish() {
-
-        scene.uPal?.textureValue = scene.futrPalTex
-        finishTime = 0
-        finishFrame = Anidex.animEnd.rawValue
-        animNow = .recFinish
-        userDotAction()
-    }
-
+    
      func recFinishAnim() {  Log("⚆ \(#function) sceneFrame:\(sceneFrame))")
 
         if finishTime == 0 {
@@ -353,11 +344,11 @@ extension Anim {
 
             let deltaFade = recSpokeFade - 0.5
             let fade = elapseRatio * deltaFade + 0.5
-            scene.uFade?.floatValue = fade
+            //... scene.uFade?.floatValue = fade
             //Log("⚆. fade:\(fade)")
         }
         else {
-            scene.uFade?.floatValue = recSpokeFade
+            //scene.uFade?.floatValue = recSpokeFade
             gotoStartupAnim()
         }
     }

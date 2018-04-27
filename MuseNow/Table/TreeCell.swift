@@ -84,7 +84,7 @@ class TreeCell: MuCell {
         bezel.backgroundColor = .clear
         bezel.layer.cornerRadius = innerH/4
         bezel.layer.borderWidth = 1
-        bezel.layer.masksToBounds = true //!!!//
+        bezel.layer.masksToBounds = true 
         bezel.layer.borderColor = cellColor.cgColor
 
         contentView.addSubview(left)

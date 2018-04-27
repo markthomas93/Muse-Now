@@ -76,13 +76,13 @@ class Cals: FileSync {
 
     // File -------------------------------------------------
 
+    
     func archiveCals(done:@escaping CallVoid) {
 
         if let data = try? JSONEncoder().encode(cals) {
 
-            let _ = saveData(data, Date().timeIntervalSince1970)
+            let _ = saveData(data)
             Actions.shared.doRefresh(/*isSender*/false)
-            sendSyncFile()
             done()
         }
         else {

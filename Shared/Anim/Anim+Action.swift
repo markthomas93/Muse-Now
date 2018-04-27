@@ -21,7 +21,6 @@ extension Anim {
         func setFadeIn  (_ next: Animating) { animNow = next ; wheelTime  = 0 ; wheelDur    = dur }
         func setRecSpoke(_ next: Animating) { animNow = next ; finishTime = 0 ; recSpokeDur = dur }
 
-
         switch animNow {
             
         case .futrSpoke:    if      now < 0 || flipTense        { setFanOut(.pastFanOut) }
@@ -59,7 +58,7 @@ extension Anim {
     // pause ------------------------------------------
 
     @discardableResult
-    func pauseAnimation() -> Bool { Log ("⎚ \(#function) animNow:\(animNow)")
+    func pauseAnimation() -> Bool { //Log ("⎚ \(#function) animNow:\(animNow)")
         Say.shared.clearAll() //???
         finishTimer.invalidate()
         let wasPausing = (animNow == .futrPause || animNow == .pastPause)
@@ -177,10 +176,16 @@ extension Anim {
         if on {
             dots.selectTime(Date().timeIntervalSince1970)
             animNow = .recSpoke
+            recSpokeFade = scene.uFade?.floatValue ?? 1.0
             userDotAction()
         }
         else {
-            gotoRecFinish()
+            scene.uPal?.textureValue = scene.futrPalTex
+            scene.uFade?.floatValue = recSpokeFade
+            finishTime = 0
+            finishFrame = Anidex.animEnd.rawValue
+            animNow = .recFinish
+            userDotAction()
         }
     }
 

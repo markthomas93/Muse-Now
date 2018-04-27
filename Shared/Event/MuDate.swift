@@ -36,15 +36,25 @@ open class MuDate {
     }
 
 
-    /// return top of hour relative for current hour
-    class func relativeMinute(_ index: Int) -> Date {
+    /// return relative seconds
+    class func relativeSecond(_ secondsFromNow: Int) -> Date {
+
+        let cal = Calendar.current as NSCalendar
+
+        let newDate = cal.date(byAdding: [.second], value:secondsFromNow, to:Date(), options: NSCalendar.Options.matchNextTime)
+
+        return newDate!
+    }
+
+    /// return relative minutes
+    class func relativeMinute(_ minuteFromNow: Int) -> Date {
 
         let cal = Calendar.current as NSCalendar
 
         let comps = (cal as NSCalendar).components([.year, .month, .day, .hour, .minute, .timeZone], from: Date())
         let minuteNow = cal.date(from: comps) // trimmed off minutes no minutes
-        let newDate = cal.date(byAdding: [.minute], value:index, to:minuteNow!, options: NSCalendar.Options.matchNextTime)
-        
+        let newDate = cal.date(byAdding: [.minute], value:minuteFromNow, to:minuteNow!, options: NSCalendar.Options.matchNextTime)
+
         return newDate!
     }
 

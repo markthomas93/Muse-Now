@@ -131,7 +131,7 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
         vc.view.layer.cornerRadius = radius
         vc.view.layer.borderColor = headColor.cgColor
         vc.view.layer.borderWidth = width
-        vc.view.layer.masksToBounds = true
+        ///!!!/// vc.view.layer.masksToBounds = true
     }
 
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {

@@ -21,4 +21,3 @@ muse : ask (show | hide | setting | clear) {
 
      refresh : ('refresh' | 'reset') 'screen'?
 }
-

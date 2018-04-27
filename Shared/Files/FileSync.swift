@@ -4,6 +4,7 @@ import UIKit
 import WatchKit
 import MobileCoreServices
 
+
 class FileSync: NSObject, FileManagerDelegate {
     
     let session = Session.shared
@@ -17,11 +18,14 @@ class FileSync: NSObject, FileManagerDelegate {
      - via: remote device, which then calls doRefresh
      */
 
-    func saveData(_ data:Data!, _ fileName_:String, _ fileTime:TimeInterval) -> Bool {
+    func saveData(_ data: Data!,
+                  _ fileName_: String,
+                  _ fileTime_: TimeInterval = Date().timeIntervalSince1970) -> Bool {
 
+        let fileTime = trunc(fileTime_)
         let deltaTime = fileTime - memoryTime
         if deltaTime > 0 {
-            Log ("⧉ saveData \(fileName_) \(memoryTime) ➛ \(fileTime) 𝚫\(deltaTime)")
+            Log("⧉ saveData \(fileName_) \(memoryTime) ➛ \(fileTime) 𝚫\(deltaTime)")
             do {
                 let url = FileManager.documentUrlFile(fileName_)
                 try data.write(to:url)
@@ -30,6 +34,8 @@ class FileSync: NSObject, FileManagerDelegate {
                 fileAttributes[FileAttributeKey.creationDate] =  Date(timeIntervalSince1970:fileTime)
                 try FileManager.default.setAttributes(fileAttributes, ofItemAtPath: url.path)
                 self.memoryTime = fileTime
+
+                FilesSync.shared.updateName(fileName,fileTime)
                 return true
             }
             catch {
@@ -37,12 +43,15 @@ class FileSync: NSObject, FileManagerDelegate {
             }
         }
         else {
-            Log ("⧉ saveData \(fileName_) No Change 𝚫\(deltaTime)")
+            Log("⧉ saveData \(fileName_) No Change 𝚫\(deltaTime)")
         }
         return false
     }
-    func saveData(_ data:Data!, _ fileTime:TimeInterval) -> Bool {
-        return saveData(data,fileName,fileTime)
+    func saveData(_ data:Data!, _ fileName_:String) -> Bool {
+        return saveData(data, fileName_, Date().timeIntervalSince1970)
+    }
+    func saveData(_ data:Data!) -> Bool {
+        return saveData(data, fileName, Date().timeIntervalSince1970)
     }
 
     /**
@@ -55,11 +64,12 @@ class FileSync: NSObject, FileManagerDelegate {
         if let data = NSData(contentsOf: url as URL) as Data? {
 
             memoryTime = getFileTime()
-            Log ("⧉ unarchiveData:\(fileName) memoryTime:\(memoryTime) count:\(data)")
+            FilesSync.shared.updateName(fileName,memoryTime)
+            Log("⧉ unarchiveData:\(fileName) memoryTime:\(memoryTime) count:\(data)")
             completion(data)
         }
         else {
-            Log ("⧉ unarchiveData:\(fileName) count:0")
+            Log("⧉ unarchiveData:\(fileName) count:0")
             completion(nil)
         }
     }
@@ -71,9 +81,9 @@ class FileSync: NSObject, FileManagerDelegate {
     func archiveData(_ data: Data, _ updateTime:TimeInterval) -> Bool {
 
         let deltaTime = updateTime - memoryTime
-        Log ("⧉ archiveData:\(fileName) memory ➛ update time: \(memoryTime) ➛ \(updateTime) 𝚫\(deltaTime)")
+        Log("⧉ archiveData:\(fileName) memory ➛ update time: \(memoryTime) ➛ \(updateTime) 𝚫\(deltaTime)")
         if deltaTime > 0 {
-            return saveData(data,updateTime)
+            return saveData(data,fileName,updateTime)
         }
         return false
     }
@@ -150,7 +160,7 @@ class FileSync: NSObject, FileManagerDelegate {
             let fileAttributes = try FileManager.default.attributesOfItem(atPath:url.path)
             let fileDate = (fileAttributes[FileAttributeKey.creationDate] as? NSDate)!
             let fileTime = fileDate.timeIntervalSince1970
-            //Log ("⧉ \(#function) \(fileTime)")
+            //Log("⧉ \(#function) \(fileTime)")
             return fileTime
         }
         catch let err as NSError {
@@ -160,7 +170,7 @@ class FileSync: NSObject, FileManagerDelegate {
             }
             else {
                 // some unknown error, so print it out
-                Log ("⧉ \(#function) error code:\(err.code) reason:\(err.localizedFailureReason ?? "Oops")")
+                Log("⧉ \(#function) error code:\(err.code) reason:\(err.localizedFailureReason ?? "Oops")")
             }
         }
         return 0

@@ -62,6 +62,7 @@ class Hear {
     func updateOptionsFromSession(_ hearSet_: HearSet) {
 
         hearSet = hearSet_
+        Settings.shared.updateHearSet(hearSet_)
         let oldRoute = route
         updateRoute()
         Log("🎧 \(#function) \(oldRoute)  ➛  \(route)")

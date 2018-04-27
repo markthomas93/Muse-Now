@@ -56,9 +56,8 @@ class Marks: FileSync, Codable {
 
     func archiveMarks(done:@escaping CallVoid) {
         if let data = try? JSONEncoder().encode(idMark) {
-            let _ = saveData(data, Date().timeIntervalSince1970)
+            let _ = saveData(data)
         }
-        Marks.shared.sendSyncFile()
     }
 
     func unarchiveMarks(_ done: @escaping () -> Void) {

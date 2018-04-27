@@ -44,10 +44,11 @@ extension Session {
                 Transcribe.shared.appleBufferResult(result)
             }
         #endif
+        
         if // request from watch to transcribe event
             let eventData = msg["recEvent"] as? Data,
             let recName   = msg["recName"]  as? String,
-            let event = NSKeyedUnarchiver.unarchiveObject(with:eventData) as? MuEvent  {
+            let event = try? JSONDecoder().decode(MuEvent.self, from: eventData) {
 
             Memos.doTranscribe(event, recName, isSender: false)
         }
@@ -58,6 +59,7 @@ extension Session {
         if let putInt = msg["putSet"] as? Int {
             let putSet = ShowSet(rawValue:putInt)
             Show.shared.updateSetFromSession(putSet)
+            Settings.shared.archiveSettings()
             Actions.shared.doRefresh(false)
             #if os(iOS)
                 PagesVC.shared.treeVC.tableView.reloadData()
@@ -87,9 +89,8 @@ extension Session {
         }
 
         if let _ = msg["getSet"] { // TODO: Not called, updated via Settings file?
-            Session.shared.sendMsg(
-                ["class" : "HearSet",
-                 "putSet" : Hear.shared.hearSet.rawValue])
+            Session.shared.sendMsg(["class" : "HearSet",
+                                    "putSet" : Hear.shared.hearSet.rawValue])
         }
     }
 
@@ -97,14 +98,14 @@ extension Session {
 
         if // event was modified
             let updateEvent = msg["updateEvent"] as? Data,
-            let event = NSKeyedUnarchiver.unarchiveObject(with:updateEvent) as? MuEvent {
+            let event = try? JSONDecoder().decode(MuEvent.self, from: updateEvent) {
 
             Actions.shared.doUpdateEvent(event, isSender: false)
         }
 
         else if // a new event has been added, such as a "Memo"
             let addEvent = msg["addEvent"]  as? Data,
-            let event = NSKeyedUnarchiver.unarchiveObject(with:addEvent) as? MuEvent {
+            let event = try? JSONDecoder().decode(MuEvent.self, from: addEvent) {
 
             Actions.shared.doAddEvent(event, isSender: false)
         }
@@ -152,8 +153,6 @@ extension Session {
             case "\(DoAction.markClearAll)": return .markClearAll
             case "\(DoAction.memoCopyAll)":  return .memoCopyAll
             case "\(DoAction.memoClearAll)": return .memoClearAll
-            case "\(DoAction.noteAdd)":      return .noteAdd
-            case "\(DoAction.noteRemove)":   return .noteRemove
             case "\(DoAction.refresh)":      return .refresh
             case "\(DoAction.gotoEvent)":    return .gotoEvent
             default:                         return .unknown
@@ -192,8 +191,12 @@ extension Session {
 
         var firstTime = true
         var result = ""
+        if let clss = dict["class"] as? String {
+            result = clss + " "
+        }
         let keys = dict.keys
         for key in keys {
+            if key == "class" { continue }
             let lead = firstTime ? "[" : ", " ; firstTime = false
             let datakeys : Set<String> = ["data","addEvent","updateEvent", "recEvent"]
             let val = datakeys.contains(key) ? "<data>" : "\(dict[key] ?? "")"

@@ -1,7 +1,7 @@
 import WatchKit
 
 class WatchCon: WKInterfaceController {
-    
+    static var shared: WatchCon!
     let actions  = Actions.shared
     let active   = Active.shared
     let memos    = Memos.shared
@@ -26,14 +26,13 @@ class WatchCon: WKInterfaceController {
     override func awake(withContext context: Any?) { Log("⟳ \(#function) context:\(context ?? "nil")")
         //Muse.shared.testScript()
         WKExtension.shared().isFrontmostTimeoutExtended = true
-
         initScene()
         crown.updateCrown()
         let nextMinute = MuDate.relativeMinute(1)
         WKExtension.shared().scheduleBackgroundRefresh(withPreferredDate: nextMinute, userInfo:nil, scheduledCompletion: {_ in})
     }
     
-    override func willActivate() { Log("⟳ \(#function)")
+    override func willActivate() { //Log("⟳ \(#function)")
         
         active.startActive()
         crown.crown.focus()
@@ -45,7 +44,7 @@ class WatchCon: WKInterfaceController {
     override func willDisappear() { Log("⟳ \(#function)")
     }
 
-    override func didDeactivate() { Log("⟳ \(#function))")
+    override func didDeactivate() { //Log("⟳ \(#function))")
         active.stopActive()
     }
 
@@ -53,22 +52,28 @@ class WatchCon: WKInterfaceController {
     /// - via: WatchCon.awake
     func initScene() {
 
-        Log("⟳ \(#function)")
+        if scene == nil {
 
-        let w = roundf(Float(self.contentFrame.size.width  / 4)) * 8
-        size = CGSize(width:CGFloat(w), height:CGFloat(w))
+            let w = roundf(Float(self.contentFrame.size.width  / 4)) * 8
 
-        scene = Scene(size : size)
-        skInterface.preferredFramesPerSecond = 60
-        skInterface.presentScene(scene)
-        scene.isPaused = true
+            size = CGSize(width:CGFloat(w), height:CGFloat(w))
 
-        actions.scene = scene
-        active.scene = scene
-        anim.scene = scene
+            scene = Scene(size : size)
 
-        touchDial = TouchDial(size, nil)
-        colorSlider = TouchMove(size)
+            Log("⟳ \(#function) id:\(scene.id)")
+            skInterface.preferredFramesPerSecond = 60
+            skInterface.setAlpha(0) // kludge to overcome white flash on apple watch
+            skInterface.presentScene(scene)
+
+            //??? scene.isPaused = true
+            WatchCon.shared = self
+            actions.scene = scene
+            active.scene = scene
+            anim.scene = scene
+
+            touchDial = TouchDial(size, nil)
+            colorSlider = TouchMove(size)
+        }
         Session.shared.startSession()
     }
 

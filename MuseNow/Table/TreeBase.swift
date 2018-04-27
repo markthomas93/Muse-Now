@@ -51,9 +51,8 @@ class TreeBases: FileSync {
     func archiveTree(done:@escaping CallVoid) {
 
         if let data = try? JSONEncoder().encode(baseRoot) {
-            let _ = saveData(data, Date().timeIntervalSince1970)
+            let _ = saveData(data)
         }
-        // sendSyncFile()
     }
 
     func unarchivearchiveTree(_ completion: @escaping () -> Void) {

@@ -20,12 +20,12 @@ class Bubble {
     var bubShape = BubShape.above       // bubble type from which arrow points to
     var bubContent = BubContent.text    // show text or video (picture is undefined)
     var size = CGSize.zero              // size of bubble
-    var base: UIView!                   // usually base view of view controller
-    var from: UIView!                   // view from which the bubble springs
-    var front: [UIView]!                // views to bring to front
+    var parentView: UIView!             // usually base view of view controller
+    var fromView: UIView!               // view from which the bubble springs
+    var frontViews: [UIView]!           // views to bring to front
     var covering = [UIView]()           // views in which to darken while showing bubble
     var items = [BubbleItem]()
-    var bubBase: BubbleBase!            // views
+    var bubbleView: BubbleView!            // views
 
     var options = BubbleOptions()       // highlighted or draw circular bezel
     var timer = Timer()                 // timer for duration between popOut and tuckIn
@@ -37,9 +37,9 @@ class Bubble {
          _  bubShape_   : BubShape,
          _  bubContent_ : BubContent,
          _  size_       : CGSize = .zero,
-         _  base_       : UIView!,
-         _  from_       : UIView!,
-         _  front_      : [UIView],
+         _  parentView_ : UIView!,
+         _  fromView_   : UIView!,
+         _  frontViews_ : [UIView],
          _  covering_   : [UIView],
          _  options_    : BubbleOptions,
          _  items_      : [BubbleItem] ) {
@@ -49,9 +49,9 @@ class Bubble {
         bubShape = bubShape_
         bubContent = bubContent_
         size = size_
-        base = base_
-        from = from_
-        front = front_
+        parentView = parentView_
+        fromView = fromView_
+        frontViews = frontViews_
         covering = covering_
         options = options_
         items = items_
@@ -77,7 +77,7 @@ class Bubble {
         func goBubble() {
 
             BubblesPlaying.shared.addBubble(self)
-            bubBase?.goBubble() { phase in // when bubBase calls onGoing()
+            bubbleView?.goBubble() { phase in // when bubbleView calls onGoing()
 
                 switch phase {
                 case .poppedOut:
@@ -96,16 +96,18 @@ class Bubble {
         // begin -----------------------
 
         switch self.bubContent {
-        case .text:     bubBase = BubbleText(self)
-        case .video:    bubBase = BubbleVideo(self)
-        case .picture:  bubBase = BubbleVideo(self)
+        case .text:     bubbleView = BubbleText(self)
+        case .video:    bubbleView = BubbleVideo(self)
+        case .picture:  bubbleView = BubbleVideo(self)
         }
-        bubBase.makeBubble(self,goBubble)
+        bubbleView.makeBubble(self,goBubble)
     }
 
     func logString(_ prefix:String) -> String {
         let pre = prefix.padding(toLength: 36, withPad: " ", startingAt: 0)
-        let suf1 = " \(id):\"\((items.first?.str ?? "nil").trunc(length:16))\""
+        let index = max(0,bubbleView?.contenti ?? 0)
+        let item = index < items.count ? items[index] : items.first
+        let suf1 = " \(id):\"\((item?.str ?? "nil").trunc(length:16))\""
         let suf2 = "\(nextBubble?.id ?? 0):\"\((nextBubble?.items.first?.str ?? "nil").trunc(length:16))\""
         return  pre + suf1 + " ➛ " + suf2
     }
