@@ -266,7 +266,7 @@
 
         func playMemo(_ item: SayItem) {
 
-            Transcribe.shared.transcribe(item) // transcribe item if no already
+            Transcribe.shared.appleTranscribeEvent(item.event) {} // transcribe item if no already
 
             if Say.shared.saySet.contains(.memo) && Hear.shared.canPlay() {
                 self.synth.stopSpeaking(at: .immediate) //?? remove?

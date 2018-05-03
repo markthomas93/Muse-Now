@@ -5,7 +5,6 @@ import UIKit
 extension EventTableVC {
 
     /// - via: actions.doAction
-    /// - via: actions.doAddEvent
     /// - via: actions.doUpdateEvent
 
     func updateTable(_ events: [MuEvent]) {

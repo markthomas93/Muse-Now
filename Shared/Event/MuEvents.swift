@@ -259,24 +259,27 @@ class MuEvents {
             return "\(lhs.bgnTime)"+lhs.eventId < "\(rhs.bgnTime)"+rhs.eventId // lhs.bgnTime < rhs.bgnTime
         }
     }
-    
-    func updateEvent(_ updateEvent:MuEvent) {
+
+    @discardableResult
+    func updateEvent(_ updateEvent:MuEvent) -> Bool {
         
         var index = events.binarySearch({$0.bgnTime < updateEvent.bgnTime})
         
         while index < events.count {
             let event = events[index]
             if events[index].bgnTime != updateEvent.bgnTime {
-                return
+                return false
             }
             if event.eventId == updateEvent.eventId {
-                event.title = updateEvent.title
-                event.sttApple = updateEvent.sttApple
-                event.sttSwm = updateEvent.sttSwm
-                return
+
+                event.title     = updateEvent.title
+                event.sttApple  = updateEvent.sttApple
+                event.sttSwm    = updateEvent.sttSwm
+                return true
             }
             index += 1
         }
+        return false
     }
     
     /**

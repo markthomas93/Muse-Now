@@ -44,6 +44,10 @@ class MainVC: UIViewController {
     var crownRightFrame = CGRect.zero
     var observer: NSKeyValueObservation?
 
+     var backgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
+
+
+
     func updateFrames(_ size:CGSize) {
 
         //let statusH = UIApplication.shared.statusBarFrame.height

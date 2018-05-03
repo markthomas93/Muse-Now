@@ -89,39 +89,10 @@ class Memos: FileSync, Codable {
     }
 
     /**
-     |   memos.addEvent
-     |        MuEvents.shared.addEvent
-     |            Actions.doAddEvent
-     |                Record.createMemoEvent -> see updateMemoArchive
      */
     func addMemoEvent(_ event:MuEvent) {
         items.append(event)
         archiveMemos {}
-    }
-
-    /**
-     convert audio to text
-     - parameter event: MuEvent captures result
-     - parameter recName: name to concatenate to documents URL
-     */
-    class func doTranscribe(_ event:MuEvent,_ recName:String, isSender:Bool) {
-
-        #if os(iOS)
-            FileManager.waitFile(recName, /*timeOut*/ 8) { fileFound in
-                if fileFound {
-                    Transcribe.shared.appleSttFile(recName,event)
-                    // Memos.transcribeSWM(recName,event)
-                }
-            }
-        #elseif os(watchOS)
-            if isSender,
-                let data = try? JSONEncoder().encode(event) {
-                Session.shared.sendMsg(
-                    [ "class"    : "Transcribe",
-                      "recEvent" : data,
-                      "recName"  : recName])
-            }
-        #endif
     }
 
 }

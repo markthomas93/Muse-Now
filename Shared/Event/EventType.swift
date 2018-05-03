@@ -13,8 +13,9 @@ public enum EventType: String, Codable { case
     ekevent     = "ekevent",    // Apple Calendar events
     ekreminder  = "ekreminder", // Apple Reminders
     memoRecord  = "memoRecord", // memo has audio recording
-    memoTrans   = "memoTrans", // memo transcribed
-    memoTrash   = "memoTrash", // memo trashed by user
+    memoTrans   = "memoTrans",  // memo transcribed
+    memoBlank   = "memoBlank",  // memo transcription yielded nothing
+    memoTrash   = "memoTrash",  // memo trashed by user
     routine     = "routine",
     time        = "time"
 }

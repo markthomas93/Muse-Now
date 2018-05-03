@@ -37,16 +37,17 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
 
             switch task {
 
-            case let t as WKApplicationRefreshBackgroundTask:  Log("✺ \(#function) type:\(t.classForCoder)")
+            case let t as WKApplicationRefreshBackgroundTask:
+                Log("✺ \(#function) type:\(t.classForCoder)")
                 Complicated.shared.extendTimelines()
+                // case let t as WKSnapshotRefreshBackgroundTask:
+                // case let t as WKWatchConnectivityRefreshBackgroundTask:
+                // case let t as WKURLSessionRefreshBackgroundTask:
 
-            case let t as WKSnapshotRefreshBackgroundTask:      Log("✺ \(#function) type:\(t.classForCoder)")
-//            case let t as WKWatchConnectivityRefreshBackgroundTask:
-//            case let t as  WKURLSessionRefreshBackgroundTask:
-
-            default:                                            Log("✺ \(#function) type:\(task.classForCoder)")
+            default: Log("✺ \(#function) type:\(task.classForCoder)")
             }
-             task.setTaskCompletedWithSnapshot(false)
+
+            task.setTaskCompletedWithSnapshot(false)
         }
     }
 

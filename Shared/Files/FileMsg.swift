@@ -49,8 +49,8 @@ class FileMsg:  NSObject {
         }
 
         else if // determine which device's file is more recent
-            let namesTimes = msg["namesTimes"] as? [String:TimeInterval] {
-            FilesSync.shared.syncFiles(namesTimes)
+            let nameTimes = msg["nameTimes"] as? [String:TimeInterval] {
+            FilesSync.shared.syncFiles(nameTimes)
             
         }
     }

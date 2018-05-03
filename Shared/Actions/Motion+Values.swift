@@ -84,7 +84,7 @@ class Gestures {
             // less -> more and more -> less trigger
             // as in Gestures(0.3,.slideLeft,.slideRight,.shake,.shake,.shake2)
             // so, eliminate an interim trigger between first back and forth and double
-            //... let sameDouble = [.none, gesture].contains(prevGesture) //== .none || prevDouble ==  gesture
+            // let sameDouble = [.none, gesture].contains(prevGesture) //== .none || prevDouble ==  gesture
 
             // some gestures like nodding must enforce sequence, where:
             // less -> more, not more -> less, so: the value for moreLess == Less

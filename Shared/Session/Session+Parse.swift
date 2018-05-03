@@ -2,7 +2,6 @@
 
 import Foundation
 
-
 extension Session {
     
     /**
@@ -18,10 +17,9 @@ extension Session {
     }
     
     /**
-     Parse and act upon message sent from another device
-     - via: Session.didReceive(ApplicationContext Message)
+     Parse and act upon buffer message sent from another device
      */
-    func parseTranscribe(_ msg: [String:Any]) {
+    func parseTranscribe(_ msg: [String:Any]) { ///... remove
 
         #if os(iOS)
 
@@ -41,17 +39,10 @@ extension Session {
             }
         #else
             if let result = msg["result"] as? String {
-                Transcribe.shared.appleBufferResult(result)
+                //Transcribe.shared.appleBufferResult(result)
             }
         #endif
         
-        if // request from watch to transcribe event
-            let eventData = msg["recEvent"] as? Data,
-            let recName   = msg["recName"]  as? String,
-            let event = try? JSONDecoder().decode(MuEvent.self, from: eventData) {
-
-            Memos.doTranscribe(event, recName, isSender: false)
-        }
     }
 
     func parseShowSet(_ msg: [String : Any])  {
@@ -102,13 +93,6 @@ extension Session {
 
             Actions.shared.doUpdateEvent(event, isSender: false)
         }
-
-        else if // a new event has been added, such as a "Memo"
-            let addEvent = msg["addEvent"]  as? Data,
-            let event = try? JSONDecoder().decode(MuEvent.self, from: addEvent) {
-
-            Actions.shared.doAddEvent(event, isSender: false)
-        }
     }
 
     func parseCalendars(_ msg: [String : Any]) {
@@ -129,7 +113,7 @@ extension Session {
             case "ShowSet":     parseShowSet(msg)
             case "SaySet":      parseSaySet(msg)
             case "HearSet":     parseHearSet(msg)
-            case "Transcribe":  parseTranscribe(msg)
+            case "Transcribe":  parseTranscribe(msg) //... remove
             case "MuseEvent":   parseMuEvent(msg)
             case "Calendars":   parseCalendars(msg)
             case "Actions":     parseActions(msg)
@@ -198,7 +182,7 @@ extension Session {
         for key in keys {
             if key == "class" { continue }
             let lead = firstTime ? "[" : ", " ; firstTime = false
-            let datakeys : Set<String> = ["data","addEvent","updateEvent", "recEvent"]
+            let datakeys : Set<String> = ["data","updateEvent", "recEvent"]
             let val = datakeys.contains(key) ? "<data>" : "\(dict[key] ?? "")"
             result += lead + key + ":" + val
         }

@@ -19,11 +19,8 @@ class Settings: FileSync, Codable {
         }
     }
 
-    func unarchiveSettings(_ done: @escaping () -> Void) {
+    func unarchiveSettings(_ done: @escaping () -> Void) { Log ("⧉ Settings::unarchiveSettings")
 
-        Log ("⧉⧉ Settings::unarchiveSettings")
-
-        // begin --------------------
         unarchiveData() { data in
 
             if  let data = data,

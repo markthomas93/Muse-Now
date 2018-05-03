@@ -11,11 +11,11 @@ class Record: NSObject, CLLocationManagerDelegate {
     let audioSession = AVAudioSession.sharedInstance()
     var audioRecorder: AVAudioRecorder?
 
-    let recDur = TimeInterval(30) // recording duration
+    let recDuration = TimeInterval(30) // recording duration
     var recBgnTime = TimeInterval(0)
     var recEndTime = TimeInterval(0)
     var abortTime = TimeInterval(0)
-    var recName = ""
+    var fileName = ""
     var groupURL: URL?
     var audioTimer = Timer() // audio note timer
 
@@ -30,34 +30,22 @@ class Record: NSObject, CLLocationManagerDelegate {
         return recEndTime < recBgnTime
     }
 
-
     // Audio -----------------------------------
 
-    let waitingPeriod = TimeInterval(2.0)
+    let waitingPeriod   = TimeInterval(2.0)
     let minimumDuration = TimeInterval(1.0)
 
-    func recordAfterInterruption() -> Bool {
-        let deltaEnd = Date().timeIntervalSince1970 - recEndTime
-        let lastDur = recEndTime - recBgnTime // last duration < 1 was aborted
-
-        if deltaEnd < waitingPeriod,
-            lastDur < minimumDuration {
-            toggleRecordAction()
-            return true
-        }
-        return false
-    }
     func recordAfterWaitingPeriod() {
 
         if isRecording() {
-            Log("∿ \(#function) isRecording")
+            Log("∿ \(#function) isRecording -> off")
             toggleRecordAction()
         }
         else {
 
             let deltaEnd = Date().timeIntervalSince1970 - recEndTime
 
-            Log(String(format:"∿ \(#function) delta:%.2f dur:%.2f",deltaEnd, recEndTime - recBgnTime))
+            Log(String(format:"∿ \(#function) delta:%.2f dur:%.2f", deltaEnd, recEndTime - recBgnTime))
 
             if deltaEnd > waitingPeriod {
                 toggleRecordAction()
@@ -96,9 +84,8 @@ class Record: NSObject, CLLocationManagerDelegate {
 
     // user action ------------------------------------
 
-    /**
-    user initiated gesture to either start or finish recording
-     */
+    /** User initiated gesture to either start or finish recording */
+
     func toggleRecordAction() {
 
         if isRecording() { Log("∿ \(#function) -> finish")
@@ -114,11 +101,11 @@ class Record: NSObject, CLLocationManagerDelegate {
     }
 
     /**
-     Setup multithread queue to prepare, animate, start locacation,
-     which all must finish before beginRecording()
+     Setup multithread queue to prepare, animate, start location, which all must finish before beginRecording()
      */
     func startRecording() {
-        
+
+        /** setup recording route and file destination */
         func prepareRecording(_ done: @escaping () -> ()) {
 
             activateAudio() // this should already been started, so somewhat reundundant
@@ -126,23 +113,27 @@ class Record: NSObject, CLLocationManagerDelegate {
             dateFormatter.dateFormat = "yyyy-MM-dd__HH.mm.ss"
             let date = Date()
             let timeStr = dateFormatter.string(from: date)
-            recName = "Memo_" + timeStr + ".m4a"
-            groupURL = FileManager.museGroupURL().appendingPathComponent(recName)
-            try? audioRecorder = AVAudioRecorder(url: groupURL!, settings: recordSettings)
-            audioRecorder?.prepareToRecord()
+            fileName = "Memo_" + timeStr + ".m4a"
+
+            do {
+                groupURL = FileManager.museGroupURL().appendingPathComponent(fileName)
+                try audioRecorder = AVAudioRecorder(url: groupURL!, settings: recordSettings)
+                audioRecorder?.prepareToRecord()
+            }
+            catch {
+                Log("∿ \(#function) problem with url:\(groupURL!)")
+            }
             done()
         }
 
-        /**
-         Start recoding session if still active. Sometimes the watch will deactivate after starting the preparations.
-         */
+        /** Start recoding session if still active. Sometimes the watch will deactivate after starting the preparations. */
         func beginRecording() {
 
             if Active.shared.isOn { Log("∿ \(#function) Active.isOn")
                 // when recBgnTime < recEndTime, isRecording() returns true
                 recBgnTime = Date().timeIntervalSince1970
                 audioRecorder?.record()
-                audioTimer = Timer.scheduledTimer(timeInterval: recDur, target: self, selector: #selector(timedOutRecording), userInfo: nil, repeats: false)
+                audioTimer = Timer.scheduledTimer(timeInterval: recDuration, target: self, selector: #selector(timedOutRecording), userInfo: nil, repeats: false)
                 Anim.shared.gotoRecordSpoke(on:true)
             }
                 // became unactive while setting up
@@ -189,10 +180,7 @@ class Record: NSObject, CLLocationManagerDelegate {
         Anim.shared.gotoRecordSpoke(on: false)
     }
 
-
-
-    /**
-     Finish and save recording
+    /** Finish and save recording
      - via: user triple-tapped or nodded device
      - via: audioTimer fired after recDur seconds
      */
@@ -220,28 +208,26 @@ class Record: NSObject, CLLocationManagerDelegate {
 
 
     /**
-     when watch screen becomes inactive, abort a freshly started recording.
-     and if so, stop it
-     -via: Active::stopActive
+     When watch screen becomes inactive, abort a freshly started recording, and then deactivate.
+     - via: Active::stopActive
      */
     func maybeStopRecording() {
 
-        if !isRecording() { // Log("∿ \(#function) -> NOT recording")
-            return
-        }
+        if isRecording() { // Log("∿ \(#function) -> NOT recording")
 
-        if finishRecording() { // Log("∿ \(#function) -> success")
-             Haptic.play(.success)
-        }
-        else { // Log("∿ \(#function) -> abort")
-            abortTime = Date().timeIntervalSince1970
+            if finishRecording() { // Log("∿ \(#function) -> success")
+                Haptic.play(.success)
+            }
+            else { // Log("∿ \(#function) -> abort")
+                abortTime = Date().timeIntervalSince1970
+            }
         }
         deactivateAudio()
     }
 
     /**
      when watch screen becomes inactive for a short time after aborting a recording, restart recording.
-     -via: Active::stopActive
+     - via: Active::stopActive
      */
     func maybeRestartRecording() {
 
@@ -271,43 +257,21 @@ class Record: NSObject, CLLocationManagerDelegate {
         }
         if let groupURL = groupURL {
 
-            // Move  file to documents directory so that WatchConnectivity can transfer it.
-            let docURL = FileManager.documentUrlFile(recName)
-            let metaData = ["fileName" : recName as AnyObject,
-                            "fileDate" : recBgnTime as AnyObject]
+            // Move file to documents directory so that WatchConnectivity can transfer it.
+            let docURL = FileManager.documentUrlFile(fileName)
 
             if  let _ = try? FileManager().moveItem(at:groupURL, to:docURL) {
-                #if os(watchOS)
-                    Log("→ \(#function) transfer recName:\(recName)")
-                    if !Session.shared.transferFile(docURL, metadata:metaData) {
-                        Log("∿ \(#function) Failed !!! could not transfer file \n   to:\(docURL)")
-                    }
-                #endif
-                Log("∿ \(#function): \(recName)")
+
+                let coord = Location.shared.getLocation()
+                let event = MuEvent(.memoRecord, "Memo", recBgnTime, recEndTime, fileName, coord, .white)
+                Transcribe.shared.waitTranscribe(event) {}
             }
             else {
-                Log("∿ \(#function) Failed !!! \n   from:\(groupURL) \n   to:\(docURL)")
+                Log("∿ \(#function) Failed transfer!!! \n   from:\(groupURL) \n   to:\(docURL)")
             }
-            createMemoEvent()
         }
     }
-    /**
-     After saving a recording file, create a Memo event for timeline, and attempt to transcribe audio speech to text.
-     - via: saveRecording
-     */
-    func createMemoEvent() { Log("∿ \(#function)")
-
-        let coord = Location.shared.getLocation()
-        let event = MuEvent(.memoRecord, "Memo", recBgnTime, recName, coord, .white)
-
-        Actions.shared.doAddEvent(event, isSender:true)
-        Memos.doTranscribe(event, recName, isSender:true)
-
-        #if os(watchOS)
-            Crown.shared.updateCrown()
-        #endif
-    }
-
+    
     /**
      User shaked device to delete recording
      -via: Motion.shake2

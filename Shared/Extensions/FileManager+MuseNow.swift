@@ -9,7 +9,7 @@ import Foundation
 
  extension FileManager {
     
-    static func waitFile (_ recName:String,_ timeOut:TimeInterval,_ completion: @escaping (_ found:Bool) -> Void) {
+    static func waitFile (_ recName:String, timeOut:TimeInterval,_ completion: @escaping (_ found:Bool) -> Void) {
         
         let docURL = FileManager.documentUrlFile(recName)
         if FileManager().fileExists(atPath: docURL.path) {
@@ -19,7 +19,7 @@ import Foundation
         if timeOut > 0 {
             let delay = 0.25
             let _ = Timer.scheduledTimer(withTimeInterval:delay, repeats: false, block: {_ in
-                self.waitFile(recName, timeOut - delay, completion)
+                self.waitFile(recName, timeOut: timeOut - delay, completion)
             })
         }
         else {

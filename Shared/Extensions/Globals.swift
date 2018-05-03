@@ -35,9 +35,8 @@ func DebugLog(_ str: String) -> Bool {
 
     case
 
+    "⟳", // life cycle
     "∿",  // audio recorder
-    
-
     "←", // session receiving
     "↔︎", // session activation state
     "→", // session sending
@@ -48,7 +47,6 @@ func DebugLog(_ str: String) -> Bool {
     case
 
      "⧉", // syncfile
-    "⟳", // life cycle
     "⊕", // motion
     "✺",  // background task
     "🗣", // Say TTS

@@ -1,80 +1,155 @@
 init() Error:Error Domain=NSOSStatusErrorDomain Code=-50 "(null)"
-12:35:51.171: ∿ maybeRestartRecording() NOT 1524771351.16915
-12:35:51.247: ↔︎ session(_:activationDidCompleteWith:error:) state:WCSessionActivationState
-12:35:51.274: ⧉⧉ Settings::unarchiveSettings
-12:35:51.318: ⧉ unarchiveData:Settings.json memoryTime:1524764931.28233 count:80 bytes
-12:35:51.361: ⧉ Settings::settingsFromRoot() saySet:0
-2018-04-26 12:35:51.369288-0700 MuseNow WatchKit Extension[212:13545] [default] -[SPInterfaceViewController performBlockOnViewDidAppear:]:1258: Tried to set _didAppearBlock but we already have one! <SPInterfaceViewController: 0x172f9a00>
-12:35:51.437: ∿ activateAudio()
-12:35:52.009: ⧉ unarchiveData:Memos.json memoryTime:1524768293.39773 count:2364 bytes
-12:35:52.677: ⧉ Memos::unarchiveMemos items:8  memoryTime:1524768293.39773
-12:35:52.735: ⧉ unarchiveData:Marks.json count:0
-12:35:52.921: ⧉ unarchiveData:Calendars.json count:0
-12:35:53.424: ⧉ sendSyncFile fileName:Marks.json memoryTime:0.0⟺???
-12:35:53.429: ⧉ sendSyncFile fileName:Settings.json memoryTime:1524764931.28233⟺???
-12:35:53.435: ⧉ sendSyncFile fileName:Memos.json memoryTime:1524768293.39773⟺???
-12:35:53.445: ⧉ sendSyncFile fileName:Routine.json memoryTime:1524764931.27775⟺???
-12:35:53.447: ⧉ sendSyncFile fileName:Calendars.json memoryTime:0.0⟺???
-12:35:53.467: → cacheMsg FileMsg [syncFile:Marks.json, fileTime:0.0]
-12:35:53.461: → cacheMsg FileMsg [syncFile:Settings.json, fileTime:1524764931.28233]
-12:35:53.473: → cacheMsg FileMsg [syncFile:Memos.json, fileTime:1524768293.39773]
-12:35:53.482: → cacheMsg FileMsg [syncFile:Routine.json, fileTime:1524764931.27775]
-12:35:53.487: → cacheMsg FileMsg [syncFile:Calendars.json, fileTime:0.0]
-12:35:54.056: ⧉ sendSyncFile fileName:Settings.json memoryTime:1524764931.28233⟺???
-12:35:54.079: ⧉ sendSyncFile fileName:Memos.json memoryTime:1524768293.39773⟺???
-12:35:54.095: ⧉ sendSyncFile fileName:Calendars.json memoryTime:0.0⟺???
-12:35:54.108: ⧉ sendSyncFile fileName:Routine.json memoryTime:1524764931.27775⟺???
-12:35:54.110: ⧉ sendSyncFile fileName:Marks.json memoryTime:0.0⟺???
-12:35:54.114: → cacheMsg FileMsg [syncFile:Memos.json, fileTime:1524768293.39773]
-12:35:54.123: → cacheMsg FileMsg [syncFile:Settings.json, fileTime:1524764931.28233]
-12:35:54.124: → cacheMsg FileMsg [syncFile:Calendars.json, fileTime:0.0]
-12:35:54.127: → cacheMsg FileMsg [syncFile:Routine.json, fileTime:1524764931.27775]
-12:35:54.127: → cacheMsg FileMsg [syncFile:Marks.json, fileTime:0.0]
-
-startup
-2018-04-26 12:36:36.144679-0700 MuseNow WatchKit Extension[212:13545] AVSpeechSynthesizer Audio interruption notification: {
-    AVAudioSessionInterruptionTypeKey = 1;
-    AVAudioSessionInterruptionWasSuspendedKey = 1;
-}
-2018-04-26 12:36:36.189571-0700 MuseNow WatchKit Extension[212:13545] AVSpeechSynthesizer Audio interruption notification: {
-    AVAudioSessionInterruptionOptionKey = 0;
-    AVAudioSessionInterruptionTypeKey = 0;
-}
-12:36:36.391: ∿ maybeRestartRecording() NOT 1524771396.39046
-12:36:40.428: ⧉ sendSyncFile fileName:Marks.json memoryTime:0.0⟺???
-12:36:40.433: ⧉ sendSyncFile fileName:Settings.json memoryTime:1524764931.28233⟺???
-12:36:40.449: ⧉ sendSyncFile fileName:Calendars.json memoryTime:0.0⟺???
-12:36:40.448: ⧉ sendSyncFile fileName:Memos.json memoryTime:1524768293.39773⟺???
-12:36:40.466: ⧉ sendSyncFile fileName:Routine.json memoryTime:1524764931.27775⟺???
-12:36:40.477: → cacheMsg FileMsg [syncFile:Marks.json, fileTime:0.0]
-12:36:40.480: → cacheMsg FileMsg [syncFile:Settings.json, fileTime:1524764931.28233]
-12:36:40.492: → cacheMsg FileMsg [syncFile:Calendars.json, fileTime:0.0]
-12:36:40.495: → cacheMsg FileMsg [syncFile:Memos.json, fileTime:1524768293.39773]
-12:36:40.497: → cacheMsg FileMsg [syncFile:Routine.json, fileTime:1524764931.27775]
-startup
-12:36:58.067: ∿ recordAfterWaitingPeriod() delta:1524771418.07 dur:0.00
-12:36:58.071: ∿ toggleRecordAction() -> start
-12:37:00.113: ∿ beginRecording() Active.isOn
-12:37:04.744: ∿ recordAfterWaitingPeriod() isRecording
-12:37:04.748: ∿ toggleRecordAction() -> finish
-12:37:04.751: ∿ finishRecording()
-12:37:04.754: ∿ stopRecording()
-12:37:04.813: ∿ finishRecording() save 4.64411211013794
-12:37:04.822: → saveRecording() transfer recName:Memo_2018-04-26__12.36.58.m4a
-12:37:04.830: ∿ saveRecording(): Memo_2018-04-26__12.36.58.m4a
-12:37:04.832: ∿ createMemoEvent()
-12:37:04.859: ⧉ saveData Memos.json 1524768293.39773 ➛ 1524771424.85898 𝚫3131.46124887466
-
-12:37:07.179: ⧉ saveData Memos.json 1524771424.85898 ➛ 1524771427.17882 𝚫2.31984090805054
-12:37:07.476: ⧉ recvSyncFile fileName:Memos.json 1524771427.17882⟺1524771425.83476 𝚫-1.34406089782715
-12:37:07.494: ⧉ sendPostFile fileName:Memos.json fileTime:1524771427.17882
-12:37:07.515: → cacheMsg FileMsg [fileTime:1524771427.17882, data:<data>, postFile:Memos.json]
-test 54321
-// iphone
-
-12:39:30.878: ⧉ unarchiveData:Memos.json memoryTime:1524771427.17882 count:2667 bytes
-
-12:39:31.030: ⧉ sendSyncFile fileName:Memos.json memoryTime:1524771427.17882⟺???
-
-12:39:34.792: ⧉ sendSyncFile fileName:Memos.json memoryTime:1524771427.17882⟺???
-
+12:31:06.321: ⟳ awake(withContext:) context:nil
+12:31:06.956: ⟳ initScene() id:1
+12:31:07.244: ⟳ startActive())
+12:31:07.249: ∿ maybeRestartRecording() NOT 1525375867.24906
+2018-05-03 12:31:07.350396-0700 MuseNow WatchKit Extension[548:1235684] [default] -[SPInterfaceViewController performBlockOnViewDidAppear:]:1258: Tried to set _didAppearBlock but we already have one! <SPInterfaceViewController: 0x158e3c00>
+12:31:07.424: ⟳ didAppear()
+12:31:07.441: ∿ activateAudio()
+12:31:07.769: ↔︎ session(_:activationDidCompleteWith:error:) state:WCSessionActivationState
+12:31:12.061: → cacheMsg FileMsg [nameTimes:["Memos.json": 1525371913.0, "Settings.json": 1524882528.0, "Marks.json": 1525213192.0]]
+12:31:32.314: ∿ recordAfterWaitingPeriod() delta:1525375892.31 dur:0.00
+12:31:32.319: ∿ toggleRecordAction() -> start
+12:31:33.346: ∿ beginRecording() Active.isOn
+12:31:38.099: ∿ recordAfterWaitingPeriod() isRecording -> off
+12:31:38.105: ∿ toggleRecordAction() -> finish
+12:31:38.108: ∿ finishRecording()
+12:31:38.111: ∿ stopRecording()
+12:31:38.172: ∿ finishRecording() save 4.76549530029297
+12:31:38.180: ✏ Watch::waitTranscribe
+12:31:38.669: → ⧉ transferMemoEvent transfer recName:Memo_2018-05-03__12.31.32.m4a
+12:31:38.673: → sendMsg WakeUp ]
+12:31:39.303: → cacheMsg FileMsg [nameTimes:["Memos.json": 1525371913.0, "Settings.json": 1524882528.0, "Marks.json": 1525213192.0]]
+12:31:40.141: → ⧉ session(_:didFinish:error:) transfering file:Memo_2018-05-03__12.31.32.m4a
+12:31:40.548: ∿ recordAfterWaitingPeriod() delta:2.43 dur:4.77
+12:31:40.551: ∿ toggleRecordAction() -> start
+12:31:40.902: ← session(_:didReceiveApplicationContext:) MuseEvent [updateEvent:<data>]
+12:31:41.218: ∿ beginRecording() Active.isOn
+12:31:41.734: ← session(_:didReceiveApplicationContext:) FileMsg [nameTimes:{
+    "Calendars.json" = 1524793503;
+    "Marks.json" = 1525306664;
+    "Memos.json" = 1525371673;
+    "Settings.json" = 1525227794;
+}]
+12:31:42.212: → cacheMsg FileMsg [nameTimes:["Memos.json": 1525371913.0, "Settings.json": 1524882528.0, "Marks.json": 1525213192.0]]
+12:31:44.421: ∿ recordAfterWaitingPeriod() isRecording -> off
+12:31:44.425: ∿ toggleRecordAction() -> finish
+12:31:44.439: ∿ finishRecording()
+12:31:44.444: ∿ stopRecording()
+12:31:44.596: ∿ finishRecording() save 3.23356008529663
+12:31:44.687: ✏ Watch::waitTranscribe
+12:31:45.575: → ⧉ transferMemoEvent transfer recName:Memo_2018-05-03__12.31.40.m4a
+12:31:45.578: → sendMsg WakeUp ]
+12:31:45.668:  stopActive()
+12:31:45.819:  deactivateAudio()
+12:31:46.303: ⟳ startActive())
+12:31:46.305: ∿ maybeRestartRecording() NOT 1525375906.30473
+12:31:46.319: ∿ activateAudio()
+12:31:46.564: → cacheMsg FileMsg [nameTimes:["Memos.json": 1525371913.0, "Settings.json": 1524882528.0, "Marks.json": 1525213192.0]]
+12:31:46.804: → ⧉ session(_:didFinish:error:) transfering file:Memo_2018-05-03__12.31.40.m4a
+12:31:46.899: ← session(_:didReceiveApplicationContext:) FileMsg [nameTimes:{
+    "Calendars.json" = 1524793503;
+    "Marks.json" = 1525306664;
+    "Memos.json" = 1525371673;
+    "Menu.json" = 1525372209;
+    "Settings.json" = 1525227794;
+}]
+12:31:47.657: → cacheMsg FileMsg [nameTimes:["Memos.json": 1525371913.0, "Settings.json": 1524882528.0, "Marks.json": 1525213192.0]]
+12:31:47.748:     "Marks.json" = 1525306664;
+"Memos.json" = 1525371673;
+"Menu.json" = 1525372209;
+"Settings.json" = 1525227794;
+}]
+12:31:48.301: ∿ recordAfterWaitingPeriod() delta:3.85 dur:3.23
+12:31:48.304: ∿ toggleRecordAction() -> start
+12:31:48.394: → cacheMsg FileMsg [nameTimes:["Memos.json": 1525371913.0, "Settings.json": 1524882528.0, "Marks.json": 1525213192.0]]
+12:31:48.612: ∿ beginRecording() Active.isOn
+12:31:51.853: ∿ recordAfterWaitingPeriod() isRecording -> off
+12:31:51.856: ∿ toggleRecordAction() -> finish
+12:31:51.865: ∿ finishRecording()
+12:31:51.868: ∿ stopRecording()
+12:31:51.948: ∿ finishRecording() save 3.25458598136902
+12:31:51.970: ✏ Watch::waitTranscribe
+12:31:52.822: → ⧉ transferMemoEvent transfer recName:Memo_2018-05-03__12.31.48.m4a
+12:31:52.825: → sendMsg WakeUp ]
+12:31:52.848: ⟳ stopActive()
+12:31:52.851: ∿ deactivateAudio()
+12:31:53.251: ⟳ startActive())
+12:31:53.253: ∿ maybeRestartRecording() NOT 1525375913.25315
+12:31:53.271: ∿ activateAudio()
+12:31:53.505: → cacheMsg FileMsg [nameTimes:["Memos.json": 1525371913.0, "Settings.json": 1524882528.0, "Marks.json": 1525213192.0]]
+12:31:54.538: → ⧉ session(_:didFinish:error:) transfering file:Memo_2018-05-03__12.31.48.m4a
+12:31:54.557: ← session(_:didReceiveApplicationContext:) MuseEvent [updateEvent:<data>]
+12:31:54.938: ← session(_:didReceiveApplicationContext:) FileMsg [nameTimes:{
+    "Calendars.json" = 1524793503;
+    "Marks.json" = 1525306664;
+    "Memos.json" = 1525371673;
+    "Menu.json" = 1525372209;
+    "Settings.json" = 1525227794;
+}]
+12:31:55.102: → cacheMsg FileMsg [nameTimes:["Memos.json": 1525371913.0, "Settings.json": 1524882528.0, "Marks.json": 1525213192.0]]
+12:31:55.843: → cacheMsg FileMsg [nameTimes:["Memos.json": 1525371913.0, "Settings.json": 1524882528.0, "Marks.json": 1525213192.0]]
+12:32:18.935: ⟳ stopActive()
+12:32:18.963: ∿ deactivateAudio()
+12:34:49.288: ⟳ startActive())
+12:34:49.304: ∿ maybeRestartRecording() NOT 1525376089.3011
+12:34:49.327: ∿ activateAudio()
+12:34:49.334: → cacheMsg FileMsg [nameTimes:["Memos.json": 1525371913.0, "Settings.json": 1524882528.0, "Marks.json": 1525213192.0]]
+12:34:49.508: ← session(_:didReceiveApplicationContext:) FileMsg [nameTimes:{
+    "Calendars.json" = 1524793503;
+    "Marks.json" = 1525306664;
+    "Memos.json" = 1525371673;
+    "Menu.json" = 1525372209;
+    "Settings.json" = 1525227794;
+}]
+12:34:49.882: ← session(_:didReceiveApplicationContext:) FileMsg [nameTimes:{
+    "Calendars.json" = 1524793503;
+    "Marks.json" = 1525306664;
+    "Memos.json" = 1525371673;
+    "Menu.json" = 1525372209;
+    "Settings.json" = 1525227794;
+}]
+12:35:29.422: ⟳ willDisappear()
+12:35:29.592: ⟳ stopActive()
+12:35:29.673: ∿ deactivateAudio()
+12:35:32.217: ⟳ startActive())
+12:35:32.221: ∿ maybeRestartRecording() NOT 1525376132.22025
+12:35:32.259: ∿ activateAudio()
+12:35:32.566: ⟳ didAppear()
+12:35:32.573: ∿ recordMenu()
+2018-05-03 12:35:32.633525-0700 MuseNow WatchKit Extension[548:1235684] [MC] System group container for systemgroup.com.apple.configurationprofiles path is /private/var/containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles
+2018-05-03 12:35:32.642324-0700 MuseNow WatchKit Extension[548:1235684] [MC] Reading from public effective user settings.
+12:35:34.632: ⟳ willDisappear()
+12:35:35.054: ⟳ stopActive()
+12:35:35.058: ∿ deactivateAudio()
+12:35:37.527: ⟳ startActive())
+12:35:37.531: ∿ maybeRestartRecording() NOT 1525376137.5303
+12:35:37.562: ∿ activateAudio()
+12:35:37.894: ⟳ didAppear()
+12:35:37.904: ∿ recordMenuFinish
+12:35:38.775: → sendMsg Actions [refresh:yo]
+12:35:40.374: → cacheMsg FileMsg [nameTimes:["Memos.json": 1525371913.0, "Settings.json": 1524882528.0, "Marks.json": 1525213192.0]]
+12:35:45.232: → sendMsg Actions [eventId:Memo_2018-05-03__11.25.10.m4a, action:gotoEvent, bgnTime:1525371911.01308, dotTime:1525371911.01308]
+12:36:04.051: → sendMsg Actions [eventId:Memo_2018-05-03__10.57.18.m4a, action:gotoEvent, bgnTime:1525370239.65701, dotTime:1525370239.65701]
+2018-05-03 12:36:34.729833-0700 MuseNow WatchKit Extension[548:1235684] 103:  OpenFromDataSource failed
+2018-05-03 12:36:34.734118-0700 MuseNow WatchKit Extension[548:1235684] 78:  Open failed
+12:36:42.455: → sendMsg Actions [eventId:Memo_2018-05-03__09.31.48.m4a, action:gotoEvent, bgnTime:1525365108.40421, dotTime:1525365108.40421]
+12:36:47.811: → sendMsg Actions [eventId:Memo_2018-05-02__21.21.20.m4a, action:gotoEvent, bgnTime:1525321281.20996, dotTime:1525321281.20996]
+12:36:51.923: → sendMsg Actions [eventId:Memo_2018-05-02__17.17.55.m4a, action:gotoEvent, bgnTime:1525306676.04108, dotTime:1525306676.04108]
+12:37:01.339: → sendMsg Actions [eventId:Memo_2018-05-02__13.48.11.m4a, action:gotoEvent, bgnTime:1525294092.26791, dotTime:1525294092.26791]
+12:37:16.114: ⟳ stopActive()
+12:37:16.118: ∿ deactivateAudio()
+12:45:20.151: ⟳ startActive())
+12:45:20.159: ∿ maybeRestartRecording() NOT 1525376720.15869
+12:45:20.182: → cacheMsg FileMsg [nameTimes:["Memos.json": 1525371913.0, "Settings.json": 1524882528.0, "Marks.json": 1525213192.0]]
+12:45:20.201: ⟳ stopActive()
+12:45:20.269: ⟳ willDisappear()
+12:45:20.365: ⟳ didAppear()
+12:45:20.373: ∿ activateAudio()
+12:45:20.388: ∿ activateAudio() !!! catch
+12:45:20.418: ⟳ startActive())
+12:45:20.447: ∿ maybeRestartRecording() NOT 1525376720.44695
+12:45:20.472: ⟳ didAppear()
+12:45:20.514: ⟳ stopActive()
+12:45:20.518: ∿ deactivateAudio()
+12:45:20.533: ⟳ willDisappear()

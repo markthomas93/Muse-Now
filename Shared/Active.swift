@@ -58,6 +58,7 @@ class Active {
             beginActive()
         }
         anim.gotoStartupAnim()
+        Transcribe.shared.processPendingEvents()
     }
     
     /**

@@ -4,8 +4,7 @@
 
 import Foundation
 
-// Transcribe speech to text using Speak With Me
-extension Transcribe {
+extension Transcribe { // Transcribe speech to text using Speak With Me
 
     static let SwmUrl = "http://demo.speakwithme.com/p.php" +
         "?api_user=speakwithme" +

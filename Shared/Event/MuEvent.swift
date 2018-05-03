@@ -22,7 +22,7 @@ open class MuEvent: Codable {
         }
     }
 
-    var eventId  = ""
+    var eventId  = "" // either a unique number or fileName
     var title    = "" // title from ekEvent or sttApple or sttSwm
     var notes    = "" // notes from ekEvent
     var sttApple = "" // apple speech to text
@@ -100,6 +100,25 @@ open class MuEvent: Codable {
         mark    = true
         eventId = eventId_
     }
+
+    convenience init( _ type_: EventType, _ title_:String, _ bgnTime_: TimeInterval, _ endTime_: TimeInterval,_ eventId_:String, _ coord_:CLLocationCoordinate2D, _ color: TypeColor) {
+
+        self.init(type_,title_,coord_,color)
+
+        bgnTime = bgnTime_
+        endTime = endTime_
+        mark    = true
+        eventId = eventId_
+    }
+//    convenience init( _ type_: EventType, _ title_:String, _ bgnTime_: TimeInterval, _ endTime_: TimeInterval, _ coord_:CLLocationCoordinate2D, _ color: TypeColor) {
+//
+//        self.init(type_,title_,coord_,color)
+//
+//        bgnTime = bgnTime_
+//        endTime = endTime_
+//        mark    = true
+//    }
+
 
     convenience init(routine item: RoutineItem,_ bgnTime_:TimeInterval, _ rgb_: UInt32) {
 

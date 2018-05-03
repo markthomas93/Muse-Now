@@ -109,6 +109,7 @@ class Actions {
 
                 self.scene?.updateSceneFinish()
                 Dots.shared.updateTime(event: MuEvents.shared.timeEvent)
+                
                 if let table = self.tableDelegate {
 
                     table.updateTable(MuEvents.shared.events)
@@ -133,28 +134,13 @@ class Actions {
             refreshEvents()
         }
     }
-
-    func doAddEvent(_ event:MuEvent, isSender:Bool) {
-        
-        scene.pauseScene()
-        MuEvents.shared.addEvent(event)
-        if let table = tableDelegate {
-            table.updateTable(MuEvents.shared.events)
-        }
-        scene.updateSceneFinish()
-        
-        if isSender {
-            if let data = try? JSONEncoder().encode(event) {
-                Session.shared.sendMsg(["class"    : "MuseEvent",
-                                        "addEvent" : data])
-            }
-        }
-    }
-    
+   
     func doUpdateEvent(_ event:MuEvent, isSender: Bool) {
         
         scene.pauseScene()
-        MuEvents.shared.updateEvent(event)
+        if !MuEvents.shared.updateEvent(event) {
+             MuEvents.shared.addEvent(event)
+        }
         tableDelegate?.updateTable(MuEvents.shared.events)
         scene.updateSceneFinish()
         if [.memoRecord,.memoTrans,.memoTrash].contains(event.type) {
@@ -162,7 +148,7 @@ class Actions {
         }
         if isSender,
             let data = try? JSONEncoder().encode(event) {
-            Session.shared.sendMsg(["class"       : "MuseEvent",
+            Session.shared.cacheMsg(["class"      : "MuseEvent",
                                     "updateEvent" : data])
         }
         else {

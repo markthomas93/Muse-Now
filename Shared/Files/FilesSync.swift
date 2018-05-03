@@ -37,7 +37,6 @@ class FilesSync {
     /** Send request to remote to send file
      - via: Session+Message
      */
-
     func getFile(_ name:String,_ time:TimeInterval) {
 
         func dispatch() {
@@ -50,18 +49,16 @@ class FilesSync {
     }
 
 
-func syncFiles(_ nameTimes_:[String:TimeInterval]) {
+    func syncFiles(_ yourNameTimes:[String:TimeInterval]) {
 
-        for (name,time) in nameTimes_ {
+        for (yourName,yourTime) in yourNameTimes {
 
-            if let fileTime = nameTimes[name] {
-
-                if      fileTime < time { sendFile(name) }
-                else if fileTime > time { getFile(name,time) }
-                else                    { /* no change */ }
+            if let myTime = nameTimes[yourName] {
+                if      myTime > yourTime  { sendFile(yourName) }           // my file is newer
+                else if myTime < yourTime  { getFile(yourName,yourTime)}    // your file is newr
+                else                       { }                              // no change
             }
-                // don't have file
-            else if time != 0           { sendFile(name) }
+            else if yourTime != 0          { getFile(yourName,yourTime) }   // don't have file
         }
     }
 
