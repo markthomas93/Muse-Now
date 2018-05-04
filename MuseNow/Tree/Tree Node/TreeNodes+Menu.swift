@@ -101,10 +101,9 @@ extension TreeNodes {
 
         // about ------------------------------------------------
 
-
         let about = TreeNode("about",   .title, more, vc)
-        let _    = TreeNode("support", .title, about, vc)
-        let _    = TreeNode("blog",    .title, about, vc)
+        let _     = TreeNode("support", .title, about, vc)
+        let _     = TreeNode("blog",    .title, about, vc)
 
         func goTour(_ act:DoAction,_ page:PageType) -> CallVoid {
             return {

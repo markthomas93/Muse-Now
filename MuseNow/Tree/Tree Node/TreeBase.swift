@@ -5,8 +5,8 @@
 //  Created by warren on 2/14/18.
 //  Copyright © 2018 Muse. All rights reserved.
 
-
 import Foundation
+
 /**
  Archive of hierarchy of TreeBases
  */
@@ -71,6 +71,7 @@ class TreeBases: FileSync {
         }
     }
 }
+
 /**
  Shadow hierarchy of TreeNodes for saving settings.
  Ultimately, this can replace class Settings

@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import UIKit
 
 enum TreeNodeType: Int,Codable { case
     unknown,
@@ -46,17 +45,4 @@ class TreeNodes {
         shownNodes = nextNodes
         root?.rehighlight()
     }
-
-    // what is the maximum height needed when for longest child
-    func maxExpandedChildHeight() -> CGFloat {
-        var maxGrandHeight = CGFloat(0)
-        for child in root.children {
-            let grandchildRowsHeight = child.cell.height + child.childRowsHeight()
-            if maxGrandHeight < grandchildRowsHeight {
-                maxGrandHeight = grandchildRowsHeight
-            }
-        }
-        return maxGrandHeight
-    }
-
 }
