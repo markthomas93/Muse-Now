@@ -50,7 +50,7 @@ class FilesSync {
 
 
     func syncFiles(_ yourNameTimes:[String:TimeInterval]) {
-
+        
         for (yourName,yourTime) in yourNameTimes {
 
             if let myTime = nameTimes[yourName] {
@@ -58,7 +58,7 @@ class FilesSync {
                 else if myTime < yourTime  { getFile(yourName,yourTime)}    // your file is newr
                 else                       { }                              // no change
             }
-            else if yourTime != 0          { getFile(yourName,yourTime) }   // don't have file
+            else if yourTime != 0          { getFile(yourName,yourTime) }   // i don't have your file
         }
     }
 

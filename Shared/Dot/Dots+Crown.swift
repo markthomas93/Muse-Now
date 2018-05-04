@@ -20,7 +20,7 @@ extension Dots {
      - -0.5 shows past events for current hour
 
      */
-    func getNextDot(_ delta:Float) -> Bool {
+    private func getNextDot(_ delta:Float) -> Bool {
 
         switch dotNow {
         case   0.5: dotNow = delta > 0 ?  1.0 :    0.0
@@ -66,60 +66,62 @@ extension Dots {
 
     func crownNextEvent (_ delta: Float, _ inFuture: Bool) {
 
-        var nextFuture = inFuture
+        //var nextFuture = inFuture
         Haptic.play(.click)
         isClockwise = delta > 0
 
         func logCrown(_ optional:String = "" ) {
-            Log("⊛ crownNextEvent(\(delta),\(inFuture ? "futr" : "past")) dot Prev ➛ Now: \(dotPrev)  ➛  \(dotNow) \(optional)")
+            Log("⊛ crownNextEvent(\(delta),\(inFuture ? "futr" : "past")) dot Prev ➛ Now: \(dotPrev) ➛ \(dotNow) \(optional)")
         }
-        dotPrev = dotNow
 
-        if abs(dotNow) < 0.5 {
+        func foundEvent(_ event:MuEvent) {
 
-            var flipTense = false
+            dotEvent = event
 
-            if inFuture { if delta > 0 { dotNow =  0.5 } else { flipTense = true } }
-            else        { if delta < 0 { dotNow = -0.5 } else { flipTense = true } }
-
-           if flipTense {
-                Anim.shared.userDotAction(flipTense, dur:0.5)
-                nextFuture = !inFuture
-                // position pointer to time event
-                let _ = getDot(Int(dotNow)).gotoTimeEventForHour0()
-                return logCrown("flipTense:\(flipTense)")
-            }
-        }
-        // get next event for this hour
-        if let event = getDot(Int(dotNow)).getNextEventForThisHour(isClockwise, nextFuture, dotPrev) {
+            Say.shared.cancelSpeech()
 
             if event.type == .time {
                 dotNow = 0
-                Anim.shared.userDotAction(/*flipTense*/false, dur:0.5)
+                //Anim.shared.userDotAction(/*flipTense*/false, dur:0.5)
+                 Anim.shared.fanOutToDotNow(duration:0.25)
                 Say.shared.sayCurrentTime(event,/* isTouching */ true)
-                return logCrown("current time")
             }
             else {
-                Say.shared.cancelSpeech()
+                let timeNow = Date().timeIntervalSince1970
+                if  event.bgnTime < timeNow && inFuture ||
+                    event.bgnTime > timeNow && !inFuture {
+                    Anim.shared.userDotAction(/*flipTense*/true, dur:0.5)
+                }
+                else {
+                    Anim.shared.fanOutToDotNow(duration:0.25)
+                }
                 Say.shared.sayDotEvent(event, isTouching: true, via:#function)
-                return logCrown("another event:\(event.title)")
+                Actions.shared.sendAction(.gotoEvent, event, event.bgnTime)
             }
+            return logCrown(event.title)
+        }
+
+        // Begin ---------------------
+        dotPrev = dotNow
+
+        if dotEvent?.type == .time {
+            if inFuture != isClockwise {
+                Anim.shared.userDotAction(/*flipTense*/true, dur:0.5)
+                Say.shared.sayCurrentTime(dotEvent,/* isTouching */ true)
+                return logCrown("time")
+            }
+        }
+
+        // get next event for this hour
+        if let event = getDot(Int(dotNow)).getNextEventForThisHour(isClockwise, dotPrev) {
+
+            return foundEvent(event)
         }
         else {
             while getNextDot(delta) {
-                if let event =  getDot(Int(dotNow)).getFirstEventForThisHour(isClockwise, nextFuture, dotPrev) {
-                    if event.type == .time {
-                        Anim.shared.fanOutToDotNow(duration:0.5)
-                        Say.shared.cancelSpeech()
-                        return logCrown("time")
-                    }
-                    else {
-                        Say.shared.cancelSpeech()
-                        Anim.shared.fanOutToDotNow(duration:0.25)
-                        Say.shared.sayDotEvent(event, isTouching: true, via:#function)
-                        Actions.shared.sendAction(.gotoEvent, event, event.bgnTime)
-                        return logCrown("new hour event:\(event.title)")
-                    }
+                if let event =  getDot(Int(dotNow)).getFirstEventForThisHour(isClockwise, dotPrev) {
+
+                    return foundEvent(event)
                 }
             }
             if dotNow == 0 {

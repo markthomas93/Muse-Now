@@ -16,7 +16,7 @@ class Dots {
 
     var findDot: Dot!
     var sayDot = Dot()
-    var sayEvent: MuEvent!
+    var dotEvent: MuEvent?
 
     var feedbackTimer = Timer()
     

@@ -30,7 +30,7 @@ extension Dots {
             // has event that stated that hour
             if dot.elapse0 < 60 {
 
-                if let event = dot.getFirstEventForThisHour(isClockwise, isFuture, dotPrev) {
+                if let event = dot.getFirstEventForThisHour(isClockwise, dotPrev) {
 
                     Haptic.play(.click)
                     // wait for 1/4 second linger on that hour

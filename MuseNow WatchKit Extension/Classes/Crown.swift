@@ -40,7 +40,7 @@ class Crown: NSObject, WKCrownDelegate {
             let delta = Float(crownPrev < crownNext ? 1 : -1)
             let inFuture = anim.animNow.rawValue > 0
             anim.animNow = inFuture ? .futrPause : .pastPause
-            dots.crownNextEvent(delta, inFuture) // dots.crownNextEventOrHour(delta, inFuture)
+            dots.crownNextEvent(delta, inFuture) 
         }
         crownPrev = crownNext
         rotatePrev = rotateNext

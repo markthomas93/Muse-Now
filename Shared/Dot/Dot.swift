@@ -106,9 +106,10 @@ class Dot {
         return nearestEvent
     }
     
-    /// make a color dot
-    /// - via: Dots.makeSelectFade
-
+    /**
+     make a color dot
+     - via: Dots.makeSelectFade
+     */
     func makeRgb() {
 
         if let event = mostRecentEvent() {
@@ -212,93 +213,35 @@ class Dot {
         //print(String(format:"%-50@",str), terminator:" ")
     }
 
-    // ----------- for this hour ------------------------------
-
-    func getEventInRangeForHour0(_ range:StrideThrough<Int>, _ inFuture:Bool) -> MuEvent! {
-
-        let timeNow = Date().timeIntervalSince1970
-        var nearestDelta = Double.greatestFiniteMagnitude
-        var nearestEvent: MuEvent! = nil
-        var nearestIndex = -1
-
-        for ii in range {
-            
-            let event = events[ii]
-            let bgnTime = event.bgnTime
-            if event.type == .time {
-                eventi = ii
-                return event
-            }
-            else if startsThisHour(event) {
-
-                if  inFuture && (bgnTime >= timeNow) {
-                    let delta = bgnTime - timeNow
-                    if nearestDelta > delta {
-                        nearestDelta = delta
-                        nearestIndex = ii
-                        nearestEvent = event
-                    }
-                }
-                if !inFuture && (bgnTime <= timeNow) {
-                    let delta = timeNow - bgnTime
-                    if nearestDelta > delta {
-                        nearestDelta = delta
-                        nearestIndex = ii
-                        nearestEvent = event
-                    }
-                }
-            }
-        }
-        eventi = nearestIndex
-        return nearestEvent
-    }
-
-    func gotoTimeEventForHour0() -> MuEvent! {
-        eventi = -1
-        for event in events {
-            eventi += 1
-            if event.type == .time {
-                return event
-            }
-        }
-        // didn't find
-        eventi = -1
-        return nil
-    }
 
     /// get first event that starts on this hour, does not need mark
-    func getFirstEventForThisHour(_ isClockwise: Bool, _ inFuture:Bool, _ dotPrev: Float) -> MuEvent! {
+    func getFirstEventForThisHour(_ isClockwise: Bool, _ dotPrev: Float) -> MuEvent! {
 
-        eventi = -1
-        return getNextEventForThisHour(isClockwise, inFuture, dotPrev)
+        eventi = -1 // restart when eventi < 1
+        return getNextEventForThisHour(isClockwise, dotPrev)
     }
     
     /// get next event that starts on this hour, does not need mark
-    func getNextEventForThisHour(_ isClockwise: Bool, _ inFuture:Bool, _ dotPrev: Float) -> MuEvent! {
+    func getNextEventForThisHour(_ isClockwise: Bool, _ dotPrev: Float) -> MuEvent! {
         
         if events.count > 0 {
 
-            // restart
             if eventi < 0   { eventi =  isClockwise ? 0 : events.count-1 }
             else            { eventi += isClockwise ? 1 : -1 }
             
             if eventi >= 0 && eventi < events.count {
                 
-                let range = isClockwise
+                let rangej = isClockwise // forwards or backwards
                     ? stride(from:eventi, through:events.count-1, by: 1)
                     : stride(from:eventi, through:0,              by:-1)
-                if dotPrev == 0.0 {
-                    return getEventInRangeForHour0(range, inFuture)
-                }
-                else {
-                    for eventi in range {
-                        let event = events[eventi]
-                        if event.type == .routine {
-                            continue
-                        }
-                        if startsThisHour(event) {
-                            return event
-                        }
+                for eventj in rangej {
+                    let event = events[eventj]
+                    if event.type == .routine {
+                        continue
+                    }
+                    if startsThisHour(event) {
+                        eventi = eventj
+                        return event
                     }
                 }
             }
