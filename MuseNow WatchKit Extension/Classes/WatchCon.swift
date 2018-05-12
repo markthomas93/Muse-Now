@@ -132,7 +132,8 @@ class WatchCon: WKInterfaceController {
     
     @IBAction func menuMenuAction() { Log("⿳ \(#function)")
         active.startMenuTime()
-        WatchMenu.shared.recordMenu()
+        TreeNodes.shared.initTree(self)
+        WatchMenu.shared.menu()
     }
 
     @IBAction func tap1Action(_ sender: Any) { Log("👆\(#function)")

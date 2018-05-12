@@ -15,8 +15,10 @@ class Alert {
 
     var alert:UIAlertController!
 
-    func doAct(_ headline_:String,_ body:String,_ anys:[Any],_ vc: UIViewController) {
+    func doAct(_ headline_:String,_ body:String,_ anys:[Any],_ vc_: Any) {
 
+        let vc = vc_ as! UIViewController
+        
         alert = UIAlertController(title: headline_, message: body, preferredStyle: .actionSheet)
 
         let attributedTitle = NSMutableAttributedString(string: headline_, attributes:

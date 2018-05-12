@@ -13,7 +13,7 @@ class SayCache {
      - decay < now: replace items of same phrase w new phrase
      - decay > now: Ok to repeat the same phrase
      */
-    func updateCache(_ newItem:SayItem) {
+    func updateCache(_ newItem:SayItem) -> Bool {
 
         /// first remove item of same phrase in que if differnt
         func removeItemsOfSameTypeFromQueue() -> Bool {
@@ -42,6 +42,10 @@ class SayCache {
         if removeItemsOfSameTypeFromQueue() {
             sayPhrase[newItem.phrase] = newItem
             addNewItemToQueue()
+            return true
+        }
+        else {
+            return false
         }
     }
 

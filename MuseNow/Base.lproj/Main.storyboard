@@ -22,10 +22,10 @@
             </objects>
             <point key="canvasLocation" x="-1668.75" y="-180"/>
         </scene>
-        <!--Tree TableVC-->
+        <!--Menu TableVC-->
         <scene sceneID="qQN-0V-Frs">
             <objects>
-                <tableViewController storyboardIdentifier="TreeTable" automaticallyAdjustsScrollViewInsets="NO" id="t3g-hf-HIR" customClass="TreeTableVC" customModule="MuseNow" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="TreeTable" automaticallyAdjustsScrollViewInsets="NO" id="t3g-hf-HIR" customClass="MenuTableVC" customModule="MuseNow" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="interactive" dataMode="prototypes" style="grouped" separatorStyle="none" allowsSelectionDuringEditing="YES" allowsMultipleSelection="YES" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="IVp-NR-PAc">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -64,14 +64,14 @@
                         <color key="sectionIndexTrackingBackgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="EventCell" focusStyle="custom" id="d4z-L1-DuH" userLabel="EventCell" customClass="EventCell" customModule="MuseNow">
-                                <rect key="frame" x="0.0" y="55.5" width="414" height="44"/>
+                                <rect key="frame" x="0.0" y="55.333333333333336" width="414" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" tableViewCell="d4z-L1-DuH" id="1YP-dD-ppD">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" fixedFrame="YES" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f2m-LI-7Lr" userLabel="Bezel">
-                                            <rect key="frame" x="4" y="4" width="353.5" height="36"/>
+                                            <rect key="frame" x="4" y="4" width="354" height="36"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CnN-YI-cxD" userLabel="Color">
@@ -96,7 +96,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tb1-Aa-3T4" userLabel="Title">
-                                                    <rect key="frame" x="107.5" y="0.0" width="223.5" height="36"/>
+                                                    <rect key="frame" x="108" y="0.0" width="223" height="36"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                     <attributedString key="attributedText">
                                                         <fragment content="Title">
@@ -131,7 +131,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="EventTimeCell" focusStyle="custom" rowHeight="88" id="38c-65-Cdd" userLabel="TimeCell" customClass="EventTimeCell" customModule="MuseNow" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="99.5" width="414" height="88"/>
+                                <rect key="frame" x="0.0" y="99" width="414" height="88"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" tableViewCell="38c-65-Cdd" id="gX9-8R-0s2">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="88"/>

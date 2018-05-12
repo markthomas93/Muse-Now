@@ -82,8 +82,7 @@ extension Dots {
 
             if event.type == .time {
                 dotNow = 0
-                //Anim.shared.userDotAction(/*flipTense*/false, dur:0.5)
-                 Anim.shared.fanOutToDotNow(duration:0.25)
+                Anim.shared.fanOutToDotNow(duration:0.25)
                 Say.shared.sayCurrentTime(event,/* isTouching */ true)
             }
             else {
@@ -93,6 +92,7 @@ extension Dots {
                     Anim.shared.userDotAction(/*flipTense*/true, dur:0.5)
                 }
                 else {
+                    if dotNow == 0 { dotNow = inFuture ? 0.5 : -0.5 }
                     Anim.shared.fanOutToDotNow(duration:0.25)
                 }
                 Say.shared.sayDotEvent(event, isTouching: true, via:#function)

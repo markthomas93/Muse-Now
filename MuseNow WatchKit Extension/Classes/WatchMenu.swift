@@ -8,9 +8,18 @@
 
 import WatchKit
 
+
 class WatchMenu {
 
     static var shared = WatchMenu()
+
+    func menu() {
+
+        let root = WKExtension.shared().rootInterfaceController!
+        root.pushController(withName: "MenuController", context: TreeNodes.shared.root)
+
+    }
+
    /**
      Menu of STT, hand stroked chars, popular commands
      - via WatchCon.menuAction
@@ -35,5 +44,28 @@ class WatchMenu {
         Actions.shared.parseString(inputText, /*event*/ nil, index, isSender:true)
         //Crown.shared.updateCrown()
     }
+
+    //    override func awake(withContext context: Any?) {
+        //    }
+        //
+        //    override func table(_ table: WKInterfaceTable, didSelectRowAt rowIndex: Int) {
+        //        let newCityNames = ["Saratoga", "San Jose"]
+        //
+        //        let newCityIndexes = NSIndexSet(indexesIn: NSMakeRange(rowIndex + 1, newCityNames.count))
+        //
+        //        // Insert new rows into the table.
+        //        table.insertRows(at: newCityIndexes as IndexSet, withRowType: "default")
+        //
+        //        // Update the rows that were just inserted with the appropriate data.
+        //        var newCityNumber = 0
+        //
+        //        for idx in 0 ... newCityIndexes.count-1 {
+        //            let newCityName = newCityNames[newCityNumber]
+        //            let row = table.rowController(at: idx) as! TableRowController
+        //            row.rowLabel.setText(newCityName)
+        //            newCityNumber += 1
+        //        }
+        //    }
+
 
 }

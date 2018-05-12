@@ -45,9 +45,9 @@ class Tour {
     var pagesVC: PagesVC!
     var pageView: UIView!
 
-    var treeVC: TreeTableVC!
-    var treeView: UIView!
-    var treeRoot: TreeNode!
+    var menuVC: MenuTableVC!
+    var menuView: UIView!
+    var menuRoot: TreeNode!
 
     var panelView: UIView!
     var dialView: SKView!
@@ -70,11 +70,11 @@ class Tour {
 
         eventView = pagesVC.eventVC.tableView!
 
-        treeVC = pagesVC.treeVC!
-        treeView = treeVC.view!
+        menuVC = pagesVC.menuVC!
+        menuView = menuVC.view!
 
-        TreeNodes.shared.initTree(treeVC)
-        treeRoot = TreeNodes.shared.root!
+        TreeNodes.shared.initTree(menuVC)
+        menuRoot = TreeNodes.shared.root!
 
         panelView = MainVC.shared!.panel
         mainVC = MainVC.shared!

@@ -62,7 +62,7 @@ extension Tour {
             ])
 
         // memos
-        addTour("memos",[.menu, .info, .detail],[
+        addTour("memos",[.menu, .beta, .detail],[
 
             menuMark("memos",[],[gotoPath("memos"), "record short audio memos \n with location and text","v_201.aif"]),
 
@@ -178,7 +178,7 @@ extension Tour {
     /// find title and finish and then finish bubble animation
     func setNode(_ title:String, isOn:Bool) -> CallWait {
         return { finish in
-            if let treeNode = self.treeRoot.find(title:title)?.treeNode {
+            if let treeNode = self.menuRoot.find(title:title)?.treeNode {
                 treeNode.set(isOn:isOn)
                 finish()
             }
@@ -211,7 +211,7 @@ extension Tour {
         // begin
         return { finish in
             if  let treeCell = TreeNodes.shared.root?.findPath(path),
-                let faderCell = treeCell as? TreeTitleFaderCell {
+                let faderCell = treeCell as? MenuTitleFader {
                 aniFader(faderCell.fader, value: value)
                 finish()
             }
@@ -224,51 +224,51 @@ extension Tour {
     }
     /// describe menu page
     func menuPage(_ title:String, _ options: BubbleOptions,_ anys:[Any]) -> Bubble! {
-        return Bubble(title, .center, .text, textSize, treeView, treeView, [], [treeView, panelView], options, bubsFrom(anys))
+        return Bubble(title, .center, .text, textSize, menuView, menuView, [], [menuView, panelView], options, bubsFrom(anys))
     }
     /// create video
     func menuVid1(_ title: String,_ bubShape:BubShape, _ options: BubbleOptions,_ anys:[Any]) -> Bubble! {
-        return Bubble(title, bubShape, .video, videoSize,  treeView, treeView, [treeView, panelView], [], options, bubsFrom(anys))
+        return Bubble(title, bubShape, .video, videoSize,  menuView, menuView, [menuView, panelView], [], options, bubsFrom(anys))
     }
     /// bubble above menu cell
     func menuCell(_ title:String, _ options: BubbleOptions,_ anys:[Any]) -> Bubble! {
-        if let cell = treeRoot.find(title:title) {
-            return Bubble(title, .above, .text, textSize, treeView, cell, [], [treeView, panelView], options, bubsFrom(anys))
+        if let cell = menuRoot.find(title:title) {
+            return Bubble(title, .above, .text, textSize, menuView, cell, [], [menuView, panelView], options, bubsFrom(anys))
         }
         return nil
     }
     /// bubble above info icon
     func menuInfo(_ title:String, _ options: BubbleOptions,_ anys:[Any]) -> Bubble! {
-        if let cell = treeRoot.find(title:title), let info = cell.info {
-            return Bubble(title, .above, .text, textSize, treeView, info, [cell], [treeView], options, bubsFrom(anys))
+        if let cell = menuRoot.find(title:title), let info = cell.info {
+            return Bubble(title, .above, .text, textSize, menuView, info, [cell], [menuView], options, bubsFrom(anys))
         }
         return nil
     }
     /// bubble above button
     func menuButn(_ path:String, _ options: BubbleOptions,_ anys:[Any]) -> Bubble! {
-        if let cell = treeRoot.findPath(path) as? TreeTitleButtonCell, let butn = cell.butn0 {
-            return Bubble(path, .above, .text, textSize, treeView, butn, [cell], [treeView], options, bubsFrom(anys))
+        if let cell = menuRoot.findPath(path) as? MenuTitleButton, let butn = cell.butn0 {
+            return Bubble(path, .above, .text, textSize, menuView, butn, [cell], [menuView], options, bubsFrom(anys))
         }
         return nil
     }
     /// bubble above fader
     func menuFader(_ title:String, _ options: BubbleOptions,_ anys:[Any]) -> Bubble! {
-        if let cell = treeRoot.find(title:title) as? TreeTitleFaderCell, let fader = cell.fader {
-            return Bubble(title, .above, .text, textSize, treeView,fader, [cell], [treeView], options, bubsFrom(anys))
+        if let cell = menuRoot.find(title:title) as? MenuTitleFader, let fader = cell.fader {
+            return Bubble(title, .above, .text, textSize, menuView,fader, [cell], [menuView], options, bubsFrom(anys))
         }
         return nil
     }
     /// bubble above mark
     func menuMark(_ path:String, _ options: BubbleOptions,_ anys:[Any]) -> Bubble! {
-        if let cell = treeRoot.findPath(path) as? TreeTitleMarkCell, let mark = cell.mark {
-            return Bubble(path, .above, .text, textSize, treeView, mark, [cell], [treeView, panelView], options, bubsFrom(anys))
+        if let cell = menuRoot.findPath(path) as? MenuTitleMark, let mark = cell.mark {
+            return Bubble(path, .above, .text, textSize, menuView, mark, [cell], [menuView, panelView], options, bubsFrom(anys))
         }
         return nil
     }
     /// bubble above
     func menuPanel(_ title:String,_ options: BubbleOptions,_ anys:[Any]) -> Bubble! {
-        if let cell = treeRoot.find(title:title) as? TreeTitleMarkCell, let mark = cell.mark {
-            return Bubble(title, .above, .text, textSize, treeView, mark, [cell], [treeView], options, bubsFrom(anys))
+        if let cell = menuRoot.find(title:title) as? MenuTitleMark, let mark = cell.mark {
+            return Bubble(title, .above, .text, textSize, menuView, mark, [cell], [menuView], options, bubsFrom(anys))
         }
         return nil
     }

@@ -15,7 +15,7 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
     var pageType = PageType.main
     var scrollView: UIScrollView!
     
-    var treeVC: TreeTableVC!
+    var menuVC: MenuTableVC!
     var eventVC: EventTableVC!
 
     var spine: UIView!
@@ -47,8 +47,8 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
 
     func updateViews(_ size:CGSize) {
 
-        treeVC.updateViews(size.width)
-        treeVC.tableView.reloadData()
+        menuVC.updateViews(size.width)
+        menuVC.tableView.reloadData()
         eventVC.tableView.reloadData()
     }
     
@@ -76,18 +76,18 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         eventVC = storyboard.instantiateViewController(withIdentifier: "EventTable") as! EventTableVC
-        treeVC  = storyboard.instantiateViewController(withIdentifier: "TreeTable")  as! TreeTableVC
+        menuVC  = storyboard.instantiateViewController(withIdentifier: "TreeTable")  as! MenuTableVC
 
-        setBorder(treeVC,  radius:  8, width: 0)
+        setBorder(menuVC,  radius:  8, width: 0)
         setBorder(eventVC, radius: 16, width: 0)
         
-        treeVC.tableView.contentInset  = .zero
+        menuVC.tableView.contentInset  = .zero
         eventVC.tableView.contentInset = .zero
 
-        treeVC.view?.frame = childFrame
+        menuVC.view?.frame = childFrame
         eventVC.view?.frame = childFrame
 
-        pages = [treeVC,eventVC]
+        pages = [menuVC,eventVC]
         pageVC.setViewControllers([eventVC], direction: .reverse, animated: false, completion: nil)
 
         spine = UIView(frame:spineFrame)

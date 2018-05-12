@@ -12,8 +12,9 @@ import UIKit
 
 struct SetFrom: OptionSet, Codable {
     let rawValue: UInt
-    static let parent = SetFrom(rawValue: 1 << 0) //  1
-    static let child  = SetFrom(rawValue: 1 << 1) //  2
+    static let ignore = SetFrom(rawValue: 1 << 0) //  1
+    static let parent = SetFrom(rawValue: 1 << 1) //  2
+    static let child  = SetFrom(rawValue: 1 << 2) //  4
 }
 
 

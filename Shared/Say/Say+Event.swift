@@ -19,11 +19,14 @@ extension Say {
      */
     func sayFuturePast(_ isFuture: Bool) {
 
+        let title = isFuture ? "future" : "past"
+
         if canSay(.time ) {
 
-            // wasy .sayTimeNow
-            let title = isFuture ? "future" : "past"
             updateDialog(nil, .phraseDirection, spoken:title, title:title, via:#function)
+        }
+        else {
+            updateDialog(nil, .phraseDirection, spoken:"", title:title, via:#function)
         }
     }
         
@@ -55,7 +58,7 @@ extension Say {
      */
     func sayCurrentTime(_ event:MuEvent!, _ isTouching:Bool) {
 
-        if canSay(.time ) {
+        if canSay(.time) {
 
             let dateFormatter = DateFormatter()
 
@@ -70,6 +73,9 @@ extension Say {
             let spoken = "Now " + dateFormatter.string(from:Date())
             let title = isTouching ? "" : "Muse Now"
             updateDialog(event, .phraseTimeNow, spoken:spoken, title:title, via:#function)
+        }
+        else {
+            updateDialog(event, .phraseTimeNow, spoken:"", title:title, via:#function)
         }
     }
 
@@ -92,6 +98,9 @@ extension Say {
                 updateDialog(event, .phraseEventTime, spoken:elapse, title:elapse, via:#function)
 
             }
+        }
+        else {
+            updateDialog(event, .phraseMemo, spoken:"", title:event.title, via:#function)
         }
     }
     

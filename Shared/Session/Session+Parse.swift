@@ -53,7 +53,7 @@ extension Session {
             Settings.shared.archiveSettings()
             Actions.shared.doRefresh(false)
             #if os(iOS)
-                PagesVC.shared.treeVC.tableView.reloadData()
+                PagesVC.shared.menuVC.tableView.reloadData()
             #endif
         }
     }
@@ -64,7 +64,7 @@ extension Session {
             let putSet = SaySet(rawValue:putInt)
             Say.shared.updateSetFromSession(putSet)
             #if os(iOS)
-                PagesVC.shared.treeVC.tableView.reloadData()
+                PagesVC.shared.menuVC.tableView.reloadData()
             #endif
         }
     }
@@ -75,7 +75,7 @@ extension Session {
             let putSet = HearSet(rawValue:putInt)
             Hear.shared.updateOptionsFromSession(putSet)
             #if os(iOS)
-                PagesVC.shared.treeVC.tableView.reloadData()
+                PagesVC.shared.menuVC.tableView.reloadData()
             #endif
         }
 

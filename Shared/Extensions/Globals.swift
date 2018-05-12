@@ -34,12 +34,15 @@ func DebugLog(_ str: String) -> Bool {
     switch str.substring(to: 1) {
 
     case
-    "⊛", // crown
-    "⚇": // dot
 
+    "▤": // TreeTableView
+        
         print(MuDate.getHourMinSecMsec() + ": " + str)
 
     case
+    "⊛", // crown
+    "⚇", // dot
+
     "⟳", // life cycle
     "∿",  // audio recorder
     "←", // session receiving
@@ -47,8 +50,8 @@ func DebugLog(_ str: String) -> Bool {
     "→", // session sending
     "✏", // Transcribe
 
-    "⧉", // syncfile
-    "⊕", // motion
+    "⧉",  // syncfile
+    "⊕",  // motion
     "✺",  // background task
     "🗣", // Say TTS
     "🔈", // Audio
@@ -70,9 +73,9 @@ func DebugLog(_ str: String) -> Bool {
     "*", // TableVC updates
     "⏲", // timing
 
-    "▤", // TreeTableView
+
     "⿳", // calendar event
-    "✏︎",  // draw bubble
+    "✏︎", // draw bubble
     "📅", // EkNotification
 
     "⎚", // scene animationync files

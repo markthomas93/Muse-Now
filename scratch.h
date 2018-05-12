@@ -16,7 +16,7 @@ init() Error:Error Domain=NSOSStatusErrorDomain Code=-50 "(null)"
 4:11:38.933: ⚇ updateDotEvents timeEvent bgnIndex:0 endIndex:0 elapseMin:11.0
 4:11:41.345: ⚇ updateDotEvents timeEvent bgnIndex:0 endIndex:0 elapseMin:11.0
 4:12:01.265: ⚇ updateDotEvents timeEvent bgnIndex:0 endIndex:0 elapseMin:11.0
-4:12:04.332: ⚇ updateDotEvents timeEvent bgnIndex:0 endIndex:0 elapseMin:12.0333333333333
+4:12:04.332: ⚇ updat/Users/warren/Desktop/icon-Beaker.pngeDotEvents timeEvent bgnIndex:0 endIndex:0 elapseMin:12.0333333333333
 4:12:13.725: ⊛ crownNextEvent(1.0,futr) dot Prev ➛ Now: 0.0 ➛ 0.0 current time
 4:12:17.703: ⊛ crownNextEvent(1.0,futr) dot Prev ➛ Now: 0.0 ➛ 2.0 new hour event:Dinner
 4:12:20.485: ⊛ crownNextEvent(-1.0,futr) dot Prev ➛ Now: 2.0 ➛ 0.5 time

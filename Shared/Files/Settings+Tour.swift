@@ -57,7 +57,7 @@ extension Settings {
             Actions.shared.dialColor(1.0, isSender: false)
             settingsFromMemory()
             TreeNodes.shared.root?.refreshNodeCells()
-            PagesVC.shared.treeVC?.tableView.reloadData()
+            PagesVC.shared.menuVC?.tableView.reloadData()
             Actions.shared.doAction(.refresh)
         #endif
 
@@ -69,7 +69,7 @@ extension Settings {
             restoreFromBackup {
                 self.unarchiveSettings {
                     TreeNodes.shared.root?.refreshNodeCells()
-                    PagesVC.shared.treeVC?.tableView.reloadData()
+                    PagesVC.shared.menuVC?.tableView.reloadData()
                     Actions.shared.doAction(.refresh)
                 }
             }
