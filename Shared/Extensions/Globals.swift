@@ -34,16 +34,18 @@ func DebugLog(_ str: String) -> Bool {
     switch str.substring(to: 1) {
 
     case
-
+    "⌚︎", // watch application state
+    "👆", // tap action
+    "⟳", // life cycle
     "▤": // TreeTableView
         
         print(MuDate.getHourMinSecMsec() + ": " + str)
 
     case
+    "✺",  // background task
     "⊛", // crown
     "⚇", // dot
 
-    "⟳", // life cycle
     "∿",  // audio recorder
     "←", // session receiving
     "↔︎", // session activation state
@@ -52,7 +54,6 @@ func DebugLog(_ str: String) -> Bool {
 
     "⧉",  // syncfile
     "⊕",  // motion
-    "✺",  // background task
     "🗣", // Say TTS
     "🔈", // Audio
 
@@ -88,9 +89,6 @@ func DebugLog(_ str: String) -> Bool {
     "▣", // observe main window bounds
     "◰", // view layout
 
-
-    "👆", // tap action
-    "✺", // complication
     "𝓡", // routine
 
     "✓", // actions

@@ -9,7 +9,11 @@
 import WatchKit
 import ClockKit
 
+
+
 class ExtensionDelegate: NSObject, WKExtensionDelegate {
+
+static let WillResignActive = Notification.Name("WillResignActive")
 
     func applicationDidFinishLaunching() { Log("⌚︎ \(#function)")
         let _ = Timer.scheduledTimer(withTimeInterval: 5, repeats: false, block: {_ in
@@ -28,7 +32,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
     }
 
     func applicationWillResignActive() {  Log("⌚︎ \(#function)")
-        // menus or other interruptions
+        NotificationCenter.default.post(name: ExtensionDelegate.WillResignActive, object: nil)
     }
 
     func handle(_ backgroundTasks: Set<WKRefreshBackgroundTask>) {  Log("✺ \(#function)")

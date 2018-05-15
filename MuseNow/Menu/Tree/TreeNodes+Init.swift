@@ -17,9 +17,6 @@ extension TreeNodes {
      */
     func initTree(_ vc_: Any) {
 
-        vc = vc_
-        if root != nil { return }
-        root = TreeNode("menu", .title, nil, TreeSetting(set:0,member:1))
         let showSet = Show.shared.showSet.rawValue
 
         func initEvents() {
@@ -45,7 +42,7 @@ extension TreeNodes {
             // Memos
             let showsMemo = ShowSet.memo.rawValue
             let memoSet   = Memos.shared.memoSet.rawValue
-            let saveWhere = MemoSet.saveWhere.rawValue
+            //let saveWhere = MemoSet.saveWhere.rawValue
             let nod2Rec   = MemoSet.nod2Rec.rawValue
 
             let memos = TreeActNode("memos",     root,  showSet, showsMemo, .showMemo,      .hideMemo,       [])
@@ -58,7 +55,7 @@ extension TreeNodes {
                 "Cancel", {}
                 ])
         }
-        func initRoutine() {
+        func initRoutine() { //Log("▤ \(#function)")
 
             let routine = TreeActNode("routine", root, showSet, ShowSet.routine.rawValue, .showRoutine, .hideRoutine, [.child,.parent])
             // routine.setting.setFrom = []
@@ -83,7 +80,7 @@ extension TreeNodes {
             #endif
 
         }
-        func initMore() {
+        func initMore() { //Log("▤ \(#function)")
 
             let more = TreeNode("more",    .title, root)
 
@@ -127,7 +124,7 @@ extension TreeNodes {
             #endif
         }
 
-        func initNodes() {
+        func initNodes() { //Log("▤ \(#function)")
             root!.refreshNodeCells()
             TreeNodes.shared.renumber()
             TreeBases.shared.merge(root)
@@ -135,11 +132,16 @@ extension TreeNodes {
         }
         // begin ---------------------------------------------
 
-        initEvents()
-        initMemos()
-        initRoutine()
-        initMore()
-        initNodes()
+        vc = vc_
+        if root == nil {
+            root = TreeNode("menu", .title, nil, TreeSetting(set:0,member:1))
+
+            initEvents()
+            initMemos()
+            initRoutine()
+            initMore()
+            initNodes()
+        }
     }
 
 }

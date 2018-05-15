@@ -10,15 +10,21 @@ import WatchKit
 
 class MenuController: WKInterfaceController {
 
-    @IBAction func panAction(_ sender: Any) {
-    }
+
     @IBOutlet var interfaceTable: WKInterfaceTable!
     
     var parent: TreeNode!
-    
+    var touchMove: TouchMove!
+    var shouldPop = false
+
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: ExtensionDelegate.WillResignActive, object: nil)
+    }
+
     override func awake(withContext context: Any?) {
 
         super.awake(withContext: context)
+
         
         parent = context as! TreeNode
         
@@ -39,13 +45,35 @@ class MenuController: WKInterfaceController {
         }
 
         interfaceTable.setRowTypes(rowTypes) // row names. size of array is number of rows
-        //interfaceTable.setNumberOfRows(children.count, withRowType:"TreeTitleCell")
 
         for index in 0 ..< children.count {
 
             let cell = interfaceTable.rowController(at: index) as! MenuCell
             let node = children[index]
             cell.setTreeNode(node)
+        }
+
+        let w = self.contentFrame.size.width * 2
+        let size = CGSize(width:CGFloat(w), height:CGFloat(w))
+        touchMove = TouchMove(size)
+        touchMove.swipeLeftAction = {_ in
+            self.pop()
+        }
+        NotificationCenter.default.addObserver(self, selector: #selector(appWillResignActive), name: ExtensionDelegate.WillResignActive, object: nil)
+    }
+
+    @objc func appWillResignActive() { Log("▤ \(#function) \(parent.title)")
+         shouldPop = true
+    }
+
+//    override func didAppear() { Log("▤ \(#function) \(parent.title)")  }
+//    override func willDisappear() { Log("▤ \(#function) \(parent.title)") }
+//    override func didDeactivate() { Log("▤ \(#function) \(parent.title)") }
+
+    override func willActivate() { Log("▤ \(#function) \(parent.title)")
+        if  shouldPop {
+            shouldPop = false
+            self.pop()
         }
     }
 
@@ -55,4 +83,23 @@ class MenuController: WKInterfaceController {
             pushController(withName: "MenuController", context: child)
         }
     }
+
+    @IBAction func panAction(_ sender: Any) {
+
+        if let pan = sender as? WKPanGestureRecognizer {
+
+            let pos1 = pan.locationInObject()
+            let pos2 = CGPoint(x:pos1.x*2, y:pos1.y*2 )
+
+            let timestamp = Date().timeIntervalSince1970
+            switch pan.state {
+            case .began:     touchMove.began(pos2, timestamp)
+            case .changed:   touchMove.moved(pos2, timestamp)
+            case .ended:     touchMove.ended(pos2, timestamp)
+            case .cancelled: touchMove.ended(pos2, timestamp)
+            default: break
+            }
+        }
+    }
+
 }

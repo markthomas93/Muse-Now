@@ -5,8 +5,7 @@ import Foundation
 extension Session {
     
     /**
-     Send message to other device
-     - via: Record.(recordMenu).setAction
+     Send message to other devices
      */
     func sendMsg(_ msg: [String : Any]) { Log("→ \(#function) " + dumpDict(msg))
         sendMessage(

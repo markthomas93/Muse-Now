@@ -14,25 +14,25 @@
             <objects>
                 <controller title="MuseNow" spacing="0.0" id="E5x-Cp-nxC" customClass="WatchCon" customModule="MuseNow_WatchKit_App" customModuleProvider="target">
                     <items>
-                        <spriteKitScene width="134" height="134" alignment="center" hidden="YES" preferredFramesPerSecond="60" scene="Dial" id="na6-Wm-W5t">
+                        <spriteKitScene width="136" height="136" alignment="center" preferredFramesPerSecond="60" scene="Dial" id="na6-Wm-W5t">
                             <gestureRecognizers>
-                                <panGestureRecognizer delaysTouchesEnded="NO" id="jcj-Ni-bpU" userLabel="Pan">
+                                <panGestureRecognizer delaysTouchesEnded="NO" id="jcj-Ni-bpU" userLabel="PanDial">
                                     <connections>
                                         <action selector="panAction:" destination="E5x-Cp-nxC" id="zyk-qx-f70"/>
                                     </connections>
                                 </panGestureRecognizer>
-                                <tapGestureRecognizer delaysTouchesEnded="NO" id="cfh-K5-PW9" userLabel="Tap1">
+                                <tapGestureRecognizer cancelsTouchesInView="NO" delaysTouchesEnded="NO" id="cfh-K5-PW9" userLabel="Tap1">
                                     <connections>
                                         <action selector="tap1Action:" destination="E5x-Cp-nxC" id="PVm-8E-9fe"/>
                                     </connections>
                                 </tapGestureRecognizer>
                             </gestureRecognizers>
-                            <variation key="device=watch38mm" height="134" width="134"/>
-                            <variation key="device=watch42mm" height="154" width="154"/>
+                            <variation key="device=watch38mm" height="136" width="136"/>
+                            <variation key="device=watch42mm" height="156" width="156"/>
                         </spriteKitScene>
-                        <group width="136" height="15" alignment="left" verticalAlignment="bottom" spacing="0.0" id="pGa-5x-AV1">
+                        <group width="136" height="18" alignment="left" verticalAlignment="center" spacing="0.0" id="pGa-5x-AV1">
                             <gestureRecognizers>
-                                <panGestureRecognizer delaysTouchesEnded="NO" id="xJM-L1-dPs" userLabel="Pan">
+                                <panGestureRecognizer enabled="NO" delaysTouchesEnded="NO" id="xJM-L1-dPs" userLabel="PanSlider">
                                     <connections>
                                         <action selector="sliderAction:" destination="E5x-Cp-nxC" id="heS-NH-73v"/>
                                     </connections>
@@ -40,35 +40,15 @@
                             </gestureRecognizers>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="0.0"/>
+                            <variation key="default">
+                                <mask key="gestureRecognizers">
+                                    <exclude reference="xJM-L1-dPs"/>
+                                </mask>
+                            </variation>
+                            <variation key="device=watch38mm" height="15" width="136"/>
                             <variation key="device=watch42mm" height="18" width="156"/>
                         </group>
                     </items>
-                    <menu key="menu" id="Lb8-Hw-gsE">
-                        <items>
-                            <menuItem title="Mark" icon="add" id="Wd0-fA-jUE" userLabel="Mark">
-                                <connections>
-                                    <action selector="menuMarkAction" destination="E5x-Cp-nxC" id="23Q-Ku-H7D"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Clear " icon="decline" id="942-KP-4eO" userLabel="Clear">
-                                <connections>
-                                    <action selector="menuClearAction" destination="E5x-Cp-nxC" id="3X6-hO-jAL"/>
-                                </connections>
-                            </menuItem>
-                            <menuItem title="Menu" image="Menu38" id="Abp-pB-dcb" userLabel="Menu">
-                                <variation key="device=watch42mm" image="Menu42"/>
-                                <connections>
-                                    <action selector="menuMenuAction" destination="E5x-Cp-nxC" id="o1B-jt-KFY"/>
-                                </connections>
-                            </menuItem>
-                        </items>
-                        <variation key="default">
-                            <mask key="items">
-                                <exclude reference="Wd0-fA-jUE"/>
-                                <exclude reference="942-KP-4eO"/>
-                            </mask>
-                        </variation>
-                    </menu>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="skInterface" destination="na6-Wm-W5t" id="LIr-2s-dBH"/>
@@ -104,13 +84,6 @@
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </label>
                                         </items>
-                                        <gestureRecognizers>
-                                            <panGestureRecognizer id="e62-1t-BWs">
-                                                <connections>
-                                                    <action selector="panAction:" destination="y3T-8C-hUW" id="DFf-s7-PJf"/>
-                                                </connections>
-                                            </panGestureRecognizer>
-                                        </gestureRecognizers>
                                         <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                                     </group>
                                     <connections>
@@ -214,6 +187,13 @@
                                     </connections>
                                 </tableRow>
                             </items>
+                            <gestureRecognizers>
+                                <panGestureRecognizer cancelsTouchesInView="NO" delaysTouchesEnded="NO" id="e62-1t-BWs">
+                                    <connections>
+                                        <action selector="panAction:" destination="y3T-8C-hUW" id="DFf-s7-PJf"/>
+                                    </connections>
+                                </panGestureRecognizer>
+                            </gestureRecognizers>
                         </table>
                     </items>
                     <connections>

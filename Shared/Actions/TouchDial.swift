@@ -1,6 +1,7 @@
 
 import UIKit
 
+
 class TouchDial: TouchMove {
     
     let anim = Anim.shared
@@ -10,25 +11,40 @@ class TouchDial: TouchMove {
     var lastPanT = TimeInterval(0)
     var lastPan˚ = Double(-720)
     var wasFuture = true
-    var taps = Taps.shared
 
-    
     convenience init(_ size_: CGSize, _ delegate_: MuseTableDelegate!) {
+
         self.init(size_)
         table = delegate_
-    }
 
-    override func doBegin(_ pos: CGPoint,_ timeStamp: TimeInterval) { //Log("👆 \(#function) tapCount:\(taps.tapCount)")
+        touchBegan = { touchMove in
+            self.anim.touchDialDown()
+        }
 
-        anim.touchDialDown()
-        taps.tapping(timeStamp)
-    }
+        touchMoved = { touchMove in
+            let pos = touchMove.touchMovedPos
+            let inv = CGPoint(x: pos.x/2, y: (self.size.width - pos.y)/2)
+            self.touchDialPan(inv, touchMove.touchMovedTime)
+        }
 
-    override func doMove(_ pos: CGPoint, _ timestamp: TimeInterval) {
+        var wasPausing = false
 
-        let inv = CGPoint(x: pos.x/2, y: (size.width - pos.y)/2)
-        touchDialPan(inv, timestamp)
-        //print("touches moved  pos:\(pos) inv:\(inv)")
+        beganTap1Action = {  touchMove in //Log("👆 touchBeganTap1")
+
+            wasPausing = self.anim.pauseAnimation()
+        }
+        endedTap1Action = {  touchMove in Log("👆 touchEndedTap1")
+            if wasPausing { // if was paused then unpause
+                self.anim.resumeScan()
+            }
+        }
+        endedTap2Action = {  touchMove in //Log("👆 touchEndedTap2")
+            Actions.shared.doToggleMark() // toggle mark
+        }
+        beganTap3Action = {  touchMove in //Log("👆 touchBeganTap3")
+            Record.shared.toggleRecordAction()
+        }
+
     }
 
     func pointDegree(_ pos: CGPoint, _ center: CGPoint) -> Double {

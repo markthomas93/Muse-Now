@@ -1,50 +1,55 @@
-init() Error:Error Domain=NSOSStatusErrorDomain Code=-50 "(null)"
-2018-05-03 16:10:18.971093-0700 MuseNow WatchKit Extension[203:6524] [default] -[SPInterfaceViewController performBlockOnViewDidAppear:]:1258: Tried to set _didAppearBlock but we already have one! <SPInterfaceViewController: 0x172f5200>
-4:10:23.060: ⚇ updateDotEvents timeEvent bgnIndex:0 endIndex:0 elapseMin:10.3810893336932
-4:10:38.060: ⊛ crownNextEvent(-1.0,futr) dot Prev ➛ Now: 0.0 ➛ 0.0 flipTense:true
-4:10:40.855: ⊛ crownNextEvent(-1.0,past) dot Prev ➛ Now: 0.0 ➛ -3.0 new hour event:Time one oh one more rest
-4:10:54.182: ⊛ crownNextEvent(-1.0,past) dot Prev ➛ Now: -3.0 ➛ -3.0 another event:Time 1:01 PM part three
-4:11:11.814: ⚇ updateDotEvents timeEvent bgnIndex:0 endIndex:0 elapseMin:11.0
-4:11:14.717: ⚇ updateDotEvents timeEvent bgnIndex:0 endIndex:0 elapseMin:11.0
-4:11:25.814: ⊛ crownNextEvent(1.0,futr) dot Prev ➛ Now: -1.0 ➛ -0.5 time
-4:11:25.898: ⊛ crownNextEvent(1.0,past) dot Prev ➛ Now: -0.5 ➛ -0.5 another event:Memo
-4:11:26.026: ⊛ crownNextEvent(1.0,past) dot Prev ➛ Now: -0.5 ➛ 0.0 done
-4:11:26.991: ⊛ crownNextEvent(-1.0,past) dot Prev ➛ Now: 0.0 ➛ 0.0 current time
-4:11:27.171: ⊛ crownNextEvent(-1.0,past) dot Prev ➛ Now: 0.0 ➛ -3.0 new hour event:Time one oh one more rest
-4:11:28.017: ⊛ crownNextEvent(1.0,past) dot Prev ➛ Now: -3.0 ➛ -0.5 time
-4:11:28.655: ⊛ crownNextEvent(1.0,past) dot Prev ➛ Now: -0.5 ➛ -0.5 another event:Memo
-4:11:38.933: ⚇ updateDotEvents timeEvent bgnIndex:0 endIndex:0 elapseMin:11.0
-4:11:41.345: ⚇ updateDotEvents timeEvent bgnIndex:0 endIndex:0 elapseMin:11.0
-4:12:01.265: ⚇ updateDotEvents timeEvent bgnIndex:0 endIndex:0 elapseMin:11.0
-4:12:04.332: ⚇ updat/Users/warren/Desktop/icon-Beaker.pngeDotEvents timeEvent bgnIndex:0 endIndex:0 elapseMin:12.0333333333333
-4:12:13.725: ⊛ crownNextEvent(1.0,futr) dot Prev ➛ Now: 0.0 ➛ 0.0 current time
-4:12:17.703: ⊛ crownNextEvent(1.0,futr) dot Prev ➛ Now: 0.0 ➛ 2.0 new hour event:Dinner
-4:12:20.485: ⊛ crownNextEvent(-1.0,futr) dot Prev ➛ Now: 2.0 ➛ 0.5 time
-4:12:24.138: ⊛ crownNextEvent(-1.0,futr) dot Prev ➛ Now: 0.5 ➛ 0.5 another event:Memo
-4:12:30.994: ⊛ crownNextEvent(-1.0,futr) dot Prev ➛ Now: 0.5 ➛ 0.5 another event:Memo
-4:12:36.958: ⊛ crownNextEvent(-1.0,futr) dot Prev ➛ Now: 0.5 ➛ 0.5 another event:Memo
-4:12:41.468: ⊛ crownNextEvent(-1.0,futr) dot Prev ➛ Now: 0.5 ➛ 0.0 done
-4:12:46.120: ⊛ crownNextEvent(-1.0,futr) dot Prev ➛ Now: 0.0 ➛ 0.0 flipTense:true
-4:12:47.882: ⊛ crownNextEvent(1.0,past) dot Prev ➛ Now: 0.0 ➛ 0.0 flipTense:true
-4:12:52.820: ⊛ crownNextEvent(1.0,futr) dot Prev ➛ Now: 0.0 ➛ 2.0 new hour event:Dinner
-4:12:55.720: ⊛ crownNextEvent(-1.0,futr) dot Prev ➛ Now: 2.0 ➛ 0.5 time
-4:12:58.372: ⊛ crownNextEvent(-1.0,futr) dot Prev ➛ Now: 0.5 ➛ 0.5 another event:Memo
-4:13:02.665: ⊛ crownNextEvent(-1.0,futr) dot Prev ➛ Now: 0.5 ➛ 0.0 current time
-4:13:06.568: ⊛ crownNextEvent(-1.0,futr) dot Prev ➛ Now: 0.0 ➛ 0.0 flipTense:true
-4:13:10.164: ⊛ crownNextEvent(-1.0,past) dot Prev ➛ Now: 0.0 ➛ -0.5 another event:Memo
-4:13:14.086: ⊛ crownNextEvent(-1.0,past) dot Prev ➛ Now: -0.5 ➛ -0.5 another event:Memo
 
-4:16:08.367: ⊛ crownNextEvent(-1.0,futr) dot Prev ➛ Now: 0.0 ➛ 0.0 flipTense:true
-4:16:10.776: ⊛ crownNextEvent(1.0,past) dot Prev ➛ Now: 0.0 ➛ 0.0 flipTense:true
-4:16:13.108: ⊛ crownNextEvent(1.0,futr) dot Prev ➛ Now: 0.0 ➛ 2.0 new hour event:Dinner
-4:16:15.411: ⊛ crownNextEvent(-1.0,futr) dot Prev ➛ Now: 2.0 ➛ 0.5 time
-4:16:18.998: ⊛ crownNextEvent(-1.0,futr) dot Prev ➛ Now: 0.5 ➛ 0.5 another event:Time is 411 part two
-4:16:24.454: ⊛ crownNextEvent(-1.0,futr) dot Prev ➛ Now: 0.5 ➛ 0.5 another event:Memo
-4:16:26.922: ⊛ crownNextEvent(-1.0,futr) dot Prev ➛ Now: 0.5 ➛ 0.5 another event:The time is 4:11 PM part one
-4:16:42.849: ⊛ crownNextEvent(1.0,futr) dot Prev ➛ Now: 0.5 ➛ 0.5 another event:Memo
-4:16:46.139: ⊛ crownNextEvent(1.0,futr) dot Prev ➛ Now: 0.5 ➛ 0.5 another event:Time is 411 part two
-4:16:48.530: ⊛ crownNextEvent(1.0,futr) dot Prev ➛ Now: 0.5 ➛ 0.0 current time
-4:16:52.980: ⊛ crownNextEvent(-1.0,futr) dot Prev ➛ Now: 0.0 ➛ 0.0 flipTense:true
-4:16:57.267: ⊛ crownNextEvent(-1.0,past) dot Prev ➛ Now: 0.0 ➛ -0.5 another event:Time is 411 part two
-4:17:02.098: ⊛ crownNextEvent(-1.0,past) dot Prev ➛ Now: -0.5 ➛ 0.0 current time
+11:56:42.437: 👆began
+11:56:42.500: 👆finishSwipe swipeState:swipeRight
+11:56:42.502: 👆 touchSwipeRight
 
+11:56:42.847: ▤ willActivate() menu
+11:56:43.236: ⟳ stopActive()
+11:56:43.547: ▤ didAppear() menu
+
+swipe right
+
+11:56:58.746: 👆finishSwipe swipeState:begin
+11:56:58.909: ▤ willDisappear() menu
+11:56:58.911: ▤ willActivate() routine
+11:56:59.274: ▤ didDeactivate() menu
+11:56:59.279: ▤ didAppear() routine
+
+touch routine
+
+11:57:22.614: ▤ willDisappear() routine
+11:57:22.617: ▤ willActivate() menu
+11:57:22.938: ▤ didDeactivate() routine
+11:57:22.944: ▤ didAppear() menu
+11:57:22.976: ▤ willDisappear() menu
+11:57:22.980: ⟳ startActive())
+11:57:23.292: ▤ didDeactivate() menu
+
+touch title
+
+11:57:31.927: 👆finishSwipe swipeState:begin
+11:57:34.393: 👆began
+11:57:34.468: 👆finishSwipe swipeState:swipeRight
+11:57:34.471: 👆 touchSwipeRight
+11:57:34.472: ▤ showMenu()
+11:57:34.616: ▤ willActivate() menu
+11:57:34.996: ⟳ stopActive()
+11:57:35.293: ▤ didAppear() menu
+
+swipe right 2nd attempt
+
+11:57:51.899: ▤ willDisappear() menu
+11:57:51.901: ▤ willActivate() routine
+11:57:52.267: ▤ didDeactivate() menu
+11:57:52.271: ▤ didAppear() routine
+
+touch routine
+
+11:57:59.144: ▤ didDeactivate() routine
+11:57:59.268:  willActivate() routine
+11:57:59.310: ▤ didDeactivate() routine
+11:57:59.318: ▤ willDisappear() routine
+11:57:59.335: ▤ didAppear() menu
+didAppear() routine
+
+cover face
