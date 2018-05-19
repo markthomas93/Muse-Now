@@ -4,7 +4,7 @@ import Foundation
 import UIKit
 
 
-public enum PageType: Int { case menu = 0, main = 1, onboard = 3 }
+public enum PageType: Int { case  main = 0, menu = 1, onboard = 3 }
 
 class PagesVC: UIViewController, UIPageViewControllerDataSource {
     
@@ -87,7 +87,7 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
         menuVC.view?.frame = childFrame
         eventVC.view?.frame = childFrame
 
-        pages = [menuVC,eventVC]
+        pages = [eventVC,menuVC]
         pageVC.setViewControllers([eventVC], direction: .reverse, animated: false, completion: nil)
 
         spine = UIView(frame:spineFrame)

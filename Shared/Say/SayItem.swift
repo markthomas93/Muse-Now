@@ -39,7 +39,7 @@ class SayItem: NSObject {
     
 
     func shortTitle () -> String {
-         return "\"\((event?.title ?? "").trunc(length:20))\""
+         return "\"\((event?.title ?? title).trunc(length:20))\""
     }
     func log(_ str: String) {
 

@@ -34,17 +34,23 @@ func DebugLog(_ str: String) -> Bool {
     switch str.substring(to: 1) {
 
     case
-    "⌚︎", // watch application state
-    "👆", // tap action
-    "⟳", // life cycle
-    "▤": // TreeTableView
-        
+
+    "⊛", // crown
+    "⚇": // dot
+
         print(MuDate.getHourMinSecMsec() + ": " + str)
 
     case
+
+    "👆", // tap action
+    "🗣", // Say TTS
+    "🔈", // Audio
+    "𐆄", // execute closure during animation pause
+    "⟳", // life cycle
+    "▤", // TreeTableView
+
+    "⌚︎", // watch application state
     "✺",  // background task
-    "⊛", // crown
-    "⚇", // dot
 
     "∿",  // audio recorder
     "←", // session receiving
@@ -54,17 +60,12 @@ func DebugLog(_ str: String) -> Bool {
 
     "⧉",  // syncfile
     "⊕",  // motion
-    "🗣", // Say TTS
-    "🔈", // Audio
-
-    "⟳", // life cycle
 
     "💬", // bubble animation closure
     "⿴", // windows covers for speech bubble
 
     "𐂷", // tree cell
     "⚡️", // startup
-    "⧉", // syncfile
 
     "🎧", // Hear Via
     "🔰", // onboarding pages (japanese beginnner symbol)
@@ -79,12 +80,9 @@ func DebugLog(_ str: String) -> Bool {
     "✏︎", // draw bubble
     "📅", // EkNotification
 
-    "⎚", // scene animationync files
+    "⎚", // scene animation
 
     "⌘", // doAction
-
-    "🗣", // Say TTS
-    "🔈", // Audio
 
     "▣", // observe main window bounds
     "◰", // view layout
@@ -92,10 +90,7 @@ func DebugLog(_ str: String) -> Bool {
     "𝓡", // routine
 
     "✓", // actions
-    "⎚", // scene animation
     "⚆", // wheel spoke animation
-
-    "𐆄", // execute closure during animation pause
     "🎞": // texture
 
         break

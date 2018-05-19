@@ -84,8 +84,9 @@ class Record: NSObject, CLLocationManagerDelegate {
 
     // user action ------------------------------------
 
-    /** User initiated gesture to either start or finish recording */
-
+    /**
+     User initiated gesture to either start or finish recording
+     */
     func toggleRecordAction() {
 
         if isRecording() { Log("∿ \(#function) -> finish")
@@ -96,17 +97,17 @@ class Record: NSObject, CLLocationManagerDelegate {
             // only allow recording if "show memo" is set
         else if Show.shared.canShow(.memo) { Log("∿ \(#function) -> start")
             Haptic.play(.start)
-            startRecording()
+            startRecording() {}
         }
     }
 
     /**
      Setup multithread queue to prepare, animate, start location, which all must finish before beginRecording()
      */
-    func startRecording() {
+    func startRecording(_ done: @escaping CallVoid) {
 
         /** setup recording route and file destination */
-        func prepareRecording(_ done: @escaping () -> ()) {
+        func prepareRecording(_ done: @escaping CallVoid) {
 
             activateAudio() // this should already been started, so somewhat reundundant
             let dateFormatter = DateFormatter()
@@ -127,30 +128,41 @@ class Record: NSObject, CLLocationManagerDelegate {
         }
 
         /** Start recoding session if still active. Sometimes the watch will deactivate after starting the preparations. */
-        func beginRecording() {
+        func beginRecording(_ done: @escaping CallVoid) {
 
             if Active.shared.isOn { Log("∿ \(#function) Active.isOn")
-                // when recBgnTime < recEndTime, isRecording() returns true
-                recBgnTime = Date().timeIntervalSince1970
-                audioRecorder?.record()
-                audioTimer = Timer.scheduledTimer(timeInterval: recDuration, target: self, selector: #selector(timedOutRecording), userInfo: nil, repeats: false)
-                Anim.shared.gotoRecordSpoke(on:true)
+
+                self.recBgnTime = Date().timeIntervalSince1970 // when recBgnTime < recEndTime, isRecording() returns true
+                self.audioRecorder?.record()
+
+                Anim.shared.gotoRecordSpoke(on: true) {
+
+                    self.audioTimer = Timer.scheduledTimer(timeInterval: self.recDuration, target: self, selector: #selector(self.timedOutRecording), userInfo: nil, repeats: false)
+                    done()
+                }
             }
                 // became unactive while setting up
             else { Log("∿ \(#function) aborting")
                 abortTime = Date().timeIntervalSince1970
+                done()
             }
+
         }
 
         // begin ---------------------------------
 
-        if isRecording() { return }
-
-        Location.shared.requestLocation() {}
+        if isRecording() { return done() }
 
         DispatchQueue.global(qos: .utility).async {
 
             let group = DispatchGroup()
+
+            // prepare location
+            group.enter()
+
+                Location.shared.requestLocation() { // Log("∿ requestLoation done")
+                    group.leave()
+                }
 
             // prepare recording
             group.enter()
@@ -160,8 +172,8 @@ class Record: NSObject, CLLocationManagerDelegate {
 
             let _ = group.wait(timeout: .now() + 2.0)
 
-            DispatchQueue.main.async {
-                beginRecording()
+            beginRecording() {
+                done()
             }
         }
     }
@@ -177,7 +189,7 @@ class Record: NSObject, CLLocationManagerDelegate {
 
         audioTimer.invalidate()
         audioRecorder?.stop()
-        Anim.shared.gotoRecordSpoke(on: false)
+        Anim.shared.gotoRecordSpoke(on: false) {}
     }
 
     /** Finish and save recording
@@ -229,18 +241,21 @@ class Record: NSObject, CLLocationManagerDelegate {
      when watch screen becomes inactive for a short time after aborting a recording, restart recording.
      - via: Active::stopActive
      */
-    func maybeRestartRecording() {
+    func maybeRestartRecording(_ done: @escaping CallBool) {
 
         let timeNow = Date().timeIntervalSince1970
         let deltaTime = (timeNow - abortTime)
         if  deltaTime < waitingPeriod {
             Log("∿ \(#function) restarting \(deltaTime)")
-            startRecording() // will call activateAudio()
+            startRecording() {
+                done(true)
+            }
         }
         else {
             Log("∿ \(#function) NOT \(deltaTime)")
             DispatchQueue.main.async {
                 self.activateAudio()
+                done(false)
             }
         }
     }

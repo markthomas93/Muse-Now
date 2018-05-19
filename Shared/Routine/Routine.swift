@@ -18,6 +18,12 @@ class Routine: FileSync, Codable {
         fileName = "Routine.json"
     }
 
+    func archiveRoutineNow() {
+        if let data = try? JSONEncoder().encode(self) {
+            let _ = saveData(data)
+        }
+    }
+    
     func archiveRoutine(done:@escaping CallVoid) {
 
         if let data = try? JSONEncoder().encode(self) {

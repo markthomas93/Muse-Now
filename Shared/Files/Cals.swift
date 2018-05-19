@@ -11,8 +11,8 @@ class Cals: FileSync {
     
     var ekCals = [EKCalendar]()         // event kit calendars minus holidays and contacts
     var cals = [Cal]()                  // muse translated version of EKCalendar
-    var idCal = [String:Cal!]()         // retreive cal from its calendarID
-    var sourceCals = [String:[Cal!]]()  // each data source may have several calendars
+    var idCal = [String:Cal]()         // retreive cal from its calendarID
+    var sourceCals = [String:[Cal]]()  // each data source may have several calendars
 
     override init() {
         super.init()

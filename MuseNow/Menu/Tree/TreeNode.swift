@@ -41,16 +41,16 @@ class TreeNode: NSObject {
         children.append(treeNode)
     }
 
-    convenience init (_ title_:String,_ type_:TreeNodeType, _ parent_:TreeNode!,_ setting_: TreeSetting) {
+    convenience init (_ title_:String, _ parent_:TreeNode!,_ type_:TreeNodeType,_ setting_: TreeSetting) {
         self.init()
-        initialize(title_, type_, parent_, setting_)
+        initNode(title_, parent_, type_, setting_)
     }
-    convenience init (_ title_:String,_ type_:TreeNodeType, _ parent_:TreeNode!) {
+    convenience init (_ title_:String, _ parent_:TreeNode!,_ type_:TreeNodeType) {
         self.init()
-        initialize(title_, type_, parent_, TreeSetting(set:1,member:1))
+        initNode(title_, parent_, type_, TreeSetting(set:1,member:1))
     }
 
-    func initialize (_ title_: String, _ type_:TreeNodeType, _ parent_:TreeNode!,_ setting_: TreeSetting) {
+    func initNode (_ title_: String, _ parent_:TreeNode!, _ type_:TreeNodeType,_ setting_: TreeSetting) {
 
         title = title_
         parent = parent_
@@ -184,10 +184,18 @@ class TreeNode: NSObject {
         updateMyChildren()
         parent?.cell?.updateOnRatioOfChildrenMarked()
         cell?.updateOnRatioOfChildrenMarked()
+        if let treeCallback = treeCallback {
+            #if os(watchOS)
+            Closures.shared.addClosure(title: title) {
+                treeCallback(self)
+            }
+            #else
+            treeCallback(self)
+            #endif
+        }
 
-        treeCallback?(self)
     }
- }
+}
 
 extension TreeNode {
     override var hashValue: Int {

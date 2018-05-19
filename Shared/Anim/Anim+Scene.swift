@@ -33,24 +33,19 @@ extension Anim {
 
     func pausing() {
 
-        execClosures() // housekeeping during pause in animation
+        Closures.shared.execClosures()  // housekeeping during pause in animation
+
         switch animNow {
         case .futrPause:    sceneFrame = dots.dotNow >=  0.5 ? trunc(dots.dotNow) + spokeFan :  spokeWheel
         case .pastPause:    sceneFrame = dots.dotNow <= -0.5 ? trunc(dots.dotNow) - spokeFan : -spokeWheel
         default:            sceneFrame = dotFrame(dots.dotNow)
         }
     }
-    
-    /// Increment sceneFrame and reset to zero when reaching the end of sequence
-    
-    func scanDot() -> Bool {
-        let index = getDotIndex()
-        if let event = dots.sayFirstMark(index, dots.isClockwise) {
-            table?.scrollSceneEvent(event) // only on phone, not watch
-            return true
-        }
-        return false
-    }
+
+
+    /**
+     Increment sceneFrame and reset to zero when reaching the end of sequence
+     */
     func scanning() {
 
         sceneFrame += dots.isClockwise ?  1 : -1
@@ -59,11 +54,7 @@ extension Anim {
         if lastFrame * sceneFrame < 0 {
             say.sayFuturePast(animNow.rawValue > 0)
         }
-            /*
-             approaching now, so going in opposite direction, where
-             past is scanning clockwise or
-             futr is scanning counterclockwise
-             */
+            ///  approaching now, so going in opposite direction, where past is scanning clockwise or futr is scanning counterclockwise
         else if abs(sceneFrame) <= spokeFan {
             if abs(sceneFrame) < 1 {
                 if animNow.rawValue > 0 {
@@ -85,14 +76,15 @@ extension Anim {
         }
             // finish animation
         else if abs(sceneFrame) >= Anidex.animEnd.rawValue {
-            execClosures()
+            //??? Closures.shared.execClosures()
             gotoStartupAnim()
         }
              // animNow over hour dots, so pause for any marks
         else if
             abs(sceneFrame) >= Anidex.spokeFan.rawValue,
             abs(sceneFrame) <= Anidex.eachHour.rawValue {
-            if scanDot() {
+            if let event = dots.sayFirstMark(getDotIndex()) {
+                table?.scrollSceneEvent(event) // only on phone, not watch
                 animNow = animNow.rawValue > 0 ? .futrMark : .pastMark
             }
         }
@@ -103,21 +95,18 @@ extension Anim {
      1) say next marked dot for that hour or
      2) resume scanning animation
      */
-
     func marking() {
-        
-        if !say.isSaying {
 
-            let index = getDotIndex()
-            if let event = dots.sayNextMark(index, dots.isClockwise) {
-                table?.scrollSceneEvent(event) // only on phone, not watch
-                animNow = animNow.rawValue > 0 ? .futrMark : .pastMark
-            }
-            else {
-                animNow = animNow.rawValue > 0 ? .futrScan : .pastScan
-            }
+        if say.isSaying {
+            Closures.shared.execClosures() // housekeeping during pause in animation
         }
-        execClosures() // housekeeping during pause in animation
+        else if let event = dots.sayNextMark(getDotIndex()) {
+            table?.scrollSceneEvent(event) // only on phone, not watch
+            animNow = animNow.rawValue > 0 ? .futrMark : .pastMark
+        }
+        else {
+            animNow = animNow.rawValue > 0 ? .futrScan : .pastScan
+        }
     }
     
     /**
@@ -130,7 +119,8 @@ extension Anim {
      */
     func wheelFade() {
 
-        if wheelTime==0 {
+        if wheelTime == 0 {
+
             wheelTime = timeNow
             //let prevSceneFrame = sceneFrame // for Log
             sceneFrame = Float(animNow.rawValue > 0 ?  spokeFan : -spokeFan)
@@ -162,7 +152,6 @@ extension Anim {
         if finishTime == 0 {
             finishTime = Date.timeIntervalSinceReferenceDate
             finishFrame = sceneFrame
-            recSpokeStart = true
             scene.uPal?.textureValue = scene.recPalTex
         }
 
@@ -186,11 +175,6 @@ extension Anim {
         else {
             if elapsedTime < 2.0 {
                 scene.uFade?.floatValue = 0.5
-            }
-            // closure starts the recording
-            if recSpokeStart {
-                recSpokeStart = false
-                execClosures() // housekeeping during pause in animation
             }
             var mod = 2.0
             let halfTime = (elapsedTime-recSpokeDur)/2
@@ -342,8 +326,8 @@ extension Anim {
 
             sceneFrame = elapseRatio * deltaSpoke + finishFrame
 
-            let deltaFade = recSpokeFade - 0.5
-            let fade = elapseRatio * deltaFade + 0.5
+            //let deltaFade = recSpokeFade - 0.5
+            //let fade = elapseRatio * deltaFade + 0.5
             //... scene.uFade?.floatValue = fade
             //Log("⚆. fade:\(fade)")
         }
@@ -361,6 +345,8 @@ extension Anim {
         startupTime = 0
         sceneFrame = Anidex.animEnd.rawValue
         animNow = .startup
+        scene.isPaused = false
+        scene.sprite.isPaused = false
     }
 
     func startupAnim() {   //Log(String(format:"⚆ %.1f",sceneFrame))
@@ -402,22 +388,29 @@ extension Anim {
                 let frame = spokeWheel - deltaSpoke * ratio
                 return frame
             }
-            switch timeElapsed {
-            case      0 ..< pause1:  sceneFrame = Anidex.animEnd.rawValue
-            case pause1 ..< fade:    sceneFrame = foldFrameOut()
-            case   fade ..< pause2:  sceneFrame = spokeWheel
-            case pause2 ..< fold:    sceneFrame = foldFrameIn()
-            case   fold ..< pause3: sceneFrame = Anidex.animEnd.rawValue
-            case pause3 ..< Float.infinity:
-
-                sceneFrame = spokeFan
-
-                if scanDot() { // pause on current hour
+            
+            func wheelClosures() -> Float {
+                Closures.shared.execClosures()
+                return spokeWheel
+            }
+            func pauseOnCurrentHour() -> Float {
+                if let event = dots.sayFirstMark(getDotIndex()) {
+                    table?.scrollSceneEvent(event) // pause on current hour
                     animNow = animNow.rawValue > 0 ? .futrMark : .pastMark
                 }
                 else { // continue to next hour
                     animNow = .futrScan
                 }
+                return spokeFan
+            }
+
+            switch timeElapsed {
+            case      0 ..< pause1:     sceneFrame = Anidex.animEnd.rawValue
+            case pause1 ..< fade:       sceneFrame = foldFrameOut()
+            case   fade ..< pause2:     sceneFrame = wheelClosures()
+            case pause2 ..< fold:       sceneFrame = foldFrameIn()
+            case   fold ..< pause3:     sceneFrame = Anidex.animEnd.rawValue
+            case pause3 ..< .infinity:  sceneFrame = pauseOnCurrentHour()
             default: break
             }
         }
@@ -426,12 +419,12 @@ extension Anim {
     /**
      SKScene callback for every frame, enum var animNow calls inner func
 
-     pausing()     // currently paused
-     scanning()    // advance sceneFrame, check if new dot has a marked event
-     marking()     // while pausing on marked event, check for another event
-     fanOut()      // fan out spokes animation
-     wheelFade()   // fade in wheel of spokes when dotNow approaches 0
-     spokeFade()   // fade to single spoke when dotNow leaves hour 0
+     pausing()      // currently paused
+     scanning()     // advance sceneFrame, check if new dot has a marked event
+     marking()      // while pausing on marked event, check for another event
+     fanOut()       // fan out spokes animation
+     wheelFade()    // fade in wheel of spokes when dotNow approaches 0
+     spokeFade()    // fade to single spoke when dotNow leaves hour 0
      recSpokeUpDn() // animate spoke up down while recording
      recFinishAnim() // resume with previous palette at hour 0
      */
@@ -448,7 +441,6 @@ extension Anim {
         case .futrSpoke,  .pastSpoke:   spokeFade()
         case .recSpoke:                 recSpokeUpDn()
         case .recFinish:                recFinishAnim()
-        case .shutdown:                 shutdownAnim()
         case .startup:                  startupAnim()
         }
         timePrev = timeNow

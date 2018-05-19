@@ -16,9 +16,9 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
 static let WillResignActive = Notification.Name("WillResignActive")
 
     func applicationDidFinishLaunching() { Log("⌚︎ \(#function)")
-        let _ = Timer.scheduledTimer(withTimeInterval: 5, repeats: false, block: {_ in
-            Complicated.shared.reloadTimelines()
-        })
+        Timer.delay(5) {
+            Complicated.shared.reloadTimelines() // does this get executed ever?
+        }
     }
 
     func applicationWillEnterForeground()  {  Log("⌚︎ \(#function)")

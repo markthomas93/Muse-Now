@@ -29,7 +29,7 @@ class TouchMove {
     var touchBegan: CallTouchMove!
     var touchMoved: CallTouchMove!
 
-    let swipeTime       = TimeInterval(0.33) // time window for swipe
+    let swipeTime       = TimeInterval(0.50) // time window for swipe
     let swipeDistance   = CGFloat(66)      // minimum distance for swipe
     var swipeLeftAction  : CallTouchMove!
     var swipeRightAction : CallTouchMove!
@@ -71,7 +71,7 @@ class TouchMove {
     func moved (_ pos: CGPoint, _ timestamp: TimeInterval) {
 
         if !isTouching {
-            touchBegan?(self)
+            began(pos, timestamp)
         }
         else {
             let deltaPos = CGPoint(x:touchBeganPos.x-pos.x, y: touchBeganPos.y-pos.y)
@@ -81,11 +81,11 @@ class TouchMove {
             let speed  = distance / CGFloat(deltaTime)
             if !isMoving {
 
-                //print("touches !moved pos:\(pos) distance:\(distance)")
+                print("touches !moved pos:\(pos) distance:\(distance)")
                 isMoving = (distance > touchMoveDist)
             }
 
-            // Log("👆\(#function) d:\(Int(distance)) s:\(Int(speed)) isMoving:\(isMoving))")
+             Log("👆\(#function) d:\(Int(distance)) s:\(Int(speed)) isMoving:\(isMoving))")
             if isMoving {
                 touchMovedTime = timestamp
                 touchMovedPos = pos
@@ -135,7 +135,9 @@ class TouchMove {
      and there is a corresponding swipe function,
      then do that function and return true.
      */
-    func finishSwipe(_ timeStamp: TimeInterval) -> Bool { Log("👆\(#function) swipeState:\(swipeState)")
+    func finishSwipe(_ timeStamp: TimeInterval) -> Bool {
+
+        Log("👆\(#function) swipeState:\(swipeState)")
 
         let finalSwipeState = swipeState
         swipeState = .begin
@@ -174,7 +176,9 @@ class TouchMove {
     }
 
     /// shared by touchesEnded and touchesCancelled
-    func ended (_ pos: CGPoint, _ timestamp: TimeInterval)  {
+    func ended (_ pos: CGPoint, _ timestamp: TimeInterval)  { Log("👆\(#function)")
+
+        testSwipe(pos)
 
         let wasMoving = isMoving
         isMoving = false
@@ -185,7 +189,7 @@ class TouchMove {
         if finishSwipe(timestamp) {
             stopTaps()
         }
-       else if wasMoving { Log("👆\(#function)")
+       else if wasMoving {
             touchMoved?(self)
         }
     }

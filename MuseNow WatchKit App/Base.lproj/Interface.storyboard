@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="13771" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="E5x-Cp-nxC">
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="14109" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="E5x-Cp-nxC">
     <device id="watch38" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="watchOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="13756"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="14031"/>
     </dependencies>
     <scenes>
         <!--MuseNow-->
@@ -16,38 +16,15 @@
                     <items>
                         <spriteKitScene width="136" height="136" alignment="center" preferredFramesPerSecond="60" scene="Dial" id="na6-Wm-W5t">
                             <gestureRecognizers>
-                                <panGestureRecognizer delaysTouchesEnded="NO" id="jcj-Ni-bpU" userLabel="PanDial">
+                                <panGestureRecognizer cancelsTouchesInView="NO" delaysTouchesEnded="NO" id="jcj-Ni-bpU" userLabel="PanDial">
                                     <connections>
                                         <action selector="panAction:" destination="E5x-Cp-nxC" id="zyk-qx-f70"/>
                                     </connections>
                                 </panGestureRecognizer>
-                                <tapGestureRecognizer cancelsTouchesInView="NO" delaysTouchesEnded="NO" id="cfh-K5-PW9" userLabel="Tap1">
-                                    <connections>
-                                        <action selector="tap1Action:" destination="E5x-Cp-nxC" id="PVm-8E-9fe"/>
-                                    </connections>
-                                </tapGestureRecognizer>
                             </gestureRecognizers>
                             <variation key="device=watch38mm" height="136" width="136"/>
                             <variation key="device=watch42mm" height="156" width="156"/>
                         </spriteKitScene>
-                        <group width="136" height="18" alignment="left" verticalAlignment="center" spacing="0.0" id="pGa-5x-AV1">
-                            <gestureRecognizers>
-                                <panGestureRecognizer enabled="NO" delaysTouchesEnded="NO" id="xJM-L1-dPs" userLabel="PanSlider">
-                                    <connections>
-                                        <action selector="sliderAction:" destination="E5x-Cp-nxC" id="heS-NH-73v"/>
-                                    </connections>
-                                </panGestureRecognizer>
-                            </gestureRecognizers>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="0.0"/>
-                            <variation key="default">
-                                <mask key="gestureRecognizers">
-                                    <exclude reference="xJM-L1-dPs"/>
-                                </mask>
-                            </variation>
-                            <variation key="device=watch38mm" height="15" width="136"/>
-                            <variation key="device=watch42mm" height="18" width="156"/>
-                        </group>
                     </items>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
@@ -188,11 +165,11 @@
                                 </tableRow>
                             </items>
                             <gestureRecognizers>
-                                <panGestureRecognizer cancelsTouchesInView="NO" delaysTouchesEnded="NO" id="e62-1t-BWs">
+                                <swipeGestureRecognizer id="y2s-If-6Fd">
                                     <connections>
-                                        <action selector="panAction:" destination="y3T-8C-hUW" id="DFf-s7-PJf"/>
+                                        <action selector="swipeRightAction:" destination="y3T-8C-hUW" id="Fzo-t8-QZg"/>
                                     </connections>
-                                </panGestureRecognizer>
+                                </swipeGestureRecognizer>
                             </gestureRecognizers>
                         </table>
                     </items>

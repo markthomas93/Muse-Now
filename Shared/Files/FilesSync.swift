@@ -10,31 +10,33 @@ import Foundation
 import MobileCoreServices
 
 class FilesSync {
+
     static var shared = FilesSync()
     var nameTimes = [String:TimeInterval]()
     var syncTimer = Timer()
     var syncDelay = TimeInterval(1) // on second delay
 
-
     /**
      Send request to remote to send file
      - via: Session+Message
      */
-
     func sendFile(_ name: String) {
 
-        let anim = Anim.shared
+        func addClosure(_ title_: String, _ closure_:@escaping CallVoid) {
+            Closures.shared.addClosure(title: title_, closure_)
+        }
         switch name { //TODO: fileMsg.parseMsg may be eliminated after test
-        case Memos.shared.fileName:    anim.addClosure(title:"getFile memos")      { Memos.shared.sendPostFile() }
-        case Marks.shared.fileName:    anim.addClosure(title:"getFile marks")      { Marks.shared.sendPostFile() }
-        case Cals.shared.fileName:     anim.addClosure(title:"getFile cals")       { Cals.shared.sendPostFile() }
-        case Settings.shared.fileName: anim.addClosure(title:"getFile settings")   { Settings.shared.sendPostFile() }
-        case Routine.shared.fileName:  anim.addClosure(title:"getFile routine")    { Routine.shared.sendPostFile() }
+        case Memos.shared.fileName:    addClosure("FileMsg.sendFile.memos")    { Memos.shared.sendPostFile() }
+        case Marks.shared.fileName:    addClosure("FileMsg.sendFile.marks")    { Marks.shared.sendPostFile() }
+        case Cals.shared.fileName:     addClosure("FileMsg.sendFile.cals")     { Cals.shared.sendPostFile() }
+        case Settings.shared.fileName: addClosure("FileMsg.sendFile.settings") { Settings.shared.sendPostFile() }
+        case Routine.shared.fileName:  addClosure("FileMsg.sendFile.routine")  { Routine.shared.sendPostFile() }
         default: break
         }
     }
 
-    /** Send request to remote to send file
+    /**
+     Send request to remote to send file
      - via: Session+Message
      */
     func getFile(_ name:String,_ time:TimeInterval) {
@@ -74,7 +76,9 @@ class FilesSync {
             scheduleSyncRequest()
         }
     }
-    /** wait for a second to send sync request, just in case there are more than one change */
+    /**
+     wait for a second to send sync request, just in case there are more than one change
+     */
     func scheduleSyncRequest() {
         syncTimer.invalidate()
         syncTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats:false, block: { _ in

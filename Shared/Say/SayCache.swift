@@ -5,15 +5,15 @@ import UIKit
  */
 class SayCache {
     
-    var sayPhrase : [SayPhrase : SayItem] = [:]
-    var sayQueue : [SayItem] = []
+    var sayPhrase : [SayPhrase : SayItem] = [:] // find item via its contant
+    var sayQueue : [SayItem] = []               // sequence of itmems to play
     
     /**
      Sequence phrases and title based an delay and decay.
      - decay < now: replace items of same phrase w new phrase
      - decay > now: Ok to repeat the same phrase
      */
-    func updateCache(_ newItem:SayItem) -> Bool {
+    func updateCache(_ newItem:SayItem) {
 
         /// first remove item of same phrase in que if differnt
         func removeItemsOfSameTypeFromQueue() -> Bool {
@@ -23,7 +23,7 @@ class SayCache {
                 else if newItem.spoken == item.spoken { return false }  // prev has same phrase so ignore
                 else {  sayQueue.removeObject(item) } // different phrase, remove old version in sequence list
             }
-            return true // still continue, even if no items of same phrase found
+            return true// still continue, even if no items of same phrase found
         }
 
         /// next add new item to queue, sometimes before slower feedback items
@@ -42,10 +42,6 @@ class SayCache {
         if removeItemsOfSameTypeFromQueue() {
             sayPhrase[newItem.phrase] = newItem
             addNewItemToQueue()
-            return true
-        }
-        else {
-            return false
         }
     }
 

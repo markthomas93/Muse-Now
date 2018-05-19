@@ -49,7 +49,7 @@ extension Anim {
         case .pastScan, .pastMark:                                  animNow = .pastPause
         case .futrScan, .futrMark:                                  animNow = .futrPause
 
-        case .startup, .shutdown:                                   startupTime  = 0
+        case .startup:                                              startupTime  = 0
         }
         actionTime  = Date().timeIntervalSince1970
         //Log(String(format: "⎚ userDotAction dot Prev,Now: %g,%g  %@ ➛ %@  tense:%@", prev,now,"\(animPrev)","\(animNow)","\(flipTense)"))
@@ -95,7 +95,7 @@ extension Anim {
         case .futrMark, .futrScan,
              .pastMark, .pastScan:      break
 
-        case .startup,.shutdown:        break
+        case .startup:                  break
 
         case .recSpoke: break //!! stop recording
         case .recFinish: break
@@ -168,10 +168,9 @@ extension Anim {
      }
 
 
-    func gotoRecordSpoke(on:Bool) { Log("⎚  gotoRecordSpoke(on:\(on))")
+    func gotoRecordSpoke(on:Bool, _ done: @escaping CallVoid) { Log("⎚  gotoRecordSpoke(on:\(on))")
 
         finishTimer.invalidate()
-        closures.removeAll()
 
         if on {
             dots.selectTime(Date().timeIntervalSince1970)
@@ -187,6 +186,7 @@ extension Anim {
             animNow = .recFinish
             userDotAction()
         }
+        done()
     }
 
     /**
@@ -203,7 +203,7 @@ extension Anim {
      scrolling will call many times with the same dot value,
      which can reset animation before it has a chance to start,
      resulting in a long pause until scrolling stops
-     so only reset animatinon for a new dot
+     so only reset animation for a new dot
      */
     func fanOutToDotNow(duration:TimeInterval) {
 

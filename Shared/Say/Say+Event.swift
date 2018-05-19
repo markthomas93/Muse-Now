@@ -36,8 +36,8 @@ extension Say {
      - Scene.touchDialPan  ➛  Dots+Action.updateViaPan
      - Scene+action.crownAction  ➛  Dots+Action.crownNextEventOrHour
      */
-    func sayDotEvent(_ event: MuEvent!, isTouching:Bool, via:String) {
-        Log("🗣 sayDotEvent(via:\(via)) .\(event.type)")
+    func sayDotEvent(_ event: MuEvent!, isTouching:Bool) {
+        Log("🗣  \(#function) \(event.type)")
         switch event.type {
 
         case .time:         sayCurrentTime(event, isTouching) // announce time

@@ -10,7 +10,6 @@ import Foundation
 
 extension Settings {
 
-
     func backupSettings() {
 
         if let data = try? JSONEncoder().encode(settings) {
@@ -19,7 +18,6 @@ extension Settings {
             let _ = saveData(data, backName)
         }
     }
-
 
     func restoreFromBackup(_ done: @escaping () -> Void) {
 
@@ -50,12 +48,15 @@ extension Settings {
     func prepareDemoSettings() {
         #if os(iOS)
             Log ("⧉ Settings::\(#function)")
+
             backupSettings()
+
             // new demo Settings
             Show.shared.showSet = [.calendar,.reminder,.memo,.routine,.routList,.routDemo]
             Say.shared.saySet = []
             Actions.shared.dialColor(1.0, isSender: false)
             settingsFromMemory()
+
             TreeNodes.shared.root?.refreshNodeCells()
             PagesVC.shared.menuVC?.tableView.reloadData()
             Actions.shared.doAction(.refresh)

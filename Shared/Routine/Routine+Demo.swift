@@ -1,10 +1,8 @@
-//
 //  Routine+Demo.swift
 //  MuseNow
 //
 //  Created by warren on 3/18/18.
 //  Copyright © 2018 Muse. All rights reserved.
-//
 
 import Foundation
 

@@ -89,7 +89,7 @@ extension Node {
      - +: 1 ..< Edge.repMax, stop when false
      - {repMin ..< repMax}
      */
-    func forRepeat(_ parObj:ParObj, _ level: Int, _ fn:ParObjNodeAny) -> NodeAny! {
+    func forRepeat(_ parObj:ParObj, _ level: Int, _ fn:ParObjNodeAny) -> NodeAny? {
 
         var count = 0
         let nodeAnys = NodeAnys()

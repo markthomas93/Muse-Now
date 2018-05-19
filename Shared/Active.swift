@@ -34,31 +34,24 @@ class Active {
 
         isOn = true
 
-        func beginActive() {
+        func startContinue() {
+
             minuteTimerTick()
-            anim.addClosure(title: "send sync", {
+            anim.gotoStartupAnim()
+            Closures.shared.addClosure(title: "Active.sendSync") {
                 FilesSync.shared.sendSyncRequest() // perhaps get
-            })
+                Transcribe.shared.processPendingEvents()
+            }
         }
 
-        Record.shared.maybeRestartRecording()
-        Motion.shared.startMotion()
+        // begin ------------------
 
-        // sometimes, immediately after deactivate, a spurious willActivate is called, so ignore
-        let thisTime =  Date().timeIntervalSince1970
-        let deltaTime = thisTime - stopTime
-
-        if deltaTime < 120 {
-            // delay restart to handle menuOptions
-            restartTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: {_ in
-                beginActive()
-            })
+        Record.shared.maybeRestartRecording() { isRecording in
+            Motion.shared.startMotion()
+            if !isRecording {
+                startContinue()
+            }
         }
-        else {
-            beginActive()
-        }
-        anim.gotoStartupAnim()
-        Transcribe.shared.processPendingEvents()
     }
     
     /**
@@ -74,7 +67,7 @@ class Active {
         restartTimer.invalidate()
         minuteTimer.invalidate()
         stopTime = Date().timeIntervalSince1970
-        Say.shared.cancelSpeech() ; Log("🗣 \(#function)")
+        Say.shared.cancelSpeech()
 
         Record.shared.maybeStopRecording()
         anim.shutdownAnimation()
@@ -132,7 +125,8 @@ class Active {
             }
             if lastHour != thisHour {  // Log("⟳ \(#function) lastHour:\(lastHour) thisHour:\(thisHour)")
                 lastHour = thisHour
-                actions.doRefresh(/*isSender*/false) // will set isPaused = true, after update
+                actions.refreshEvents(/*isSender*/false)
+                // actions.doRefresh(/*isSender*/false) -- does not work for first time startup
             }
             scheduleMinuteTimer()
             isChecking = false

@@ -3,14 +3,13 @@ import UIKit
 class Dots {
     
     static let shared = Dots()
-    let say     = Say.shared
     let dayHour = DayHour.shared
     
     let maxDots = Int(24*7) // 168
     var future  : [Dot] = []
     var past    : [Dot] = []
     var dotNow  = Float(0) // (-168...168)
-    var dotPrev = Float(0) // previous dotNow; compare  Int(dotNow) != Int(dotPrev)
+    var dotPrev = Float(0) // previous dotNow; compare Int(dotNow)!=Int(dotPrev)
     var dotNext = Float(0) // animate to next dot, result of crown movement
     var isClockwise = true // direction of updating dotNow
 
@@ -40,9 +39,8 @@ class Dots {
         past    = [Dot] (count: 24*7, instancesOf:Dot())
         
         for i in 1-maxDots ..< maxDots {
-        
-            let timeHour = MuDate.relativeHour(i).timeIntervalSince1970
-            getDot(i).setDotIndex(i, timeHour)
+            
+            getDot(i).timeHour = MuDate.relativeHour(i).timeIntervalSince1970
         }
         // TODO: discard redundant past[0]
         /// past[0] = future[0]
@@ -104,7 +102,9 @@ class Dots {
         }
         return (nil,0)
     }
-    // choose the best color for dot for all hours of the past and future week
+    /**
+    choose the best color for dot for all hours of the past and future week
+ */
     func makeSelectFade() {
     
         for i in 0 ..< future.count { future[i].makeRgb() }
@@ -145,7 +145,7 @@ class Dots {
         return (bgnIndex,endIndex,elapseMin)
     }
 
-    /// scene.updateSceneFinish()
+    /// - via: scene.updateSceneFinish()
     func updateDotEvents(_ events: [MuEvent] ) {  //Log("⚇ \(#function)")
         
         initPastFuture()

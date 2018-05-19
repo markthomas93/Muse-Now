@@ -3,7 +3,9 @@
  import Foundation
  
  /// type of phrase, will interrupt similar phrases
+
  enum SayPhrase: Int { case
+    
     phraseBlank = 0,
     phraseDirection,  // direction facing: future or past
     phraseDayOfWeek,  // day of week, while navigating dial
@@ -20,8 +22,6 @@
     static let memo    = SaySet(rawValue: 1 << 0)
     static let event   = SaySet(rawValue: 1 << 1)
     static let time    = SaySet(rawValue: 1 << 2)
-    static let size    = 3
-    
  }
 
  class Say : NSObject, AVSpeechSynthesizerDelegate {
@@ -102,14 +102,16 @@
     }
 
     func clearAll() {  Log("🗣 \(#function)")
-        cancelSpeech() // clears timers
+        clearTimers()
+        clearTransientPhrases()
+        isSaying = false
         Audio.shared.finishPlaybackSession()
         sayCache.clearAll()
         sayItem = nil
     }
 
 
-    func clearSayItem() {
+    func clearSayItem() { Log("🗣 \(#function)")
 
         clearTimers()
         if sayItem.phrase == .phraseMemo {
@@ -152,15 +154,14 @@
 
     func clearTimers() {
 
-        sayTimer?.invalidate() ; sayTimer = nil
-        txtTimer?.invalidate() ; txtTimer = nil
+        sayTimer?.invalidate()
+        txtTimer?.invalidate()
     }
 
-    func cancelSpeech() {
-
+     func cancelSpeech() {  Log("🗣 \(#function)")
         clearTimers()
         clearTransientPhrases()
-        isSaying = false ; Log("🗣 \(#function) isSaying:\(self.isSaying) 🚦")
+        isSaying = false
     }
     
     
@@ -179,19 +180,19 @@
             if phrase == .phraseBlank   { clearTransientPhrases() }
             else if clear.count > 0     { clearPhrases(clear) }
             sayCache.updateCache(SayItem(event, phrase, delay, decay, spoken, title))
-            updateSpeech(via:#function)
+            updateSpeech(via:"newItem")
         }
 
         // begin ------------------------------------------------
 
-        Log("🗣 updateDialog(via:\(via)) \"\((event?.title ?? "").trunc(length:20))\" .\(phrase)")
+        Log("🗣 updateDialog via:\(via) \"\((event?.title ?? "").trunc(length:20))\" .\(phrase)")
 
         switch phrase {
         case .phraseBlank:      newItem(0.00,  0.05, [.phraseBlank], immediate: true)
         case .phraseMemo:       newItem(0.00,  0.50, [.phraseBlank])
-        case .phraseDayOfWeek:  newItem(0.01,  Infi, [])
+        case .phraseDayOfWeek:  newItem(0.01,  Infi, [.phraseDirection])
         case .phraseTimeNow:    newItem(0.00,  Infi, [.phraseDotTime, .phraseEventTime, .phraseDirection])
-        case .phraseEventTime:  newItem(0.02,  4.00, [.phraseDotTime, .phraseTimeNow])
+        case .phraseEventTime:  newItem(0.02,  4.00, [.phraseDotTime])
         case .phraseEventTitle: newItem(0.01,  2.00, [.phraseEventTime])
         case .phraseDotTime:    newItem(2.00,  4.00, [.phraseTimeNow, .phraseEventTime])
         case .phraseDirection:  newItem(0.05,  Infi, [])
@@ -200,13 +201,14 @@
     }
 
     func updateSpeech(via:String) {
-        Log("🗣 updateSpeech(via:\(via))")
+
+        func log(_ symbol:String) { Log("🗣 updateSpeech(\(via)) \(sayItem?.shortTitle() ?? "")" + symbol) }
+
         // text, speed, and memos will clear sayItem when done
-        if sayItem == nil {
-            if      let item = sayCache.popNext() { return execItem(item) }
-            else if let item = sayCache.getNext() { return waitItem(item) }
-            else { isSaying = false ; Log("🗣 updateSpeech(via:\(via) isSaying:\(isSaying)  🚦") }
-        }
+        if sayItem != nil                     { log("continue") }
+        else if let item = sayCache.popNext() { execItem(item) }
+        else if let item = sayCache.getNext() { waitItem(item) }
+        else                                  { log("finished") ; isSaying = false  }
     }
 
     /**
@@ -221,91 +223,101 @@
         else if deltaTime < 1.0 {
             isSaying = true
         }
-        Log("🗣 \(#function) wait:\(deltaTime) \(item.shortTitle()) .\(item.phrase) \(isSaying ? "🚦" : "")")
+        Log("🗣 \(#function) wait:\(deltaTime) \(item.shortTitle()) .\(item.phrase) isSaying:\(isSaying)")
 
         // item.log("say timer > \(String(format:"%.2f",deltaTime)) ")
         sayTimer = Timer.scheduledTimer(withTimeInterval: deltaTime, repeats: false, block: {_ in
             Log("🗣 \(#function) fired! \(item.shortTitle()) .\(item.phrase)")
             self.clearTimers()
-            self.updateSpeech(via:#function)
+            self.updateSpeech(via:"waitItem sayTimer")
         })
     }
 
 
-    func execItem(_ item: SayItem) {
+    func execItem(_ item: SayItem) {  Log("🗣 \(#function)  \(item.shortTitle()) .\(item.phrase))")
 
-        isSaying = true ; Log("🗣 \(#function)  \(item.shortTitle()) .\(item.phrase) isSaying:\(self.isSaying) 🛑")
+        isSaying = true
 
         clearTimers()
         actions.doSetTitle(item.title)
         sayItem = item
 
-        func txtLocal() {
-            txtTimer?.invalidate()
-            txtTimer = nil
-            Log("🗣 \(#function) before  \(itemDuration) ⏱ anim:\(Anim.shared.animNow)" )
-            txtTimer = Timer.scheduledTimer(withTimeInterval: itemDuration, repeats: false, block: {_ in
-                Log("🗣 \(#function) timeout  \(item.shortTitle()) .\(item.phrase)  ⏱ anim:\(Anim.shared.animNow)")
-                self.clearTimers()
-                self.sayItem = nil
-                self.actions.doSetTitle("")
-                self.updateSpeech(via:#function)
-            })
+        func playMemo() -> Bool {
+
+            if sayItem.phrase != .phraseMemo { return false }
+
+            Transcribe.shared.appleTranscribeEvent(sayItem.event) {} // transcribe item if no already
+
+            if Say.shared.saySet.contains(.memo) && Hear.shared.canPlay() { Log("🗣 \(#function) \(sayItem.title)")
+                //?? self.synth.stopSpeaking(at: .immediate) //?? remove?
+                let url = FileManager.documentUrlFile(sayItem.spoken)
+                Audio.shared.playUrl(url: url) { finished in
+                    playMemoDone()
+                }
+            }
+            return true
         }
 
-        func playSay(_ item: SayItem) -> Bool {
+        func playMemoDone() {
+            if sayItem.phrase == .phraseMemo {
+                sayItem = nil
+            }
+            self.updateSpeech(via:"playMemo")
+        }
+        func playSay() -> Bool {
 
-            if item.spoken != "" && Hear.shared.canPlay() {
-                Log("🗣 \(#function) sayItem:\(item.title)" )
+            if saySet.intersection([.event,.time]).isEmpty { return false }
+
+            if sayItem.spoken != "" && Hear.shared.canPlay() { Log("🗣 \(#function) \(sayItem.title)")
+
                 self.clearTimers()
-                synth.speak(UtterItem(item, sayVolume))
+                synth.speak(UtterItem(sayItem, sayVolume))
                 return true
             }
             return false
         }
+        func playText() { Log("🗣 \(#function) \(sayItem.title)")
 
-        func playMemo(_ item: SayItem) {
-
-            Transcribe.shared.appleTranscribeEvent(item.event) {} // transcribe item if no already
-
-            if Say.shared.saySet.contains(.memo) && Hear.shared.canPlay() {
-                self.synth.stopSpeaking(at: .immediate) //?? remove?
-                let url = FileManager.documentUrlFile(item.spoken)
-                Audio.shared.playUrl(url: url) { finished in
-                    self.sayItem = nil
-                    self.updateSpeech(via: #function)
-                }
-            }
+            txtTimer?.invalidate()
+            txtTimer = Timer.scheduledTimer(withTimeInterval: itemDuration, repeats: false, block: {_ in
+                self.clearTimers()
+                self.sayItem = nil
+                self.actions.doSetTitle("")
+                self.updateSpeech(via:"execItem txtTimer")
+            })
         }
 
         // begin ----------------------------
 
-        if item.phrase == .phraseMemo { playMemo(item) }
-        else if saySet.rawValue > 1 && playSay(item) {}
-        else { txtLocal() }
+        if      playMemo() {}
+        else if playSay() {}
+        else { playText() }
     }
 
     // AVSpeechSynthesizerDelegate ---------------------------------
     
-    // When finished, clear title, and setup next in line
-    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) { Log("🗣 speechSynthesizer didFinish ")
-
-        //let utter = utterance as! UtterItem ; utter.item?.log( "<<< finish")
+    /**
+    When finished speaking, clear title, and setup next in line
+     */
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
+        Log("🗣 speechSynthesizer <<< didFinish >>>") // (utterance as! UtterItem)?.log( "<<< finish")
 
         actions.doSetTitle("")
         clearTimers()
-        sayItem = nil
-        updateSpeech(via:#function)
+        if sayItem?.phrase != .phraseMemo { sayItem = nil }
+        updateSpeech(via:"<<< didFinish >>>")
     }
     
-    // When finished, clear title, and setup next in line
-    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) { Log("🗣 speechSynthesizer <<< cancel >>>")
-        
-        // let utter = utterance as! UtterItem ; utter.item?.log( "<<< cancel")
+    /**
+     After cancelled speaking, clear title, and setup next in line
+     */
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) {
+        Log("🗣 speechSynthesizer <<< cancel >>>")// utterance as! UtterItem)?.log( "<<< cancel")
+
         actions.doSetTitle("")
         clearTimers()
-        sayItem = nil
-        updateSpeech(via:#function)
+        if sayItem?.phrase != .phraseMemo { sayItem = nil }
+        updateSpeech(via:"<<< cancel >>>")
     }
     
  }

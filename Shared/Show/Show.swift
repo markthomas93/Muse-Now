@@ -13,7 +13,6 @@ struct ShowSet: OptionSet {
     static let routine  = ShowSet(rawValue: 1 << 3) //  8 -- routine on dial
     static let routList = ShowSet(rawValue: 1 << 4) //  16 -- routine on list
     static let routDemo = ShowSet(rawValue: 1 << 5) //  32 -- routine demo version
-    static let size = 5
 }
 
 class Show {

@@ -18,9 +18,17 @@ class Settings: FileSync, Codable {
             let _ = saveData(data)
         }
     }
-
-    func unarchiveSettings(_ done: @escaping () -> Void) { Log ("⧉ Settings::unarchiveSettings")
-
+    
+    
+    func unarchiveNewSettings(_ done: @escaping CallVoid) {Log ("⧉ \(#function)")
+        if memoryTime != getFileTime() {
+            unarchiveSettings {
+                done()
+            }
+        }
+    }
+    func unarchiveSettings(_ done: @escaping CallVoid) { Log ("⧉ \(#function)")
+        
         unarchiveData() { data in
 
             if  let data = data,

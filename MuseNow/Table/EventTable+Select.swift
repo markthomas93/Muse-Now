@@ -56,7 +56,7 @@ extension EventTableVC {
                     Say.shared.sayCurrentTime(event,/* isTouching */ true)
                 }
                 else {
-                    Say.shared.sayDotEvent(event, isTouching: true, via:#function)
+                    Say.shared.sayDotEvent(event, isTouching: true)
                 }
             })
         }

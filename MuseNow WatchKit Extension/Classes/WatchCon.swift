@@ -14,7 +14,6 @@ class WatchCon: WKInterfaceController {
 
     var scene: Scene!
     var touchDial: TouchDial!
-    var touchSlider: TouchMove!
     var tourSet: TourSet = [.main]
     
     var size = CGSize(width:0, height:0)
@@ -25,13 +24,14 @@ class WatchCon: WKInterfaceController {
         //Muse.shared.testScript()
         WKExtension.shared().isFrontmostTimeoutExtended = true
         initScene()
+
         crown.updateCrown()
         let nextMinute = MuDate.relativeMinute(1)
         WKExtension.shared().scheduleBackgroundRefresh(withPreferredDate: nextMinute, userInfo:nil, scheduledCompletion: {_ in})
     }
     
-    override func willActivate() { //Log("⟳ \(#function)")
-        
+    override func willActivate() { Log("⟳ \(#function)")
+        skInterface.presentScene(scene)
         active.startActive()
         crown.crown.focus()
     }
@@ -44,7 +44,7 @@ class WatchCon: WKInterfaceController {
 
         if scene == nil {
 
-            let w = self.contentFrame.size.width * 2
+           let w = roundf(Float(self.contentFrame.size.width  / 4)) * 8
 
             size = CGSize(width:CGFloat(w), height:CGFloat(w))
 
@@ -53,28 +53,24 @@ class WatchCon: WKInterfaceController {
             Log("⟳ \(#function) id:\(scene.id)")
             skInterface.preferredFramesPerSecond = 60
             skInterface.setAlpha(0) // kludge to overcome white flash on apple watch
-            skInterface.presentScene(scene)
 
-            //??? scene.isPaused = true
             WatchCon.shared = self
             actions.scene = scene
             active.scene = scene
             anim.scene = scene
 
             touchDial = TouchDial(size, nil)
-
-            touchDial.swipeRightAction = { _ in Log("👆 touchSwipeRight")
+            touchDial.swipeLeftAction = { _ in Log("👆 touchSwipeLeft")
                 self.pushMenu()
             }
-            touchDial.swipeLeftAction = { _ in Log("👆 touchSwipeLeft")
+            touchDial.swipeRightAction = { _ in Log("👆 touchSwipeRight")
             }
-
-            touchSlider = TouchMove(size)
         }
         Session.shared.startSession()
     }
 
     func pushMenu() {
+
         tourSet = [.menu]
         anim.gotoStartupAnim()
         active.startMenuTime()

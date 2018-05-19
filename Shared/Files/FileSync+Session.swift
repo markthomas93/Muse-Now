@@ -42,13 +42,12 @@ extension FileSync {
     func receiveFile(_ data:Data, _ updateTime: TimeInterval) {
         func dispatch() {
             if saveData(data, fileName, updateTime) {
-                Anim.shared.addClosure(title:"doRefresh(false)") {
-                    Actions.shared.doRefresh(false)
-                }
+                Actions.shared.doRefresh(false)
             }
         }
-        // begin -------------
-        DispatchQueue.global(qos: .userInitiated).async { dispatch() }
+        Closures.shared.addClosure(title:"FileMsg.receiveFile(\(fileName))") {
+            DispatchQueue.global(qos: .userInitiated).async { dispatch() }
+        }
     }
 
     /**

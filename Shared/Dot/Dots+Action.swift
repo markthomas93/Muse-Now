@@ -2,20 +2,21 @@ import UIKit
 
 extension Dots {
     
-   
-    /// User twiddling face of screen dial, fast or slow
-    /// - via:: Scene.touchDialPan
 
+    /**
+     User twiddling face of screen dial, fast or slow
+     - via: Scene.touchDialPan
+     */
     func updateViaPan(_ degree: Double) {
         
         dayHour.nextHour(Int(degree / 15.0))
-        let index = dayHour.getIndex()
+        let panIndex = dayHour.getIndex()
         dotPrev = dotNow
-        dotNow = Float(index)
+        dotNow = Float(panIndex)
     }
     /**
      User twiddling face of screen dial, slowly
-     - via:: Scene.touchDialPan
+     - via: Scene.touchDialPan
      */
     func updateFeedback(_ event: MuEvent!, _ isClockwise_:Bool,_ isFuture:Bool,_ isSlow: Bool,_ isNewDay: Bool,_ flipFuture: Bool) {
 
@@ -26,7 +27,7 @@ extension Dots {
         let dot = getDot(doti)
 
         // slow twiddle may annouce individual events
-       if isSlow {
+        if isSlow {
             // has event that stated that hour
             if dot.elapse0 < 60 {
 
@@ -34,20 +35,20 @@ extension Dots {
 
                     Haptic.play(.click)
                     // wait for 1/4 second linger on that hour
-                    feedbackTimer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats:false, block: { _ in 
-                        self.say.sayDotEvent(event, isTouching: true, via:#function)
-                        })
+                    feedbackTimer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats:false, block: { _ in
+                        Say.shared.sayDotEvent(event, isTouching: true)
+                    })
                     return
                 }
             }
         }
         if isNewDay {
             let txt  = dayHour.getDowSpeak()
-            say.updateDialog(event, .phraseDayOfWeek, spoken:txt, title:txt, via:#function)
+            Say.shared.updateDialog(event, .phraseDayOfWeek, spoken:txt, title:txt, via:#function)
         }
         else if flipFuture {
-            say.sayFuturePast(isFuture)
-           
+            Say.shared.sayFuturePast(isFuture)
+
         }
     }
     

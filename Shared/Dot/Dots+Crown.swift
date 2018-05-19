@@ -6,7 +6,6 @@ import Foundation
 
 extension Dots {
 
-
     /**
      Get next dotNow base on delta's direction.
 
@@ -18,8 +17,8 @@ extension Dots {
      - +/- 0.0 shows fanOut for future/past week
      - +0.5 shows future events for current hour
      - -0.5 shows past events for current hour
-
      */
+
     private func getNextDot(_ delta:Float) -> Bool {
 
         switch dotNow {
@@ -70,6 +69,7 @@ extension Dots {
         Haptic.play(.click)
         isClockwise = delta > 0
 
+
         func logCrown(_ optional:String = "" ) {
             Log("⊛ crownNextEvent(\(delta),\(inFuture ? "futr" : "past")) dot Prev ➛ Now: \(dotPrev) ➛ \(dotNow) \(optional)")
         }
@@ -95,21 +95,22 @@ extension Dots {
                     if dotNow == 0 { dotNow = inFuture ? 0.5 : -0.5 }
                     Anim.shared.fanOutToDotNow(duration:0.25)
                 }
-                Say.shared.sayDotEvent(event, isTouching: true, via:#function)
+                Say.shared.sayDotEvent(event, isTouching: true)
                 Actions.shared.sendAction(.gotoEvent, event, event.bgnTime)
             }
             return logCrown(event.title)
         }
 
         // Begin ---------------------
+
         dotPrev = dotNow
 
-        if dotEvent?.type == .time {
-            if inFuture != isClockwise {
-                Anim.shared.userDotAction(/*flipTense*/true, dur:0.5)
-                Say.shared.sayCurrentTime(dotEvent,/* isTouching */ true)
-                return logCrown("time")
-            }
+        if dotEvent?.type == .time,
+            inFuture != isClockwise {
+
+            Anim.shared.userDotAction(/*flipTense*/true, dur:0.5)
+            Say.shared.sayCurrentTime(self.dotEvent,/* isTouching */ true)
+            return logCrown("time")
         }
 
         // get next event for this hour
@@ -120,14 +121,19 @@ extension Dots {
         else {
             while getNextDot(delta) {
                 if let event =  getDot(Int(dotNow)).getFirstEventForThisHour(isClockwise, dotPrev) {
-
                     return foundEvent(event)
                 }
             }
-            if dotNow == 0 {
-                return logCrown("done")
-            }
         }
+
+        if  dotNow == 0,
+            dotPrev != 0 {
+
+            dotNow = inFuture ? 167 : -167
+            let duration = 0.5*TimeInterval(167 - abs(dotPrev))/167
+            Anim.shared.fanOutToDotNow(duration:duration)
+        }
+        return logCrown("done")
     }
 
 }

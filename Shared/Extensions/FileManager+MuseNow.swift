@@ -18,9 +18,9 @@ import Foundation
         }
         if timeOut > 0 {
             let delay = 0.25
-            let _ = Timer.scheduledTimer(withTimeInterval:delay, repeats: false, block: {_ in
+            Timer.delay(delay) {
                 self.waitFile(recName, timeOut: timeOut - delay, completion)
-            })
+            }
         }
         else {
             completion (false)

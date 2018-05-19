@@ -8,12 +8,6 @@ class Dot {
     var rgb     = rgbDefault    // selectFade
     var elapse0 = TimeInterval(Double.greatestFiniteMagnitude)   // starting elapse time for events[0]
     var timeHour = TimeInterval(0)
-    var dotIndex = 0 // index in (-168...168)
-    
-    func setDotIndex(_ dotIndex_: Int, _ timeHour_: TimeInterval) {
-        dotIndex = dotIndex_
-        timeHour = timeHour_
-    }
     
     /**
      get event closest to top of hour, with pref to events starting this hour
@@ -72,10 +66,8 @@ class Dot {
     }
     @discardableResult
     func gotoEvent(_ findEvent:MuEvent) -> Bool {
-        dotIndex = -1
         if events.count > 0 {
             for event in events {
-                dotIndex += 1
                 if event.eventId == findEvent.eventId {
                     return true
                 }
@@ -119,100 +111,13 @@ class Dot {
             rgb = Dot.rgbDefault
         }
     }
-    func hasMark() -> Bool {
-        for event in events {
-            if event.mark && startsThisHour(event) {
-                return true
-            }
-        }
-        return false
-    }
 
-    func getFirstMark(_ isClockwise: Bool) -> MuEvent! {
-        
-        if events.count > 0 {
-            // at current hour, search for a special time event and start from there
-            if dotIndex == 0 {
-                for i in 0 ..< events.count {
-                    if events[i].type == .time {
-                        eventi = i
-                        // print("· \(dotIndex) getFirstMark eventi:\(eventi) timeEvent")
-                        return events[i]
-                    }
-                }
-            }
-            if isClockwise {
-                for i in 0 ..< events.count {
-                    if getMark(i) {
-                        eventi = i
-                        // print("· \(dotIndex) getFirstMark eventi:\(eventi)")
-                        return events[i]
-                    }
-                }
-            }
-            else /* counter-clockwise */ {
-                eventi = events.count - 1
-                for i in (0 ..< events.count).reversed() {
-                    if getMark(i) {
-                        eventi = i
-                        // print("· \(dotIndex) getFirstMark eventi:\(eventi)")
-                        return events[i]
-                    }
-                }
-            }
-        }
-        return nil
-    }
-    
-    func getMark(_ i: Int) -> Bool {
-        let event = events[i]
-        if event.mark && startsThisHour(event) {
-            eventi = i
-            return true
-        }
-        return false
-    }
-    // get next mark that starts on this hour
-    func getNextMark(_ isClockwise: Bool) -> MuEvent! {
-
-        if events.count > 0 {
-            if isClockwise {
-                if eventi < events.count-1 {
-                    for i in eventi+1 ..< events.count {
-                        if getMark(i) {
-                            eventi = i
-                            // print("· \(dotIndex) getNextMark eventi:\(eventi)")
-                            return events[i]
-                        }
-                    }
-                }
-            }
-            else /* counter-clockwise */ {
-                if eventi > 0 {
-                    for i in (0 ... eventi-1).reversed() {
-                        if getMark(i) {
-                            eventi = i
-                            /// print("· \(dotIndex) getNextMark eventi:\(eventi)")
-                            return events[i]
-                        }
-                    }
-                }
-            }
-        }
-        return nil
-    }
     // crown events
 
     func startsThisHour(_ event: MuEvent) -> Bool {
         let eventElapse = (event.bgnTime - timeHour) / 60
         return eventElapse >= 0 && eventElapse < 60
     }
-    
-    func printResult(_ fn: String, _ i0:Int,_ i1:Int,_ title:String) {
-        //let str = String(format: "· %-16@ eventi: %i  ➛  %i  %@", fn,i0,i1,title)
-        //print(String(format:"%-50@",str), terminator:" ")
-    }
-
 
     /// get first event that starts on this hour, does not need mark
     func getFirstEventForThisHour(_ isClockwise: Bool, _ dotPrev: Float) -> MuEvent! {

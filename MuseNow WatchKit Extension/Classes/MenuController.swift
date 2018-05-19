@@ -14,7 +14,6 @@ class MenuController: WKInterfaceController {
     @IBOutlet var interfaceTable: WKInterfaceTable!
     
     var parent: TreeNode!
-    var touchMove: TouchMove!
     var shouldPop = false
 
     deinit {
@@ -25,9 +24,9 @@ class MenuController: WKInterfaceController {
 
         super.awake(withContext: context)
 
-        
         parent = context as! TreeNode
-        
+        setTitle(parent.title)
+
         let children = parent.children
         var rowTypes = [String]()
 
@@ -53,13 +52,8 @@ class MenuController: WKInterfaceController {
             cell.setTreeNode(node)
         }
 
-        let w = self.contentFrame.size.width * 2
-        let size = CGSize(width:CGFloat(w), height:CGFloat(w))
-        touchMove = TouchMove(size)
-        touchMove.swipeLeftAction = {_ in
-            self.pop()
-        }
         NotificationCenter.default.addObserver(self, selector: #selector(appWillResignActive), name: ExtensionDelegate.WillResignActive, object: nil)
+
     }
 
     @objc func appWillResignActive() { Log("▤ \(#function) \(parent.title)")
@@ -84,22 +78,7 @@ class MenuController: WKInterfaceController {
         }
     }
 
-    @IBAction func panAction(_ sender: Any) {
-
-        if let pan = sender as? WKPanGestureRecognizer {
-
-            let pos1 = pan.locationInObject()
-            let pos2 = CGPoint(x:pos1.x*2, y:pos1.y*2 )
-
-            let timestamp = Date().timeIntervalSince1970
-            switch pan.state {
-            case .began:     touchMove.began(pos2, timestamp)
-            case .changed:   touchMove.moved(pos2, timestamp)
-            case .ended:     touchMove.ended(pos2, timestamp)
-            case .cancelled: touchMove.ended(pos2, timestamp)
-            default: break
-            }
-        }
+    @IBAction func swipeRightAction(_ sender: Any) {
+        self.pop()
     }
-
 }

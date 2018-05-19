@@ -12,7 +12,7 @@
     var audioPlayer: AVAudioPlayer!
     var audioSession = AVAudioSession.sharedInstance()
     var sayVolume = Float(0.5)
-    var finished: ((Bool)->())? = nil
+    var finished: CallBool? 
 
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         audioPlayer.stop()
@@ -46,7 +46,7 @@
     }
 
 
-    func playUrl(url:URL,_ completion: @escaping (Bool) -> Void) {
+    func playUrl(url:URL,_ completion: @escaping CallBool) {
 
         startPlaybackSession()
 

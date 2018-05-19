@@ -1,6 +1,7 @@
 import UIKit
 import WatchKit
 import EventKit
+import SpriteKit
 
 
 public enum DoAction : Int { case
@@ -101,15 +102,16 @@ class Actions {
      - via: Cals.parseMsg
      - via: FileMsg.parseMsg
      */
-    func doRefresh(_ isSender:Bool) {
+    func refreshEvents(_ isSender:Bool) {
 
-        func refreshEvents() {
+        Settings.shared.unarchiveSettings {
 
             MuEvents.shared.updateEvents() {
 
                 self.scene?.updateSceneFinish()
+
                 Dots.shared.updateTime(event: MuEvents.shared.timeEvent)
-                
+
                 if let table = self.tableDelegate {
 
                     table.updateTable(MuEvents.shared.events)
@@ -119,7 +121,7 @@ class Actions {
                     }
                 }
                 #if os(watchOS)
-                    Crown.shared.updateCrown()
+                Crown.shared.updateCrown()
                 #endif
                 if isSender {
                     Session.shared.sendMsg(["class"   : "Actions",
@@ -127,17 +129,20 @@ class Actions {
                 }
             }
         }
+    }
 
-        // begin ---------------------------
-        scene?.pauseScene()
-        Settings.shared.unarchiveSettings {
-            refreshEvents()
+    func doRefresh(_ isSender:Bool) {
+
+        Closures.shared.closures.removeAll()
+        Closures.shared.addClosure(title: "Actions.reset") {
+            Say.shared.cancelSpeech()
+            self.refreshEvents(isSender)
         }
     }
-   
+
     func doUpdateEvent(_ event:MuEvent, isSender: Bool) {
         
-        scene.pauseScene()
+        Say.shared.cancelSpeech()
         if !MuEvents.shared.updateEvent(event) {
              MuEvents.shared.addEvent(event)
         }
@@ -269,7 +274,7 @@ class Actions {
 
         case .gotoRecordOn:
 
-            Anim.shared.gotoRecordSpoke(on:true)
+            Anim.shared.gotoRecordSpoke(on:true) {}
 
              // animate dial to show whole week
         case .gotoFuture:

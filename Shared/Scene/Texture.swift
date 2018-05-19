@@ -6,7 +6,6 @@ import WatchKit
 
 class Texture {
 
-
     static var nowHubIndex = 0
 
     /**

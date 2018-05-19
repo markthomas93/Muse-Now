@@ -26,7 +26,7 @@ class Scene: SKScene  {
     let muEvents = MuEvents.shared
     let session  = Session.shared
     let audioPlayer = AVAudioPlayer()
-    
+
     let say      = Say.shared
     let anim     = Anim.shared
     let dots     = Dots.shared
@@ -73,21 +73,13 @@ class Scene: SKScene  {
         center = CGPoint(x: size.width/2, y: size.height/2)
         radius =  min(size.width, size.height)/2
         dayHour.updateTime()
-
     }
 
-    /// - via: Active.checkForNewHour
-    /// - via: (WatchCon EventVC).ActionDelegate.doRefresh
-
-    func pauseScene() { Log("⎚ \(#function)")
-        //??? isPaused = true 
-        say.cancelSpeech()
-    }
-
-    /// - via: Actions.doRefresh
-    /// - via: Actions.doAddEvent
-    /// - via: Actions.doUpdateEvent
-
+    /**
+     update dots and time for current texture
+     - via: Actions.refreshEvent
+     - via: Actions.doUpdateEvent
+     */
     func updateSceneFinish() { Log("⎚ \(#function)")
         
         dayHour.updateTime() // set reference for current hour and day
@@ -95,11 +87,13 @@ class Scene: SKScene  {
         dots.makeSelectFade()
         updateTextures()
         sprite.zRotation = CGFloat(Double(36-dayHour.hour0) / 24.0 * (2*Double.pi))
-        isPaused = false
     }
 
-     /// - via: Action.refresh -> updateSceneFinish
-     /// - via: Scene+Marks.markAction
+    /**
+     Update palette and textures on shader
+     - via: Scene.updateSceneFinish
+     - via: Actions.markAction
+     */
     func updateTextures () { //Log("⎚ \(#function)")
         
         updatePalTex()

@@ -109,7 +109,7 @@ class MainVC: UIViewController {
         settings.archiveSettings()
         
         makePages() {
-            Actions.shared.doAction(.refresh)
+            Actions.shared.refreshEvents(false)
             UIView.animate(withDuration: 1.0, animations: {
                 self.onboardVC.view.alpha = 0
             }, completion:{ _ in
@@ -137,7 +137,8 @@ class MainVC: UIViewController {
 
         skView = SKView(frame:skViewFrame)
         skView.backgroundColor = UIColor.black
-        skView.presentScene(scene)
+        let reveal = SKTransition.fade(withDuration: 0.25)
+        skView.presentScene(scene, transition:reveal)
         skView.preferredFramesPerSecond = 60
         skView.addSubview(touchForce)
 

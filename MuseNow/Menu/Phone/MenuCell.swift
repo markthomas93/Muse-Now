@@ -5,12 +5,6 @@ import UIKit
 import EventKit
 import Dispatch
 
-extension Timer {
-    class func delay(_ delay:TimeInterval,_ fn:@escaping CallVoid) {
-        let _ = Timer.scheduledTimer(withTimeInterval: delay, repeats: false, block: {_ in fn()})
-    }
-}
-
 class MenuCell: MuCell {
 
     var treeNode: TreeNode!

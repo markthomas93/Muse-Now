@@ -48,10 +48,9 @@ extension MenuTableVC {
         if touchedCell?.treeNode?.parent?.expanded == true {
             if  let lastSiblingNode = touchedCell?.treeNode?.parent?.children.last,
                 let lastSiblingCell = lastSiblingNode.cell {
-
-                let _ = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: {_ in
+                Timer.delay(0.25) {
                     self.scrollToMakeVisibleCell(lastSiblingCell,lastSiblingNode.row)
-                })
+                }
             }
         }
     }

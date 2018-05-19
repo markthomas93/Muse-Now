@@ -26,9 +26,9 @@ extension Session {
 
     // changing watches
     #if os(iOS)
-    func sessionDidBecomeInactive(_ session: WCSession) { //Log("↔︎ \(#function) - changing watches?")
+    func sessionDidBecomeInactive(_ session: WCSession) { Log("↔︎ \(#function) - changing watches?")
     }
-    func sessionDidDeactivate(_ session: WCSession) { //Log("↔︎ \(#function) - changing watches?")
+    func sessionDidDeactivate(_ session: WCSession) { Log("↔︎ \(#function) - changing watches?")
         session.activate()
         Actions.shared.doAction(.refresh)
     }

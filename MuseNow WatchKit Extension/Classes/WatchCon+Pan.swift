@@ -18,6 +18,7 @@ extension WatchCon {
             let pos1 = pan.locationInObject()
             let pos2 = CGPoint(x:pos1.x*2, y:pos1.y*2 )
 
+            Log("👆\(#function) (\(pos2.x),\(pos2.y)) \(pan.state.rawValue)")
             let timestamp = Date().timeIntervalSince1970
             switch pan.state {
             case .began:     touchDial.began(pos2, timestamp)

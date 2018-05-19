@@ -50,7 +50,7 @@ class MuEvents {
         // often, more than one notification comes in a batch, so defer multiple refreshes
         refreshTimer.invalidate()
         refreshTimer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false, block: {_ in
-            Anim.shared.addClosure(title:"markCalendarAdditions") { self.markCalendarAdditions() }
+            Closures.shared.addClosure(title:"MuEvents.markCalendarAdditions") { self.markCalendarAdditions() }
         })
     }
     

@@ -33,8 +33,7 @@ enum Animating : Int { case
     recSpoke    = 10, // animate from current position to spoke up and down
     recFinish   = 11,  // finished recording, cleanup
 
-    startup     = 20,  // animation when first showing
-    shutdown    = 21
+    startup     = 20  // animation when first showing
 }
 
 class Anim {
@@ -47,7 +46,6 @@ class Anim {
     
     var scene : Scene!
     var table : MuseTableDelegate!
-    var closures : [Closure] = []
     
     var sceneFrame  = Float(0)
     var lastFrame   = Float(0)
@@ -80,7 +78,6 @@ class Anim {
     var recSpokeDur  = TimeInterval(0.5) // recording animation transition duration
     var recSpokeFade = Float(1.0)       // push/pop color fade to white while recording
     var finishFrame = Float(0)        // starting frame to animate to zero spoke
-    var recSpokeStart = false
 
     var startupTime = TimeInterval(0)
     var startupDur  = TimeInterval(0.5)
@@ -107,7 +104,7 @@ class Anim {
              .futrWheel,  .pastWheel,
              .futrSpoke,  .pastSpoke,
              .recSpoke,   .recFinish,
-             .startup,    .shutdown:
+             .startup:
 
             break
         }

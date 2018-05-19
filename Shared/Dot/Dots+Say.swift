@@ -1,41 +1,36 @@
+// Dots+Mark.swift
 
 import UIKit
 
 extension Dots {
 
     /**
-     while scanning, announce a dot's first marked event
+     While scanning, announce a dot's first marked event
      - via: Scene.update.scanning
      */
-    
-    func sayFirstMark(_ index: Int, _ clockwise: Bool) -> MuEvent! {
+    func sayFirstMark(_ index: Int) -> MuEvent! { // Log("⚇ \(#function) \(index)")
         
-        if let event = getDot(index).getFirstMark(clockwise) {
+        if let event = getDot(index).getFirstMark(index,isClockwise) {
             
             dayHour.setIndexForEvent(event)
-            say.sayDotEvent(event, isTouching:false, via:#function)
+            Say.shared.sayDotEvent(event, isTouching:false)
             return event
         }
         return nil
     }
-    
+
     /**
-     after first event, announce a dot's next marked occurring event
+     After first event, announce a dot's next marked occurring event
      - via: Scene.update.marking
      */
-    
-    func sayNextMark(_ index: Int, _ clockwise: Bool) -> MuEvent! {
+    func sayNextMark(_ index: Int) -> MuEvent! { // Log("⚇ \(#function) \(index)")
         
-        if index != LONG_MAX {
-            
-            if let event = getDot(index).getNextMark(clockwise) {
-                
-                dayHour.setIndexForEvent(event)
-                say.sayDotEvent(event, isTouching:false, via:#function)
-                return event
-            }
+        if let event = getDot(index).getNextMark(index, isClockwise) {
+
+            dayHour.setIndexForEvent(event)
+            Say.shared.sayDotEvent(event, isTouching:false)
+            return event
         }
         return nil
     }
-    
 }

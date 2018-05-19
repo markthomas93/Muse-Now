@@ -58,8 +58,8 @@
 		8004F7661FA3EE2400F7ED94 /* Active.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7141FA3EE2400F7ED94 /* Active.swift */; };
 		8004F7671FA3EE2400F7ED94 /* Anim+Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7161FA3EE2400F7ED94 /* Anim+Action.swift */; };
 		8004F7681FA3EE2400F7ED94 /* Anim+Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7161FA3EE2400F7ED94 /* Anim+Action.swift */; };
-		8004F7691FA3EE2400F7ED94 /* Anim+Closure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7171FA3EE2400F7ED94 /* Anim+Closure.swift */; };
-		8004F76A1FA3EE2400F7ED94 /* Anim+Closure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7171FA3EE2400F7ED94 /* Anim+Closure.swift */; };
+		8004F7691FA3EE2400F7ED94 /* Closures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7171FA3EE2400F7ED94 /* Closures.swift */; };
+		8004F76A1FA3EE2400F7ED94 /* Closures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7171FA3EE2400F7ED94 /* Closures.swift */; };
 		8004F76B1FA3EE2400F7ED94 /* Anim+Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7181FA3EE2400F7ED94 /* Anim+Scene.swift */; };
 		8004F76C1FA3EE2400F7ED94 /* Anim+Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7181FA3EE2400F7ED94 /* Anim+Scene.swift */; };
 		8004F76D1FA3EE2400F7ED94 /* Anim.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F7191FA3EE2400F7ED94 /* Anim.swift */; };
@@ -174,6 +174,8 @@
 		8025E3841FFC0C49004B81F4 /* ColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8025E3831FFC0C49004B81F4 /* ColorCell.swift */; };
 		8026813320926A000065CE75 /* FilesSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8026813220926A000065CE75 /* FilesSync.swift */; };
 		8026813420926A000065CE75 /* FilesSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8026813220926A000065CE75 /* FilesSync.swift */; };
+		803898A420AF353D00A77487 /* Dot+Mark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803898A320AF353D00A77487 /* Dot+Mark.swift */; };
+		803898A520AF377C00A77487 /* Dot+Mark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803898A320AF353D00A77487 /* Dot+Mark.swift */; };
 		803C5B231FBF82E000BA9C6C /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076435F1FACDBE6001733C6 /* Setting.swift */; };
 		803C5F5E1FA3DFBE002A1C11 /* MuseNow WatchKit App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 803C5F5D1FA3DFBE002A1C11 /* MuseNow WatchKit App.app */; };
 		803C5F641FA3DFBE002A1C11 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 803C5F621FA3DFBE002A1C11 /* Interface.storyboard */; };
@@ -328,6 +330,8 @@
 		80CDB71F2076A1050037B181 /* Motion+Values.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80CDB71D2076A1050037B181 /* Motion+Values.swift */; };
 		80CDB7202076A16C0037B181 /* Motion+Gesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80CDB71B2076A0970037B181 /* Motion+Gesture.swift */; };
 		80CDB7212076A16F0037B181 /* Motion+Print.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80CDB7192076A04A0037B181 /* Motion+Print.swift */; };
+		80D95C6320AE203C002A4AE2 /* Timer+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D95C6220AE203C002A4AE2 /* Timer+.swift */; };
+		80D95C6420AE203C002A4AE2 /* Timer+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D95C6220AE203C002A4AE2 /* Timer+.swift */; };
 		80DF15BD207D2C7C005C5B0C /* BubbleView+Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DF15BC207D2C7C005C5B0C /* BubbleView+Audio.swift */; };
 		80DF15BF207D362F005C5B0C /* BubbleVideo+Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DF15BE207D362F005C5B0C /* BubbleVideo+Video.swift */; };
 		80DF15C0207D4DE2005C5B0C /* v_050.aif in Resources */ = {isa = PBXBuildFile; fileRef = 8048FD0420507C1D00820553 /* v_050.aif */; };
@@ -337,7 +341,6 @@
 		80E2B18720A9FE13009ECA92 /* TourSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E2B18620A9FE13009ECA92 /* TourSet.swift */; };
 		80E2B18820A9FE13009ECA92 /* TourSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E2B18620A9FE13009ECA92 /* TourSet.swift */; };
 		80E2B18B20AA00A4009ECA92 /* WatchCon+Pan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E2B18920AA00A4009ECA92 /* WatchCon+Pan.swift */; };
-		80E2B19420AA01D5009ECA92 /* WatchCon+Tap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E2B19220AA01D5009ECA92 /* WatchCon+Tap.swift */; };
 		80E2B19720AA0902009ECA92 /* WatchMenu+old.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E2B19520AA0902009ECA92 /* WatchMenu+old.swift */; };
 		80E4435B207BD77400348FBE /* BubbleView+Make.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E4435A207BD77400348FBE /* BubbleView+Make.swift */; };
 		80E4435D207BD7C400348FBE /* BubbleView+Animate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E4435C207BD7C400348FBE /* BubbleView+Animate.swift */; };
@@ -480,7 +483,7 @@
 		8004F7131FA3EE2400F7ED94 /* TouchMove.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchMove.swift; sourceTree = "<group>"; };
 		8004F7141FA3EE2400F7ED94 /* Active.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Active.swift; sourceTree = "<group>"; };
 		8004F7161FA3EE2400F7ED94 /* Anim+Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Anim+Action.swift"; sourceTree = "<group>"; };
-		8004F7171FA3EE2400F7ED94 /* Anim+Closure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Anim+Closure.swift"; sourceTree = "<group>"; };
+		8004F7171FA3EE2400F7ED94 /* Closures.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Closures.swift; sourceTree = "<group>"; };
 		8004F7181FA3EE2400F7ED94 /* Anim+Scene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Anim+Scene.swift"; sourceTree = "<group>"; };
 		8004F7191FA3EE2400F7ED94 /* Anim.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Anim.swift; sourceTree = "<group>"; };
 		8004F71B1FA3EE2400F7ED94 /* Dot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dot.swift; sourceTree = "<group>"; };
@@ -571,6 +574,7 @@
 		8025E37F1FFC0C04004B81F4 /* UITouch+Force.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITouch+Force.swift"; sourceTree = "<group>"; };
 		8025E3831FFC0C49004B81F4 /* ColorCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorCell.swift; sourceTree = "<group>"; };
 		8026813220926A000065CE75 /* FilesSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesSync.swift; sourceTree = "<group>"; };
+		803898A320AF353D00A77487 /* Dot+Mark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dot+Mark.swift"; sourceTree = "<group>"; };
 		803C5F4B1FA3DFBD002A1C11 /* MuseNow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MuseNow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		803C5F5D1FA3DFBE002A1C11 /* MuseNow WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MuseNow WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		803C5F631FA3DFBE002A1C11 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
@@ -717,13 +721,13 @@
 		80CDB71D2076A1050037B181 /* Motion+Values.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Motion+Values.swift"; sourceTree = "<group>"; };
 		80CE545E1FA3E0C7005C4D96 /* MuseNow WatchKit App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "MuseNow WatchKit App.entitlements"; sourceTree = "<group>"; };
 		80CE545F1FA3E0CE005C4D96 /* MuseNow WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "MuseNow WatchKit Extension.entitlements"; sourceTree = "<group>"; };
+		80D95C6220AE203C002A4AE2 /* Timer+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Timer+.swift"; sourceTree = "<group>"; };
 		80DF15BC207D2C7C005C5B0C /* BubbleView+Audio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BubbleView+Audio.swift"; sourceTree = "<group>"; };
 		80DF15BE207D362F005C5B0C /* BubbleVideo+Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BubbleVideo+Video.swift"; sourceTree = "<group>"; };
 		80DF78451FF828690089475E /* BubbleOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleOptions.swift; sourceTree = "<group>"; };
 		80DF78471FF828830089475E /* BubbleItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleItem.swift; sourceTree = "<group>"; };
 		80E2B18620A9FE13009ECA92 /* TourSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourSet.swift; sourceTree = "<group>"; };
 		80E2B18920AA00A4009ECA92 /* WatchCon+Pan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WatchCon+Pan.swift"; sourceTree = "<group>"; };
-		80E2B19220AA01D5009ECA92 /* WatchCon+Tap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WatchCon+Tap.swift"; sourceTree = "<group>"; };
 		80E2B19520AA0902009ECA92 /* WatchMenu+old.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WatchMenu+old.swift"; sourceTree = "<group>"; };
 		80E4435A207BD77400348FBE /* BubbleView+Make.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BubbleView+Make.swift"; sourceTree = "<group>"; };
 		80E4435C207BD7C400348FBE /* BubbleView+Animate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BubbleView+Animate.swift"; sourceTree = "<group>"; };
@@ -913,7 +917,7 @@
 			isa = PBXGroup;
 			children = (
 				8004F7161FA3EE2400F7ED94 /* Anim+Action.swift */,
-				8004F7171FA3EE2400F7ED94 /* Anim+Closure.swift */,
+				8004F7171FA3EE2400F7ED94 /* Closures.swift */,
 				8004F7181FA3EE2400F7ED94 /* Anim+Scene.swift */,
 				8004F7191FA3EE2400F7ED94 /* Anim.swift */,
 			);
@@ -924,6 +928,7 @@
 			isa = PBXGroup;
 			children = (
 				8004F71B1FA3EE2400F7ED94 /* Dot.swift */,
+				803898A320AF353D00A77487 /* Dot+Mark.swift */,
 				8004F71C1FA3EE2400F7ED94 /* Dots+Action.swift */,
 				8004F71D1FA3EE2400F7ED94 /* Dots+Crown.swift */,
 				8004F71E1FA3EE2400F7ED94 /* Dots+Say.swift */,
@@ -951,6 +956,7 @@
 			isa = PBXGroup;
 			children = (
 				8004F7291FA3EE2400F7ED94 /* Array+.swift */,
+				80D95C6220AE203C002A4AE2 /* Timer+.swift */,
 				8004F72A1FA3EE2400F7ED94 /* AVAudio+.swift */,
 				8004F72B1FA3EE2400F7ED94 /* Collection+Search.swift */,
 				8004F72C1FA3EE2400F7ED94 /* Dictionary+FileManager.swift */,
@@ -1057,7 +1063,6 @@
 			isa = PBXGroup;
 			children = (
 				8004F7DC1FA3F01600F7ED94 /* WatchCon.swift */,
-				80E2B19220AA01D5009ECA92 /* WatchCon+Tap.swift */,
 				80E2B18920AA00A4009ECA92 /* WatchCon+Pan.swift */,
 				8004F7DB1FA3F01600F7ED94 /* WatchCon+TestSession.swift */,
 				8004F7D71FA3F01600F7ED94 /* Complication.swift */,
@@ -1880,6 +1885,7 @@
 				8004F7A31FA3EE2400F7ED94 /* Marks.swift in Sources */,
 				8004F7591FA3EE2400F7ED94 /* Actions.swift in Sources */,
 				80F3377B209C9EEF00F365D5 /* MenuTableVC+Keyboard.swift in Sources */,
+				803898A420AF353D00A77487 /* Dot+Mark.swift in Sources */,
 				8004F7891FA3EE2400F7ED94 /* AVAudio+.swift in Sources */,
 				806BA296209B62D8001A6209 /* RoutineItem.swift in Sources */,
 				809E55631FB4C6A700974CB7 /* Audio.swift in Sources */,
@@ -1905,7 +1911,7 @@
 				80F33778209C9EEF00F365D5 /* MenuEdit.swift in Sources */,
 				8004F78F1FA3EE2400F7ED94 /* FileManager+MuseNow.swift in Sources */,
 				80F33781209C9EEF00F365D5 /* MenuCell.swift in Sources */,
-				8004F7691FA3EE2400F7ED94 /* Anim+Closure.swift in Sources */,
+				8004F7691FA3EE2400F7ED94 /* Closures.swift in Sources */,
 				8004F7021FA3ED5E00F7ED94 /* ParLem.swift in Sources */,
 				809E55671FB4C6EA00974CB7 /* Show.swift in Sources */,
 				804D5A031FA3FC8B0025B724 /* Fader.swift in Sources */,
@@ -1913,6 +1919,7 @@
 				8004F6FA1FA3ED5E00F7ED94 /* NodeAny.swift in Sources */,
 				8004F7651FA3EE2400F7ED94 /* Active.swift in Sources */,
 				8004F7631FA3EE2400F7ED94 /* TouchMove.swift in Sources */,
+				80D95C6320AE203C002A4AE2 /* Timer+.swift in Sources */,
 				8004F75F1FA3EE2400F7ED94 /* TouchMove+Taps.swift in Sources */,
 				804D5A211FA3FCAA0025B724 /* EventCell.swift in Sources */,
 				8004F70A1FA3ED5E00F7ED94 /* ParWords.swift in Sources */,
@@ -1996,7 +2003,7 @@
 				8004F7011FA3ED5E00F7ED94 /* Par.swift in Sources */,
 				80CDB7212076A16F0037B181 /* Motion+Print.swift in Sources */,
 				8004F7051FA3ED5E00F7ED94 /* ParObj.swift in Sources */,
-				8004F76A1FA3EE2400F7ED94 /* Anim+Closure.swift in Sources */,
+				8004F76A1FA3EE2400F7ED94 /* Closures.swift in Sources */,
 				8004F77C1FA3EE2400F7ED94 /* MuDate.swift in Sources */,
 				8004F7C21FA3EE2400F7ED94 /* Image+context.swift in Sources */,
 				803D5D832034BB350082E22D /* EventCoord.swift in Sources */,
@@ -2049,7 +2056,6 @@
 				8004F7A21FA3EE2400F7ED94 /* Mark.swift in Sources */,
 				8004F7801FA3EE2400F7ED94 /* MuEvent.swift in Sources */,
 				809B0EA0209A8F9D0044FDEA /* Sesssion+Message.swift in Sources */,
-				80E2B19420AA01D5009ECA92 /* WatchCon+Tap.swift in Sources */,
 				8004F7031FA3ED5E00F7ED94 /* ParLem.swift in Sources */,
 				8004F79A1FA3EE2400F7ED94 /* Cal.swift in Sources */,
 				8004F7B81FA3EE2400F7ED94 /* SayCache.swift in Sources */,
@@ -2059,6 +2065,7 @@
 				8004F78E1FA3EE2400F7ED94 /* Dictionary+FileManager.swift in Sources */,
 				8004F7661FA3EE2400F7ED94 /* Active.swift in Sources */,
 				8004F7601FA3EE2400F7ED94 /* TouchMove+Taps.swift in Sources */,
+				80D95C6420AE203C002A4AE2 /* Timer+.swift in Sources */,
 				80CDB71F2076A1050037B181 /* Motion+Values.swift in Sources */,
 				8004F7961FA3EE2400F7ED94 /* UIImage+Circle.swift in Sources */,
 				8004F70B1FA3ED5E00F7ED94 /* ParWords.swift in Sources */,
@@ -2107,6 +2114,7 @@
 				8004F7A01FA3EE2400F7ED94 /* FileSync.swift in Sources */,
 				8004F76E1FA3EE2400F7ED94 /* Anim.swift in Sources */,
 				80F337CC209F654600F365D5 /* MenuColorTitle.swift in Sources */,
+				803898A520AF377C00A77487 /* Dot+Mark.swift in Sources */,
 				8004F75E1FA3EE2400F7ED94 /* Motion.swift in Sources */,
 				80F337C7209F632200F365D5 /* MenuTitleButton.swift in Sources */,
 				8004F6F71FA3ED5E00F7ED94 /* Node+print.swift in Sources */,

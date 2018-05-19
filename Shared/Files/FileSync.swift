@@ -91,7 +91,7 @@ class FileSync: NSObject, FileManagerDelegate {
     /**
      Move all files that match a prefix string, such as "Memo_" to iCloudDrive directory
      */
-    func copyAllDocPrefix(_ prefix:String, done: @escaping () -> ()) {
+    func copyAllDocPrefix(_ prefix:String, done: @escaping CallVoid) {
         
         func dispatch() {
 
@@ -124,7 +124,7 @@ class FileSync: NSObject, FileManagerDelegate {
     /**
      Move all files that match a prefix string, such as "Memo_" to iCloudDrive directory
      */
-    func clearAllDocPrefix(_ prefix:String, done: @escaping () -> ()) {
+    func clearAllDocPrefix(_ prefix:String, done: @escaping CallVoid) {
 
         func dispatch() {
 
