@@ -113,7 +113,9 @@ class TreeActNode: TreeNode {
         setting.setFrom = setFrom_
 
         // callback to set action message based on isOn()
-        treeCallback = { node in Actions.shared.doAction(node.setting.isOn() ? onAct : offAct ) }
+        treeCallback = { node in
+            Actions.shared.doAction(node.setting.isOn() ? onAct : offAct )
+        }
     }
 }
 
@@ -138,11 +140,9 @@ class TreeRoutineCategoryNode: TreeNode {
         let set = routineCategory.onRatio > 0 ? 1 : 0
         initNode(routineCategory.title, parent_, .colorTitleMark, TreeSetting(set:set,member:1))
         treeCallback = { node in
-            self.routineCategory.setOnRatio(node.onRatio)
-            Closures.shared.addClosure(title: "TreeRoutine", anytime: true) {
-                Routine.shared.archiveRoutineNow()
-                Actions.shared.doAction(.refresh)
-            }
+//            self.routineCategory.setOnRatio(node.onRatio)
+//            Closures.shared.addClosure(title: "TreeRoutine") { Routine.shared.archiveRoutineNow() }
+//            Closures.shared.addClosure(title: "Refresh")     { Actions.shared.doAction(.refresh) }
         }
     }
 }
@@ -155,14 +155,13 @@ class TreeRoutineItemNode: TreeNode {
         self.init()
         routineItem = item
         initNode(item.title, parent_, type_, TreeSetting(set:0, member:1))
+
         treeCallback = { node in
             if let node = node as? TreeRoutineItemNode {
                 Log("𐂷 TreeRoutineItemNode self:\(self.routineItem.bgnMinutes) node:\(node.routineItem.bgnMinutes) ")
             }
-            Closures.shared.addClosure(title: "TreeRoutine", anytime:true) {
-                Routine.shared.archiveRoutineNow()
-                Actions.shared.doAction(.refresh)
-            }
+//            Closures.shared.addClosure(title: "TreeRoutine") { Routine.shared.archiveRoutineNow() }
+//            Closures.shared.addClosure(title: "Refresh")     { Actions.shared.doAction(.refresh) }
         }
     }
 }

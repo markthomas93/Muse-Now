@@ -56,45 +56,6 @@ class TouchMove {
         center = CGPoint(x: size.width/2, y: size.height/2)
     }
 
-    // bottom slider for 38 is 15px, 42 is 18 px
-    func began(_ pos: CGPoint, _ timestamp: TimeInterval) { Log("👆\(#function)")
-
-        touchBeganTime = timestamp
-        touchBeganPos = pos
-        isTouching = true
-        isMoving = false
-        swipeState = .begin
-        tapping(timestamp)
-        touchBegan?(self)
-    }
-
-    func moved (_ pos: CGPoint, _ timestamp: TimeInterval) {
-
-        if !isTouching {
-            began(pos, timestamp)
-        }
-        else {
-            let deltaPos = CGPoint(x:touchBeganPos.x-pos.x, y: touchBeganPos.y-pos.y)
-            let deltaTime = (timestamp - lastTouchTime)
-            lastTouchTime = timestamp
-            let distance = sqrt(deltaPos.x*deltaPos.x + deltaPos.y*deltaPos.y)
-            let speed  = distance / CGFloat(deltaTime)
-            if !isMoving {
-
-                print("touches !moved pos:\(pos) distance:\(distance)")
-                isMoving = (distance > touchMoveDist)
-            }
-
-             Log("👆\(#function) d:\(Int(distance)) s:\(Int(speed)) isMoving:\(isMoving))")
-            if isMoving {
-                touchMovedTime = timestamp
-                touchMovedPos = pos
-                testSwipe(pos)
-                touchMoved?(self)
-
-            }
-        }
-    }
 
     func testSwipe(_ pos: CGPoint) {
 
@@ -175,22 +136,66 @@ class TouchMove {
         return false
     }
 
+    // bottom slider for 38 is 15px, 42 is 18 px
+    func began(_ pos: CGPoint, _ timestamp: TimeInterval) { Log("👆\(#function)")
+
+        touchBeganTime = timestamp
+        touchBeganPos = pos
+        isTouching = true
+        isMoving = false
+        swipeState = .begin
+        tapping(timestamp)
+        touchBegan?(self)
+    }
+
+    func moved (_ pos: CGPoint, _ timestamp: TimeInterval) {
+
+        if !isTouching {
+            began(pos, timestamp)
+        }
+        else {
+            let deltaPos = CGPoint(x:touchBeganPos.x-pos.x, y: touchBeganPos.y-pos.y)
+            let deltaTime = (timestamp - lastTouchTime)
+            lastTouchTime = timestamp
+            let distance = sqrt(deltaPos.x*deltaPos.x + deltaPos.y*deltaPos.y)
+            let speed  = distance / CGFloat(deltaTime)
+            if !isMoving {
+
+                print("touches !moved pos:\(pos) distance:\(distance)")
+                isMoving = (distance > touchMoveDist)
+            }
+            Log("👆\(#function) d:\(Int(distance)) s:\(Int(speed)) isMoving:\(isMoving))")
+
+            if isMoving {
+
+                touchMovedTime = timestamp
+                touchMovedPos = pos
+                testSwipe(pos)
+                touchMoved?(self)
+            }
+        }
+    }
+
     /// shared by touchesEnded and touchesCancelled
     func ended (_ pos: CGPoint, _ timestamp: TimeInterval)  { Log("👆\(#function)")
 
-        testSwipe(pos)
-
-        let wasMoving = isMoving
-        isMoving = false
-        isTouching = false
-        touchEndedPos  = pos
-        touchEndedTime = timestamp
-
-        if finishSwipe(timestamp) {
-            stopTaps()
+        if !isTouching {
+            began(pos, timestamp)
         }
-       else if wasMoving {
-            touchMoved?(self)
+        else {
+
+            let wasMoving = isMoving
+            isMoving = false
+            isTouching = false
+            touchEndedPos  = pos
+            touchEndedTime = timestamp
+
+            if finishSwipe(timestamp) {
+                stopTaps()
+            }
+            else if wasMoving {
+                touchMoved?(self)
+            }
         }
     }
 }

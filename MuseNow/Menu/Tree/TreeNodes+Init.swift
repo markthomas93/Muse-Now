@@ -27,8 +27,7 @@ extension TreeNodes {
         let calendars = TreeActNode("calendar",  root, showSet, ShowSet.calendar.rawValue,  .showCalendar,  .hideCalendar,  [.child])
         let reminders = TreeActNode("reminders", root, showSet, ShowSet.reminder.rawValue,  .showReminder,  .hideReminder,  [.parent])
         let memos     = TreeActNode("memos",     root, showSet, ShowSet.memo.rawValue,      .showMemo,      .hideMemo,      [])
-        let routine   = TreeActNode("routine",   root, showSet, ShowSet.routine.rawValue,   .showRoutine,   .hideRoutine,   [.child,.parent])
-        let more      = TreeNode   ("more",      root, .title)
+        let routine   = TreeActNode("routine",   root, showSet, ShowSet.routine.rawValue,   .showRoutine,   .hideRoutine,   [.parent,.child])
 
         func initEvents2() { // next level Calendar list
 
@@ -74,17 +73,12 @@ extension TreeNodes {
 
         func initMore2() { //Log("▤ \(#function)")
 
-
-            // Dial
-
-            let dial = TreeNode("dial", more, .title)
-            let _ =  TreeDialColorNode("color", dial)
+            // let more = TreeNode ("more", root, .title)
 
             // hear
+            let hear = TreeNode("hear", root, .title)
 
             let hearSet = Hear.shared.hearSet.rawValue
-            let hear = TreeNode("hear", more, .title)
-
             let saySet = Say.shared.saySet.rawValue
             let _  = TreeActNode("event",   hear, saySet,  SaySet.event.rawValue, .sayEvent, .skipEvent, [])
             let _  = TreeActNode("time",    hear, saySet,  SaySet.time.rawValue,  .sayTime,  .skipTime,  [])
@@ -93,8 +87,15 @@ extension TreeNodes {
             let _  = TreeActNode("speaker", hear, hearSet, HearSet.speaker.rawValue, .hearSpeaker , .muteSpeaker, [])
             let _  = TreeActNode("earbuds", hear, hearSet, HearSet.earbuds.rawValue, .hearEarbuds , .muteEarbuds, [])
 
+            // Dial
+
+            let dial = TreeNode("dial", root, .title)
+            let _ =  TreeDialColorNode("color", dial)
+
+
+            // about
             #if os(iOS)
-            let about = TreeNode("about",   more,  .title)
+            let about = TreeNode("about",   root,  .title)
             let _     = TreeNode("support", about, .title)
             let _     = TreeNode("blog",    about, .title)
 
@@ -106,7 +107,7 @@ extension TreeNodes {
                 }
             }
 
-            let _ = TreeButtonNode("tour", more, alert: "Play Tour", "", [
+            let _ = TreeButtonNode("tour", root, alert: "Play Tour", "", [
                 "Main page",    goTour(.tourMain,.main),
                 "Menu details", goTour(.tourDetail,.menu) ,
                 "Onboarding",   goTour(.tourIntro,.onboard),

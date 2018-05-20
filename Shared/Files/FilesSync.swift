@@ -68,6 +68,7 @@ class FilesSync {
 
         if let lastTime = nameTimes[name] {
             if time != lastTime {
+                nameTimes[name] = time
                 scheduleSyncRequest()
             }
         }

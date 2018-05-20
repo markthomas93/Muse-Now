@@ -38,6 +38,7 @@ class Active {
 
             minuteTimerTick()
             anim.gotoStartupAnim()
+            Closures.shared.execClosures()
             Closures.shared.addClosure(title: "Active.sendSync") {
                 FilesSync.shared.sendSyncRequest() // perhaps get
                 Transcribe.shared.processPendingEvents()

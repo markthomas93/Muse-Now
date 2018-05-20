@@ -98,42 +98,82 @@ extension Dots {
                 Say.shared.sayDotEvent(event, isTouching: true)
                 Actions.shared.sendAction(.gotoEvent, event, event.bgnTime)
             }
-            return logCrown(event.title)
+        }
+
+        // --------------------
+
+        func flipPastFuture() -> Bool {
+
+            if  dotNow == 0,
+                dotEvent?.type == .time,
+                inFuture != isClockwise { // switched direction
+
+                Anim.shared.userDotAction(/*flipTense*/true, dur:0.5)
+                Say.shared.sayCurrentTime(self.dotEvent,/* isTouching */ true)
+                logCrown("Flip")
+                return true
+            }
+            return false
+        }
+
+        func animateToNow() -> Bool { // no events between end and to beginning
+
+            if abs(dotPrev) == 167,
+                inFuture != isClockwise { // switched direction towards beginning
+
+                dotNow = 0
+                let duration = 0.5*TimeInterval(abs(dotPrev))/167
+                Anim.shared.fanOutToDotNow(duration:duration)
+                logCrown("Now")
+                return true
+            }
+            return false
+        }
+        func animateToEnd() -> Bool {
+
+            if  dotNow == 0,
+                inFuture == isClockwise { // continue towards end
+
+                dotNow = inFuture ? 167 : -167
+                let duration = 0.5*TimeInterval(167 - abs(dotPrev))/167
+                Haptic.play(.click)
+                Anim.shared.fanOutToDotNow(duration:duration)
+                logCrown("End")
+                return true
+            }
+            return false
+        }
+         func getNextHourEvent() -> Bool {
+            if let event = getDot(Int(dotNow)).getNextEventForThisHour(isClockwise, dotPrev) {
+
+                foundEvent(event)
+                logCrown(event.title)
+                return true
+            }
+            return false
+        }
+
+        func getNextWeekEvent() -> Bool {
+            while getNextDot(delta) {
+                if let event =  getDot(Int(dotNow)).getFirstEventForThisHour(isClockwise, dotPrev) {
+                    foundEvent(event)
+                    logCrown(event.title)
+                    return true
+                }
+            }
+            return false
         }
 
         // Begin ---------------------
 
+        if      flipPastFuture()    { }
+        else if getNextHourEvent()  { }
+        else if getNextWeekEvent()  { }
+        else if animateToNow()      { }
+        else if animateToEnd()      { }
+        else                        { logCrown("Done") }
+
         dotPrev = dotNow
-
-        if dotEvent?.type == .time,
-            inFuture != isClockwise {
-
-            Anim.shared.userDotAction(/*flipTense*/true, dur:0.5)
-            Say.shared.sayCurrentTime(self.dotEvent,/* isTouching */ true)
-            return logCrown("time")
-        }
-
-        // get next event for this hour
-        if let event = getDot(Int(dotNow)).getNextEventForThisHour(isClockwise, dotPrev) {
-
-            return foundEvent(event)
-        }
-        else {
-            while getNextDot(delta) {
-                if let event =  getDot(Int(dotNow)).getFirstEventForThisHour(isClockwise, dotPrev) {
-                    return foundEvent(event)
-                }
-            }
-        }
-
-        if  dotNow == 0,
-            dotPrev != 0 {
-
-            dotNow = inFuture ? 167 : -167
-            let duration = 0.5*TimeInterval(167 - abs(dotPrev))/167
-            Anim.shared.fanOutToDotNow(duration:duration)
-        }
-        return logCrown("done")
     }
 
 }

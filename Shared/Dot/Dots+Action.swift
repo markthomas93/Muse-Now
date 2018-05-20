@@ -52,9 +52,7 @@ extension Dots {
         }
     }
     
-    
     // Scene Touch -----------------------
-
 
      /// - via: Scene.touchDialDow
     func startAction(_ dotStart: Float) {

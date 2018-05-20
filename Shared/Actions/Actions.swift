@@ -133,7 +133,6 @@ class Actions {
 
     func doRefresh(_ isSender:Bool) {
 
-        Closures.shared.closures.removeAll()
         Closures.shared.addClosure(title: "Actions.reset") {
             Say.shared.cancelSpeech()
             self.refreshEvents(isSender)

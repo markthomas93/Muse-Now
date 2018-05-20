@@ -134,19 +134,13 @@ class Record: NSObject, CLLocationManagerDelegate {
 
                 self.recBgnTime = Date().timeIntervalSince1970 // when recBgnTime < recEndTime, isRecording() returns true
                 self.audioRecorder?.record()
-
-                Anim.shared.gotoRecordSpoke(on: true) {
-
-                    self.audioTimer = Timer.scheduledTimer(timeInterval: self.recDuration, target: self, selector: #selector(self.timedOutRecording), userInfo: nil, repeats: false)
-                    done()
-                }
+                self.audioTimer = Timer.scheduledTimer(timeInterval: self.recDuration, target: self, selector: #selector(self.timedOutRecording), userInfo: nil, repeats: false)
             }
                 // became unactive while setting up
             else { Log("∿ \(#function) aborting")
                 abortTime = Date().timeIntervalSince1970
-                done()
             }
-
+            done()
         }
 
         // begin ---------------------------------
@@ -157,12 +151,17 @@ class Record: NSObject, CLLocationManagerDelegate {
 
             let group = DispatchGroup()
 
+            // animate record spoke
+            group.enter()
+            Anim.shared.gotoRecordSpoke(on: true) {
+                group.leave()
+            }
+
             // prepare location
             group.enter()
-
-                Location.shared.requestLocation() { // Log("∿ requestLoation done")
-                    group.leave()
-                }
+            Location.shared.requestLocation() { // Log("∿ requestLocation done")
+                group.leave()
+            }
 
             // prepare recording
             group.enter()
@@ -172,6 +171,7 @@ class Record: NSObject, CLLocationManagerDelegate {
 
             let _ = group.wait(timeout: .now() + 2.0)
 
+             // prepare recording
             beginRecording() {
                 done()
             }

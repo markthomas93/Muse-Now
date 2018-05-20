@@ -32,7 +32,7 @@ extension WatchCon {
 
     // Tap  -------------------------------------
     
-    @IBAction func tap1Action(_ sender: Any) { Log("👆\(#function)")
+    @IBAction func tapAction(_ sender: Any) { Log("👆\(#function)")
 
         let timeStamp = Date().timeIntervalSince1970
         touchDial?.tapping(timeStamp)

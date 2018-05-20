@@ -35,14 +35,21 @@ func DebugLog(_ str: String) -> Bool {
 
     case
 
-    "⊛", // crown
-    "⚇": // dot
+    "←", // session receiving
+    "↔︎", // session activation state
+    "→", // session sending
+    "✏", // Transcribe
+
+    "⧉":  // syncfile
 
         print(MuDate.getHourMinSecMsec() + ": " + str)
 
     case
-
     "👆", // tap action
+    "⊛", // crown
+    "⚇", // dot
+
+
     "🗣", // Say TTS
     "🔈", // Audio
     "𐆄", // execute closure during animation pause
@@ -53,12 +60,7 @@ func DebugLog(_ str: String) -> Bool {
     "✺",  // background task
 
     "∿",  // audio recorder
-    "←", // session receiving
-    "↔︎", // session activation state
-    "→", // session sending
-    "✏", // Transcribe
 
-    "⧉",  // syncfile
     "⊕",  // motion
 
     "💬", // bubble animation closure

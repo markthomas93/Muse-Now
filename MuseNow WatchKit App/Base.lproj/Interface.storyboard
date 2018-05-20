@@ -21,6 +21,11 @@
                                         <action selector="panAction:" destination="E5x-Cp-nxC" id="zyk-qx-f70"/>
                                     </connections>
                                 </panGestureRecognizer>
+                                <tapGestureRecognizer cancelsTouchesInView="NO" delaysTouchesEnded="NO" id="lEn-zk-kSe" userLabel="TapDial">
+                                    <connections>
+                                        <action selector="tapAction:" destination="E5x-Cp-nxC" id="wZD-qE-9ii"/>
+                                    </connections>
+                                </tapGestureRecognizer>
                             </gestureRecognizers>
                             <variation key="device=watch38mm" height="136" width="136"/>
                             <variation key="device=watch42mm" height="156" width="156"/>

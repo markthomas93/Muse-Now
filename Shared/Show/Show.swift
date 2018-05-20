@@ -34,7 +34,7 @@ class Show {
         strActs.append(showSet.contains(.calendar) ? StrAct("hide calendar" , .hideCalendar) : StrAct("show calendar" , .showCalendar))
         strActs.append(showSet.contains(.reminder) ? StrAct("hide reminder" , .hideReminder) : StrAct("show reminder" , .showReminder))
         strActs.append(showSet.contains(.memo)     ? StrAct("hide memo"     , .hideMemo)     : StrAct("show memo"     , .showMemo))
-        //strActs.append(showSet.contains(.routine)  ? StrAct("hide routine"  , .hideRoutine)  : StrAct("show routine"  , .showRoutine))
+        strActs.append(showSet.contains(.routine)  ? StrAct("hide routine"  , .hideRoutine)  : StrAct("show routine"  , .showRoutine))
         return strActs
     }
 

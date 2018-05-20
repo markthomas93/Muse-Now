@@ -41,8 +41,9 @@ class Closures {
 
         // find duplicate a duplicate
         for closure in closures {
+            if closure.ignore { continue }
             if closure.title == title {
-                if anytime { return } // can execute anywhere, so keep this one
+                if anytime {  return } // can execute anywhere, so keep this one
                 closure.ignore = true  // other wise ignore this one and add later one at bottom
             }
         }

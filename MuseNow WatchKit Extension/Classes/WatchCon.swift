@@ -2,6 +2,7 @@ import WatchKit
 
 class WatchCon: WKInterfaceController {
 
+
     static var shared: WatchCon!
     let actions = Actions.shared
     let active  = Active.shared

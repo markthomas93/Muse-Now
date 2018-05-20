@@ -25,16 +25,20 @@ class Location: NSObject, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         Log("📍 error: \(error)")
     }
-    func requestLocation(_ completion: @escaping CallVoid) {
+    func requestApproval() {
         DispatchQueue.main.async {
-            switch  CLLocationManager.authorizationStatus() {
-            case .notDetermined:        self.locationMgr.requestWhenInUseAuthorization()
-            case .authorizedWhenInUse:  self.locationMgr.requestLocation()
-            case .denied: return
-            default: return
-            }
-            completion()
+             self.locationMgr.requestWhenInUseAuthorization()
         }
+    }
+    func requestLocation(_ completion: @escaping CallVoid) {
+        
+        switch  CLLocationManager.authorizationStatus() {
+        case .notDetermined:        requestApproval()
+        case .authorizedWhenInUse:  locationMgr.requestLocation()
+        case .denied: return
+        default: return
+        }
+        completion()
     }
     private func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         
