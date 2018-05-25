@@ -9,14 +9,12 @@ import UIKit
  - parent: toggle ✓/☐ will set all children ✓/☐
  - child: toggle  ✓/☐ will parent to  ✓/-/☐
  */
-
 struct SetFrom: OptionSet, Codable {
     let rawValue: UInt
-    static let ignore = SetFrom(rawValue: 1 << 0) //  1
-    static let parent = SetFrom(rawValue: 1 << 1) //  2
-    static let child  = SetFrom(rawValue: 1 << 2) //  4
+    static let ignore = SetFrom(rawValue: 1 << 0) // 1
+    static let parent = SetFrom(rawValue: 1 << 1) // 2
+    static let child  = SetFrom(rawValue: 1 << 2) // 4
 }
-
 
 /**
  Optional info disclosure upon first expand
@@ -38,6 +36,8 @@ public class TreeSetting: Codable {
     var set = 0                 // OptionSet bit flags
     var setFrom = SetFrom([])   // modifyable from { none,child,parent,both }
     var showInfo = ShowInfo.infoNone
+    var onAction = DoAction.unknown
+    var offAction = DoAction.unknown
 
     func isOn() -> Bool {
         return set & member != 0
@@ -56,15 +56,22 @@ public class TreeSetting: Codable {
     func flipSet() -> Bool {
 
         set ^= member
-        return isOn()
+        let isNowOn = isOn()
+        let isNowAct = isNowOn ? onAction : offAction
+        if isNowAct != .unknown {
+            Actions.shared.doAction(isNowAct, isSender:true)
+        }
+        return isNowOn
     }
 
-    init(set set_:Int, member member_:Int,_ setFrom_:SetFrom = [.parent,.child], _ showInfo_:ShowInfo = .infoNone) {
+    init(set set_:Int, member member_:Int,_ setFrom_:SetFrom = [.parent,.child], _ showInfo_:ShowInfo = .infoNone, onAct:DoAction = .unknown, offAct: DoAction = .unknown) {
 
         set      = set_
         setFrom  = setFrom_
         member   = member_
         showInfo = showInfo_
+        onAction = onAct
+        offAction = offAct
     }
 
 }

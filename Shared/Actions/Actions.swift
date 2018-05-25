@@ -4,7 +4,7 @@ import EventKit
 import SpriteKit
 
 
-public enum DoAction : Int { case
+public enum DoAction : Int,Codable { case
 
     unknown,
     gotoEvent, gotoFuture, gotoRecordOn,

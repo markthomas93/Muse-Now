@@ -1,7 +1,7 @@
 import UIKit
 import EventKit
 
-class TreeEditColorCell: TreeEditCell {
+class MenuEditColor: MenuEdit {
 
     var color: UIView!
     var colorFrame = CGRect.zero

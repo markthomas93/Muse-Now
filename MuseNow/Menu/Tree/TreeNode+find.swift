@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension TreeBase {
+extension TreeNode {
 
     func find(str:String) -> MenuCell! {
         // first search childing, breadth first
@@ -45,7 +45,7 @@ extension TreeBase {
 
     func goto(path:String, finish:@escaping CallBaseNode) {
 
-        var lineage = [TreeBase]()
+        var lineage = [TreeNode]()
 
         func nextLineage() {
             let node = lineage.popLast()!

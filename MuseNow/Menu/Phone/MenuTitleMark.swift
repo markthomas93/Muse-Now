@@ -37,7 +37,8 @@ class MenuTitleMark: MenuTitle {
         mark.layer.cornerRadius = innerH/4
         mark.layer.borderWidth = 1.0
         mark.layer.borderColor = headColor.cgColor
-        mark.setMark(treeNode.setting.isOn() ? 1 : 0)
+        let isOn = treeNode.setting?.isOn() ?? false
+        mark.setMark(isOn ? 1 : 0)
 
         contentView.addSubview(mark)
     }

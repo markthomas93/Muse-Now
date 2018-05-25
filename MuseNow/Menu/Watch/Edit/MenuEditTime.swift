@@ -1,7 +1,7 @@
 import UIKit
 import EventKit
 
-class TreeEditTimeCell: TreeEditCell {
+class MenuEditTime: MenuEdit {
 
 //    // Time Picker
 //    var bgnTimePicker:  UIPickerView! // time of day to begin

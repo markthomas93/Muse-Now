@@ -13,7 +13,7 @@ class MenuTitleFader: MenuTitle {
         self.init(coder: decoder)
     }
 
-    override func setTreeNode(_ treeNode_:TreeBase) {
+    override func setTreeNode(_ treeNode_:TreeNode) {
         super.setTreeNode(treeNode_)
         fader = Fader()
         

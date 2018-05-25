@@ -9,13 +9,9 @@ class MenuColorTitleMark: MenuTitleMark {
         treeNode.toggle()
         Log("▤ \(#function)")
     }
-
-    override func setTreeNode(_ treeNode_:TreeBase) {
-        super.setTreeNode(treeNode_)
-        setMark(treeNode.onRatio)
-        if let rgb = treeNode.userInfo?["color"] as? UInt32 {
-            color?.setBackgroundColor(MuColor.getUIColor(rgb))
-        }
+    // color dot
+    func setColor(_ rgb: UInt32) {
+        color?.setBackgroundColor(MuColor.getUIColor(rgb))
     }
-}
+ }
 

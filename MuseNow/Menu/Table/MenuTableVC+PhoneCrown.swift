@@ -64,7 +64,7 @@ extension MenuTableVC: PhoneCrownDelegate {
          Best last node is one that is most likely next touch.
          Thus, alowing multiple taps in same position to explore list.
          */
-        func getBestLastNode() -> TreeBase! {
+        func getBestLastNode() -> TreeNode! {
 
             var lastNode = TreeNodes.shared.shownNodes.last
             let shownNodes = TreeNodes.shared.shownNodes

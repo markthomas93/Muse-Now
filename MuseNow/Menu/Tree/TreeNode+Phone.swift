@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-extension TreeBase {
+extension TreeNode {
 
     func updateViews(_ width:CGFloat) {
         cell?.updateViews(width)

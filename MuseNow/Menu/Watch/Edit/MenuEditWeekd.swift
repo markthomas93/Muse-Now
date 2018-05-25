@@ -1,7 +1,7 @@
 import UIKit
 import EventKit
 
-class TreeEditWeekdayCell: TreeEditCell {
+class MenuEditWeekday: MenuEdit {
 
     var weekdays = [UILabel]()
     var weekFrames = [CGRect]()
@@ -14,11 +14,10 @@ class TreeEditWeekdayCell: TreeEditCell {
     convenience init(_ treeNode_: TreeNode!) {
 
         self.init()
-
-         tableView = tableVC.tableView
-
-        let tableVC = TreeNodes.shared.vc as! UITableViewController
         treeNode = treeNode_
+
+        //let tableVC = TreeNodes.shared.vc as! UITableViewController
+        tableView = tableVC.tableView
 
         let width = tableVC.view.frame.size.width
         frame.size = CGSize(width:width, height:height)

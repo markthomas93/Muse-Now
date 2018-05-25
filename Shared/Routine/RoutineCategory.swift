@@ -26,6 +26,7 @@ class RoutineCategory: Codable {
     }
 
     func initRoutineCategory(_ title_:String,_ items_:[RoutineItem],_ color_:UInt32,_ id_:Int) {
+
         title = title_
         items = items_
         color = color_

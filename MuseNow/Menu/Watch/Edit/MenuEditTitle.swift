@@ -1,7 +1,7 @@
 import UIKit
 import EventKit
 
-class TreeEditTitleCell: TreeEditCell {
+class MenuEditTitle: MenuEdit {
 
     var textField: UITextField!
     var textFrame = CGRect.zero

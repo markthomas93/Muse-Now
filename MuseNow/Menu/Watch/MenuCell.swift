@@ -8,11 +8,12 @@ class MenuCell: NSObject {
 
     @IBOutlet var treeTitle: WKInterfaceLabel!
 
-    var treeNode: TreeBase!
+    var treeNode: TreeNode!
 
-    func setTreeNode(_ treeNode_:TreeBase) {
+    func setTreeNode(_ treeNode_:TreeNode) {
          treeNode = treeNode_
-        treeNode.cell = self
+         treeNode.cell = self
+         treeNode.updateCell()
     }
 
 

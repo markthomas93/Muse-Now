@@ -101,7 +101,7 @@ class MenuTableVC: UITableViewController {
 
     /**
      */
-    func updateTouchNodes(_ oldNodes:[TreeBase], _ newNodes:[TreeBase]) {
+    func updateTouchNodes(_ oldNodes:[TreeNode], _ newNodes:[TreeNode]) {
 
 
         let delSet = oldNodes.filter { newNodes.contains($0) == false }

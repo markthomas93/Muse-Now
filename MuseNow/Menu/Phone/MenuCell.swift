@@ -7,7 +7,7 @@ import Dispatch
 
 class MenuCell: MuCell {
 
-    var treeNode: TreeBase!
+    var treeNode: TreeNode!
     var autoExpand = true
 
     var left: UIImageView!
@@ -105,12 +105,12 @@ class MenuCell: MuCell {
 
         if let tourSet = infoSection_.tourSet {
             infoSection = infoSection_
-            if      tourSet.contains(.beta) { treeNode?.setting.showInfo = .construction }
-            else if tourSet.contains(.buy)  { treeNode?.setting.showInfo = .purchase }
-            else if tourSet.contains(.info) { treeNode?.setting.showInfo = .information }
-            else                            { treeNode?.setting.showInfo = .infoNone  }
+            if      tourSet.contains(.beta) { treeNode?.setting?.showInfo = .construction }
+            else if tourSet.contains(.buy)  { treeNode?.setting?.showInfo = .purchase }
+            else if tourSet.contains(.info) { treeNode?.setting?.showInfo = .information }
+            else                            { treeNode?.setting?.showInfo = .infoNone  }
 
-            if let showInfo = treeNode?.setting.showInfo {
+            if let showInfo = treeNode?.setting?.showInfo {
 
                 //infoAlpha = 0
 
@@ -285,7 +285,7 @@ class MenuCell: MuCell {
             isTouring = false
 
             Tour.shared.tourSection(infoSection, done)
-            TreeBases.shared.archiveTree {}
+            TreeNodes.shared.archiveTree {}
         }
         else {
             done()

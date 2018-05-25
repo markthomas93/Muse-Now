@@ -4,7 +4,7 @@ import EventKit
 /**
  Picker Delegates for Editing Text field
  */
-extension TreeEditTitleCell: UITextFieldDelegate {
+extension MenuEditTitle: UITextFieldDelegate {
 
     // user changes
 

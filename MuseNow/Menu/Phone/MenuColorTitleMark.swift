@@ -20,8 +20,7 @@ class MenuColorTitleMark: MenuTitleMark {
         treeNode = treeNode_
 
         let tableVC = TreeNodes.shared.vc as! UITableViewController
-         tableView = tableVC.tableView
-
+        tableView = tableVC.tableView
         let width = tableVC.view.frame.size.width
         frame.size = CGSize(width:width, height:height)
         buildViews(width)

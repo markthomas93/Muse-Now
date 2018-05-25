@@ -20,11 +20,15 @@ class MenuTimeTitleDays: MenuTitle {
         self.init(coder: decoder)
     }
 
-    convenience init(_ treeNode_: TreeNode!, _ size:CGSize) {
+    convenience init(_ treeNode_: TreeNode!) {
         
         self.init()
         treeNode = treeNode_
-        buildViews(size.width)
+
+        let tableVC = TreeNodes.shared.vc as! UITableViewController
+        tableView = tableVC.tableView
+        let width = tableVC.view.frame.size.width
+        buildViews(width)
     }
 
 

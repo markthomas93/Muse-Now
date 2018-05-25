@@ -34,21 +34,24 @@ func DebugLog(_ str: String) -> Bool {
     switch str.substring(to: 1) {
 
     case
-    "𝓡", // routine
+
     "←", // session receiving
     "↔︎", // session activation state
     "→", // session sending
     "⧉",  // syncfile
     "📅", // EkNotification
-    "✏": // Transcribe
+    "✏", // Transcribe
+    "𝓡": // routine
 
         print(MuDate.getHourMinSecMsec() + ": " + str)
 
     case
+    
+     "𐂷", // tree cell
+
     "👆", // tap action
     "⊛", // crown
     "⚇", // dot
-
 
     "🗣", // Say TTS
     "🔈", // Audio
@@ -66,7 +69,6 @@ func DebugLog(_ str: String) -> Bool {
     "💬", // bubble animation closure
     "⿴", // windows covers for speech bubble
 
-    "𐂷", // tree cell
     "⚡️", // startup
 
     "🎧", // Hear Via

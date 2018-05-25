@@ -35,7 +35,7 @@ extension TreeNodes {
         routine.initChildren    = { parent in initRoutineChildren(parent) }
         more.initChildren       = { parent in initMoreChildren(parent) }
 
-        func initCalendarChildren(_ parent:TreeBase) { // next level Calendar list
+        func initCalendarChildren(_ parent:TreeNode) { // next level Calendar list
             
             for (key,cals) in Cals.shared.sourceCals {
                 if cals.count == 1     {  let _ = TreeCalendarNode(key,       calendars, cals.first, [.parent,.child]) }
@@ -44,25 +44,21 @@ extension TreeNodes {
             }
         }
 
-        func initMemosChildren(_ parent:TreeBase) {
+        func initMemosChildren(_ parent:TreeNode) {
             
             let _ = TreeActNode("nod to record",   parent,  ShowSet.memo.rawValue, MemoSet.nod2Rec.rawValue, .memoNod2RecOn, .memoNod2RecOff, [])
-            let _ = TreeButtonNode("files ", parent, alert: "Memos", "", [
+            let _ = TreeButtonNode("files ", parent, "Memos", "", [
                 "Copy to iCloud Drive", { Actions.shared.doAction(.memoCopyAll) },
                 "Remove from Device",   { Actions.shared.doAction(.memoClearAll) },
                 "Cancel", {}
                 ])
         }
 
-        func initRoutineChildren(_ parent: TreeBase) { //Log("▤ \(#function)")
+        func initRoutineChildren(_ parent: TreeNode) { //Log("▤ \(#function)")
             
             for routineCategory in Routine.shared.catalog.values {
                 let catNode = TreeRoutineCategoryNode(routineCategory!, parent)
-                #if os(iOS)
-                (catNode.cell as? MenuColorTitleMark)?.setColor(routineCategory!.color)
-                #else
-                catNode.userInfo?["color"] = routineCategory!.color
-                #endif
+               
                 for routineItem in routineCategory!.items {
                     let _ = TreeRoutineItemNode(.timeTitleDays, catNode, routineItem)
                 }
@@ -70,13 +66,13 @@ extension TreeNodes {
             #if os(iOS)
             // show on list
             let more = TreeNode("more", routine, .title)
-            more.setting.setFrom = [.ignore]
+            more.setting?.setFrom = [.ignore]
             let showOnList = TreeActNode("show on timeline", more, showSet, ShowSet.routList.rawValue, .showRoutList, .hideRoutList, [.ignore])
-            showOnList.setting.setFrom = []
+            showOnList.setting?.setFrom = []
             #endif
         }
 
-        func initMoreChildren(_ parent: TreeBase) { //Log("▤ \(#function)")
+        func initMoreChildren(_ parent: TreeNode) { //Log("▤ \(#function)")
             // hear
             let hear = TreeNode("hear", parent, .title)
             
@@ -98,7 +94,7 @@ extension TreeNodes {
             // about
             #if os(iOS)
             let about = TreeNode("about",   more,  .title)
-            let _     = TreeNode("support", parent, .title)
+            let _     = TreeNode("support", about, .title)
             let _     = TreeNode("blog",    about, .title)
             
             func goTour(_ act:DoAction,_ page:PageType) -> CallVoid {
@@ -109,7 +105,7 @@ extension TreeNodes {
                 }
             }
 
-            let _ = TreeButtonNode("tour", parent, alert: "Play Tour", "", [
+            let _ = TreeButtonNode("tour", about, "Play Tour", "", [
                 "Main page",    goTour(.tourMain,.main),
                 "Menu details", goTour(.tourDetail,.menu) ,
                 "Onboarding",   goTour(.tourIntro,.onboard),
@@ -140,12 +136,12 @@ extension TreeNodes {
         Timer.delay(0.5) {
             initNodeChildren()
             mergeNodesAndCells()
-            TreeBases.shared.archiveTree {}
+            TreeNodes.shared.archiveTree {}
         }
         #else
         initNodeChildren()
         mergeNodesAndCells()
-        TreeBases.shared.archiveTree {}
+        TreeNodes.shared.archiveTree {}
         #endif
     }
     

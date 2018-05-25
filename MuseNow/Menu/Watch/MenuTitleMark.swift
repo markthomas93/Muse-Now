@@ -13,7 +13,7 @@ class MenuTitleMark: MenuTitle {
         Log("▤ \(#function)")
     }
 
-    override func setTreeNode(_ treeNode_:TreeBase) {
+    override func setTreeNode(_ treeNode_:TreeNode) {
         super.setTreeNode(treeNode_)
         setMark(treeNode.onRatio)
     }

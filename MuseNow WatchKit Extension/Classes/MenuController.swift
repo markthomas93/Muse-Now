@@ -13,7 +13,7 @@ class MenuController: WKInterfaceController {
 
     @IBOutlet var interfaceTable: WKInterfaceTable!
     
-    var parent: TreeBase!
+    var parent: TreeNode!
     var shouldPop = false
 
     deinit {
@@ -24,7 +24,7 @@ class MenuController: WKInterfaceController {
 
         super.awake(withContext: context)
 
-        parent = context as! TreeBase
+        parent = context as! TreeNode
         setTitle(parent.name)
 
         let children = parent.children!
@@ -49,11 +49,10 @@ class MenuController: WKInterfaceController {
 
             let cell = interfaceTable.rowController(at: index) as! MenuCell
             let node = children[index]
+           
             cell.setTreeNode(node)
         }
-
         NotificationCenter.default.addObserver(self, selector: #selector(appWillResignActive), name: ExtensionDelegate.WillResignActive, object: nil)
-
     }
 
     @objc func appWillResignActive() { Log("▤ \(#function) \(parent.name)")

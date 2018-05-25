@@ -9,7 +9,7 @@
 import Foundation
 import WatchKit
 
-extension TreeBase {
+extension TreeNode {
 
     func updateViews(_ width:CGFloat) {
     }

@@ -1,7 +1,7 @@
 import UIKit
 import EventKit
 
-class TreeEditCell: TreeTitleCell {
+class MenuEdit: MenuTitle {
 
     convenience required init(coder decoder: NSCoder) {
         self.init(coder: decoder)

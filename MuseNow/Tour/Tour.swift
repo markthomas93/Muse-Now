@@ -35,7 +35,7 @@ class Tour {
 
     var menuVC: MenuTableVC!
     var menuView: UIView!
-    var menuRoot: TreeBase!
+    var menuRoot: TreeNode!
 
     var panelView: UIView!
     var dialView: SKView!
