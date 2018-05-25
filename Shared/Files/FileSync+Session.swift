@@ -45,9 +45,7 @@ extension FileSync {
                 Actions.shared.doRefresh(false)
             }
         }
-        Closures.shared.addClosure(title:"FileMsg.receiveFile(\(fileName))") {
-            DispatchQueue.global(qos: .userInitiated).async { dispatch() }
-        }
+        DispatchQueue.global(qos: .userInitiated).async { dispatch() }
     }
 
     /**
@@ -55,7 +53,6 @@ extension FileSync {
      - save data to file if newer
      - doRefresh to reload display from file
      */
-
     func sendGetFile() { Log ("⧉ \(#function) fileName:\(fileName) memoryTime:\(memoryTime)")
         func dispatch() {
             session.cacheMsg([

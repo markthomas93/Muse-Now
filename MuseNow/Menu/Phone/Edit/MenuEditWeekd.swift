@@ -156,7 +156,7 @@ class MenuEditWeekday: MenuEdit {
                 }
             }
         }
-        treeNode.treeCallback?(treeNode) // refresh dial
+        treeNode.callTreeNode?(treeNode) // refresh dial
     }
  }
 

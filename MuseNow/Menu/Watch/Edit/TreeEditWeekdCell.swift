@@ -144,7 +144,7 @@ class TreeEditWeekdayCell: TreeEditCell {
                     item.daysOfWeek = DaysOfWeek(rawValue:dow)
                     item.updateLabelStrings()
 
-                    // update lable
+                    // update label
                     let isOn = (dow & mask) != 0
                     let label = weekdays[i]
                     setLabel(label, isOn: isOn)
@@ -158,7 +158,7 @@ class TreeEditWeekdayCell: TreeEditCell {
                 }
             }
         }
-        treeNode.treeCallback?(treeNode) // refresh dial
+        treeNode.callTreeNode?(treeNode) // refresh dial
     }
  }
 

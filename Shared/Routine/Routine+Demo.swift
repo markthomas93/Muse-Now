@@ -28,7 +28,7 @@ extension Routine {
             items.append(item)
 
             if let routineCategory = catalog[category] {
-                routineCategory.items.append(item)
+                routineCategory!.items.append(item)
             }
             else {
                 if let color = colors[category] {

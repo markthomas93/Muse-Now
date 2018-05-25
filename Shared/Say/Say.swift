@@ -61,7 +61,7 @@
     }
 
     // speech to text volume
-    public func doSayAction(_ act: DoAction, isSender: Bool) {
+    public func doSayAction(_ act: DoAction) {
 
         switch act {
         case .sayMemo:    saySet.insert(.memo)
@@ -78,27 +78,15 @@
         case .speakHigh:    sayVolume = 1.0
         default: break
         }
-        Settings.shared.settingsFromMemory()
-        if isSender {
-            Session.shared.sendMsg(["class"  : "SaySet",
-                                    "putSet" : saySet.rawValue])
-        }
+         Settings.shared.updateSaySet(saySet)
+        
+        Session.shared.sendMsg(["class"  : "SaySet",
+                                "putSet" : saySet.rawValue])
     }
-
+    
     func updateSetFromSession(_ saySet_:SaySet) {
         saySet = saySet_
         Settings.shared.updateSaySet(saySet_)
-    }
-
-
-    func getMenus() -> [StrAct] {
-
-        var strActs = [StrAct]()
-        //strActs.append(saySet.contains(.speech) ? StrAct("skip speech"  , .skipSpeech) : StrAct("say speech", .saySpeech))
-        strActs.append(saySet.contains(.memo)   ? StrAct("skip memos"  , .skipMemo)   : StrAct("say memos",  .sayMemo))
-        strActs.append(saySet.contains(.event)  ? StrAct("skip events" , .skipEvent)  : StrAct("say events", .sayEvent))
-        strActs.append(saySet.contains(.time)   ? StrAct("skip times"  , .skipTime)   : StrAct("say times",  .sayTime))
-        return strActs
     }
 
     func clearAll() {  Log("🗣 \(#function)")

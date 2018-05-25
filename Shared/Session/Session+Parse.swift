@@ -37,9 +37,9 @@ extension Session {
                 Transcribe.shared.appleBufferData(data)
             }
         #else
-            if let result = msg["result"] as? String {
-                //Transcribe.shared.appleBufferResult(result)
-            }
+//            if let result = msg["result"] as? String {
+//                Transcribe.shared.appleBufferResult(result)
+//            }
         #endif
         
     }
@@ -49,7 +49,7 @@ extension Session {
         if let putInt = msg["putSet"] as? Int {
             let putSet = ShowSet(rawValue:putInt)
             Show.shared.updateSetFromSession(putSet)
-            Settings.shared.archiveSettings()
+            Settings.shared.updateShowSet(putSet)
             Actions.shared.doRefresh(false)
             #if os(iOS)
                 PagesVC.shared.menuVC.tableView.reloadData()

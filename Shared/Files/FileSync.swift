@@ -25,7 +25,7 @@ class FileSync: NSObject, FileManagerDelegate {
         let fileTime = trunc(fileTime_)
         let deltaTime = fileTime - memoryTime
         if deltaTime > 0 {
-            Log("⧉ saveData \(fileName_) \(memoryTime) ➛ \(fileTime) 𝚫\(deltaTime)")
+            Log("⧉ saveData \"\(fileName_)\" \(memoryTime) ➛ \(fileTime) 𝚫\(deltaTime)")
             do {
                 let url = FileManager.documentUrlFile(fileName_)
                 try data.write(to:url)

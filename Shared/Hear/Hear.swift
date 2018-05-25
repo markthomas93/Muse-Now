@@ -110,42 +110,25 @@ class Hear {
     func canPlay() -> Bool {
         return hearSet.contains(local)
     }
-
-    func getMenus() -> [StrAct] {
-
-        var strActs = [StrAct]()
-
-        if route.isEmpty {
-            
-            if hearSet.contains(.speaker) { strActs.append(StrAct("hear speaker", .hearSpeaker)) }
-            if hearSet.contains(.earbuds) { strActs.append(StrAct("hear earbuds", .hearEarbuds)) }
-        }
-        else {
-            if      local.contains(.speaker) { strActs.append(StrAct("mute speaker", .muteSpeaker)) }
-            else if local.contains(.earbuds) { strActs.append(StrAct("mute earbuds", .muteEarbuds)) }
-        }
-        return strActs
-    }
-
-    public func doHearAction(_ act: DoAction, isSender: Bool = false) {
-
+    
+    
+    public func doHearAction(_ act: DoAction) {
+        
         switch act {
-
+            
         case .hearSpeaker:  hearSet.insert(.speaker)
         case .hearEarbuds:  hearSet.insert(.earbuds)
-
+            
         case .muteSpeaker:  hearSet.remove(.speaker)
         case .muteEarbuds:  hearSet.remove(.earbuds)
-
+            
         default: break
         }
-        Settings.shared.settingsFromMemory()
+        Settings.shared.updateHearSet(hearSet)
         updateRoute()
-        if isSender {
-            Session.shared.sendMsg(["class"   : "HearSet",
-                                    "putSet"  : hearSet.rawValue])
-        }
-
+        
+        Session.shared.sendMsg(["class"   : "HearSet",
+                                "putSet"  : hearSet.rawValue])
     }
 
  }

@@ -9,15 +9,22 @@
 import Foundation
 import WatchKit
 
-extension TreeNode {
+extension TreeBase {
 
     func updateViews(_ width:CGFloat) {
     }
 
     func rehighlight() {
     }
-
+    /**
+     starts from root and work towards children
+     */
     func refreshNodeCells() {
+
+        updateOnRatioFromChildren()
+        for child in children {
+            child.refreshNodeCells()
+        }
     }
 }
 

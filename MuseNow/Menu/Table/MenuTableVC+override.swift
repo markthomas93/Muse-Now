@@ -62,7 +62,7 @@ extension MenuTableVC {
         if row < shownNodes.count {
             let node = shownNodes[row]
             //Log("▤ cellForRowAt:\(row) title:\(node.cell.title.text!)")
-            return node.cell
+            return node.cell!
         }
         return UITableViewCell()
     }

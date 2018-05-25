@@ -19,7 +19,6 @@ class MuEvents {
     var timeEvent: MuEvent!         // unique event for displaying time
     var timeEventIndex : Int = -1   // index of timeEvent in muEvents
     
-    let eventStore = EKEventStore()
     var refreshTimer = Timer()
     
     
@@ -40,7 +39,7 @@ class MuEvents {
             completion()
         }
         NotificationCenter.default.removeObserver(self)
-        NotificationCenter.default.addObserver(self, selector: #selector(EkNotification(notification:)), name: Notification.Name.EKEventStoreChanged, object: eventStore)
+        NotificationCenter.default.addObserver(self, selector: #selector(EkNotification(notification:)), name: Notification.Name.EKEventStoreChanged, object: EKEventStore())
     }
     
     @objc private func EkNotification(notification: NSNotification) {
@@ -87,8 +86,7 @@ class MuEvents {
         _ memos         : [MuEvent],
         _ routine       : [MuEvent]
         ) -> Void) -> Void  {
-        
-        
+
         Log("⚡️ getRealEvents")
         DispatchQueue.global(qos: .utility).async {
             
@@ -100,14 +98,13 @@ class MuEvents {
             var routine     = [MuEvent]()
             
             // ekevents
-            if Show.shared.canShow(.calendar) {
                 group.enter()
                 self.getEkEvents() { result in
                     ekEvents = result
                     Log("⚡️ events")
                     group.leave()
-                }
             }
+            
             // ekreminders
             if Show.shared.canShow(.reminder) {
                 group.enter()
@@ -127,13 +124,11 @@ class MuEvents {
                 }
             }
             // routine
-            if Show.shared.canShow(.routine) {
-                group.enter()
-                Routine.shared.getRoutineEvents() { result in
-                    routine = result
-                    Log("⚡️ routine")
-                    group.leave()
-                }
+            group.enter()
+            Routine.shared.getRoutineEvents() { result in
+                routine = result
+                Log("⚡️ routine")
+                group.leave()
             }
             
             // marks
@@ -142,10 +137,10 @@ class MuEvents {
                 Log("⚡️ marks")
                 group.leave()
             }
-
-            let result = group.wait(timeout: .now() + 2.0)
+            
+            let result = group.wait(timeout: .now() + 4.0)
             Log("⚡️ wait: \(result)")
-
+            
             DispatchQueue.main.async {
                 Log("⚡️ notify")
                 completion(ekEvents, ekReminders, memos, routine)
@@ -191,19 +186,21 @@ class MuEvents {
             let idCal = Cals.shared.idCal
             var cals = [EKCalendar]()
             for ekCal in ekCals {
-                if let cali = idCal[ekCal.calendarIdentifier], cali.isOn {
+                if let cali = idCal[ekCal.calendarIdentifier], (cali?.isOn)! {
                     cals.append(ekCal)
                 }
             }
-            if cals.count > 0 {
-                let pred = store.predicateForEvents(withStart: bgnTime!, end: endTime!, calendars:cals)
-                let ekEvents = store.events(matching: pred)
-                
-                for ekEvent in ekEvents {
-                    events.append(MuEvent(ekEvent))
+            if Show.shared.canShow(.calendar) {
+                if cals.count > 0 {
+                    let pred = store.predicateForEvents(withStart: bgnTime!, end: endTime!, calendars:cals)
+                    let ekEvents = store.events(matching: pred)
+                    
+                    for ekEvent in ekEvents {
+                        events.append(MuEvent(ekEvent))
+                    }
                 }
+                events.sort { "\($0.bgnTime)"+$0.eventId < "\($1.bgnTime)"+$1.eventId  }
             }
-            events.sort { "\($0.bgnTime)"+$0.eventId < "\($1.bgnTime)"+$1.eventId  }
             completion(events)
         }
     }
@@ -259,7 +256,7 @@ class MuEvents {
             return "\(lhs.bgnTime)"+lhs.eventId < "\(rhs.bgnTime)"+rhs.eventId // lhs.bgnTime < rhs.bgnTime
         }
     }
-
+    
     @discardableResult
     func updateEvent(_ updateEvent:MuEvent) -> Bool {
         
@@ -271,7 +268,7 @@ class MuEvents {
                 return false
             }
             if event.eventId == updateEvent.eventId {
-
+                
                 event.title     = updateEvent.title
                 event.sttApple  = updateEvent.sttApple
                 event.sttSwm    = updateEvent.sttSwm

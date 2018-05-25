@@ -46,6 +46,7 @@ extension Settings {
 
 
     func prepareDemoSettings() {
+        
         #if os(iOS)
             Log ("⧉ Settings::\(#function)")
 

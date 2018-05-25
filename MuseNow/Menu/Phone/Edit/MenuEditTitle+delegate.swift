@@ -56,7 +56,7 @@ extension MenuEditTitle: UITextFieldDelegate {
         else {
             prevText = textField.text ?? prevText
         }
-        treeNode.treeCallback?(treeNode)
+        treeNode.callTreeNode?(treeNode)
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

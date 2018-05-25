@@ -7,7 +7,7 @@ import Dispatch
 
 class MenuCell: MuCell {
 
-    var treeNode: TreeNode!
+    var treeNode: TreeBase!
     var autoExpand = true
 
     var left: UIImageView!
@@ -40,20 +40,11 @@ class MenuCell: MuCell {
     convenience required init(coder decoder: NSCoder) {
         self.init(coder: decoder)
     }
-
     /**
+     Adjust display (such as a check mark)
+     based on ratio of children that are set on
      */
-    convenience init(_ treeNode_: TreeNode!) {
-
-        self.init()
-
-        treeNode = treeNode_
-
-        let tableVC = TreeNodes.shared.vc as! UITableViewController
-         tableView = tableVC.tableView
-
-        frame.size = cellFrame.size
-        buildViews(frame.size.width)
+    func setMark(_ alpha_:Float) { // override
     }
 
     /**
@@ -73,10 +64,7 @@ class MenuCell: MuCell {
         left.image = UIImage(named:"DotArrow.png")
         left.alpha = 0.0 // refreshNodeCells() will setup left's alpha for the whole tree
 
-        // make this cell searchable within static cells
-        PagesVC.shared.menuVC.cells[treeNode.title] = self //TODO: move this to caller
-
-        // bezel for title
+          // bezel for title
         bezel = UIView(frame:bezelFrame)
         bezel.backgroundColor = .clear
         bezel.layer.cornerRadius = innerH/4
@@ -148,12 +136,6 @@ class MenuCell: MuCell {
         info?.frame = infoFrame
     }
 
-    /**
-     Adjust display (such as a check mark) based on ratio of children that are set on
-     */
-    func updateOnRatioOfChildrenMarked() {
-        // override
-    }
 
     /**
      */
@@ -182,6 +164,9 @@ class MenuCell: MuCell {
                  .editTitle,
                  .editWeekday,
                  .editColor:         expandable = false
+                
+            case .none,
+                 .some(_):          expandable = false
             }
             if expandable {
 
@@ -229,7 +214,7 @@ class MenuCell: MuCell {
 
         if let treeNode = treeNode,
             highlighting_ == .forceHigh {
-            Log("𐂷 setHighlight:\(highlighting_) \(treeNode.title) *** ")
+            Log("𐂷 setHighlight:\(highlighting_) \(treeNode.name) *** ")
         }
 
         infoTimer.invalidate()
@@ -254,12 +239,12 @@ class MenuCell: MuCell {
             infoTimer.invalidate()
             infoTimer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false, block: { _ in
 
-                Log("⏲ animateInfo \(self.treeNode.title) alpha: \(newAlpha)")
+                Log("⏲ animateInfo \(self.treeNode.name) alpha: \(newAlpha)")
 
                 UIView.animate(withDuration: duration, delay: 0, options: [.allowUserInteraction,.beginFromCurrentState], animations: {
                     self.info.alpha = newAlpha
                 }, completion:{ completed in
-                    Log("⏲ animateInfo \(self.treeNode.title) alpha: \(self.info.alpha) completed:\(completed)")
+                    Log("⏲ animateInfo \(self.treeNode.name) alpha: \(self.info.alpha) completed:\(completed)")
                 })
             })
         }
@@ -321,7 +306,7 @@ class MenuCell: MuCell {
         if treeNode.parent != nil {
             for sib in treeNode.parent.children {
                 if sib.expanded {
-                    sib.cell.collapseAllTheWayDown()
+                    sib.cell?.collapseAllTheWayDown()
                     break
                 }
             }

@@ -15,7 +15,7 @@ class EventCell: MuCell {
     func setCell(event event_: MuEvent!, _ tableView: UITableView!) {
         
         event = event_
-        mark.setMark(event.mark)
+        mark.setMark(event.mark ? 1 : 0)
         contentView.backgroundColor = cellColor
         
         // color dot
@@ -59,7 +59,7 @@ class EventCell: MuCell {
         if location.x > toggleX {
 
             event.mark = !(event.mark)
-            mark?.setMark(event.mark)
+            mark?.setMark(event.mark ? 1 : 0)
             let act = event.mark ? DoAction.markOn : DoAction.markOff
             let index = Dots.shared.gotoEvent(event)
             Actions.shared.doAction(act, event, index, isSender: true)

@@ -19,14 +19,6 @@ class Settings: FileSync, Codable {
         }
     }
     
-    
-    func unarchiveNewSettings(_ done: @escaping CallVoid) {Log ("⧉ \(#function)")
-        if memoryTime != getFileTime() {
-            unarchiveSettings {
-                done()
-            }
-        }
-    }
     func unarchiveSettings(_ done: @escaping CallVoid) { Log ("⧉ \(#function)")
         
         unarchiveData() { data in
@@ -59,6 +51,10 @@ class Settings: FileSync, Codable {
 
     func updateShowSet(_ showSet: ShowSet) {
         settings["showSet"] = showSet.rawValue
+        archiveSettings()
+    }
+    func updateMemoSet(_ memoSet: MemoSet) {
+        settings["memoSet"] = memoSet.rawValue
         archiveSettings()
     }
 
@@ -94,7 +90,7 @@ class Settings: FileSync, Codable {
         if let hearSet  = settings["hearSet"]   { Hear.shared.hearSet = HearSet(rawValue:hearSet) }
         if let showSet  = settings["showSet"]   { Show.shared.showSet = ShowSet(rawValue:showSet) }
         if let memoSet  = settings["memoSet"]   { Memos.shared.memoSet = MemoSet(rawValue:memoSet) }
-        Log ("⧉ Settings::\(#function) saySet:\(settings["saySet"]!)")
+        Log ("⧉ Settings::\(#function) saySet:\(settings["saySet"]!) showSet:\(settings["showSet"]!)")
 
     }
 }

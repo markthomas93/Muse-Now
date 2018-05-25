@@ -22,7 +22,7 @@ extension EventTableVC {
                 let rowAction = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "⊗" , handler: { (action:UITableViewRowAction, indexPath:IndexPath) -> Void in
                     
                     event?.mark = false
-                    cell.mark?.setMark(false)
+                    cell.mark?.setMark(0)
                     tableView.setEditing(false, animated: true)
                     
                 })
@@ -33,7 +33,7 @@ extension EventTableVC {
                 let rowAction = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "⊕" , handler: { (action:UITableViewRowAction, indexPath:IndexPath) -> Void in
                     
                     event?.mark = true
-                    cell.mark?.setMark(true)
+                    cell.mark?.setMark(1)
                     tableView.setEditing(false, animated: true)
                     
                 })

@@ -20,7 +20,7 @@ class MenuTitleButton: MenuTitle {
 
     var butnAct: CallVoid?
 
-    override func setTreeNode(_ treeNode_:TreeNode) {
+    override func setTreeNode(_ treeNode_:TreeBase) {
         super.setTreeNode(treeNode_)
          button.setBackgroundImage(UIImage(named: "icon-button-draw.png"))
     }

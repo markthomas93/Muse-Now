@@ -23,7 +23,7 @@ class Memos: FileSync, Codable {
     }
 
 
-    func archiveMemos(done:@escaping CallVoid) {
+   func archiveMemos(done:@escaping CallVoid) {
 
         if let data = try? JSONEncoder().encode(items) {
             let _ = saveData(data)
@@ -53,6 +53,7 @@ class Memos: FileSync, Codable {
     }
 
     func doAction(_ act:DoAction,_ isSender:Bool) {
+
         switch act {
         case .memoWhereOn:    memoSet.insert(.saveWhere)
         case .memoWhereOff:   memoSet.remove(.saveWhere)
@@ -77,7 +78,9 @@ class Memos: FileSync, Codable {
             }
         default: return
         }
-        Settings.shared.settingsFromMemory()
+
+        Settings.shared.updateMemoSet(memoSet)
+
         if isSender {
             Session.shared.sendMsg(["class"   : "MemoSet",
                                     "putSet"  : memoSet.rawValue])

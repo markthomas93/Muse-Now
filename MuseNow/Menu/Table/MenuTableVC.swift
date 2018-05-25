@@ -5,7 +5,6 @@ import EventKit
 
 class MenuTableVC: UITableViewController {
 
-    var cells : [String:MuCell] = [:]
     var touchedCell: MenuCell!
     var blockKeyboard = false       // block keyboard to prevent multiple scrolls
     let rowHeight = CGFloat(44)     // timeHeight * (1 + 1/phi2)
@@ -24,7 +23,7 @@ class MenuTableVC: UITableViewController {
 
     func collapseBackToMain() {
         if let root = TreeNodes.shared.root {
-            root.cell.collapseAllTheWayDown()
+            root.cell?.collapseAllTheWayDown()
             root.expanded = true
             TreeNodes.shared.renumber()
             tableView.reloadData()
@@ -102,10 +101,12 @@ class MenuTableVC: UITableViewController {
 
     /**
      */
-    func updateTouchNodes(_ oldNodes: [TreeNode], _ newNodes:[TreeNode]) {
+    func updateTouchNodes(_ oldNodes:[TreeBase], _ newNodes:[TreeBase]) {
 
-        let delSet = oldNodes.filter { !newNodes.contains($0) }
-        let addSet = newNodes.filter { !oldNodes.contains($0) }
+
+        let delSet = oldNodes.filter { newNodes.contains($0) == false }
+        let addSet = newNodes.filter { oldNodes.contains($0) == false }
+        
         Log ("*** beginUpdates ***")
         tableView.beginUpdates()
         if delSet.count > 0 {

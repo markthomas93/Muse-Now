@@ -24,7 +24,7 @@ class MenuTitleFader: MenuTitle {
 
         let width = tableVC.view.frame.size.width
         frame.size = CGSize(width:width, height:height)
-        let str = treeNode.title
+        let str = treeNode.name
         titleW = str.width(withConstraintedHeight: height, font:  UILabel().font!)
         buildViews(width)
     }

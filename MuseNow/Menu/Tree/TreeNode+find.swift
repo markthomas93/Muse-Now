@@ -7,18 +7,19 @@
 //
 
 import Foundation
-extension TreeNode {
 
-    func find(title:String) -> MenuCell! {
+extension TreeBase {
+
+    func find(str:String) -> MenuCell! {
         // first search childing, breadth first
         for child in children {
-            if child.title.starts(with:title) {
+            if child.name.starts(with:str) {
                 return child.cell
             }
         }
         // otherwise go broadly deep - O(n) with shortcut for most common match at top
         for child in children {
-            if let cell = child.find(title: title) {
+            if let cell = child.find(str: name) {
                 return cell
             }
         }
@@ -31,7 +32,7 @@ extension TreeNode {
     }
 
     func find(_ paths:[String],_ index:Int) -> MenuCell! {
-        if let cell = find(title:paths[index]) {
+        if let cell = find(str:paths[index]) {
             return index == paths.count-1
                 ? cell
                 : cell.treeNode.find(paths,index+1)
@@ -42,9 +43,9 @@ extension TreeNode {
 
     /// find node matching title, and then animate to that cell, if needed
 
-    func goto(path:String, finish:@escaping ((TreeNode!)->())) {
+    func goto(path:String, finish:@escaping CallBaseNode) {
 
-        var lineage = [TreeNode]()
+        var lineage = [TreeBase]()
 
         func nextLineage() {
             let node = lineage.popLast()!
@@ -64,7 +65,7 @@ extension TreeNode {
 
         // begin ------------------------------
 
-        if title.starts(with: path) {
+        if name.starts(with: path) {
             finish(self)
         }
         else if let cell = findPath(path) {
@@ -77,7 +78,7 @@ extension TreeNode {
             nextLineage()
         }
         else {
-            finish(nil)
+            finish(self) /// this used to be nil
         }
     }
 

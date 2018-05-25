@@ -253,10 +253,12 @@ class Record: NSObject, CLLocationManagerDelegate {
         }
         else {
             Log("∿ \(#function) NOT \(deltaTime)")
-            DispatchQueue.main.async {
-                self.activateAudio()
-                done(false)
-            }
+            done(false)
+// does this block "hey siri" ???
+//            DispatchQueue.main.async {
+//                self.activateAudio()
+//                done(false)
+//            }
         }
     }
 

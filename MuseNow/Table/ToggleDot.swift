@@ -3,7 +3,7 @@ import UIKit
 class ToggleDot: UIView {
     
     var dot = UIView(frame: CGRect(x:11, y:11, width:14, height:14))
-    var isOn = false
+    var onRatio = Float(0)
     var event : MuEvent!
     
     override init(frame:CGRect) {
@@ -30,14 +30,14 @@ class ToggleDot: UIView {
         self.addSubview(dot)
     }
 
-    func setMark(_ isOn_:Bool) {
-        isOn = isOn_
-        dot.backgroundColor = isOn ? .white : .clear
-        event?.mark = isOn
+    func setMark(_ onRatio_:Float) {
+        onRatio = onRatio_
+        dot.backgroundColor = onRatio > 0 ? .white : .clear
+        event?.mark = onRatio > 0
     }
 
     func toggle() {
-        setMark(!isOn)
+        setMark(onRatio > 0 ? 0 : 1)
     }
 }
 
@@ -47,6 +47,7 @@ class ToggleCheck: UIView {
     var check : UIImageView!
     var event : MuEvent!
     var mark = MarkType.none
+    var onRatio = Float(0)
     
     override init(frame:CGRect) {
         super.init(frame:frame)
@@ -73,13 +74,15 @@ class ToggleCheck: UIView {
         
     }
     
-    func setGray(_ alpha_:Float) {
+    func setMark(_ onRatio_:Float) {
 
-        if alpha_ == 1.0 {
+        onRatio = onRatio_
+
+        if onRatio == 1.0 {
             check.image = UIImage(named: "icon-check.png")!
             check.isHidden = false
         }
-        else if alpha_ > 0.0 {
+        else if onRatio > 0.0 {
             check.image = UIImage(named: "icon-dash.png")!
             check.isHidden = false
         }
@@ -88,11 +91,8 @@ class ToggleCheck: UIView {
         }
     }
 
-    func setMark(_ isOn:Bool) {
-        check.isHidden = !isOn
-    }
     func toggle() {
-        setMark(check.isHidden)
+        setMark(onRatio > 0 ? 0 : 1)
     }
     
 }

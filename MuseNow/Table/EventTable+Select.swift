@@ -32,7 +32,7 @@ extension EventTableVC {
                 cell.mark.toggle()
                 cell.setNeedsDisplay()
                 let event = cell.event!
-                return (event, cell.mark.isOn)
+                return (event, cell.mark.onRatio > 0)
             }
         }
         return (nil,false)

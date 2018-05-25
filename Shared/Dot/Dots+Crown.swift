@@ -136,7 +136,6 @@ extension Dots {
 
                 dotNow = inFuture ? 167 : -167
                 let duration = 0.5*TimeInterval(167 - abs(dotPrev))/167
-                Haptic.play(.click)
                 Anim.shared.fanOutToDotNow(duration:duration)
                 logCrown("End")
                 return true

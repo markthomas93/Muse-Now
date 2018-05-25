@@ -83,13 +83,15 @@ class Motion: NSObject {
         startTime = Date().timeIntervalSince1970
         updateMotionValues()
 
-        manager.startDeviceMotionUpdates(to: OperationQueue.current!) { motion, error in
-            
-            if let motion = motion {
-                self.goMotion(motion)
-            }
-            else if let error = error {
-                Log("⊕ Accel error:\(error.localizedDescription)" )
+        if let queue =  OperationQueue.current {
+            manager.startDeviceMotionUpdates(to:queue) { motion, error in
+
+                if let motion = motion {
+                    self.goMotion(motion)
+                }
+                else if let error = error {
+                    Log("⊕ Accel error:\(error.localizedDescription)" )
+                }
             }
         }
     }

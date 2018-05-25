@@ -24,22 +24,30 @@ struct DaysOfWeek: OptionSet, Codable {
 
 class RoutineItem: Codable {
 
+    static var nextId = 0
+    static func getNextId() -> Int { nextId += 1 ; return nextId }
+
+    let id = RoutineItem.getNextId()
+
+    var title = ""
+    var dowString = "SMTWRFS"            // full week, empty would be: "......."
+    var bgnTimeStr = "00:00"
+
     var bgnMinutes = 0   // midnight
     var durMinutes = 60  // one hour
     var daysOfWeek = DaysOfWeek.doh     // set of says of week
-    var dowString = "SMTWRFS"            // full week, empty would be: "......."
     var category = ""
-    var title = ""
-    var bgnTimeStr = "00:00"
+
     var onRatio = Float(1.0)
 
     init(_ daysOfWeek_: Int, _ bgnHours: Float, _ durHours: Float,_ category_: String, _ title_: String ) {
 
+        title = title_
         daysOfWeek = DaysOfWeek(rawValue:daysOfWeek_)
         bgnMinutes = Int(bgnHours * 60)
         durMinutes = Int(durHours * 60)
         category = category_
-        title = title_
+
         updateLabelStrings()
     }
 

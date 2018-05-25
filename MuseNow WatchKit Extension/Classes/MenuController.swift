@@ -13,7 +13,7 @@ class MenuController: WKInterfaceController {
 
     @IBOutlet var interfaceTable: WKInterfaceTable!
     
-    var parent: TreeNode!
+    var parent: TreeBase!
     var shouldPop = false
 
     deinit {
@@ -24,14 +24,14 @@ class MenuController: WKInterfaceController {
 
         super.awake(withContext: context)
 
-        parent = context as! TreeNode
-        setTitle(parent.title)
+        parent = context as! TreeBase
+        setTitle(parent.name)
 
-        let children = parent.children
+        let children = parent.children!
         var rowTypes = [String]()
 
-        for node in parent.children {
-            switch node.nodeType {
+        for child in parent.children {
+            switch child.nodeType {
 
             case .title:            rowTypes.append("MenuTitle")
             case .titleButton:      rowTypes.append("MenuTitleButton")
@@ -56,7 +56,7 @@ class MenuController: WKInterfaceController {
 
     }
 
-    @objc func appWillResignActive() { Log("▤ \(#function) \(parent.title)")
+    @objc func appWillResignActive() { Log("▤ \(#function) \(parent.name)")
          shouldPop = true
     }
 
@@ -64,7 +64,7 @@ class MenuController: WKInterfaceController {
 //    override func willDisappear() { Log("▤ \(#function) \(parent.title)") }
 //    override func didDeactivate() { Log("▤ \(#function) \(parent.title)") }
 
-    override func willActivate() { Log("▤ \(#function) \(parent.title)")
+    override func willActivate() { Log("▤ \(#function) \(parent.name)")
         if  shouldPop {
             shouldPop = false
             self.pop()

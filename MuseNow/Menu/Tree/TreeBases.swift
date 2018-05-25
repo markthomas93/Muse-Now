@@ -20,10 +20,10 @@ class TreeBases: FileSync {
     /**
      Merge TreeBases root with TreeNodes root.
      */
-    func merge(_ node:TreeNode,_ base:TreeBase) {
+    func merge(_ node:TreeBase,_ base:TreeBase) {
         for baseChild in base.children {
             for nodeChild in node.children {
-                if nodeChild.title == baseChild.name {
+                if nodeChild.name == baseChild.name {
                     nodeChild.setting = baseChild.setting
                     //Log("𐂷 merge \(nodeChild.title)")
                     merge(nodeChild,baseChild)
@@ -37,14 +37,14 @@ class TreeBases: FileSync {
      Either merge with archived treeBase file,
      or create a new treeBase from treeNode.
      */
-    func merge(_ treeNode:TreeNode) {
+    func merge(_ treeNode:TreeBase) {
         fileName = "Menu.json"
-        unarchivearchiveTree {
+        unarchiveTree {
             if let baseRoot = self.baseRoot {
                 self.merge(treeNode,baseRoot)
             }
             else {
-                self.baseRoot = TreeBase(treeNode)
+                self.baseRoot = treeNode
                 self.archiveTree { }
             }
         }
@@ -57,7 +57,7 @@ class TreeBases: FileSync {
         }
     }
 
-    func unarchivearchiveTree(_ completion: @escaping () -> Void) {
+    func unarchiveTree(_ completion: @escaping () -> Void) {
 
         unarchiveData() { data in
 

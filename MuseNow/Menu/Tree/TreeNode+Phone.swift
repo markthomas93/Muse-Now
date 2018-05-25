@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-extension TreeNode {
+extension TreeBase {
 
     func updateViews(_ width:CGFloat) {
         cell?.updateViews(width)
@@ -36,14 +36,12 @@ extension TreeNode {
      - refresh grayed check to show how many checked children
      */
     func refreshNodeCells() {
+
         updateOnRatioFromChildren()
-        cell?.updateOnRatioOfChildrenMarked()
         cell?.updateLeft(animate: false)
         for child in children {
             child.refreshNodeCells()
         }
     }
-
-
 
 }

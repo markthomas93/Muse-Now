@@ -34,7 +34,7 @@ class MenuTitle: MenuCell {
         // title
         title = UILabel(frame:titleFrame)
         title.backgroundColor = .clear
-        title.text = treeNode.title
+        title.text = treeNode.name
         title.textColor = .white
         title.highlightedTextColor = .white
         title.layer.cornerRadius = innerH/4

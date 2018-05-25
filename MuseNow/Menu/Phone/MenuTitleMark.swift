@@ -37,19 +37,12 @@ class MenuTitleMark: MenuTitle {
         mark.layer.cornerRadius = innerH/4
         mark.layer.borderWidth = 1.0
         mark.layer.borderColor = headColor.cgColor
-        mark.setMark(treeNode.setting.isOn())
+        mark.setMark(treeNode.setting.isOn() ? 1 : 0)
 
         contentView.addSubview(mark)
     }
 
-    /**
-     cell can be partially grayed out depending on number of children are set
-     */
-    override func updateOnRatioOfChildrenMarked() {
-        treeNode.updateOnRatioFromChildren()
-        mark.setGray(treeNode.onRatio)
-    }
-
+  
     override func updateFrames(_ width:CGFloat) {
 
         let markW = height
@@ -130,9 +123,9 @@ class MenuTitleMark: MenuTitle {
         }
     }
 
-    func setMark(_ isOn:Bool) {
+    override func setMark(_ onRatio_:Float) {
         (TreeNodes.shared.vc as? MenuTableVC)?.setTouchedCell(self)
-         mark.setMark(isOn)
+         mark.setMark(onRatio_)
     }
     
     override func touchCell(_ location: CGPoint, isExpandable:Bool) {
@@ -141,11 +134,7 @@ class MenuTitleMark: MenuTitle {
 
         let toggleX = frame.size.width - frame.size.height
         if location.x > toggleX {
-            let isOn = treeNode.toggle()
-//            if isOn && [.information,.construction,.purchase].contains(treeNode.setting.showInfo) {
-//               super.touchCell(.zero)
-//            }
-            mark.setMark(isOn)
+            treeNode.toggle()
         }
         else {
             super.touchCell(location, isExpandable:isExpandable)

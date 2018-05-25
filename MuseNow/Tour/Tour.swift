@@ -35,7 +35,7 @@ class Tour {
 
     var menuVC: MenuTableVC!
     var menuView: UIView!
-    var menuRoot: TreeNode!
+    var menuRoot: TreeBase!
 
     var panelView: UIView!
     var dialView: SKView!
@@ -88,7 +88,7 @@ class Tour {
     /// goto main page
     let gotoMainPage: CallWait! = { finish in
         PagesVC.shared.gotoPageType(.main) {
-            if let treeNode = TreeNodes.shared.root?.find(title:"routine")?.treeNode {
+            if let treeNode = TreeNodes.shared.root?.find(str:"routine")?.treeNode {
                 treeNode.set(isOn: true)
                 Actions.shared.doAction(.gotoFuture)
                 finish()
@@ -187,7 +187,7 @@ class Tour {
         if let root = TreeNodes.shared.root {
             for section in sections {
                 if !section.tourSet.intersection([.info,.buy,.beta]).isEmpty {
-                    if let cell = root.find(title:section.title) {
+                    if let cell = root.find(str:section.title) {
                         cell.addInfoBubble(section)
                     }
                 }

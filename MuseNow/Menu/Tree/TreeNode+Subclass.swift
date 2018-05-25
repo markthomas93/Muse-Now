@@ -10,9 +10,11 @@ import Foundation
 import UIKit
 
 class TreeButtonNode: TreeNode {
-    convenience init(_ title_:String,_ parent_:TreeNode!, _ act:CallVoid!) {
-        self.init()
-        initNode(title_, parent_, .titleButton, TreeSetting(set:1,member:1))
+
+    convenience init(_ title_:String,_ parent_:TreeBase!, _ act:CallVoid!) {
+
+        self.init(title_, parent_, .titleButton, TreeSetting(set:1,member:1))
+
         #if os(iOS)
             if let cell = cell as? MenuTitleButton {
                 cell.butnAct = {  // block collapsing cell from cancelling tour
@@ -23,9 +25,9 @@ class TreeButtonNode: TreeNode {
         #endif
     }
     
-    convenience init(_ title_:String,_ parent_:TreeNode!, alert:String,_ body:String, _ anys:[Any]) {
-        self.init()
-        initNode(title_, parent_, .titleButton, TreeSetting(set:1,member:1))
+    convenience init(_ title_:String,_ parent_:TreeBase!, alert:String,_ body:String, _ anys:[Any]) {
+
+        self.init(title_, parent_, .titleButton, TreeSetting(set:1,member:1))
 
         #if os(iOS)
             if let cell = cell as? MenuTitleButton {
@@ -40,32 +42,34 @@ class TreeButtonNode: TreeNode {
 
 class TreeCalendarNode: TreeNode {
 
-    convenience init(_ title_:String, _ parent_:TreeNode!,_ cal:Cal!,_ setFrom_:SetFrom) {
-        self.init()
-        initNode(title_, parent_, .colorTitleMark, TreeSetting(set:1,member:1))
-        setting.setFrom = setFrom_
+    convenience init(_ title_:String, _ parent_:TreeBase!,_ cal:Cal!,_ setFrom_:SetFrom) {
+
+        self.init(title_, parent_, .colorTitleMark, TreeSetting(set:1,member:1, setFrom_))
 
         #if os(iOS)
-            (cell as? MenuColorTitleMark)?.setColor(cal.color) // early bound
+        (cell as? MenuColorTitleMark)?.setColor(cal.color) // early bound
         #else
-            userInfo["color"] = cal.color // late bound
+        userInfo?["color"] = cal.color // late bound
         #endif
         any = cal.calId // any makes a copy of Cal, so use calID, instead
-        treeCallback = { node in
+        callTreeNode = { node in
 
             if let calId = node.any as? String,
                 let cal = Cals.shared.idCal[calId],
                 let isOn = node.setting?.isOn() {
-                cal.updateMark(isOn)
+                Closures.shared.addClosure(title: "TreeCalendarNode") {
+                    cal?.updateMark(isOn)
+                }
             }
         }
     }
 }
+
 class TreeDialColorNode: TreeNode {
 
-    convenience init (_ title_:String,_ parent_:TreeNode!) {
-        self.init()
-        initNode(title_,parent_, .titleFader, TreeSetting(set:0,member:1))
+    convenience init (_ title_:String,_ parent_:TreeBase!) {
+
+        self.init(title_,parent_, .titleFader, TreeSetting(set:0,member:1))
 
         if let cell = cell as? MenuTitleFader {
             
@@ -75,7 +79,7 @@ class TreeDialColorNode: TreeNode {
                 #if os(iOS)
                     cell.fader?.setValue(faderValue)
                 #else
-                    userInfo["faderValue"] = faderValue
+                    userInfo?["faderValue"] = faderValue
                 #endif
             }
             #if os(iOS)
@@ -100,32 +104,31 @@ class TreeDialColorNode: TreeNode {
             #if os(iOS)
                 cell.fader?.updateFunc = updateFunc // early bound
             #else
-                userInfo["updateFunc"] = updateFunc // laste bound
+                userInfo?["updateFunc"] = updateFunc // laste bound
             #endif
         }
     }
 }
 
 class TreeActNode: TreeNode {
-    convenience init (_ title_:String, _ parent_:TreeNode!,_ set:Int, _ member: Int,_ onAct:DoAction,_ offAct:DoAction,_ setFrom_:SetFrom) {
-        self.init()
-        initNode(title_, parent_, .titleMark, TreeSetting(set:set,member:member))
-        setting.setFrom = setFrom_
+    convenience init (_ title_:String, _ parent_:TreeBase!,_ set:Int, _ member: Int,_ onAct:DoAction,_ offAct:DoAction,_ setFrom_:SetFrom) {
+
+        self.init(title_, parent_, .titleMark, TreeSetting(set:set, member:member, setFrom_))
 
         // callback to set action message based on isOn()
-        treeCallback = { node in
+        callTreeNode = { node in
             Actions.shared.doAction(node.setting.isOn() ? onAct : offAct )
         }
     }
 }
 
 class TreeBoolNode: TreeNode {
-    convenience init (_ title_:String, _ parent_:TreeNode!,_ bool:Bool,_ onAct:DoAction,_ offAct:DoAction) {
-        self.init()
-        let treeSetting = TreeSetting(set: bool ? 1 : 0, member: 1, [])
-        initNode(title_, parent_, .titleMark,treeSetting)
+    convenience init (_ title_:String, _ parent_:TreeBase!,_ bool:Bool,_ onAct:DoAction,_ offAct:DoAction) {
+
+        self.init(title_, parent_, .titleMark, TreeSetting(set: bool ? 1 : 0, member: 1, []))
+
         // callback to set action message based on isOn()
-        treeCallback = { node in Actions.shared.doAction(node.setting.isOn() ? onAct : offAct, isSender:true ) }
+        callTreeNode = { node in Actions.shared.doAction(node.setting.isOn() ? onAct : offAct, isSender:true ) }
     }
 }
 
@@ -133,16 +136,18 @@ class TreeRoutineCategoryNode: TreeNode {
 
     var routineCategory:RoutineCategory!
 
-    convenience init (_ routineCategory_: RoutineCategory,_ parent_: TreeNode!) {
+    convenience init (_ routineCategory_: RoutineCategory,_ parent_: TreeBase!) {
 
-        self.init()
+        self.init(routineCategory_.title, parent_, .colorTitleMark, TreeSetting(set:routineCategory_.onRatio > 0 ? 1 : 0,member:1))
         routineCategory = routineCategory_
-        let set = routineCategory.onRatio > 0 ? 1 : 0
-        initNode(routineCategory.title, parent_, .colorTitleMark, TreeSetting(set:set,member:1))
-        treeCallback = { node in
-//            self.routineCategory.setOnRatio(node.onRatio)
-//            Closures.shared.addClosure(title: "TreeRoutine") { Routine.shared.archiveRoutineNow() }
-//            Closures.shared.addClosure(title: "Refresh")     { Actions.shared.doAction(.refresh) }
+
+        callTreeNode = { node in
+            self.routineCategory.setOnRatio(node.onRatio)
+            Closures.shared.addClosure(title: "TreeRoutine") {
+                Routine.shared.archiveRoutine() {
+                    Actions.shared.doAction(.refresh)
+                }
+            }
         }
     }
 }
@@ -151,17 +156,20 @@ class TreeRoutineItemNode: TreeNode {
 
     var routineItem: RoutineItem!
 
-    convenience init (_ type_: TreeNodeType,_ parent_:TreeNode!,_ item:RoutineItem!) {
-        self.init()
+    convenience init (_ type_: TreeNodeType,_ parent_:TreeBase!,_ item:RoutineItem!) {
+        
+        self.init(item.title, parent_, type_, TreeSetting(set:0, member:1))
         routineItem = item
-        initNode(item.title, parent_, type_, TreeSetting(set:0, member:1))
 
-        treeCallback = { node in
+        callTreeNode = { node in
             if let node = node as? TreeRoutineItemNode {
                 Log("𐂷 TreeRoutineItemNode self:\(self.routineItem.bgnMinutes) node:\(node.routineItem.bgnMinutes) ")
             }
-//            Closures.shared.addClosure(title: "TreeRoutine") { Routine.shared.archiveRoutineNow() }
-//            Closures.shared.addClosure(title: "Refresh")     { Actions.shared.doAction(.refresh) }
+            Closures.shared.addClosure(title: "TreeRoutine") {
+                Routine.shared.archiveRoutine() {
+                    Actions.shared.refreshEvents(/*isSender*/true)
+                }
+            }
         }
     }
 }

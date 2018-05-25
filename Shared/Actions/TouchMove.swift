@@ -160,8 +160,6 @@ class TouchMove {
             let distance = sqrt(deltaPos.x*deltaPos.x + deltaPos.y*deltaPos.y)
             let speed  = distance / CGFloat(deltaTime)
             if !isMoving {
-
-                print("touches !moved pos:\(pos) distance:\(distance)")
                 isMoving = (distance > touchMoveDist)
             }
             Log("👆\(#function) d:\(Int(distance)) s:\(Int(speed)) isMoving:\(isMoving))")

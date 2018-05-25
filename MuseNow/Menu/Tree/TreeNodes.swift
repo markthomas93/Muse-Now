@@ -8,30 +8,29 @@
 
 import Foundation
 
-enum TreeNodeType: Int,Codable { case
-    unknown,
-    title,
-    titleButton,
-    //??? infoApprove,
-    titleFader,
-    titleMark,
-    colorTitle,
-    colorTitleMark,
-    timeTitleDays,
-    editTime,
-    editTitle,
-    editWeekday,
-    editColor
+enum TreeNodeType: String,Codable { case
+    unknown         = "unknown",
+    title           = "title",
+    titleButton     = "titleButton",
+    titleFader      = "titleFader",
+    titleMark       = "titleMark",
+    colorTitle      = "colorTitle",
+    colorTitleMark  = "colorTitleMark",
+    timeTitleDays   = "timeTitleDays",
+    editTime        = "editTime",
+    editTitle       = "editTitle",
+    editWeekday     = "editWeekday",
+    editColor       = "editColor"
 }
 
 class TreeNodes {
 
     static var shared = TreeNodes()
 
-    var shownNodes = [TreeNode]() // currently displayed nodes
-    var nextNodes = [TreeNode]() // double buffer update
-    var touchedNode: TreeNode! // which node was last touched
-    var root: TreeNode!
+    var shownNodes = [TreeBase]() // currently displayed nodes
+    var nextNodes  = [TreeBase]() // double buffer update
+    var touchedNode: TreeBase! // which node was last touched
+    var root: TreeBase!
     var vc: Any!
     
     /**

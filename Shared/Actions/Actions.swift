@@ -59,7 +59,6 @@ class Actions {
     
     var scene         : Scene!
     var tableDelegate : MuseTableDelegate?
-    var strActs       = [StrAct]()
     var suggestions   = [String]()
 
     func dialColor(_ fade:Float, isSender: Bool)  {
@@ -196,33 +195,7 @@ class Actions {
     }
     
     //-----------------------------------------
-    /**
-     create am array of text actions that can be used by either;
-        - scrolling menu table that returns text string
-        - speech to text string to match
-     */
-    func updateMenuActions() {
-
-        strActs.removeAll()
-
-        strActs.append(contentsOf:Hear.shared.getMenus())
-        strActs.append(contentsOf:Show.shared.getMenus())
-        strActs.append(contentsOf:Say.shared.getMenus())
-        
-        strActs.append(StrAct("clear all marks",.markClearAll))
-        strActs.append(StrAct("clear all memos",.memoClearAll))
-        strActs.append(StrAct("refresh",.refresh))
-    }
-
-    func getSuggestions() -> [String] {
-        updateMenuActions()
-        var suggestions = [String]()
-        for item in Actions.shared.strActs {
-            suggestions.append(item.str)
-        }
-        return suggestions
-    }
-
+ 
     /**
      Dispatch commands to Show, Say, Hear, Dots, Anim
      - via: Actions.[doUpdateEvent, doToggleMark]
@@ -241,7 +214,7 @@ class Actions {
         .showRoutine,  .hideRoutine,
         .showRoutList, .hideRoutList:
 
-            Show.shared.doShowAction(act, isSender: true)
+            Show.shared.doShowAction(act)
 
 
         case .tourAll, .tourMain, .tourMenu, .tourDetail, .tourIntro, .tourStop:
@@ -254,12 +227,12 @@ class Actions {
              .sayEvent, .skipEvent,
              .speakLow, .speakMedium, .speakHigh:
 
-            Say.shared.doSayAction(act, isSender:true)
+            Say.shared.doSayAction(act)
 
         case  .hearEarbuds, .hearSpeaker,
               .muteEarbuds, .muteSpeaker:
 
-            Hear.shared.doHearAction(act, isSender:true)
+            Hear.shared.doHearAction(act)
 
         // mark a dot
         case .markOn, .markOff, .markClearAll:
@@ -284,7 +257,9 @@ class Actions {
 
         case .memoCopyAll,   .memoClearAll,
              .memoWhereOn,   .memoWhereOff,
-             .memoNod2RecOn, .memoNod2RecOff: Memos.shared.doAction(act, isSender)
+             .memoNod2RecOn, .memoNod2RecOff:
+
+            Memos.shared.doAction(act, isSender)
             
         case .refresh:      doRefresh(isSender)
             
@@ -294,26 +269,7 @@ class Actions {
         default: break
         }
     }
-
-    /**
-     Translate Watch STT to command
-    - via WatchCon.Record.recordMenuFinish
-     */
-    func parseString(_ str: String, _ event: MuEvent!,_ index: Int, isSender:Bool) {
-        
-        Log("⌘ \(#function):\(str)")
-        
-        let loStr = str.lowercased()
-        
-        for strAct in strActs {
-            if loStr.contains(strAct.str) {
-                doAction(strAct.act, event, index, isSender: isSender)
-                return Haptic.play(.success)
-            }
-        }
-        // Haptic.play(.failure)
-    }
-    
+      
     /**
      Dispatch a command
      - via: EventTable+Select.(toggleCurrentCell actionTap)

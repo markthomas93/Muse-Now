@@ -13,12 +13,12 @@ class MenuTitleMark: MenuTitle {
         Log("▤ \(#function)")
     }
 
-    override func setTreeNode(_ treeNode_:TreeNode) {
+    override func setTreeNode(_ treeNode_:TreeBase) {
         super.setTreeNode(treeNode_)
-        setGray(treeNode.onRatio)
+        setMark(treeNode.onRatio)
     }
 
-    func setGray(_ alpha_:Float) {
+    override func setMark(_ alpha_:Float) {
 
         func getImage() -> UIImage {
             if      alpha_ == 1 { return UIImage(named: "icon-check-box-16.png")! }
@@ -26,11 +26,6 @@ class MenuTitleMark: MenuTitle {
             else                { return UIImage(named: "icon-blank-box-16.png")! }
         }
         mark.setBackgroundImage(getImage())
-    }
-
-    override func updateOnRatioOfChildrenMarked() {
-        treeNode.updateOnRatioFromChildren()
-        setGray(treeNode.onRatio)
     }
 }
 

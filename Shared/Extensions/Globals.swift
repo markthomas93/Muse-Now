@@ -34,13 +34,13 @@ func DebugLog(_ str: String) -> Bool {
     switch str.substring(to: 1) {
 
     case
-
+    "𝓡", // routine
     "←", // session receiving
     "↔︎", // session activation state
     "→", // session sending
-    "✏", // Transcribe
-
-    "⧉":  // syncfile
+    "⧉",  // syncfile
+    "📅", // EkNotification
+    "✏": // Transcribe
 
         print(MuDate.getHourMinSecMsec() + ": " + str)
 
@@ -80,7 +80,7 @@ func DebugLog(_ str: String) -> Bool {
 
     "⿳", // calendar event
     "✏︎", // draw bubble
-    "📅", // EkNotification
+
 
     "⎚", // scene animation
 
@@ -88,8 +88,6 @@ func DebugLog(_ str: String) -> Bool {
 
     "▣", // observe main window bounds
     "◰", // view layout
-
-    "𝓡", // routine
 
     "✓", // actions
     "⚆", // wheel spoke animation

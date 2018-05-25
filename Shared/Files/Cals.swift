@@ -11,8 +11,10 @@ class Cals: FileSync {
     
     var ekCals = [EKCalendar]()         // event kit calendars minus holidays and contacts
     var cals = [Cal]()                  // muse translated version of EKCalendar
-    var idCal = [String:Cal]()         // retreive cal from its calendarID
-    var sourceCals = [String:[Cal]]()  // each data source may have several calendars
+
+    /// WARNING, changing ! to ? is problematic, need shared pointer to same object, removing ! doesn't work!!!!
+    var idCal = [String:Cal!]()         // retreive cal from its calendarID
+    var sourceCals = [String:[Cal!]]()  // each data source may have several calendars
 
     override init() {
         super.init()
@@ -33,14 +35,13 @@ class Cals: FileSync {
         let ekCalendars = store.calendars(for: .event)
         for ekCal in ekCalendars {
             // add calDav calenders that are not Holidays or Contacts
+
             if   ekCal.type == .calDAV,
                 !ekCal.title.hasPrefix("Holidays"),
-                !ekCal.title.hasPrefix("Contacts") {
-                
+                !ekCal.title.hasPrefix("Contacts") { //Log("📅 \(ekCal.source.title) : \(ekCal.title)")
+
                 ekCals.append(ekCal)
-                
-                // print ("\(ekCal.source.title) : \(ekCal.title)")
-                
+
                 let cal = Cal(ekCal)
                 cals.append(cal)
                 idCal[cal.calId] = cal
@@ -63,7 +64,7 @@ class Cals: FileSync {
 
                 for fileCal in fileCals {
                     if let memCal = self.idCal[fileCal.calId] {
-                        memCal.isOn = fileCal.isOn
+                        memCal?.isOn = fileCal.isOn
                     }
                 }
                 done()

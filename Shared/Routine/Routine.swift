@@ -11,19 +11,13 @@ class Routine: FileSync, Codable {
 
     static let shared = Routine()
 
-    var catalog = [String: RoutineCategory]()
+    var catalog = [String: RoutineCategory?]()
 
     override init() {
         super.init()
         fileName = "Routine.json"
     }
 
-    func archiveRoutineNow() {
-        if let data = try? JSONEncoder().encode(self) {
-            let _ = saveData(data)
-        }
-    }
-    
     func archiveRoutine(done:@escaping CallVoid) {
 
         if let data = try? JSONEncoder().encode(self) {
@@ -35,9 +29,14 @@ class Routine: FileSync, Codable {
         }
     }
 
-
+    /**
+     Unarchive routine file and then merge catalog, category, categoryItems.
+     TODO: this keeps the bindings between Treenodes and TreeCells.
+     A better choice would be to reload the cells, but requires some
+     animation when the updated cellls are added or deleted.
+     */
     func unarchiveRoutine(done: @escaping () -> Void) {
-        
+
         unarchiveData() { data in
 
             if  let data = data,
@@ -49,7 +48,7 @@ class Routine: FileSync, Codable {
                 done()
             }
             else {
-               
+
                 self.makeDemoRoutine()
                 done()
             }
@@ -74,15 +73,15 @@ class Routine: FileSync, Codable {
             // Log("𝓡 \(day),\(daylabel[weekday]): " +  MuDate.dateToString(dayDate!.timeIntervalSince1970, "MM-dd HH:mm"))
 
             for routineCategory in catalog.values {
-                if routineCategory.onRatio == 0 {
+                if routineCategory?.onRatio == 0 {
                     continue
                 }
-                for item in routineCategory.items {
+                for item in routineCategory!.items {
                     if item.onRatio > 0, item.daysOfWeek.contains(dayOfWeek) {
 
                         let bgnDate = cal.date(byAdding:.minute, value:Int(item.bgnMinutes), to:dayDate!)
                         let bgnTime = bgnDate!.timeIntervalSince1970
-                        let color   = routineCategory.color
+                        let color   = routineCategory!.color
                         let event   = MuEvent(routine:item, bgnTime, color)
                         events.append(event)
 
