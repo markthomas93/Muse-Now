@@ -3,9 +3,6 @@
 import Foundation
 import UIKit
 
-
-public enum PageType: Int { case  main = 0, menu = 1, onboard = 3 }
-
 class PagesVC: UIViewController, UIPageViewControllerDataSource {
     
     static let shared = PagesVC()

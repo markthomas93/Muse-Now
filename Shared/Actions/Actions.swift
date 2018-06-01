@@ -7,6 +7,7 @@ import SpriteKit
 public enum DoAction : Int,Codable { case
 
     unknown,
+    gotoPageMain, gotoPageMenu, gotoPageOnboard,
     gotoEvent, gotoFuture, gotoRecordOn,
 
     // say

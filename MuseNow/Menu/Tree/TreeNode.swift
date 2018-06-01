@@ -7,8 +7,8 @@
 
 import Foundation
 typealias CallBaseNode = ((TreeNode)->())
-
 public enum ParentChildOther { case parent, child, other }
+
 
 /**
  Shadow hierarchy of TreeNodes for saving settings.
@@ -24,13 +24,14 @@ class TreeNode: Codable {
 
     var id = TreeNode.getNextId()
     var name = ""
-    var nodeType: TreeNodeType!
+    var nodeType: NodeType!
+    var cellType: CellType!
     var setting: TreeSetting?
-    var parent: TreeNode!
-    var children: [TreeNode]!
+    var children = [TreeNode]()
 
     // treeNode runtime
 
+    var parent: TreeNode!
     var userInfo: [String:Any]? = nil
     var cell: MenuCell? = nil
     var any: Any! = nil // may contain Cal
@@ -45,13 +46,25 @@ class TreeNode: Codable {
     var row      = -1
     var onRatio  = Float(1.0)
 
-    enum CodingKeys: String, CodingKey {
-        case id       = "id"
-        case name     = "name"
-        case nodeType = "nodeType"
-        case setting  = "setting"
-        // case parent   = "parent"
-        case children = "children"
+    enum CodingKeys: String, CodingKey { case
+        id,
+        name,
+        nodeType,
+        cellType,
+        setting,
+        children
+    }
+
+    /** values for TreeNode.type, which will dispatch subclass with same name */
+    enum NodeType: String, Codable  { case
+        TreeNode                = "TreeNode",
+        TreeButtonNode          = "TreeButtonNode",
+        TreeCalendarNode        = "TreeCalendarNode",
+        TreeDialColorNode       = "TreeDialColorNode",
+        TreeActNode             = "TreeActNode",
+        TreeBoolNode            = "TreeBoolNode",
+        TreeRoutineCategoryNode = "TreeRoutineCategoryNode",
+        TreeRoutineItemNode     = "TreeRoutineItemNode"
     }
 
     required init(from decoder: Decoder) throws {
@@ -60,9 +73,38 @@ class TreeNode: Codable {
 
         id       = try container.decode(Int.self, forKey: .id)
         name     = try container.decode(String.self, forKey: .name)
-        nodeType = try container.decode(TreeNodeType.self, forKey: .nodeType)
-        setting  = try container.decode(TreeSetting.self, forKey: .setting)
-        children = try container.decode([TreeNode].self, forKey: .children)
+        nodeType = try container.decode(NodeType.self, forKey: .nodeType)
+        cellType = try container.decode(CellType.self, forKey: .cellType)
+        setting  = try container.decodeIfPresent(TreeSetting.self, forKey: .setting) ?? nil
+
+        try decodeChildren(container)
+    }
+
+   /** Iterate through it children and use `type` to dispatch decoder to subclasses. */
+    private func decodeChildren(_ container:KeyedDecodingContainer<CodingKeys>) throws {
+
+        do {
+            var childTrees = try container.nestedUnkeyedContainer(forKey: CodingKeys.children)
+            var childArray = childTrees
+
+            while(!childTrees.isAtEnd) {
+
+                let nested = try childTrees.nestedContainer(keyedBy: CodingKeys.self)
+                let type = try nested.decode(NodeType.self, forKey: CodingKeys.nodeType)
+
+                switch type {
+                case .TreeButtonNode:           children.append(try childArray.decode(TreeButtonNode.self))
+                case .TreeCalendarNode:         children.append(try childArray.decode(TreeCalendarNode.self))
+                case .TreeDialColorNode:        children.append(try childArray.decode(TreeActNode.self))
+                case .TreeActNode:              children.append(try childArray.decode(TreeBoolNode.self))
+                case .TreeBoolNode:             children.append(try childArray.decode(TreeButtonNode.self))
+                case .TreeRoutineCategoryNode:  children.append(try childArray.decode(TreeRoutineCategoryNode.self))
+                case .TreeRoutineItemNode:      children.append(try childArray.decode(TreeRoutineItemNode.self))
+                default:   break
+                }
+            }
+        }
+        catch { /* ignore empty or malformed children */ }
     }
 
     func encode(to encoder: Encoder) throws {
@@ -71,26 +113,28 @@ class TreeNode: Codable {
 
         try container.encode(id, forKey: .id)
         try container.encode(name, forKey: .name)
-        try container.encode(nodeType, forKey: .nodeType)
-        try container.encode(setting, forKey: .setting)
-        try container.encode(children, forKey: .children)
+        try container.encode(nodeType, forKey: CodingKeys.nodeType)
+        if let setting = setting {
+            try container.encode(setting, forKey: .setting)
+        }
+        if children.count > 0 {
+            try container.encode(children, forKey: .children)
+        }
     }
 
     /**
      Usually initialized from TreeNodes.shared.root
      */
-    init(_ name_: String, _ parent_:TreeNode!, _ type_:TreeNodeType,_ setting_: TreeSetting! = nil){
+    init(_ name_: String, _ parent_:TreeNode!,_ nodeType_: NodeType = .TreeNode, _ cellType_: CellType,_ setting_: TreeSetting! = nil){
 
         name = name_
         parent = parent_
         setting = setting_
-        nodeType = type_
+        nodeType = nodeType_
+        cellType = cellType_
         children = [TreeNode]()
 
         if let parent = parent {
-            if parent.children == nil {
-                parent.children = [TreeNode]()
-            }
             parent.children.append(self)
         }
         level = (parent?.level ?? 0) + 1
@@ -99,10 +143,15 @@ class TreeNode: Codable {
         }
     }
 
+    convenience init (_ name_: String, _ parent_:TreeNode!,_ cellType_: CellType,_ setting_: TreeSetting! = nil) {
+        self.init(name_, parent_, .TreeNode, cellType_, setting_)
+    }
+
     func initCell() {
 
         #if os(iOS) // iOS is early bound, watchOS is late bound
-        switch nodeType {
+        
+        switch cellType {
 
         case .title:            cell = MenuTitle(self)
         case .titleButton:      cell = MenuTitleButton(self)
@@ -121,18 +170,11 @@ class TreeNode: Codable {
         }
         #endif
     }
+    
     func updateCell() { // override
     }
 
-    func update(from:TreeNode) {
-        name = from.name
-        setting = from.setting
-        children.removeAll()
-        for child in from.children {
-            children.append(child)
-        }
-    }
-}
+ }
 
 extension TreeNode: Hashable {
     var hashValue: Int {

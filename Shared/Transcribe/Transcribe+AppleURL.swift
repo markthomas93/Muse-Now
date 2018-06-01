@@ -27,6 +27,7 @@ extension Transcribe {
     func appleTranscribeEvent(_ event:MuEvent, _ done: @escaping CallVoid) {
 
         let url = FileManager.documentUrlFile(event.eventId)
+        if event.type != .memoRecord { return done() } // skip already transcribed events
 
         appleSttUrl(url) { found in
 

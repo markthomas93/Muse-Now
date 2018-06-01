@@ -148,7 +148,7 @@ class MenuCell: MuCell {
 
             var expandable = false
 
-            switch treeNode.nodeType {
+            switch treeNode.cellType {
 
             case .unknown,
                  .title,

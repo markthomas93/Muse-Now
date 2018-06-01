@@ -15,9 +15,21 @@ class TreeButtonNode: TreeNode {
     var body: String!
     var anys: [Any]!
 
+    private enum TreeDialColorCodingKeys: String, CodingKey {
+        case alert = "alert"
+        case body = "body"
+    }
+
+    override func encode(to encoder: Encoder) throws {
+        try super.encode(to: encoder)
+        var container = encoder.container(keyedBy: TreeDialColorCodingKeys.self)
+        try container.encode(self.alert, forKey: .alert)
+        try container.encode(self.body, forKey: .body)
+    }
+
     convenience init(_ title_:String,_ parent_:TreeNode!,_ alert_:String,_ body_:String, _ anys_:[Any]) {
 
-        self.init(title_, parent_, .titleButton, TreeSetting(set:1,member:1))
+        self.init(title_, parent_, .TreeButtonNode, .titleButton, TreeSetting(set:1,member:1))
         alert = alert_
         body = body_
         anys = anys_
@@ -93,7 +105,7 @@ class TreeDialColorNode: TreeNode {
     }
 
        convenience init (_ title_:String,_ parent_:TreeNode!) {
-        self.init(title_,parent_, .titleFader, TreeSetting(set:0,member:1))
+        self.init(title_, parent_,.TreeDialColorNode, .titleFader, TreeSetting(set:0,member:1))
         dialColor = Settings.shared.settings["dialColor"] ?? 0
         initCell()
         updateCell()
@@ -139,32 +151,19 @@ class TreeDialColorNode: TreeNode {
 class TreeActNode: TreeNode {
 
     convenience init (_ title_:String, _ parent_:TreeNode!,_ set:Int, _ member: Int,_ onAct:DoAction,_ offAct:DoAction,_ setFrom_:SetFrom) {
-        self.init(title_, parent_, .titleMark, TreeSetting(set:set, member:member, setFrom_, onAct:onAct, offAct:offAct))
+        self.init(title_, parent_, .TreeActNode, .titleMark, TreeSetting(set:set, member:member, setFrom_, onAct:onAct, offAct:offAct))
         initCell()
         updateCell()
     }
-//    override func updateCell() {
-//        callTreeNode = { node in  // callback to set action message based on isOn()
-//            let isOn = node.setting?.isOn() ?? false
-//            Actions.shared.doAction(isOn ? onAct : offAct )
-//        }
-//    }
-
 }
 
 class TreeBoolNode: TreeNode {
     
     convenience init (_ title_:String, _ parent_:TreeNode!,_ bool:Bool,_ onAct:DoAction,_ offAct:DoAction) {
-        self.init(title_, parent_, .titleMark, TreeSetting(set: bool ? 1 : 0, member: 1, [],  onAct:onAct, offAct:offAct))
+        self.init(title_, parent_, .TreeBoolNode, .titleMark, TreeSetting(set: bool ? 1 : 0, member: 1, [],  onAct:onAct, offAct:offAct))
         initCell()
         updateCell()
     }
-//    override func updateCell() {
-//        // callback to set action message based on isOn()
-//        callTreeNode = { node in
-//             let isOn = node.setting?.isOn() ?? false
-//            Actions.shared.doAction(isOn ? onAct : offAct, isSender:true ) }
-//    }
 }
 
 class TreeRoutineCategoryNode: TreeNode {
@@ -172,7 +171,7 @@ class TreeRoutineCategoryNode: TreeNode {
     var routineCategory:RoutineCategory!
 
     convenience init (_ routineCategory_: RoutineCategory,_ parent_: TreeNode!) {
-        self.init(routineCategory_.title, parent_, .colorTitleMark, TreeSetting(set:routineCategory_.onRatio > 0 ? 1 : 0,member:1))
+        self.init(routineCategory_.title, parent_,.TreeRoutineCategoryNode, .colorTitleMark, TreeSetting(set:routineCategory_.onRatio > 0 ? 1 : 0,member:1))
         routineCategory = routineCategory_ // before initCell
         initCell()
         updateCell()
@@ -196,8 +195,8 @@ class TreeRoutineItemNode: TreeNode {
 
     var routineItem: RoutineItem!
 
-    convenience init (_ type_: TreeNodeType,_ parent_:TreeNode!,_ item:RoutineItem!) {
-        self.init(item.title, parent_, type_, TreeSetting(set:0, member:1))
+    convenience init (_ type_: CellType,_ parent_:TreeNode!,_ item:RoutineItem!) {
+        self.init(item.title, parent_, .TreeRoutineItemNode, type_, TreeSetting(set:0, member:1))
         routineItem = item // before initCell
         initCell()
         updateCell()

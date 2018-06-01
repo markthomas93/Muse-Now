@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 /**
  Archive of hierarchy of TreeNodes
  */
@@ -16,17 +15,32 @@ class TreeNodes: FileSync {
 
     static var shared = TreeNodes()
 
+    var root: TreeNode!
+    var vc: Any!
+
     var shownNodes = [TreeNode]() // currently displayed nodes
     var nextNodes  = [TreeNode]() // double buffer update
     var touchedNode: TreeNode! // which node was last touched
-    var root: TreeNode!
-    var vc: Any!
+    var idNode = [Int:TreeNode]()
 
     override init() {
         super.init()
          fileName = "Menu.json"
     }
 
+    static func findPath(_ path:String)  -> TreeNode! {
+        var node: TreeNode!
+        if let root = shared.root {
+            let paths: [String] = path.split {$0 == "."}.map(String.init)
+            let startIndex =  root.name.starts(with: paths[0]) ? 1 : 0
+            node = root.findPaths(paths,startIndex)
+        }
+        return node
+    }
+
+    static func findCell(_ path:String) -> MenuCell! {
+        return TreeNodes.findPath(path)?.cell ?? nil
+    }
 
     /**
      Renumber currently displayed table cells.
@@ -42,38 +56,6 @@ class TreeNodes: FileSync {
         root?.rehighlight()
         #endif
     }
-    /**
-     Merge TreeNodes root with TreeNodes root.
-     */
-    func merge(_ node:TreeNode,_ base:TreeNode) {
-//        for baseChild in base.children {
-//            for nodeChild in node.children {
-//                if nodeChild.name == baseChild.name {
-//                    nodeChild.setting = baseChild.setting
-//                    //Log("𐂷 merge \(nodeChild.title)")
-//                    merge(nodeChild,baseChild)
-//                    break
-//                }
-//            }
-//        }
-    }
-
-    /**
-     Either merge with archived treeBase file,
-     or create a new treeBase from treeNode.
-     */
-    func merge(_ treeNode:TreeNode) {
-
-//        unarchiveTree {
-//            if let baseRoot = self.baseRoot {
-//                self.merge(treeNode,baseRoot)
-//            }
-//            else {
-//                self.baseRoot = treeNode
-//                self.archiveTree { }
-//            }
-//        }
-    }
 
     func archiveTree(done:@escaping CallVoid) {
 
@@ -82,19 +64,60 @@ class TreeNodes: FileSync {
         }
     }
 
-    func unarchiveTree(_ completion: @escaping () -> Void) {
+
+    func unarchiveTree(_ done: @escaping CallBool) {
+
+        func mergeChildren(_ parent:TreeNode) {
+            for newChild in parent.children {
+                // found, so merge old cell
+                if let oldChild = idNode[newChild.id] {
+                    oldChild.setting = newChild.setting
+                    oldChild.updateCell()
+                }
+                    // not found so add new cell
+                else {
+                    idNode[newChild.id] = newChild
+                    newChild.updateCell()
+                }
+                // depth first add grand children children
+                mergeChildren(newChild)
+            }
+        }
+        func addChildren(_ parent:TreeNode) {
+            for newChild in parent.children {
+                idNode[newChild.id] = newChild
+                newChild.updateCell()
+            }
+        }
+
+        func mergeTree(_ newRoot: TreeNode) {
+            if root == nil {
+                root = newRoot
+                addChildren(newRoot)
+            }
+            else {
+                mergeChildren(newRoot)
+            }
+        }
 
         unarchiveData() { data in
 
-            if  let data = data,
-                let fileRoot = try? JSONDecoder().decode(TreeNode.self, from:data) {
+            if  let data = data {
+                
+                if  let fileRoot = try? JSONDecoder().decode(TreeNode.self, from:data) {
 
-                self.root = fileRoot
-                completion()
+                    mergeTree(fileRoot)
+                    done(true)
+                }
+                else {
+                    print("\(#function) could not decode json file: \(self.fileName))")
+                    done(false)
+                }
             }
             else {
-                completion()
+                done(false)
             }
         }
     }
+
 }

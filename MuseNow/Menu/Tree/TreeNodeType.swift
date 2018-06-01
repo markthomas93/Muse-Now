@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum TreeNodeType: String,Codable { case
+enum CellType: String, Decodable { case
     unknown         = "unknown",
     title           = "title",
     titleButton     = "titleButton",

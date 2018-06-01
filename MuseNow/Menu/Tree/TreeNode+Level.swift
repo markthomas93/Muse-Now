@@ -27,7 +27,7 @@ extension TreeNode {
                 depth = max(depth,child.renumber())
             }
         }
-        return depth+1
+        return depth + 1
     }
 
     func getParentChildOther() -> ParentChildOther {
@@ -59,7 +59,7 @@ extension TreeNode {
                             continue
                         }
                         if childSetting.setFrom.contains(.parent) {
-                            switch child.nodeType {
+                            switch child.cellType {
                             case .titleMark,
                                  .colorTitleMark:
                                 markCount += 1.0
@@ -100,14 +100,11 @@ extension TreeNode {
         }
     }
 
-    func syncNode() {
-        
-    }
-    func toggle() {
+     func toggle() {
         if let setting = setting {
             let isOn = setting.flipSet()
-            set(isOn:isOn)
-            syncNode()
+            updateOn(isOn)
+            TreeNodes.shared.syncNode(self)
         }
     }
 
@@ -128,7 +125,8 @@ extension TreeNode {
         }
     }
 
-    func set(isOn:Bool) {
+    func updateOn(_ isOn:Bool) {
+
         if let setting = setting {
             onRatio = isOn ? 1 : 0
             setting.setOn(onRatio > 0) // synch setting with onRatio

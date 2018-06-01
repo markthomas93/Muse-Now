@@ -62,10 +62,8 @@ class Show {
         default: break
         }
         switch act {
-        case .hideRoutine,
-             .hideRoutList,
-             .showRoutine,
-             .showRoutList:
+        case .hideRoutine, .showRoutine,
+             .hideRoutList, .showRoutList:
 
             Routine.shared.archiveRoutine {
                 continueAction()

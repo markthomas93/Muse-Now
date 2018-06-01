@@ -1,53 +1,201 @@
-8:40:37.267: ⧉ saveData Routine.json 1526917093.0 ➛ 1526917237.0 𝚫144.0
-8:40:37.290: ⧉ Settings::settingsFromMemory() saySet:7
-8:40:37.293: ⧉ saveData Settings.json 1526917093.0 ➛ 1526917237.0 𝚫144.0
-8:40:37.312: → sendMsg ShowSet [putSet:23]
-8:40:37.316: ⧉ unarchiveSettings
-8:40:37.323: ⧉ unarchiveData:Settings.json memoryTime:1526917237.0 count:80 bytes
-8:40:37.327: ⧉ Settings::settingsFromRoot() saySet:7 showSet:23
-8:40:37.365: ⧉ unarchiveData:Memos.json memoryTime:1526917094.0 count:1632 bytes
-8:40:37.420: ⧉ Memos::unarchiveMemos items:5  memoryTime:1526917094.0
-8:40:37.504: ⧉ unarchiveData:Marks.json memoryTime:1526916495.0 count:220 bytes
-8:40:37.583: ⧉ unarchiveData:Calendars.json memoryTime:1526916074.0 count:626 bytes
-8:40:38.315: → cacheMsg FileMsg [nameTimes:["Memos.json": 1526917094.0, "Routine.json": 1526917237.0, "Marks.json": 1526916495.0, "Calendars.json": 1526916074.0, "Settings.json": 1526917237.0, "Menu.json": 1526917232.0]]
-8:40:38.714:  session(_:didReceiveApplicationContext:) FileMsg [nameTimes:{
-    "Calendars.json" = 1526916074;
-    "Marks.json" = 1526916495;
-    "Memos.json" = 1526917094;
-    "Menu.json" = 1526917218;
-    "Routine.json" = 1526917093;
-    "Settings.json" = 1526917237;
-}]
-8:40:38.783: ← session(_:didReceiveApplicationContext:) FileMsg [fileTime:1526917237, getFile:Routine.json]
-8:40:38.795: ⧉ sendPostFile fileName:Routine.json fileTime:1526917237.0
-8:40:38.800: → cacheMsg FileMsg [fileTime:1526917237.0, data:<data>, postFile:Routine.json]
-8:40:38.810: ⧉ sendPostFile fileName:Routine.json fileTime:1526917237.0
-8:40:38.815: → cacheMsg FileMsg [fileTime:1526917237.0, data:<data>, postFile:Routine.json]
+(lldb) po nestTrees
+▿ _JSONUnkeyedDecodingContainer
+  ▿ decoder : <_JSONDecoder: 0x102109810>
+  ▿ container : 3 elements
+    ▿ 0 : 4 elements
+      ▿ 0 : 2 elements
+        - key : title
+        - value : 1st
+      ▿ 1 : 2 elements
+        - key : type
+        - value : TreeA
+      ▿ 2 : 2 elements
+        - key : valueA
+        - value : 1.0.a
+      ▿ 3 : 2 elements
+        - key : children
+        ▿ value : 3 elements
+          ▿ 0 : 4 elements
+            ▿ 0 : 2 elements
+              - key : title
+              - value : 1.1
+            ▿ 1 : 2 elements
+              - key : type
+              - value : TreeA
+            ▿ 2 : 2 elements
+              - key : valueA
+              - value : 1.1.a
+            ▿ 3 : 2 elements
+              - key : children
+              - value : 0 elements
+          ▿ 1 : 5 elements
+            ▿ 0 : 2 elements
+              - key : children
+              - value : 0 elements { ... }
+            ▿ 1 : 2 elements
+              - key : title
+              - value : 1.2
+            ▿ 2 : 2 elements
+              - key : type
+              - value : TreeB
+            ▿ 3 : 2 elements
+              - key : valueA
+              - value : 1.2.a
+            ▿ 4 : 2 elements
+              - key : valueB
+              - value : 1.2.b
+          ▿ 2 : 6 elements
+            ▿ 0 : 2 elements
+              - key : children
+              - value : 0 elements { ... }
+            ▿ 1 : 2 elements
+              - key : valueC
+              - value : 1.3.c
+            ▿ 2 : 2 elements
+              - key : title
+              - value : 1.3
+            ▿ 3 : 2 elements
+              - key : type
+              - value : TreeC
+            ▿ 4 : 2 elements
+              - key : valueA
+              - value : 1.3.a
+            ▿ 5 : 2 elements
+              - key : valueB
+              - value : 1.3.b
+    ▿ 1 : 5 elements
+      ▿ 0 : 2 elements
+        - key : children
+        ▿ value : 3 elements
+          ▿ 0 : 4 elements
+            ▿ 0 : 2 elements
+              - key : title
+              - value : 2.1
+            ▿ 1 : 2 elements
+              - key : type
+              - value : TreeA
+            ▿ 2 : 2 elements
+              - key : valueA
+              - value : 2.1.a
+            ▿ 3 : 2 elements
+              - key : children
+              - value : 0 elements { ... }
+          ▿ 1 : 5 elements
+            ▿ 0 : 2 elements
+              - key : children
+              - value : 0 elements { ... }
+            ▿ 1 : 2 elements
+              - key : title
+              - value : 2.2
+            ▿ 2 : 2 elements
+              - key : type
+              - value : TreeB
+            ▿ 3 : 2 elements
+              - key : valueA
+              - value : 2.2.a
+            ▿ 4 : 2 elements
+              - key : valueB
+              - value : 2.2.b
+          ▿ 2 : 6 elements
+            ▿ 0 : 2 elements
+              - key : children
+              - value : 0 elements { ... }
+            ▿ 1 : 2 elements
+              - key : valueC
+              - value : 2.3.c
+            ▿ 2 : 2 elements
+              - key : title
+              - value : 2.3
+            ▿ 3 : 2 elements
+              - key : type
+              - value : TreeC
+            ▿ 4 : 2 elements
+              - key : valueA
+              - value : 2.3.a
+            ▿ 5 : 2 elements
+              - key : valueB
+              - value : 2.3.b
+      ▿ 1 : 2 elements
+        - key : title
+        - value : 2nd
+      ▿ 2 : 2 elements
+        - key : type
+        - value : TreeB
+      ▿ 3 : 2 elements
+        - key : valueA
+        - value : 2.a
+      ▿ 4 : 2 elements
+        - key : valueB
+        - value : 2.b
+    ▿ 2 : 6 elements
+      ▿ 0 : 2 elements
+        - key : children
+        ▿ value : 3 elements
+          ▿ 0 : 4 elements
+            ▿ 0 : 2 elements
+              - key : title
+              - value : 3.1
+            ▿ 1 : 2 elements
+              - key : type
+              - value : TreeA
+            ▿ 2 : 2 elements
+              - key : valueA
+              - value : 3.1.a
+            ▿ 3 : 2 elements
+              - key : children
+              - value : 0 elements { ... }
+          ▿ 1 : 5 elements
+            ▿ 0 : 2 elements
+              - key : children
+              - value : 0 elements { ... }
+            ▿ 1 : 2 elements
+              - key : title
+              - value : 3.2
+            ▿ 2 : 2 elements
+              - key : type
+              - value : TreeB
+            ▿ 3 : 2 elements
+              - key : valueA
+              - value : 3.2.a
+            ▿ 4 : 2 elements
+              - key : valueB
+              - value : 3.2.b
+          ▿ 2 : 6 elements
+            ▿ 0 : 2 elements
+              - key : children
+              - value : 0 elements { ... }
+            ▿ 1 : 2 elements
+              - key : valueC
+              - value : 3.3.c
+            ▿ 2 : 2 elements
+              - key : title
+              - value : 3.3
+            ▿ 3 : 2 elements
+              - key : type
+              - value : TreeC
+            ▿ 4 : 2 elements
+              - key : valueA
+              - value : 3.3.a
+            ▿ 5 : 2 elements
+              - key : valueB
+              - value : 3.3.b
+      ▿ 1 : 2 elements
+        - key : valueC
+        - value : 3.c
+      ▿ 2 : 2 elements
+        - key : title
+        - value : 3rd
+      ▿ 3 : 2 elements
+        - key : type
+        - value : TreeC
+      ▿ 4 : 2 elements
+        - key : valueA
+        - value : 3.a
+      ▿ 5 : 2 elements
+        - key : valueB
+        - value : 3.b
+  ▿ codingPath : 1 element
+    - 0 : TreesKey(stringValue: "items", intValue: nil)
+  - currentIndex : 0
 
-off
-
-8:41:04.078: ⧉ saveData Routine.json 1526917237.0 ➛ 1526917264.0 𝚫27.0
-8:41:04.102: ⧉ Settings::settingsFromMemory() saySet:7
-8:41:04.105: ⧉ saveData Settings.json 1526917237.0 ➛ 1526917264.0 𝚫27.0
-8:41:04.121: → sendMsg ShowSet [putSet:31]
-8:41:04.124: ⧉ unarchiveSettings
-8:41:04.134: ⧉ unarchiveData:Settings.json memoryTime:1526917264.0 count:80 bytes
-8:41:04.137: ⧉ Settings::settingsFromRoot() saySet:7 showSet:31
-8:41:04.191: ⧉ unarchiveData:Memos.json memoryTime:1526917094.0 count:1632 bytes
-8:41:04.267: ⧉ Memos::unarchiveMemos items:5  memoryTime:1526917094.0
-8:41:04.352: ⧉ unarchiveData:Marks.json memoryTime:1526916495.0 count:220 bytes
-8:41:04.385: ⧉ unarchiveData:Calendars.json memoryTime:1526916074.0 count:626 bytes
-8:41:05.126: → cacheMsg FileMsg [nameTimes:["Memos.json": 1526917094.0, "Routine.json": 1526917264.0, "Marks.json": 1526916495.0, "Calendars.json": 1526916074.0, "Settings.json": 1526917264.0, "Menu.json": 1526917232.0]]
-8:41:05.381: ← session(_:didReceiveApplicationContext:) FileMsg [fileTime:1526917232, getFile:Menu.json]
-8:41:05.551: ← session(_:didReceiveApplicationContext:) FileMsg [nameTimes:{
-    "Calendars.json" = 1526916074;
-    "Marks.json" = 1526916495;
-    "Memos.json" = 1526917094;
-    "Menu.json" = 1526917218;
-    "Routine.json" = 1526917093;
-    "Settings.json" = 1526917264;
-}]
-8:41:05.597: ⧉ sendPostFile fileName:Routine.json fileTime:1526917264.0
-8:41:05.607: → cacheMsg FileMsg [fileTime:1526917264.0, data:<data>, postFile:Routine.json]
-
-on
+(lldb) 

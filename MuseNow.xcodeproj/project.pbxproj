@@ -319,9 +319,9 @@
 		80A33E1A20A364A2000D203E /* TreeNodes+Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F33758209C9EEF00F365D5 /* TreeNodes+Init.swift */; };
 		80A33E1B20A364B5000D203E /* TreeNode+Subclass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F33760209C9EEF00F365D5 /* TreeNode+Subclass.swift */; };
 		80A33E2020A3674D000D203E /* Fader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A33E1F20A3674D000D203E /* Fader.swift */; };
-		80A33E2120A36BEE000D203E /* TreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F3376F209C9EEF00F365D5 /* TreeNode.swift */; };
 		80A33E2420A36C6C000D203E /* TreeNode+Watch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A33E2320A36C6C000D203E /* TreeNode+Watch.swift */; };
 		80A3E36C1FC0CABC00195BD3 /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F70E1FA3EE2400F7ED94 /* Actions.swift */; };
+		80B082E420C0BC6100FE757A /* TreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F3376F209C9EEF00F365D5 /* TreeNode.swift */; };
 		80BD52361FEB695E00EB4F92 /* BubbleCovers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BD52351FEB695E00EB4F92 /* BubbleCovers.swift */; };
 		80C3A02F2090F8200027CED5 /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C3A02E2090F8200027CED5 /* Onboarding.swift */; };
 		80C3A0302090F8C10027CED5 /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C3A02E2090F8200027CED5 /* Onboarding.swift */; };
@@ -407,6 +407,12 @@
 		80F6FF0E200FE5B400876207 /* WatchCrown2.m4v in Resources */ = {isa = PBXBuildFile; fileRef = 8083401A200FE4BA00AD5FF7 /* WatchCrown2.m4v */; };
 		80F6FF0F200FE5B400876207 /* WatchMemo2.m4v in Resources */ = {isa = PBXBuildFile; fileRef = 8083401B200FE4BA00AD5FF7 /* WatchMemo2.m4v */; };
 		80F6FF10200FE5B400876207 /* WatchSiri2.m4v in Resources */ = {isa = PBXBuildFile; fileRef = 8083401C200FE4BA00AD5FF7 /* WatchSiri2.m4v */; };
+		80FAC52320B9FF0300A1B1FA /* TreeNodes+Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80FAC52220B9FF0300A1B1FA /* TreeNodes+Session.swift */; };
+		80FAC52420B9FF0300A1B1FA /* TreeNodes+Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80FAC52220B9FF0300A1B1FA /* TreeNodes+Session.swift */; };
+		80FAC52620BDA50300A1B1FA /* PageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80FAC52520BDA50300A1B1FA /* PageType.swift */; };
+		80FAC52720BDA50300A1B1FA /* PageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80FAC52520BDA50300A1B1FA /* PageType.swift */; };
+		80FAC52820BDAE4200A1B1FA /* TreeNode+find.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F33763209C9EEF00F365D5 /* TreeNode+find.swift */; };
+		80FAC52A20BDAEEC00A1B1FA /* TreeNode+Goto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80FAC52920BDAEEC00A1B1FA /* TreeNode+Goto.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -767,6 +773,9 @@
 		80F337BE209D80B300F365D5 /* Main.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Main.xcassets; sourceTree = "<group>"; };
 		80F337CD209F67EE00F365D5 /* TreeNode+Phone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TreeNode+Phone.swift"; sourceTree = "<group>"; };
 		80F337D120A1FE6F00F365D5 /* MenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
+		80FAC52220B9FF0300A1B1FA /* TreeNodes+Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TreeNodes+Session.swift"; sourceTree = "<group>"; };
+		80FAC52520BDA50300A1B1FA /* PageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageType.swift; sourceTree = "<group>"; };
+		80FAC52920BDAEEC00A1B1FA /* TreeNode+Goto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TreeNode+Goto.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -867,6 +876,7 @@
 				8004F7481FA3EE2400F7ED94 /* Scene */,
 				8004F7521FA3EE2400F7ED94 /* Session */,
 				8004F7551FA3EE2400F7ED94 /* Transcribe */,
+				80FAC52520BDA50300A1B1FA /* PageType.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -1378,6 +1388,7 @@
 			children = (
 				803D6FE620A4AC9A0098B134 /* TreeNodes.swift */,
 				80F33758209C9EEF00F365D5 /* TreeNodes+Init.swift */,
+				80FAC52220B9FF0300A1B1FA /* TreeNodes+Session.swift */,
 				80F3376F209C9EEF00F365D5 /* TreeNode.swift */,
 				80DC036620B75D5E000200EA /* TreeNode+Level.swift */,
 				80F337CD209F67EE00F365D5 /* TreeNode+Phone.swift */,
@@ -1385,6 +1396,7 @@
 				803F964420B852AA0066E048 /* TreeNodeType.swift */,
 				80F33760209C9EEF00F365D5 /* TreeNode+Subclass.swift */,
 				80F33763209C9EEF00F365D5 /* TreeNode+find.swift */,
+				80FAC52920BDAEEC00A1B1FA /* TreeNode+Goto.swift */,
 			);
 			path = Tree;
 			sourceTree = "<group>";
@@ -1738,6 +1750,7 @@
 				8025E3841FFC0C49004B81F4 /* ColorCell.swift in Sources */,
 				803D5D7F2034BAAB0082E22D /* EventType.swift in Sources */,
 				8004F6E41FA3ED5E00F7ED94 /* Visitor.swift in Sources */,
+				80FAC52620BDA50300A1B1FA /* PageType.swift in Sources */,
 				80F2090E206EB32C00130A66 /* Alert.swift in Sources */,
 				804D5A011FA3FC8B0025B724 /* AppDelegate.swift in Sources */,
 				8004F76D1FA3EE2400F7ED94 /* Anim.swift in Sources */,
@@ -1774,6 +1787,7 @@
 				8004F6F81FA3ED5E00F7ED94 /* Node.swift in Sources */,
 				806BA28B209B6251001A6209 /* Transcribe+Pargraph.swift in Sources */,
 				8004F7A11FA3EE2400F7ED94 /* Mark.swift in Sources */,
+				80FAC52320B9FF0300A1B1FA /* TreeNodes+Session.swift in Sources */,
 				80F337BA209CBA5700F365D5 /* MuCell.swift in Sources */,
 				809B0E96209A8DC30044FDEA /* Session+Context.swift in Sources */,
 				8004F79F1FA3EE2400F7ED94 /* FileSync.swift in Sources */,
@@ -1804,6 +1818,7 @@
 				804D5A241FA3FCAA0025B724 /* EventTable+MuEvent.swift in Sources */,
 				807A59F4201E542C007BCF46 /* MainVC+override.swift in Sources */,
 				804D5A2D1FA3FCAA0025B724 /* ToggleDot.swift in Sources */,
+				80FAC52A20BDAEEC00A1B1FA /* TreeNode+Goto.swift in Sources */,
 				8004F7711FA3EE2400F7ED94 /* Dots+Action.swift in Sources */,
 				804D5A271FA3FCAA0025B724 /* EventTable+Select.swift in Sources */,
 				803C5B231FBF82E000BA9C6C /* Setting.swift in Sources */,
@@ -1906,9 +1921,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				80FAC52820BDAE4200A1B1FA /* TreeNode+find.swift in Sources */,
 				8004F7C81FA3EE2400F7ED94 /* Scene.swift in Sources */,
 				8004F7A81FA3EE2400F7ED94 /* Settings.swift in Sources */,
-				80A33E2120A36BEE000D203E /* TreeNode.swift in Sources */,
 				8004F7011FA3ED5E00F7ED94 /* Par.swift in Sources */,
 				80CDB7212076A16F0037B181 /* Motion+Print.swift in Sources */,
 				8004F7051FA3ED5E00F7ED94 /* ParObj.swift in Sources */,
@@ -1931,6 +1946,7 @@
 				8004F7AA1FA3EE2400F7ED94 /* Hear.swift in Sources */,
 				8004F7E11FA3F01600F7ED94 /* NotificationController.swift in Sources */,
 				8004F79E1FA3EE2400F7ED94 /* FileMsg.swift in Sources */,
+				80FAC52420B9FF0300A1B1FA /* TreeNodes+Session.swift in Sources */,
 				809B0E9A209A8E250044FDEA /* Session+UserInfo.swift in Sources */,
 				809E55681FB4C6EA00974CB7 /* Show.swift in Sources */,
 				80F337D520A1FECA00F365D5 /* MenuController.swift in Sources */,
@@ -1943,6 +1959,7 @@
 				8004F7DF1FA3F01600F7ED94 /* Crown.swift in Sources */,
 				8004F6E31FA3ED5E00F7ED94 /* Types.swift in Sources */,
 				8004F6F91FA3ED5E00F7ED94 /* Node.swift in Sources */,
+				80B082E420C0BC6100FE757A /* TreeNode.swift in Sources */,
 				8004F7CC1FA3EE2400F7ED94 /* Session+Parse.swift in Sources */,
 				8004F7B61FA3EE2400F7ED94 /* Say.swift in Sources */,
 				809B0E94209A8A7E0044FDEA /* Transcribe.Watch.swift in Sources */,
@@ -2019,6 +2036,7 @@
 				8004F7681FA3EE2400F7ED94 /* Anim+Action.swift in Sources */,
 				8004F6FD1FA3ED5E00F7ED94 /* NodeAnys.swift in Sources */,
 				8004F7E21FA3F01600F7ED94 /* WatchCon+TestSession.swift in Sources */,
+				80FAC52720BDA50300A1B1FA /* PageType.swift in Sources */,
 				8004F7A01FA3EE2400F7ED94 /* FileSync.swift in Sources */,
 				8004F76E1FA3EE2400F7ED94 /* Anim.swift in Sources */,
 				80F337CC209F654600F365D5 /* MenuColorTitle.swift in Sources */,

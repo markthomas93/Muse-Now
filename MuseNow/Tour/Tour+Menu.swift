@@ -41,23 +41,20 @@ extension Tour {
 //            ])
 //
         // calendar
-        addTour("calendar",[.menu, .info, .detail],[
-            menuMark("calendar",[], [gotoPath("calendar"), "Show calendar events and \n changes will pause","v_056.aif"]),
-        ])
-
-        // reminder
-        addTour("reminders",[.menu, .info, .detail],[
+        addTour("events",[.menu, .info, .detail],[
+            menuMark("events",[], [gotoPath("events"), "Show calendar and reminder events and changes will pause","v_056.aif"]),
             menuMark("reminders",[],[ gotoPath("reminders"),
-                "Show reminders, which \n have a deadline","v_057.aif",
-                "Add reminders anytime with Siri:","v_085.aif"]),
-            
+                                      "Show reminders, which \n have a deadline","v_057.aif",
+                                      "Add reminders anytime with Siri:","v_085.aif"]),
+
             menuMark("reminders", [.overlay,.nowait], [
 
                 "\"Hey Siri, remind me to pack for trip tomorrow\"","v_086.aif",27]),
 
             menuVid1("reminders",.diptych12, [.snugAbove,.nowait], ["WatchSiri2.m4v", 24]),
             menuVid1("reminders",.diptych22, [.snugAbove],         ["PhoneSiri2.m4v", 24])
-            ])
+        ])
+
 
         // memos
         addTour("memos",[.menu, .beta, .detail],[
@@ -158,7 +155,7 @@ extension Tour {
     /// goto title, animate Info button, and finish bubble animation afterwards
     func gotoInfo(_ path:String) -> CallWait {
         return { finish in
-            TreeNodes.shared.root?.goto(path: path) { treeNode in
+            TreeNodes.shared.root?.gotoPath(path) { treeNode in
                 treeNode.cell?.animateInfo(newAlpha:1.0, duration:0.5, delay:0)
                 finish()
             }
@@ -168,7 +165,7 @@ extension Tour {
     /// find title and finish and then finish bubble animation
     func gotoPath(_ path:String) -> CallWait {
         return { finish in
-            TreeNodes.shared.root?.goto(path: path) {_ in
+            TreeNodes.shared.root?.gotoPath(path) {_ in
                 finish()
             }
         }
@@ -176,8 +173,8 @@ extension Tour {
     /// find title and finish and then finish bubble animation
     func setNode(_ name:String, isOn:Bool) -> CallWait {
         return { finish in
-            if let treeNode = self.menuRoot.find(str:name)?.treeNode {
-                treeNode.set(isOn:isOn)
+            if let treeNode = TreeNodes.findPath(name) {
+                treeNode.updateOn(isOn)
                 finish()
             }
             else {
@@ -208,7 +205,7 @@ extension Tour {
         }
         // begin
         return { finish in
-            if  let treeCell = TreeNodes.shared.root?.findPath(path),
+            if  let treeCell = TreeNodes.findCell(path),
                 let faderCell = treeCell as? MenuTitleFader {
                 aniFader(faderCell.fader, value: value)
                 finish()
@@ -230,42 +227,42 @@ extension Tour {
     }
     /// bubble above menu cell
     func menuCell(_ name:String, _ options: BubbleOptions,_ anys:[Any]) -> Bubble! {
-        if let cell = menuRoot.find(str:name) {
+        if let cell = TreeNodes.findCell(name) {
             return Bubble(name, .above, .text, textSize, menuView, cell, [], [menuView, panelView], options, bubsFrom(anys))
         }
         return nil
     }
     /// bubble above info icon
     func menuInfo(_ name:String, _ options: BubbleOptions,_ anys:[Any]) -> Bubble! {
-        if let cell = menuRoot.find(str:name), let info = cell.info {
+        if let cell = TreeNodes.findCell(name), let info = cell.info {
             return Bubble(name, .above, .text, textSize, menuView, info, [cell], [menuView], options, bubsFrom(anys))
         }
         return nil
     }
     /// bubble above button
     func menuButn(_ path:String, _ options: BubbleOptions,_ anys:[Any]) -> Bubble! {
-        if let cell = menuRoot.findPath(path) as? MenuTitleButton, let butn = cell.butn0 {
+        if let cell = TreeNodes.findCell(path) as? MenuTitleButton, let butn = cell.butn0 {
             return Bubble(path, .above, .text, textSize, menuView, butn, [cell], [menuView], options, bubsFrom(anys))
         }
         return nil
     }
     /// bubble above fader
     func menuFader(_ name:String, _ options: BubbleOptions,_ anys:[Any]) -> Bubble! {
-        if let cell = menuRoot.find(str:name) as? MenuTitleFader, let fader = cell.fader {
+        if let cell = TreeNodes.findCell(name) as? MenuTitleFader, let fader = cell.fader {
             return Bubble(name, .above, .text, textSize, menuView,fader, [cell], [menuView], options, bubsFrom(anys))
         }
         return nil
     }
     /// bubble above mark
     func menuMark(_ path:String, _ options: BubbleOptions,_ anys:[Any]) -> Bubble! {
-        if let cell = menuRoot.findPath(path) as? MenuTitleMark, let mark = cell.mark {
+        if let cell = TreeNodes.findCell(path) as? MenuTitleMark, let mark = cell.mark {
             return Bubble(path, .above, .text, textSize, menuView, mark, [cell], [menuView, panelView], options, bubsFrom(anys))
         }
         return nil
     }
     /// bubble above
     func menuPanel(_ name:String,_ options: BubbleOptions,_ anys:[Any]) -> Bubble! {
-        if let cell = menuRoot.find(str:name) as? MenuTitleMark, let mark = cell.mark {
+        if let cell = TreeNodes.findCell(name) as? MenuTitleMark, let mark = cell.mark {
             return Bubble(name, .above, .text, textSize, menuView, mark, [cell], [menuView], options, bubsFrom(anys))
         }
         return nil
@@ -274,8 +271,7 @@ extension Tour {
     /// collapse menu if expanded
     func menuCollapse(_ name:String) {
 
-        if let cell = TreeNodes.shared.root?.find(str:name),
-            let node = cell.treeNode {
+        if let node = TreeNodes.shared.root?.findNodeName(name) {
             if node.expanded {
                 node.cell?.touchCell(.zero)
             }

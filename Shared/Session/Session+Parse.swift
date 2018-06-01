@@ -104,6 +104,14 @@ extension Session {
         }
     }
 
+    func parseTreeNode(_ msg: [String : Any]) {
+        if  let id   = msg["id"] as? Int,
+            let name = msg["name"] as? String,
+            let isOn = msg["is"] as? Bool {
+
+            TreeNodes.shared.updateNode(id,name,isOn)
+        }
+    }
     func parseMsg(_ msg: [String : Any]) {
 
         if let clss = msg["class"] as? String {
@@ -117,6 +125,7 @@ extension Session {
             case "Calendars":   parseCalendars(msg)
             case "Actions":     parseActions(msg)
             case "FileMsg":     FileMsg.parseMsg(msg)
+            case "TreeNode":    parseTreeNode(msg)
             default: break
             }
         }

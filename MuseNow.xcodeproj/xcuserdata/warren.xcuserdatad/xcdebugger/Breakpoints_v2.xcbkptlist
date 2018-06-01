@@ -37,22 +37,6 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Shared/Show/Show.swift"
-            timestampString = "548906626.510432"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "60"
-            endingLineNumber = "60"
-            landmarkName = "doShowAction(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "MuseNow/Menu/Watch/Edit/TreeTimeTitleDaysCell.swift"
             timestampString = "548956063.052766"
             startingColumnNumber = "9223372036854775807"
@@ -85,14 +69,14 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MuseNow/Menu/Tree/TreeNode+Level.swift"
-            timestampString = "548981734.8724329"
+            filePath = "MuseNow/Menu/Tree/TreeNodes+Init.swift"
+            timestampString = "549505646.991365"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "126"
-            endingLineNumber = "126"
-            landmarkName = "doCallback()"
-            landmarkType = "7">
+            startingLineNumber = "116"
+            endingLineNumber = "116"
+            landmarkName = "attachTour()"
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -101,13 +85,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MuseNow/Menu/Watch/MenuColorTitleMark.swift"
-            timestampString = "548981734.872489"
+            filePath = "MuseNow/Menu/Tree/TreeNodes.swift"
+            timestampString = "549505646.99142"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "14"
-            endingLineNumber = "14"
-            landmarkName = "setColor(_:)"
+            startingLineNumber = "36"
+            endingLineNumber = "36"
+            landmarkName = "findPath(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

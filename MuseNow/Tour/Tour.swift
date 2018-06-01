@@ -35,7 +35,6 @@ class Tour {
 
     var menuVC: MenuTableVC!
     var menuView: UIView!
-    var menuRoot: TreeNode!
 
     var panelView: UIView!
     var dialView: SKView!
@@ -61,8 +60,7 @@ class Tour {
         menuVC = pagesVC.menuVC!
         menuView = menuVC.view!
 
-        TreeNodes.shared.initTree(menuVC)
-        menuRoot = TreeNodes.shared.root!
+        ///... TreeNodes.shared.initTree(menuVC)
 
         panelView = MainVC.shared!.panel
         mainVC = MainVC.shared!
@@ -88,8 +86,8 @@ class Tour {
     /// goto main page
     let gotoMainPage: CallWait! = { finish in
         PagesVC.shared.gotoPageType(.main) {
-            if let treeNode = TreeNodes.shared.root?.find(str:"routine")?.treeNode {
-                treeNode.set(isOn: true)
+            if let treeNode = TreeNodes.findPath("routine") {
+                treeNode.updateOn(true)
                 Actions.shared.doAction(.gotoFuture)
                 finish()
             }
@@ -171,25 +169,34 @@ class Tour {
 
     func doTourAction(_ act:DoAction) {
 
-        switch act {
-        case .tourAll:    beginTourSet([.main,.menu])
-        case .tourMain:   beginTourSet([.main])
-        case .tourMenu:   beginTourSet([.menu])
-        case .tourDetail: beginTourSet([.detail])
-        case .tourIntro:  beginTourSet([.intro])
-        case .tourStop:   stopTour() ; Haptic.play(.stop) ; return
-        default: return
+        func continueTour() {
+
+            switch act {
+            case .tourAll:    beginTourSet([.main,.menu])
+            case .tourMain:   beginTourSet([.main])
+            case .tourMenu:   beginTourSet([.menu])
+            case .tourDetail: beginTourSet([.detail])
+            case .tourIntro:  beginTourSet([.intro])
+            case .tourStop:   stopTour() ; Haptic.play(.stop) ; return
+            default: return
+            }
+            Haptic.play(.start)
         }
-        Haptic.play(.start)
+
+        switch act {
+        case .tourAll,
+             .tourMain:   PagesVC.shared.gotoPageType(.main) { continueTour() }
+        case .tourMenu:   PagesVC.shared.gotoPageType(.menu) { continueTour() }
+        case .tourIntro:  PagesVC.shared.gotoPageType(.onboard) { continueTour() }
+        default:          continueTour()
+        }
     }
 
     func attachInfoSections(_ sections: inout [TourSection]) {
-        if let root = TreeNodes.shared.root {
-            for section in sections {
-                if !section.tourSet.intersection([.info,.buy,.beta]).isEmpty {
-                    if let cell = root.find(str:section.title) {
-                        cell.addInfoBubble(section)
-                    }
+        for section in sections {
+            if !section.tourSet.intersection([.info,.buy,.beta]).isEmpty {
+                if let cell = TreeNodes.findCell(section.title) {
+                    cell.addInfoBubble(section)
                 }
             }
         }

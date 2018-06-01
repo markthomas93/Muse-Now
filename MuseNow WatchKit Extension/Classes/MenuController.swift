@@ -27,11 +27,11 @@ class MenuController: WKInterfaceController {
         parent = context as! TreeNode
         setTitle(parent.name)
 
-        let children = parent.children!
+        let children = parent.children
         var rowTypes = [String]()
 
         for child in parent.children {
-            switch child.nodeType {
+            switch child.cellType {
 
             case .title:            rowTypes.append("MenuTitle")
             case .titleButton:      rowTypes.append("MenuTitleButton")

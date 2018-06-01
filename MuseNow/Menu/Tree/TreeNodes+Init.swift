@@ -19,27 +19,36 @@ extension TreeNodes {
         
         vc = vc_
         if root != nil { return }
-        
-        root = TreeNode("menu", nil, .title, TreeSetting(set:0,member:1))
-        
+
+        var events:  TreeActNode!
+        var memos:   TreeActNode!
+        var routine: TreeActNode!
+        var more:    TreeNode!
+
         let showSet = Show.shared.showSet.rawValue
-        
-        let calendars = TreeActNode("calendar",  root, showSet, ShowSet.calendar.rawValue,  .showCalendar,  .hideCalendar,  [.child])
-        let reminders = TreeActNode("reminders", root, showSet, ShowSet.reminder.rawValue,  .showReminder,  .hideReminder,  [.parent])
-        let memos     = TreeActNode("memos",     root, showSet, ShowSet.memo.rawValue,      .showMemo,      .hideMemo,      [])
-        let routine   = TreeActNode("routine",   root, showSet, ShowSet.routine.rawValue,   .showRoutine,   .hideRoutine,   [.parent,.child])
-        let more      = TreeNode   ("more",      root, .title)
 
-        calendars.initChildren  = { parent in initCalendarChildren(parent) }
-        memos.initChildren      = { parent in initMemosChildren(parent) }
-        routine.initChildren    = { parent in initRoutineChildren(parent) }
-        more.initChildren       = { parent in initMoreChildren(parent) }
+        func initTopLevel() {
 
-        func initCalendarChildren(_ parent:TreeNode) { // next level Calendar list
-            
+            root = TreeNode("menu", nil, .title, TreeSetting(set:0,member:1))
+
+            events  = TreeActNode("events",  root, showSet, ShowSet.calendar.rawValue,  .showCalendar,  .hideCalendar,  [.child])
+            memos   = TreeActNode("memos",   root, showSet, ShowSet.memo.rawValue,      .showMemo,      .hideMemo,      [])
+            routine = TreeActNode("routine", root, showSet, ShowSet.routine.rawValue,   .showRoutine,   .hideRoutine,   [.parent,.child])
+            more    = TreeNode   ("more",    root, .title)
+
+            events.initChildren  = { parent in initEventChildren(parent) }
+            memos.initChildren   = { parent in initMemosChildren(parent) }
+            routine.initChildren = { parent in initRoutineChildren(parent) }
+            more.initChildren    = { parent in initMoreChildren(parent) }
+        }
+
+        func initEventChildren(_ parent:TreeNode) { // next level Calendar list
+
+            let _ = TreeActNode("reminders", parent, showSet, ShowSet.reminder.rawValue,  .showReminder,  .hideReminder,  [.parent])
+
             for (key,cals) in Cals.shared.sourceCals {
-                if cals.count == 1     {  let _ = TreeCalendarNode(key,       calendars, cals.first, [.parent,.child]) }
-                else { for cal in cals {  let _ = TreeCalendarNode(cal!.title, calendars, cal,        [.parent,.child]) }
+                if cals.count == 1     {  let _ = TreeCalendarNode(key,        events, cals.first, [.parent,.child]) }
+                else { for cal in cals {  let _ = TreeCalendarNode(cal!.title, events, cal,        [.parent,.child]) }
                 }
             }
         }
@@ -73,76 +82,87 @@ extension TreeNodes {
         }
 
         func initMoreChildren(_ parent: TreeNode) { //Log("▤ \(#function)")
+
+            // say
+            let say = TreeNode("say", parent, .title)
+            let saySet = Say.shared.saySet.rawValue
+            let _  = TreeActNode("event", say, saySet,  SaySet.event.rawValue, .sayEvent, .skipEvent, [])
+            let _  = TreeActNode("time",  say, saySet,  SaySet.time.rawValue,  .sayTime,  .skipTime,  [])
+            let _  = TreeActNode("memos", say, saySet,  SaySet.memo.rawValue,  .sayMemo,  .skipMemo,  [])
+
             // hear
             let hear = TreeNode("hear", parent, .title)
-            
             let hearSet = Hear.shared.hearSet.rawValue
-            let saySet = Say.shared.saySet.rawValue
-            let _  = TreeActNode("event",   hear, saySet,  SaySet.event.rawValue, .sayEvent, .skipEvent, [])
-            let _  = TreeActNode("time",    hear, saySet,  SaySet.time.rawValue,  .sayTime,  .skipTime,  [])
-            let _  = TreeActNode("memos",   hear, saySet,  SaySet.memo.rawValue,  .sayMemo,  .skipMemo,  [])
-            
             let _  = TreeActNode("speaker", hear, hearSet, HearSet.speaker.rawValue, .hearSpeaker , .muteSpeaker, [])
             let _  = TreeActNode("earbuds", hear, hearSet, HearSet.earbuds.rawValue, .hearEarbuds , .muteEarbuds, [])
             
             // Dial
-            
             let dial = TreeNode("dial", parent, .title)
             let _ =  TreeDialColorNode("color", dial)
-            
-            
+
             // about
             #if os(iOS)
             let about = TreeNode("about",   more,  .title)
             let _     = TreeNode("support", about, .title)
             let _     = TreeNode("blog",    about, .title)
-            
-            func goTour(_ act:DoAction,_ page:PageType) -> CallVoid {
-                return {
-                    PagesVC.shared.gotoPageType(page) {
-                        Actions.shared.doAction(act)
-                    }
-                }
-            }
-
-            let _ = TreeButtonNode("tour", about, "Play Tour", "", [
-                "Main page",    goTour(.tourMain,.main),
-                "Menu details", goTour(.tourDetail,.menu) ,
-                "Onboarding",   goTour(.tourIntro,.onboard),
-                "Cancel", {}
-                ])
+            let _     = TreeButtonNode("tour", about, "Play Tour", "",[])
+            attachTour()
             #endif
         }
-        
-        /// connect nodes to cells and merge with settings
-        func mergeNodesAndCells() { //Log("▤ \(#function)")
-            
-            TreeNodes.shared.renumber()
+
+        func attachTour() {
+
+            if  let foundNode = TreeNodes.findPath("menu.more.about.tour"),
+                let node = foundNode as? TreeButtonNode {
+                node.anys = [
+                    "Main page",    Actions.shared.doAction(.tourMain),
+                    "Menu details", Actions.shared.doAction(.tourDetail),
+                    "Onboarding",   Actions.shared.doAction(.tourIntro),
+                    "Cancel", {}
+                ]
+            }
         }
-        
+
         func initNodeChildren() {
-            calendars.refreshChildren()
-            reminders.refreshChildren()
+            
+            events.refreshChildren()
             memos.refreshChildren()
             routine.refreshChildren()
             more.refreshChildren()
         }
         
         // begin -----------------------------
-        
+
+        unarchiveTree { found in
+            if found {
+                attachTour()
+                TreeNodes.shared.renumber()
+            }
+            else {
+                initTopLevel()
+                initNodeChildren()
+                TreeNodes.shared.renumber()
+                TreeNodes.shared.archiveTree {}
+            }
+        }
+
+
         #if os(watchOS)
-        mergeNodesAndCells()
+
+        initTopLevel()
+        TreeNodes.shared.renumber()
         
         Timer.delay(0.5) {
             initNodeChildren()
-            mergeNodesAndCells()
+            TreeNodes.shared.renumber()
             TreeNodes.shared.archiveTree {}
         }
         #else
         initNodeChildren()
-        mergeNodesAndCells()
+        TreeNodes.shared.renumber()
         TreeNodes.shared.archiveTree {}
         #endif
     }
-    
+
+
 }
