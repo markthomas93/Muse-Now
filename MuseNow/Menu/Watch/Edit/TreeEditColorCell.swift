@@ -16,7 +16,7 @@ class MenuEditColor: MenuEdit {
 
         treeNode = treeNode_
 
-        let tableVC = TreeNodes.shared.vc as! UITableViewController
+        let tableVC = PagesVC.shared.menuVC as! UITableViewController
          tableView = tableVC.tableView
 
         let width = tableVC.view.frame.size.width

@@ -31,47 +31,28 @@ enum ShowInfo: Int, Codable { case
 }
 
 public class TreeSetting: Codable {
-
-    var member = 0              // member of set (using OptionSet bit flags)
-    var set = 0                 // OptionSet bit flags
+    var isOn = true
     var setFrom = SetFrom([])   // modifyable from { none,child,parent,both }
     var showInfo = ShowInfo.infoNone
-    var onAction = DoAction.unknown
-    var offAction = DoAction.unknown
-
-    func isOn() -> Bool {
-        return set & member != 0
-    }
-    func setOn(_ on:Bool) {
-
-        if on {
-            set |= member
-        }
-        else {
-            set |= member
-            set ^= member
-        }
-    }
+    var action = DoAction.unknown
 
     func flipSet() -> Bool {
-
-        set ^= member
-        let isNowOn = isOn()
-        let isNowAct = isNowOn ? onAction : offAction
-        if isNowAct != .unknown {
-            Actions.shared.doAction(isNowAct, isSender:true)
+        isOn = !isOn
+        if action != .unknown {
+            Actions.shared.doAction(action, value: isOn ? 1 : 0, isSender:true)
         }
-        return isNowOn
+        return isOn
     }
 
-    init(set set_:Int, member member_:Int,_ setFrom_:SetFrom = [.parent,.child], _ showInfo_:ShowInfo = .infoNone, onAct:DoAction = .unknown, offAct: DoAction = .unknown) {
+    init(_ isOn_:Bool,
+         _ setFrom_: SetFrom = [.parent,.child],
+         _ showInfo_: ShowInfo = .infoNone,
+         act: DoAction = .unknown) {
 
-        set      = set_
+        isOn     = isOn_
         setFrom  = setFrom_
-        member   = member_
         showInfo = showInfo_
-        onAction = onAct
-        offAction = offAct
+        action   = act
     }
 
 }

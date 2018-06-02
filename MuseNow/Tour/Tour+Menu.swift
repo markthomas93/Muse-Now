@@ -42,12 +42,12 @@ extension Tour {
 //
         // calendar
         addTour("events",[.menu, .info, .detail],[
-            menuMark("events",[], [gotoPath("events"), "Show calendar and reminder events and changes will pause","v_056.aif"]),
-            menuMark("reminders",[],[ gotoPath("reminders"),
+            menuMark("menu.events",[], [gotoPath("events"), "Show calendar and reminder events and changes will pause","v_056.aif"]),
+            menuMark("menu.events.reminders",[],[ gotoPath("reminders"),
                                       "Show reminders, which \n have a deadline","v_057.aif",
                                       "Add reminders anytime with Siri:","v_085.aif"]),
 
-            menuMark("reminders", [.overlay,.nowait], [
+            menuMark("menu.events.reminders", [.overlay,.nowait], [
 
                 "\"Hey Siri, remind me to pack for trip tomorrow\"","v_086.aif",27]),
 
@@ -57,24 +57,24 @@ extension Tour {
 
 
         // memos
-        addTour("memos",[.menu, .beta, .detail],[
+        addTour("menu.memos",[.menu, .beta, .detail],[
 
-            menuMark("memos",[],[gotoPath("memos"), "record short audio memos \n with location and text","v_201.aif"]),
+            menuMark("menu.memos",[],[gotoPath("memos"), "record short audio memos \n with location and text","v_201.aif"]),
 
-            menuDial("memos", [.highlight, .circular], [ {Actions.shared.doAction(.gotoRecordOn)},
+            menuDial("menu.memos", [.highlight, .circular], [ {Actions.shared.doAction(.gotoRecordOn)},
                                                          "triple-tap on the dial \n to record memos","v_092.aif",
                                                          { Actions.shared.doAction(.gotoFuture)},
                                                          { Timer.delay(0.5) {Anim.shared.scene?.uFade?.floatValue = 1 }},
                                                          ]),
-            menuMark("memos.nod", [.overlay,.nowait],
+            menuMark("menu.memos.nod", [.overlay,.nowait],
 
-                     [gotoPath("memos.nod"),
+                     [gotoPath("menu.memos.nod"),
                       "record a memo by nodding your wrist", "v_211.aif",13]), ///
 
             menuVid1("memos", .diptych12, [.snugAbove,.nowait], ["WatchMemo2.m4v", 12]),
             menuVid1("memos", .diptych22, [.snugAbove],         ["PhoneMemo2.m4v", 12]),
 
-            menuButn("memos.files",[],[gotoPath("memos.files"),
+            menuButn("menu.memos.files",[],[gotoPath("menu.memos.files"),
                                  { Actions.shared.doAction(.gotoFuture)},
                                  { Timer.delay(0.5) { Anim.shared.scene?.uFade?.floatValue = 1 }},
                                  "Save memos to iCloud Drive \n as standard JSON files","v_097.aif",///
@@ -84,25 +84,25 @@ extension Tour {
 
         // routine
         addTour("routine",[.menu, .beta, .detail],[
-            menuMark("routine",[],[gotoPath("routine"), "Preview colorizing the dial with your weekly routine","v_202.aif"]), ///
+            menuMark("menu.routine",[],[gotoPath("menu.routine"), "Preview colorizing the dial with your weekly routine","v_202.aif"]), ///
 
-            menuPanel("routine",[.nowait], [setNode("routine",isOn:false), "here is routine set OFF","v_089.aif"]),
-            menuDial ("routine", [.highlight, .circular], ["and how it affects your dial", 6]),
+            menuPanel("menu.routine",[.nowait], [setNode("menu.routine",isOn:false), "here is routine set OFF","v_089.aif"]),
+            menuDial ("menu.routine", [.highlight, .circular], ["and how it affects your dial", 6]),
 
-            menuPanel("routine", [.nowait],  [setNode("routine",isOn:true), "here is routine set ON","v_090.aif"]),
-            menuDial ("routine", [.highlight, .circular], ["showing what may overlap",6]),
+            menuPanel("menu.routine", [.nowait],  [setNode("menu.routine",isOn:true), "here is routine set ON","v_090.aif"]),
+            menuDial ("menu.routine", [.highlight, .circular], ["showing what may overlap",6]),
 
-            menuMark("routine.show",[],[gotoPath("routine.show"),  "Show your routine on the timeline of events","v_203.aif"]), ///
+            menuMark("menu.routine.more.show",[],[gotoPath("menu.routine.more.show"),  "Show your routine on the timeline of events","v_203.aif"]), ///
             ])
 
 
         // settings
         // dial
-        addTour("dial",[.menu, .info, .detail],[ // cell
+        addTour("menu.more.dial",[.menu, .info, .detail],[ // cell
 
-            menuInfo("dial",[],[gotoInfo("dial"), "change the dial's appearance","v_064.aif"]),
+            menuInfo("menu.more.dial",[],[gotoInfo("menu.more.dial"), "change the dial's appearance","v_064.aif"]),
 
-            menuFader("color",[],[gotoPath("dial.color"),  "fade between",       "v_065.aif",
+            menuFader("menu.more.dial.color",[],[gotoPath("menu.more.dial.color"),  "fade between",       "v_065.aif",
                                   makeAniFader("color",0.0), "heat map ...",     "v_066.aif",
                                   makeAniFader("color",0.5), "monochrome ...",   "v_067.aif",
                                   makeAniFader("color",1.0), "and event colors", "v_068.aif" ]),
@@ -111,20 +111,20 @@ extension Tour {
 
         // hear  --------------------------------------
 
-        addTour("hear",[.menu, .info, .detail],[
-            menuInfo("hear",[],[gotoInfo("hear"),  "Choose what to hear and \n where to play it","v_204.aif"]), ///
+        addTour("menu.more.hear",[.menu, .info, .detail],[
+            menuInfo("menu.more.hear",[],[gotoInfo("menu.more.hear"),  "Choose what to hear and \n where to play it","v_204.aif"]), ///
 
-            menuMark("hear.event",[],[gotoPath("hear.event"), "hear an event's title","v_205.aif"]), ///
-            menuMark("hear.time", [],[gotoPath("hear.time"), "hear an event's time","v_206.aif"]), ///
+            menuMark("menu.more.say.event",[],[gotoPath("menu.more.say.event"), "hear an event's title","v_205.aif"]), ///
+            menuMark("menu.more.say.time", [],[gotoPath("menu.more.say.time"), "hear an event's time","v_206.aif"]), ///
 
-            menuMark("hear.memo", [],[gotoPath("hear.memo"), "hear a memo's audio recording","v_207.aif", ///
+            menuMark("menu.more.say.memo", [],[gotoPath("menu.more.say.memo"), "hear a memo's audio recording","v_207.aif", ///
                 "Memos are saved in your \n iTunes \"shared files\" folder","v_094.aif",
                 "your private memos stays \n inside Apple's secure sandbox ","v_095.aif",
                 "Muse never sees your timeline \n and we never will", "v_096.aif"]),
 
-            menuMark("speaker",[],[gotoPath("hear.speaker"),"play via speaker or handoff \n to connected earbuds","v_208.aif"]), ///
+            menuMark("menu.more.hear.speaker",[],[gotoPath("menu.more.hear.speaker"),"play via speaker or handoff \n to connected earbuds","v_208.aif"]), ///
 
-            menuMark("earbuds",[],[gotoPath("hear.earbuds"), "play only on earbuds for both \n eyes free and hands free","v_209.aif", ///
+            menuMark("menu.more.hear.earbuds",[],[gotoPath("menu.more.hear.earbuds"), "play only on earbuds for both \n eyes free and hands free","v_209.aif", ///
                                    // "with Apple Watch + Airpods \n simply lift your wrist to hear",  "v_111.aif",
                                    // "what's next while keeping \n focus on the road ahead",          "v_112.aif"
                 ])
@@ -134,18 +134,18 @@ extension Tour {
         // more --------------------------------------
 
 //        addTour("more",[.info,.detail],[
-//            menuCell("about",    [],[gotoPath("more.about"),   "A bit more about \n Muse Dot Company", "v_114.aif"]),
-//            menuCell("support",   [],[gotoPath("more.support"), "product support",                      "v_115.aif"]),
-//            menuCell("blog",      [],[gotoPath("more.blog"),    "more musings \n about whatever",       "v_116.aif"]),
+//            menuCell("about",    [],[gotoPath("menu.more.about"),   "A bit more about \n Muse Dot Company", "v_114.aif"]),
+//            menuCell("support",   [],[gotoPath("menu.more.about.support"), "product support",                      "v_115.aif"]),
+//            menuCell("blog",      [],[gotoPath("menu.more.about.blog"),    "more musings \n about whatever",       "v_116.aif"]),
 //            ])
 
-        addTour("tour",[.menu, .info, .detail],[
-            menuButn("tour", [],[gotoInfo("tour"),         "to replay parts of this tour",         "v_123.aif"]),
+        addTour("menu.more.about.tour",[.menu, .info, .detail],[
+            menuButn("menu.more.about.tour", [],[gotoInfo("menu.more.about.tour"),         "to replay parts of this tour",         "v_123.aif"]),
             ])
 
-        addTour("more",[.menu,.detail],[
+        addTour("menu.more",[.menu,.detail],[
 
-              menuCell("more",  [],[gotoPath("more"),
+              menuCell("menu.more",  [],[gotoPath("menu.more"),
                                     "and that about wraps it up", "v_121.aif",
                                     "for now","v_122.aif",
                                     menuCollapse("more"), {  }])

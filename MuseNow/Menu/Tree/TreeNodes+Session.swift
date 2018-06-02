@@ -12,7 +12,7 @@ extension TreeNodes {
 
     func syncNode(_ node:TreeNode) {
 
-        if let isOn = node.setting?.isOn() {
+        if let isOn = node.setting?.isOn {
             Session.shared.sendMsg(["class" : "TreeNode",
                                     "id"    : node.id,
                                     "name"  : node.name,
@@ -26,9 +26,8 @@ extension TreeNodes {
 
         if let node = idNode[id_] {
             if node.name == name_ {
-                if node.setting!.isOn() != isOn_ {
-                    node.updateOn(isOn_)
-                }
+
+                node.setting?.isOn = isOn_
             }
             else {
                 print("!!! \(#function) mismatch between id and names! id:\(id_) oldName\(node.name) updateName:\(name_)")

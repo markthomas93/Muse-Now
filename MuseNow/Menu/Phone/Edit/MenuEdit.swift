@@ -7,16 +7,7 @@ class MenuEdit: MenuTitle {
         self.init(coder: decoder)
     }
 
-    convenience init(_ treeNode_: TreeNode!) {
-
-        self.init()
-        treeNode = treeNode_
-        let vc = TreeNodes.shared.vc as! UIViewController
-        let width = vc.view.frame.size.width
-        frame.size = CGSize(width:width, height:height)
-        buildViews(width)
-    }
-    override func setHighlight(_ high:Highlighting, animated:Bool = true) {
+     override func setHighlight(_ high:Highlighting, animated:Bool = true) {
         setHighlights(high,
                      views:         [bezel],
                      borders:       [headColor,.white],

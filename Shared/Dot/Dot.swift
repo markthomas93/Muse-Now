@@ -256,7 +256,6 @@ class Dot {
 
     /**
      Toggle mark on/off for existing events or add a new mark for empty dot
-      - via: Scene.markAction
      */
     @discardableResult
     func setMark(_ mark: Bool, _ markEvent:MuEvent!) -> MuEvent! {

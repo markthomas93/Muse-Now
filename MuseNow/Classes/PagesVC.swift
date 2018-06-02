@@ -6,6 +6,7 @@ import UIKit
 class PagesVC: UIViewController, UIPageViewControllerDataSource {
     
     static let shared = PagesVC()
+    static var width = CGFloat(0)
 
     var pageVC : UIPageViewController!
     var pages: [UIViewController] = []
@@ -21,7 +22,7 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
     var spineFrame = CGRect.zero
 
     func updateFrames(_ size:CGSize) {
-
+        PagesVC.width = size.width
         let width  = size.width
         let height = size.height
         let statusH = UIApplication.shared.statusBarFrame.height

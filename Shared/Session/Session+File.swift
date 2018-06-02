@@ -26,9 +26,10 @@ extension Session { // Transfer File -----------------------
     func transferMemoEvent(_ event:MuEvent) {
 
         let url = FileManager.documentUrlFile(event.eventId)
-
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
         if  let session = validSession,
-            let data = try? JSONEncoder().encode(event) {
+            let data = try? encoder.encode(event) {
             let metadata = ["memoEvent" : data]
 
             session.transferFile(url, metadata: metadata)

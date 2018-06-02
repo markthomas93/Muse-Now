@@ -7,21 +7,13 @@ import Foundation
 extension Say {
 
     /**
-    Test member is elegible, later test switch on iPhone
-     */
-    func canSay(_ member:SaySet) -> Bool {
-        return saySet.contains(member)
-    }
-
-
-    /**
      Announce change between future and past tense
      */
     func sayFuturePast(_ isFuture: Bool) {
 
         let title = isFuture ? "future" : "past"
 
-        if canSay(.time ) {
+        if time  {
 
             updateDialog(nil, .phraseDirection, spoken:title, title:title, via:#function)
         }
@@ -58,7 +50,7 @@ extension Say {
      */
     func sayCurrentTime(_ event:MuEvent!, _ isTouching:Bool) {
 
-        if canSay(.time) {
+        if time {
 
             let dateFormatter = DateFormatter()
 
@@ -85,11 +77,11 @@ extension Say {
      */
     func sayRecording(_ event: MuEvent!) {
 
-        if canSay(.memo) {
+        if memo {
 
             updateDialog(event, .phraseMemo, spoken:event.eventId, title:event.title, via:#function)
 
-            if canSay(.time /*.sayTimeUntil*/) {
+            if time  {
 
                 let timeNow = Date().timeIntervalSince1970
                 let prefix = timeNow < event.bgnTime ? "in " : ""
@@ -112,7 +104,7 @@ extension Say {
         
         updateDialog(event, .phraseEventTitle, spoken:event.title, title:event.title, via:#function)
         
-        if canSay(.time /*.sayEventTime*/) {
+        if time {
             
             let timeNow = Date().timeIntervalSince1970
             let prefix = timeNow < event.bgnTime ? "in " : ""
@@ -131,7 +123,7 @@ extension Say {
         
         updateDialog(event, .phraseEventTitle, spoken:event.title, title:event.title, via:#function)
         
-        if canSay(.time /*.sayEventTime*/) {
+        if time {
             
             let timeNow = Date().timeIntervalSince1970
             let prefix = timeNow < event.bgnTime ? "begins " : "began "
@@ -150,7 +142,7 @@ extension Say {
      */
     func sayDotTime(_ event: MuEvent!) {
         
-        if canSay(.time ) {
+        if time {
 
             // .sayDayOfWeek
             let dow  = dayHour.getDowSpeak()

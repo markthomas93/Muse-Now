@@ -10,23 +10,9 @@ class MenuEditColor: MenuEdit {
         self.init(coder: decoder)
     }
 
-    convenience init(_ treeNode_: TreeNode!) {
-
-        self.init()
-
-        treeNode = treeNode_
-
-        let tableVC = TreeNodes.shared.vc as! UITableViewController
-         tableView = tableVC.tableView
-
-        let width = tableVC.view.frame.size.width
-        frame.size = CGSize(width:width, height:height)
-        buildViews(width)
-    }
-
-    override func buildViews(_ width: CGFloat) {
+    override func buildViews() {
         
-        super.buildViews(width)
+        super.buildViews()
         color = UIView(frame:colorFrame)
         color.backgroundColor = .blue
         bezel.addSubview(color)

@@ -24,10 +24,8 @@ class OnboardVC: UIPageViewController {
     @objc func speakerAction(_ sender: UIButton) {
 
         speakerBtn.isSelected = !speakerBtn.isSelected
-        let muteSpeaker = !speakerBtn.isSelected
-        let action = muteSpeaker ? DoAction.muteSpeaker : DoAction.hearSpeaker
-        Actions.shared.doAction(action)
-        BubblesPlaying.shared.muteBubbles(on: muteSpeaker)
+        Actions.shared.doAction(.hearSpeaker, value:speakerBtn.isSelected ? 1 : 0)
+        BubblesPlaying.shared.muteBubbles(on: !speakerBtn.isSelected)
     }
 
     override func viewDidLoad() {

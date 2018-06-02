@@ -35,7 +35,6 @@ class TreeNode: Codable {
     var userInfo: [String:Any]? = nil
     var cell: MenuCell? = nil
     var any: Any! = nil // may contain Cal
-    var initChildren: CallBaseNode? = nil
     var callTreeNode: CallBaseNode? = nil
 
     // runtime info
@@ -80,9 +79,13 @@ class TreeNode: Codable {
         try decodeChildren(container)
     }
 
-   /** Iterate through it children and use `type` to dispatch decoder to subclasses. */
+   /** Iterate through children and use `type` to dispatch decoder to subclasses. */
     private func decodeChildren(_ container:KeyedDecodingContainer<CodingKeys>) throws {
 
+        func addChild(_ child:TreeNode) {
+            child.parent = self
+            children.append(child)
+        }
         do {
             var childTrees = try container.nestedUnkeyedContainer(forKey: CodingKeys.children)
             var childArray = childTrees
@@ -93,14 +96,14 @@ class TreeNode: Codable {
                 let type = try nested.decode(NodeType.self, forKey: CodingKeys.nodeType)
 
                 switch type {
-                case .TreeButtonNode:           children.append(try childArray.decode(TreeButtonNode.self))
-                case .TreeCalendarNode:         children.append(try childArray.decode(TreeCalendarNode.self))
-                case .TreeDialColorNode:        children.append(try childArray.decode(TreeActNode.self))
-                case .TreeActNode:              children.append(try childArray.decode(TreeBoolNode.self))
-                case .TreeBoolNode:             children.append(try childArray.decode(TreeButtonNode.self))
-                case .TreeRoutineCategoryNode:  children.append(try childArray.decode(TreeRoutineCategoryNode.self))
-                case .TreeRoutineItemNode:      children.append(try childArray.decode(TreeRoutineItemNode.self))
-                default:   break
+                case .TreeNode:                 addChild(try childArray.decode(TreeNode.self))
+                case .TreeButtonNode:           addChild(try childArray.decode(TreeButtonNode.self))
+                case .TreeCalendarNode:         addChild(try childArray.decode(TreeCalendarNode.self))
+                case .TreeDialColorNode:        addChild(try childArray.decode(TreeActNode.self))
+                case .TreeActNode:              addChild(try childArray.decode(TreeBoolNode.self))
+                case .TreeBoolNode:             addChild(try childArray.decode(TreeButtonNode.self))
+                case .TreeRoutineCategoryNode:  addChild(try childArray.decode(TreeRoutineCategoryNode.self))
+                case .TreeRoutineItemNode:      addChild(try childArray.decode(TreeRoutineItemNode.self))
                 }
             }
         }
@@ -111,9 +114,10 @@ class TreeNode: Codable {
 
         var container = encoder.container(keyedBy: CodingKeys.self)
 
-        try container.encode(id, forKey: .id)
-        try container.encode(name, forKey: .name)
-        try container.encode(nodeType, forKey: CodingKeys.nodeType)
+        try container.encode(id,        forKey: .id)
+        try container.encode(name,      forKey: .name)
+        try container.encode(cellType,  forKey: .cellType)
+        try container.encode(nodeType,  forKey: .nodeType)
         if let setting = setting {
             try container.encode(setting, forKey: .setting)
         }

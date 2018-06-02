@@ -10,14 +10,6 @@ import Foundation
 
 extension TreeNode {
 
-    func refreshChildren() {
-        if  initChildren != nil {
-            children.removeAll()
-            initChildren?(self)
-            refreshNodeCells()
-        }
-    }
-
     @discardableResult func renumber() -> Int {
         depth = 0
         if expanded {
@@ -48,39 +40,35 @@ extension TreeNode {
         if let setting = setting,
             setting.setFrom.contains(.child)  {
 
-            if children.count > 0 {
-
-                // only count children which have marks
-                var markCount = Float(0)
-                var isOnCount = Float(0)
-                for child in children {
-                    if let childSetting = child.setting {
-                        if childSetting.setFrom == [.ignore] {
-                            continue
-                        }
-                        if childSetting.setFrom.contains(.parent) {
-                            switch child.cellType {
-                            case .titleMark,
-                                 .colorTitleMark:
-                                markCount += 1.0
-                                isOnCount += childSetting.isOn() ? 1.0 : 0.0
-                            default: break // ignore non marked child
-                            }
+            if children.isEmpty {
+                return onRatio = setting.isOn ? 1 : 0
+            }
+            // only count children which have marks
+            var markCount = Float(0)
+            var isOnCount = Float(0)
+            for child in children {
+                if let childSetting = child.setting {
+                    if childSetting.setFrom == [.ignore] {
+                        continue
+                    }
+                    if childSetting.setFrom.contains(.parent) {
+                        switch child.cellType {
+                        case .titleMark,
+                             .colorTitleMark:
+                            markCount += 1.0
+                            isOnCount += childSetting.isOn ? 1 : 0
+                        default: break // ignore non marked child
                         }
                     }
                 }
-                if markCount > 0 {
-                    onRatio =  isOnCount/markCount
-                }
-                else {
-                    onRatio = Float(setting.isOn() ? 1.0 : 0.0)
-                }
-                setting.setOn(onRatio > 0) // synch setting with onRatio
+            }
+            if markCount > 0 {
+                onRatio =  isOnCount/markCount
             }
             else {
-                onRatio = Float(setting.isOn() ? 1.0 : 0.0)
-                setting.setOn(onRatio > 0) // synch setting with onRatio
+                onRatio = setting.isOn ? 1 : 0
             }
+            setting.isOn = onRatio > 0 // synch setting with onRatio
         }
     }
 
@@ -88,7 +76,7 @@ extension TreeNode {
 
         if let setting = setting,
             setting.setFrom.contains(.parent),
-            isParentOn != setting.isOn() {
+            isParentOn != setting.isOn {
 
             let isOn = setting.flipSet()
             onRatio = isOn ? 1.0 : 0.0
@@ -129,10 +117,10 @@ extension TreeNode {
 
         if let setting = setting {
             onRatio = isOn ? 1 : 0
-            setting.setOn(onRatio > 0) // synch setting with onRatio
+            setting.isOn = isOn // synch setting with onRatio
 
             for child in children {
-                child.updateFromParent(setting.isOn())
+                child.updateFromParent(setting.isOn)
             }
             cell?.setMark(onRatio)
             doCallback()

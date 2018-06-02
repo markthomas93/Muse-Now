@@ -54,7 +54,30 @@ extension Anim {
         actionTime  = Date().timeIntervalSince1970
         //Log(String(format: "⎚ userDotAction dot Prev,Now: %g,%g  %@ ➛ %@  tense:%@", prev,now,"\(animPrev)","\(animNow)","\(flipTense)"))
     }
-    
+
+    public func doAnimAction(_ act: DoAction, _ value:Float,_ event:MuEvent!, _ isSender:Bool) {
+
+        switch act {
+
+        case .gotoEvent:
+
+            Dots.shared.gotoEvent(event)
+            touchDialGotoTime(event?.bgnTime ?? 0)
+
+        case .gotoRecordOn:
+
+            gotoRecordSpoke(on:true) {}
+
+        case .gotoFuture: // animate dial to show whole week
+
+            wheelTime = 0
+            animNow = .futrWheel
+            userDotAction()
+
+        default: break
+        }
+    }
+
     // pause ------------------------------------------
 
     @discardableResult

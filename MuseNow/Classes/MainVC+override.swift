@@ -22,11 +22,16 @@ extension MainVC {
         updateFrames(view.bounds.size)
         pagesVC.updateFrames(pagesFrame.size)
         view.addSubview(pagesVC.view)
+        
         Settings.shared.unarchiveSettings {
-            let onboarding = Onboard.shared.state == .boarding //???//  || true
-            if  onboarding { self.makeOnboard() }
-            else           { self.makePages {Timer.delay(4) {Tour.shared.buildInfoSet()}} }
-
+            if  Settings.shared.onboarding {
+                self.makeOnboard()
+            }
+            else {
+                self.makePages {
+                    Timer.delay(4) {Tour.shared.buildInfoSet()}
+                }
+            }
         }
         //Muse.shared.testScript() // for future use of ParGraph
     }

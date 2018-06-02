@@ -19,21 +19,10 @@ class MenuTitleButton: MenuTitle {
         self.init(coder: decoder)
     }
 
-    convenience init(_ treeNode_: TreeNode!) {
-        self.init()
-        treeNode = treeNode_
 
-        let tableVC = TreeNodes.shared.vc as! UITableViewController
-        tableView = tableVC.tableView
-        let width = tableVC.view.frame.size.width
-        frame.size = CGSize(width:width, height:height)
-        buildViews(width)
-    }
+    override func buildViews() {
 
-    override func buildViews(_ width: CGFloat) {
-
-        super.buildViews(width)
-        updateFrames(width)
+        super.buildViews()
 
         // for button
         butn0 = UIView(frame:butnFrame)

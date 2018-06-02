@@ -5,26 +5,47 @@
 import Foundation
 import AVFoundation
 
-struct HearSet: OptionSet {
-    let rawValue: Int
-    static let speaker = HearSet(rawValue: 1 << 0) // 1
-    static let earbuds = HearSet(rawValue: 1 << 1) // 2
-    static let size = 2
-}
-
 class Hear {
 
     static let shared = Hear()
-    var hearSet = HearSet([.earbuds])   // user options -- manually set
-    var route   = HearSet([])
-    var local   = HearSet([.speaker])   // this device's hardware route
+
+    var earbuds = true
+    var speaker = false
+
+    var routeEarbuds = false
+    var routeSpeaker = false
+
+    var localEarbuds = false
+    var localSpeaker = true
+
+//    var hearSet = HearSet([.earbuds])   // user options -- manually set
+//    var route   = HearSet([])
+//    var local   = HearSet([.speaker])   // this device's hardware route
     var reason  = "unknown reason"      // reason for change
 
     init() {
 
         listenForNotifications()
         updateRoute()
-        Log("🎧 route: \(route)")
+        Log("🎧 route earbuds:\(routeEarbuds) speaker:\(routeSpeaker)")
+    }
+
+    func parseMsg(_ msg: [String : Any])  {
+
+        if let _ = msg["put"] {
+            if let on = msg["earbuds"] as? Bool { earbuds = on ; TreeNodes.shared.setValue(on, forKey: "hear.earbuds")}
+            if let on = msg["speaker"] as? Bool { speaker = on ; TreeNodes.shared.setValue(on, forKey: "hear.spearker")}
+            #if os(iOS)
+            PagesVC.shared.menuVC.tableView.reloadData()
+            #endif
+        }
+
+        if let _ = msg["get"] { // TODO: Not called, updated via TreeNodes file?
+            Session.shared.sendMsg(["class" : "Hear",
+                                    "put" : "yo",
+                                    "earbuds" : earbuds,
+                                    "speaker" : speaker])
+        }
     }
 
     func listenForNotifications() {
@@ -35,7 +56,7 @@ class Hear {
 
         updateReason(notification)
         updateRoute()
-        Log("🎧 \(#function) route: \(route) reason: \(reason)  ")
+        Log("🎧 \(#function) route earbuds:\(routeEarbuds) speaker:\(routeSpeaker) reason: \(reason)  ")
     }
 
     func updateReason(_ notification: Notification) {
@@ -55,36 +76,21 @@ class Hear {
         }
     }
 
-    /**
-     Update from remote device via Session.
-     Determine route from state if both devices
-     */
-    func updateOptionsFromSession(_ hearSet_: HearSet) {
-
-        hearSet = hearSet_
-        Settings.shared.updateHearSet(hearSet_)
-        let oldRoute = route
-        updateRoute()
-        Log("🎧 \(#function) \(oldRoute)  ➛  \(route)")
-    }
-
   
-    func updateLocal(_ local_:HearSet) {
+    func updateLocal(earBuds:Bool, speaker:Bool) {
 
-        local = local_
+        localEarbuds = earBuds ; localSpeaker = speaker
 
-        switch local {
+        if localEarbuds {
 
-        case .earbuds:
+            if      earbuds  { routeEarbuds = true  ; routeSpeaker = false }
+            else if speaker  { routeEarbuds = false ; routeSpeaker = true  }
+            else             { routeEarbuds = false ; routeSpeaker = false }
+        }
+        else { // default speaker ///... ???
 
-            if      hearSet.contains(.earbuds)  { route = [.earbuds] }
-            else if hearSet.contains(.speaker)  { route = [.speaker] }
-            else                                { route = [] }
-
-        default: // speaker
-
-            if hearSet.contains(.speaker)  { route = [.speaker] }
-            else                           { route = [] }
+            if speaker  { routeEarbuds = false ; routeSpeaker = true }
+            else        { routeEarbuds = false ; routeSpeaker = false }
         }
     }
 
@@ -99,36 +105,36 @@ class Hear {
                  AVAudioSessionPortBluetoothLE,
                  AVAudioSessionPortHeadphones:
 
-                return updateLocal([.earbuds])
+                return updateLocal(earBuds: true, speaker: false)
 
             default: continue
             }
         }
-        updateLocal([.speaker])
+        updateLocal(earBuds: false, speaker: true)
     }
 
     func canPlay() -> Bool {
-        return hearSet.contains(local)
+        return (earbuds && localEarbuds) || (speaker && localSpeaker)
     }
     
     
-    public func doHearAction(_ act: DoAction) {
+    public func doHearAction(_ act: DoAction, _ value:Float,_ isSender:Bool) {
+
+        let on = value > 0
+
+        func updateClass(_ className:String, _ path:String) {
+            TreeNodes.setOn(on,path)
+            Actions.shared.doRefresh(/*isSender*/false)
+            if isSender {
+                Session.shared.sendMsg(["class" : className, path : on])
+            }
+        }
         
         switch act {
-            
-        case .hearSpeaker:  hearSet.insert(.speaker)
-        case .hearEarbuds:  hearSet.insert(.earbuds)
-            
-        case .muteSpeaker:  hearSet.remove(.speaker)
-        case .muteEarbuds:  hearSet.remove(.earbuds)
-            
+        case .hearSpeaker:  speaker = on ; updateClass("Hear","menu.more.hear.speaker")
+        case .hearEarbuds:  earbuds = on ; updateClass("Hear","menu.more.hear.earbuds")
         default: break
         }
-        Settings.shared.updateHearSet(hearSet)
-        updateRoute()
-        
-        Session.shared.sendMsg(["class"   : "HearSet",
-                                "putSet"  : hearSet.rawValue])
     }
 
  }

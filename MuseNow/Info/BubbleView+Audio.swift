@@ -22,7 +22,7 @@ extension BubbleView {
                 let mediaDur = CMTimeGetSeconds((player.currentItem?.asset.duration)!)
                 item.mediaDur = TimeInterval(mediaDur)
                 player.actionAtItemEnd = .none
-                player.isMuted = !Hear.shared.hearSet.contains(.speaker)
+                player.isMuted = !Hear.shared.speaker
                 player.play()
                 Log(bubble.logString("💬 playAudio: \(audioFile)"))
                 NotificationCenter.default.addObserver(self, selector:#selector(self.audioFinishedPlaying), name: .AVPlayerItemDidPlayToEndTime, object: nil)

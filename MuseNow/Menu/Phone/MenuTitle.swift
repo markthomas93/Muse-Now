@@ -13,23 +13,10 @@ class MenuTitle: MenuCell {
         self.init(coder: decoder)
     }
 
-    convenience init(_ treeNode_: TreeNode!) {
-        self.init()
-        
-        treeNode = treeNode_
+  
+    override func buildViews() {
 
-        let tableVC = TreeNodes.shared.vc as! UITableViewController
-        tableView = tableVC.tableView
-        let width = tableVC.view.frame.size.width
-        frame.size = CGSize(width:width, height:height)
-        buildViews(width)
-    }
-
-    override func buildViews(_ width:CGFloat) {
-
-        super.buildViews(width)
-        updateFrames(width)
-        self.frame = cellFrame
+        super.buildViews()
 
         // title
         title = UILabel(frame:titleFrame)

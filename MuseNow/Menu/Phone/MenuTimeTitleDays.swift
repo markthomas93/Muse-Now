@@ -20,21 +20,9 @@ class MenuTimeTitleDays: MenuTitle {
         self.init(coder: decoder)
     }
 
-    convenience init(_ treeNode_: TreeNode!) {
-        
-        self.init()
-        treeNode = treeNode_
+    override func buildViews()  {
 
-        let tableVC = TreeNodes.shared.vc as! UITableViewController
-        tableView = tableVC.tableView
-        let width = tableVC.view.frame.size.width
-        buildViews(width)
-    }
-
-
-    override func buildViews(_ width:CGFloat)  {
-
-        super.buildViews(width)
+        super.buildViews()
 
         if let node = treeNode as? TreeRoutineItemNode,
             let item = node.routineItem {

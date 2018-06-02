@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum CellType: String, Decodable { case
+enum CellType: String, Codable { case
     unknown         = "unknown",
     title           = "title",
     titleButton     = "titleButton",

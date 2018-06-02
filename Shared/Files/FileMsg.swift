@@ -13,12 +13,12 @@ class FileMsg:  NSObject {
      */
     class func parseMsg(_ msg: [String : Any]) {
         
-        let memos       = Memos.shared
-        let marks       = Marks.shared
-        let cals        = Cals.shared
-        let anim        = Anim.shared
-        let settings    = Settings.shared
-        let routine     = Routine.shared
+        let memos   = Memos.shared
+        let marks   = Marks.shared
+        let cals    = Cals.shared
+        let anim    = Anim.shared
+        let menu    = TreeNodes.shared
+        let routine = Routine.shared
 
         func addClosure(_ title_: String, _ closure_: @escaping CallVoid) {
             Closures.shared.addClosure(title: title_, closure_)
@@ -32,7 +32,7 @@ class FileMsg:  NSObject {
             case memos.fileName:    addClosure("FileMsg.postFile.memos")    { memos.receiveFile(data, fileTime) }
             case marks.fileName:    addClosure("FileMsg.postFile.marks")    { marks.receiveFile(data, fileTime) }
             case cals.fileName:     addClosure("FileMsg.postFile.cals")     { cals.receiveFile(data,  fileTime) }
-            case settings.fileName: addClosure("FileMsg.postFile.settings") { settings.receiveFile(data, fileTime) }
+            case menu.fileName:     addClosure("FileMsg.postFile.menu")     { menu.receiveFile(data, fileTime) }
             case routine.fileName:  addClosure("FileMsg.postFile.routine")  { routine.receiveFile(data, fileTime) }
             default: break
             }
@@ -45,7 +45,7 @@ class FileMsg:  NSObject {
             case memos.fileName:    addClosure("FileMsg.getFile.memos")     { memos.sendPostFile() }
             case marks.fileName:    addClosure("FileMsg.getFile.marks")     { marks.sendPostFile() }
             case cals.fileName:     addClosure("FileMsg.getFile.cals")      { cals.sendPostFile() }
-            case settings.fileName: addClosure("FileMsg.getFile.settings")  { settings.sendPostFile() }
+            case menu.fileName:     addClosure("FileMsg.getFile.menu")      { menu.sendPostFile() }
             case routine.fileName:  addClosure("FileMsg.getFile.routine")   { routine.sendPostFile() }
             default: break
             }

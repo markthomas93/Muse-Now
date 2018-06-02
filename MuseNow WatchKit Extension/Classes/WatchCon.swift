@@ -2,7 +2,6 @@ import WatchKit
 
 class WatchCon: WKInterfaceController {
 
-
     static var shared: WatchCon!
     let actions = Actions.shared
     let active  = Active.shared
@@ -22,10 +21,14 @@ class WatchCon: WKInterfaceController {
     @IBOutlet var skInterface : WKInterfaceSKScene!
 
     override func awake(withContext context: Any?) { Log("⟳ \(#function) context:\(context ?? "nil")")
-        //Muse.shared.testScript()
+        // Muse.shared.testScript()
         WKExtension.shared().isFrontmostTimeoutExtended = true
-        initScene()
 
+        Settings.shared.unarchiveSettings {
+            TreeNodes.shared.unarchiveTree() {
+                self.initScene()
+            }
+        }
         crown.updateCrown()
         let nextMinute = MuDate.relativeMinute(1)
         WKExtension.shared().scheduleBackgroundRefresh(withPreferredDate: nextMinute, userInfo:nil, scheduledCompletion: {_ in})
@@ -75,8 +78,8 @@ class WatchCon: WKInterfaceController {
         tourSet = [.menu]
         anim.gotoStartupAnim()
         active.startMenuTime()
-        TreeNodes.shared.initTree(self)
-        WatchMenu.shared.showMenu()
+        /// ... TreeNodes.shared.updateCells() {
+            WatchMenu.shared.showMenu()
     }
 
   }

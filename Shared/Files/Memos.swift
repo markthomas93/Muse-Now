@@ -2,20 +2,13 @@
 
 import Foundation
 
-struct MemoSet: OptionSet, Codable {
-    let rawValue: Int
-    static let saveWhere = MemoSet(rawValue: 1 << 0) // 1
-    static let nod2Rec   = MemoSet(rawValue: 1 << 1) // 2
-    static let size = 2
-}
-
-
 class Memos: FileSync, Codable {
     
     static let shared = Memos()
 
     var items = [MuEvent]()
-    var memoSet = MemoSet([.nod2Rec, .saveWhere])
+    var nod2Rec = true
+    var saveWhere = true
     
     override init() {
         super.init()
@@ -24,14 +17,15 @@ class Memos: FileSync, Codable {
 
 
    func archiveMemos(done:@escaping CallVoid) {
-
-        if let data = try? JSONEncoder().encode(items) {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
+        if let data = try? encoder.encode(items) {
             let _ = saveData(data)
         }
         done()
     }
     
-    func unarchiveMemos(_ completion: @escaping (_ result:[MuEvent]) -> Void) -> Void {
+    func unarchiveMemos(_ done: @escaping (_ result:[MuEvent]) -> Void) -> Void {
 
         unarchiveData() { data in
 
@@ -46,22 +40,32 @@ class Memos: FileSync, Codable {
                 self.items.sort { "\($0.bgnTime)"+$0.eventId < "\($1.bgnTime)"+$1.eventId }
 
                 Log ("⧉ Memos::\(#function) items:\(self.items.count)  memoryTime:\(self.memoryTime) ")
-                return completion(self.items)
+                return done(self.items)
             }
-            completion([])
+            else {
+                done([])
+            }
         }
     }
 
-    func doAction(_ act:DoAction,_ isSender:Bool) {
+    func doMemoAction(_ act:DoAction,_ value:Float, _ isSender:Bool) {
+
+        let on = value > 0
+
+        func updateClass(_ className:String, _ path:String) {
+            TreeNodes.setOn(on,path)
+            Actions.shared.doRefresh(/*isSender*/false)
+            if isSender {
+                Session.shared.sendMsg(["class" : className, path : on])
+            }
+        }
 
         switch act {
-        case .memoWhereOn:    memoSet.insert(.saveWhere)
-        case .memoWhereOff:   memoSet.remove(.saveWhere)
-        case .memoNod2RecOn:    memoSet.insert(.nod2Rec)
-        case .memoNod2RecOff:   memoSet.remove(.nod2Rec)
+        case .memoWhere:    saveWhere = on ; updateClass("Memos","menu.memo.saveWhere")
+        case .memoNod2Rec:  nod2Rec   = on ; updateClass("Memos","menu.memo.nod2Rec")
 
         case .memoClearAll:
-            Actions.shared.markAction(.memoClearAll, nil, 0, isSender)
+            //!!!!=======Dots.shared.hideEventsWith(type:.mark)
             clearAllDocPrefix("Memo_") {
                 self.items.removeAll()
                 self.archiveMemos {
@@ -70,20 +74,13 @@ class Memos: FileSync, Codable {
             }
         case .memoCopyAll:
 
-            Actions.shared.markAction(.memoCopyAll, nil, 0, isSender)
+            Dots.shared.hideEvents(with:[.memoRecord,.memoTrans,.memoTrash])
             copyAllDocPrefix("Memo_") {
                 self.archiveMemos {
                     Actions.shared.doRefresh(isSender)
                 }
             }
         default: return
-        }
-
-        Settings.shared.updateMemoSet(memoSet)
-
-        if isSender {
-            Session.shared.sendMsg(["class"   : "MemoSet",
-                                    "putSet"  : memoSet.rawValue])
         }
     }
 

@@ -39,7 +39,7 @@ class TouchDial: TouchMove {
             }
         }
         endedTap2Action = {  touchMove in //Log("👆 touchEndedTap2")
-            Actions.shared.doToggleMark() // toggle mark
+            Marks.shared.doToggleMark() // toggle mark
         }
         beganTap3Action = {  touchMove in //Log("👆 touchBeganTap3")
             Record.shared.toggleRecordAction()

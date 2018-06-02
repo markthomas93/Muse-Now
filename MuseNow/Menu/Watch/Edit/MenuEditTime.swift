@@ -28,7 +28,7 @@ class MenuEditTime: MenuEdit {
 
         treeNode = treeNode_
 
-        let tableVC = TreeNodes.shared.vc as! UITableViewController
+        let tableVC = PagesVC.shared.menuVC as! UITableViewController
          tableView = tableVC.tableView
 
         buildViews(width)

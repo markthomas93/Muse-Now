@@ -15,9 +15,7 @@ class Alert {
 
     var alert:UIAlertController!
 
-    func doAct(_ headline_:String,_ body:String,_ anys:[Any],_ vc_: Any) {
-
-        let vc = vc_ as! UIViewController
+    func doAct(_ headline_:String,_ body:String,_ anys:[Any]) {
         
         alert = UIAlertController(title: headline_, message: body, preferredStyle: .actionSheet)
 
@@ -55,7 +53,7 @@ class Alert {
             default: break
             }
         }
-        vc.present(alert, animated: true, completion: nil)
+        PagesVC.shared.menuVC.present(alert, animated: true, completion: nil)
     }
 
 }

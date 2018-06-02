@@ -18,11 +18,9 @@ extension EventTableVC {
         
         var posY = CGFloat(0)
 
-        let noRoutineList = Show.shared.showSet.intersection(.routList).isEmpty
-
         for event in events {
 
-            if event.type == .routine && noRoutineList {
+            if event.type == .routine && !Show.shared.routList {
                 continue
             }
 

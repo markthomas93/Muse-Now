@@ -14,18 +14,10 @@ class MenuEditTitle: MenuEdit {
         self.init(coder: decoder)
     }
 
-    convenience init(_ treeNode_: TreeNode!) {
-        self.init()
-        treeNode = treeNode_
-        let vc = TreeNodes.shared.vc as! UIViewController
-        let width = vc.view.frame.size.width
-        frame.size = CGSize(width:width, height:height)
-        buildViews(width)
-    }
 
-    override func buildViews(_ width:CGFloat) {
+    override func buildViews() {
         
-        super.buildViews(width)
+        super.buildViews()
 
         textField = UITextField(frame:textFrame)
         textField.delegate = self

@@ -13,23 +13,9 @@ class MenuTitleMark: MenuTitle {
         self.init(coder: decoder)
     }
 
-    convenience init(_ treeNode_: TreeNode!) {
-        self.init()
+    override func buildViews() {
 
-        treeNode = treeNode_
-
-        let tableVC = TreeNodes.shared.vc as! UITableViewController
-         tableView = tableVC.tableView
-
-        let width = tableVC.view.frame.size.width
-        frame.size = CGSize(width:width, height:height)
-        buildViews(width)
-    }
-
-    override func buildViews(_ width: CGFloat) {
-
-        super.buildViews(width)
-        updateFrames(width)
+        super.buildViews()
 
         // bezel for mark
         mark = ToggleCheck(frame:markFrame)
@@ -37,7 +23,7 @@ class MenuTitleMark: MenuTitle {
         mark.layer.cornerRadius = innerH/4
         mark.layer.borderWidth = 1.0
         mark.layer.borderColor = headColor.cgColor
-        let isOn = treeNode.setting?.isOn() ?? false
+        let isOn = treeNode.setting?.isOn ?? false
         mark.setMark(isOn ? 1 : 0)
 
         contentView.addSubview(mark)
@@ -125,13 +111,14 @@ class MenuTitleMark: MenuTitle {
     }
 
     override func setMark(_ onRatio_:Float) {
-        (TreeNodes.shared.vc as? MenuTableVC)?.setTouchedCell(self)
-         mark.setMark(onRatio_)
+
+        PagesVC.shared.menuVC?.setTouchedCell(self)
+        mark.setMark(onRatio_)
     }
     
     override func touchCell(_ location: CGPoint, isExpandable:Bool) {
 
-        (TreeNodes.shared.vc as? MenuTableVC)?.setTouchedCell(self)
+        PagesVC.shared.menuVC?.setTouchedCell(self)
 
         let toggleX = frame.size.width - frame.size.height
         if location.x > toggleX {

@@ -11,16 +11,23 @@ class MenuEditWeekday: MenuEdit {
         self.init(coder: decoder)
     }
 
-    convenience init(_ treeNode_: TreeNode!) {
-        self.init()
-        treeNode = treeNode_
+    override func buildViews() {
 
-        let tableVC = TreeNodes.shared.vc as! UITableViewController
-         tableView = tableVC.tableView
+        super.buildViews()
 
-        let width = tableVC.view.frame.size.width
-        frame.size = CGSize(width:width, height:height)
-        buildViews(width)
+        if let node = treeNode as? TreeRoutineItemNode,
+            let item = node.routineItem {
+
+            weekdays.removeAll()
+
+            for i in 0 ..< 7 {
+                let mask = 1 << (6 - i)
+                let isOn = (item.daysOfWeek.rawValue & mask) != 0
+                let label = buildLabel(i, isOn)
+                weekdays.append(label)
+                bezel.addSubview(label)
+            }
+        }
     }
 
     func setLabel(_ label:UILabel!, isOn:Bool) {
@@ -51,24 +58,6 @@ class MenuEditWeekday: MenuEdit {
         return label
     }
 
-    override func buildViews(_ width: CGFloat) {
-        
-        super.buildViews(width)
-
-        if let node = treeNode as? TreeRoutineItemNode,
-            let item = node.routineItem {
-
-            weekdays.removeAll()
-
-            for i in 0 ..< 7 {
-                let mask = 1 << (6 - i)
-                let isOn = (item.daysOfWeek.rawValue & mask) != 0
-                let label = buildLabel(i, isOn)
-                weekdays.append(label)
-                bezel.addSubview(label)
-            }
-        }
-    }
 
     override func updateFrames(_ width:CGFloat) {
 
@@ -125,7 +114,7 @@ class MenuEditWeekday: MenuEdit {
 
     override func touchCell(_ point: CGPoint, isExpandable:Bool = true) {
 
-        (TreeNodes.shared.vc as? MenuTableVC)?.setTouchedCell(self)
+        PagesVC.shared.menuVC?.setTouchedCell(self)
         
         let location = CGPoint(x: point.x - bezelFrame.origin.x, y: point.y)
 

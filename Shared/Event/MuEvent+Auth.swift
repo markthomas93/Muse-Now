@@ -28,8 +28,7 @@ extension MuEvent { // calendar, reminder
      |
      */
     func requestAccessToEvents(type:EKEntityType) {
-        let eventStore = EKEventStore()
-        EKEventStore().requestAccess(to: type, completion: {
+         EKEventStore().requestAccess(to: type, completion: {
             (accessGranted: Bool, error: NSError?) in
             
             if accessGranted == true {

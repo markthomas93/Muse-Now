@@ -14,21 +14,9 @@ class MenuColorTitleMark: MenuTitleMark {
         self.init(coder: decoder)
     }
 
-    convenience init(_ treeNode_: TreeNode!) {
-        self.init()
+    override func buildViews() {
 
-        treeNode = treeNode_
-
-        let tableVC = TreeNodes.shared.vc as! UITableViewController
-        tableView = tableVC.tableView
-        let width = tableVC.view.frame.size.width
-        frame.size = CGSize(width:width, height:height)
-        buildViews(width)
-    }
-
-    override func buildViews(_ width: CGFloat) {
-
-        super.buildViews(width)
+        super.buildViews()
         color = UIImageView(frame:colorFrame)
         bezel.addSubview(color)
     }

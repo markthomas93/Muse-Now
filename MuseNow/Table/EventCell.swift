@@ -57,14 +57,8 @@ class EventCell: MuCell {
 
         let toggleX = frame.size.width - frame.size.height*1.618
         if location.x > toggleX {
-
-            event.mark = !(event.mark)
-            mark?.setMark(event.mark ? 1 : 0)
-            let act = event.mark ? DoAction.markOn : DoAction.markOff
-            let index = Dots.shared.gotoEvent(event)
-            Actions.shared.doAction(act, event, index, isSender: true)
+            Marks.shared.doToggleMark()
         }
-        Anim.shared.touchDialGotoTime(event.bgnTime)
     }
 
 }

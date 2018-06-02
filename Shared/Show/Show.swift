@@ -5,72 +5,96 @@
 import Foundation
 import AVFoundation
 
-struct ShowSet: OptionSet {
-    let rawValue: Int
-    static let calendar = ShowSet(rawValue: 1 << 0) //  1
-    static let reminder = ShowSet(rawValue: 1 << 1) //  2
-    static let memo     = ShowSet(rawValue: 1 << 2) //  4
-    static let routine  = ShowSet(rawValue: 1 << 3) //  8 -- routine on dial
-    static let routList = ShowSet(rawValue: 1 << 4) //  16 -- routine on list
-    static let routDemo = ShowSet(rawValue: 1 << 5) //  32 -- routine demo version
-}
-
-class Show {
+class Show: NSObject, DemoBackupDelegate {
 
     static let shared = Show()
-    var showSet = ShowSet([.calendar,.reminder,.routine,.memo])
 
-    func canShow(_ member:ShowSet) -> Bool {
+    var calendar = true
+    var reminder = true
+    var memo     = true
+    var routine  = true  // routine on dial
+    var routList = false // routine on list
+    var routDemo = false // routine demo version
 
-        return showSet.contains(member)
+    // DemoBackupDelegate
+
+    var backup: Show!
+
+    func setFrom(_ from:Any) {
+
+        if let from = from as? Show {
+            calendar = from.calendar
+            reminder = from.reminder
+            memo     = from.memo
+            routine  = from.routine
+            routList = from.routList
+            routDemo = from.routDemo
+        }
     }
 
-    func updateSetFromSession(_ showSet_:ShowSet) {
-
-        showSet = showSet_
-        Settings.shared.updateShowSet(showSet_)
+    func setupBackup() {
+        backup = Show()
+        backup.setFrom(self)
+    }
+    func setupBeforeDemo() {
+        setupBackup()
+        calendar = true
+        reminder = true
+        memo     = true
+        routine  = true  // routine on dial
+        routList = true // routine on list
+        routDemo = true // routine demo version
     }
 
-   
-    public func doShowAction(_ act: DoAction) {
+    func restoreAfterDemo() {
+        if let backup = backup {
+            setFrom(backup)
+        }
+    }
 
-        func continueAction() {
-            Settings.shared.updateShowSet(showSet)
+    // Session 
+
+    func parseMsg(_ msg: [String : Any])  {
+
+        if let _ = msg["get"] {
+        }
+        else  {
+
+            if let on = msg["calendar"] as? Bool { calendar = on ; TreeNodes.shared.setValue(on, forKey: "show.calendar")}
+            if let on = msg["reminder"] as? Bool { reminder = on ; TreeNodes.shared.setValue(on, forKey: "show.reminder")}
+            if let on = msg["memo"]     as? Bool { memo     = on ; TreeNodes.shared.setValue(on, forKey: "show.memo")}
+            if let on = msg["routine"]  as? Bool { routine  = on ; TreeNodes.shared.setValue(on, forKey: "show.routine")}
+            if let on = msg["routList"] as? Bool { routList = on ; TreeNodes.shared.setValue(on, forKey: "show.routList")}
+            if let on = msg["routDemo"] as? Bool { routDemo = on ; TreeNodes.shared.setValue(on, forKey: "show.routDemo")}
+
+            Actions.shared.doRefresh(false)
+            #if os(iOS)
+            PagesVC.shared.menuVC.tableView.reloadData()
+            #endif
+        }
+    }
+
+
+    public func doShowAction(_ act: DoAction, _ value:Float, _ isSender:Bool) {
+
+        let on = value > 0
+
+        func updateClass(_ className:String, _ path:String) {
+            TreeNodes.setOn(on,path)
             Actions.shared.doRefresh(/*isSender*/false)
-
-            Session.shared.sendMsg(["class"  : "ShowSet",
-                                    "putSet" : showSet.rawValue])
+            if isSender {
+                Session.shared.sendMsg(["class" : className, path : on])
+            }
         }
 
         switch act {
-
-        case .hideCalendar:  showSet.remove(.calendar)
-        case .showCalendar:  showSet.insert(.calendar)
-
-        case .hideReminder:  showSet.remove(.reminder)
-        case .showReminder:  showSet.insert(.reminder)
-
-        case .hideMemo:      showSet.remove(.memo)
-        case .showMemo:      showSet.insert(.memo)
-
-        case .hideRoutine:   showSet.remove(.routine)
-        case .showRoutine:   showSet.insert(.routine)
-            
-        case .hideRoutList:  showSet.remove(.routList)
-        case .showRoutList:  showSet.insert(.routList)
-            
+        case .showCalendar:  calendar = on ; updateClass("Show","menu.events")
+        case .showReminder:  reminder = on ; updateClass("Show","menu.events.reminders")
+        case .showMemo:      memo     = on ; updateClass("Show","menu.memos")
+        case .showRoutine:   routine  = on ; updateClass("Show","menu.routine")
+        case .showRoutList:  routList = on ; updateClass("Show","menu.routine.routList")
         default: break
         }
-        switch act {
-        case .hideRoutine, .showRoutine,
-             .hideRoutList, .showRoutList:
-
-            Routine.shared.archiveRoutine {
-                continueAction()
-            }
-        default: continueAction()
-        }
-
      }
 
  }

@@ -36,12 +36,16 @@ extension TreeNode {
      - refresh grayed check to show how many checked children
      */
     func refreshNodeCells() {
-
-        updateOnRatioFromChildren()
-        cell?.updateLeft(animate: false)
+        
         for child in children {
+            if child.cell == nil {
+                child.initCell()
+                child.updateCell()
+            }
             child.refreshNodeCells()
         }
+        updateOnRatioFromChildren()
+        cell?.updateLeft(animate: false)
     }
 
 }

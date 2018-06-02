@@ -12,8 +12,6 @@ class MenuTableVC: UITableViewController {
     var lastDisappearTime = TimeInterval(0)
     var headerY = CGFloat(0) // there is only one section header
 
-    var show: TreeNode! // this is the first tree item
-
     override func viewDidLoad() {
 
         super.viewDidLoad()
@@ -34,9 +32,9 @@ class MenuTableVC: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
 
-        TreeNodes.shared.initTree(self)
+        ///... maybe put finishUp() here instead
 
-        if show == nil {
+        if TreeNodes.shared.root == nil {
             tableView.contentOffset.y = 0
         }
         else if Date().timeIntervalSince1970 - lastDisappearTime > 2 {

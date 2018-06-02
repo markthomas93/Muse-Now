@@ -3,12 +3,11 @@
 import UIKit
 
 extension EventTableVC: PhoneCrownDelegate {
-    /**
-    User force touches our double tapped on phoneCrowndouble
-     */
+    /** User force touches our double tapped on phoneCrowndouble */
     func phoneCrownToggle(_ isRight:Bool) {
-         Actions.shared.doToggleMark()
+         Marks.shared.doToggleMark()
     }
+
     /**
      User touched crown
      - via: PhoneCrown.began

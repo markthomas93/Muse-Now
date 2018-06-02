@@ -26,11 +26,11 @@ class FilesSync {
             Closures.shared.addClosure(title: title_, closure_)
         }
         switch name { //TODO: fileMsg.parseMsg may be eliminated after test
-        case Memos.shared.fileName:    addClosure("FileMsg.sendFile.memos")    { Memos.shared.sendPostFile() }
-        case Marks.shared.fileName:    addClosure("FileMsg.sendFile.marks")    { Marks.shared.sendPostFile() }
-        case Cals.shared.fileName:     addClosure("FileMsg.sendFile.cals")     { Cals.shared.sendPostFile() }
-        case Settings.shared.fileName: addClosure("FileMsg.sendFile.settings") { Settings.shared.sendPostFile() }
-        case Routine.shared.fileName:  addClosure("FileMsg.sendFile.routine")  { Routine.shared.sendPostFile() }
+        case Memos.shared.fileName:     addClosure("FileMsg.sendFile.memos")    { Memos.shared.sendPostFile() }
+        case Marks.shared.fileName:     addClosure("FileMsg.sendFile.marks")    { Marks.shared.sendPostFile() }
+        case Cals.shared.fileName:      addClosure("FileMsg.sendFile.cals")     { Cals.shared.sendPostFile() }
+        case TreeNodes.shared.fileName: addClosure("FileMsg.sendFile.menu")     { TreeNodes.shared.sendPostFile() }
+        case Routine.shared.fileName:   addClosure("FileMsg.sendFile.routine")  { Routine.shared.sendPostFile() }
         default: break
         }
     }

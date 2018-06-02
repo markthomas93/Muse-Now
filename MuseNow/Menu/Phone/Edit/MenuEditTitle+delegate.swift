@@ -29,7 +29,7 @@ extension MenuEditTitle: UITextFieldDelegate {
 
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
 
-        (TreeNodes.shared.vc as? MenuTableVC)?.setTouchedCell(self)
+         PagesVC.shared.menuVC?.setTouchedCell(self)
         
          textField.keyboardAppearance =  UIAccessibilityIsInvertColorsEnabled() ? .default : .dark
 
@@ -44,7 +44,8 @@ extension MenuEditTitle: UITextFieldDelegate {
 
         if let parent = treeNode.parent,
             let parentCell = parent.cell {
-           (TreeNodes.shared.vc as? MenuTableVC)?.setTouchedCell(parentCell)
+            
+           PagesVC.shared.menuVC?.setTouchedCell(parentCell)
         }
         
         Log ("▭ \(#function)")

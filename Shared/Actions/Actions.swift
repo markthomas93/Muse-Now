@@ -7,40 +7,37 @@ import SpriteKit
 public enum DoAction : Int,Codable { case
 
     unknown,
+
+    // refresh view
+    refresh,
+
+    // page
     gotoPageMain, gotoPageMenu, gotoPageOnboard,
+
+    // event dial
     gotoEvent, gotoFuture, gotoRecordOn,
 
     // say
-    saySpeech, skipSpeech,
-    sayMemo,  skipMemo,
-    sayTime,  skipTime,
-    sayEvent, skipEvent,
+    saySpeech, sayMemo, sayTime, sayEvent,
     speakLow, speakMedium, speakHigh,
 
     // hear
     hearEarbuds, hearSpeaker,
-    muteEarbuds, muteSpeaker, 
 
     // tour
     tourAll, tourMain, tourDetail, tourMenu, tourIntro, tourStop,
 
     // show
-    showCalendar, hideCalendar,
-    showReminder, hideReminder,
-    showRoutine,  hideRoutine,
-    showRoutList, hideRoutList,
+    showCalendar,  showReminder, showRoutine, showRoutList, showMemo,
 
-    showMemo,      hideMemo,
-    memoWhereOn,    memoWhereOff,
-    memoNod2RecOn, memoNod2RecOff,
-    memoCopyAll, memoClearAll,
+    // memoe
+    memoWhere, memoNod2Rec, memoCopyAll, memoClearAll,
+
+    // dial
     dialColor,
 
-    showEvents, showAlarms, showMarks,showTime,
-    markOn, markOff, markClearAll,
-    //chimeOff, chimeLow, chimeMedium, chimeHigh, chimeOn,
-    debugOn, debugOff,
-    refresh
+    // debug
+    debug
 }
 
 class StrAct {
@@ -69,14 +66,13 @@ class Actions {
         if isSender {
 
             Session.shared.sendMsg( ["class" : "Actions", "dialColor" : fade])
-            Settings.shared.updateColor(fade)
+            Settings.shared.dialColor = fade
         }
     }
 
     func doSetTitle(_ title_: String) {
         #if os(watchOS)
-            let root = WKExtension.shared().rootInterfaceController!
-            root.setTitle(title_)
+            WKExtension.shared().rootInterfaceController?.setTitle(title_)
         #endif
     }
     
@@ -104,7 +100,7 @@ class Actions {
      */
     func refreshEvents(_ isSender:Bool) {
 
-        Settings.shared.unarchiveSettings {
+        TreeNodes.shared.unarchiveTree() {
 
             MuEvents.shared.updateEvents() {
 
@@ -160,41 +156,7 @@ class Actions {
         }
     }
     
-    func doToggleMark() { //Log("✓ \(#function)")
-        
-        Active.shared.startMenuTime()
-        let dots = Dots.shared
 
-        // via phoneCrown
-        if let table = tableDelegate {
-            
-            let (event,isOn) = table.toggleCurrentCell()
-            let act = isOn ? DoAction.markOn : DoAction.markOff
-            if let event = event {
-                doAction(act, event, dots.gotoEvent(event), isSender: true)
-            }
-            else {
-                doAction(act, nil, 0, isSender: true)
-            }
-             Haptic.play(.success)
-        }
-            // via watch
-        else {
-            
-            let (event,delta) = dots.getNearestEvent(0)
-            let index = Int(dots.dotNow) + delta
-            if let event = event {
-                
-                let act = event.mark ? DoAction.markOff : DoAction.markOn
-                doAction(act, event, index, isSender: true)
-                Haptic.play(.success)
-            }
-            else {
-                print("\(#function) no event found")
-            }
-        }
-    }
-    
     //-----------------------------------------
  
     /**
@@ -203,124 +165,46 @@ class Actions {
      - via: Session.parseMsg["Action":]
      - via: EventCell.touchMark
      */
-    func doAction(_ act: DoAction, _ event:MuEvent! = nil, _ index:Int = 0, isSender:Bool = false) {
+    func doAction(_ act: DoAction, value: Float = 0, _ event:MuEvent! = nil, _ index:Int = 0, isSender:Bool = false) {
         
         Log("⌘ \(#function):\(act) event:\(event?.title ?? "nil")")
         
         switch act {
-        case  // show
-        .showCalendar, .hideCalendar,
-        .showReminder, .hideReminder,
-        .showMemo,     .hideMemo,
-        .showRoutine,  .hideRoutine,
-        .showRoutList, .hideRoutList:
+            
+        case .showCalendar, .showReminder, .showMemo, .showRoutine, .showRoutList:
 
-            Show.shared.doShowAction(act)
-
+            Show.shared.doShowAction(act, value, isSender)
 
         case .tourAll, .tourMain, .tourMenu, .tourDetail, .tourIntro, .tourStop:
             #if os(iOS)
                 Tour.shared.doTourAction(act)
             #endif
         // speech to text volume
-        case .sayMemo, .skipMemo,
-             .sayTime, .skipTime,
-             .sayEvent, .skipEvent,
-             .speakLow, .speakMedium, .speakHigh:
+        case .sayMemo, .sayTime, .sayEvent, .speakLow, .speakMedium, .speakHigh:
 
-            Say.shared.doSayAction(act)
+            Say.shared.doSayAction(act, value, isSender)
 
-        case  .hearEarbuds, .hearSpeaker,
-              .muteEarbuds, .muteSpeaker:
+        case  .hearEarbuds, .hearSpeaker:
 
-            Hear.shared.doHearAction(act)
+            Hear.shared.doHearAction(act, value, isSender)
 
-        // mark a dot
-        case .markOn, .markOff, .markClearAll:
+        case .gotoEvent,
+             .gotoRecordOn,
+             .gotoFuture:
 
-            markAction(act, event, index, isSender)
-
-        case .gotoEvent:
-
-            Dots.shared.gotoEvent(event)
-            Anim.shared.touchDialGotoTime(event?.bgnTime ?? 0)
-
-        case .gotoRecordOn:
-
-            Anim.shared.gotoRecordSpoke(on:true) {}
-
-             // animate dial to show whole week
-        case .gotoFuture:
-
-            Anim.shared.wheelTime = 0
-            Anim.shared.animNow = .futrWheel
-            Anim.shared.userDotAction()
-
-        case .memoCopyAll,   .memoClearAll,
-             .memoWhereOn,   .memoWhereOff,
-             .memoNod2RecOn, .memoNod2RecOff:
-
-            Memos.shared.doAction(act, isSender)
+            Anim.shared.doAnimAction(act,value, event, isSender)
             
-        case .refresh:      doRefresh(isSender)
+        case .memoCopyAll, .memoClearAll, .memoWhere, .memoNod2Rec:
+
+            Memos.shared.doMemoAction(act, value, isSender)
             
-        case .debugOn:      scene.debugUpdate = true
-        case .debugOff:     scene.debugUpdate = false
+        case .refresh: doRefresh(isSender)
+            
+        case .debug: scene.debugUpdate = value > 0 ? true : false
     
         default: break
         }
     }
       
-    /**
-     Dispatch a command
-     - via: EventTable+Select.(toggleCurrentCell actionTap)
-     - via: WatchCon.menu(Mark Clear)Action
-     */
-    func markAction(_ act:DoAction, _ event:MuEvent!, _ index: Int, _ isSender:Bool) {
-        
-        Log("✓ \(#function) \(act) \(event != nil ? event.title : "nil") isSender:\(isSender)")
-        
-        let dot = Dots.shared.getDot(index)
-        
-        var markEvent = event
-        
-        switch act {
-        case .markOn:       markEvent = dot.setMark(true, event)
-        case .markOff:      markEvent = dot.setMark(false, event)
-        case .markClearAll: break //!!!! Dots.shared.hideEventsWith(type:.mark)
-        case .memoCopyAll: Dots.shared.hideEvents(with:[.memoRecord,.memoTrans,.memoTrash])
-        default: break
-        }
-        
-        dot.makeRgb()
-        scene.updateTextures()
-        
-        if markEvent != nil {
-            Anim.shared.touchDialGotoTime(markEvent!.bgnTime)
-        }
-        else {
-            markEvent = dot.getCurrentEvent()
-        }
-        Marks.shared.updateAct(act,markEvent)
-        if isSender {
-            sendAction(act, markEvent, dot.timeHour)
-        }
-    }
-
-    func sendAction(_ act:DoAction, _ event:MuEvent!, _ time: TimeInterval) {
-        
-        var msg : [String:Any] = [
-            "class"   : "Actions",
-            "action"  : "\(act)",
-            "dotTime" : time]
-        
-        if event != nil {
-            msg["eventId"] = event.eventId
-            msg["bgnTime"] = event.bgnTime
-        }
-        Session.shared.sendMsg(msg)
-    }
-    
-
 
 }

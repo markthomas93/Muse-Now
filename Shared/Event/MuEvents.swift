@@ -21,7 +21,19 @@ class MuEvents {
     
     var refreshTimer = Timer()
     
-    
+
+    func parseMsg(_ msg: [String : Any]) {
+
+        if // event was modified
+            let updateEvent = msg["updateEvent"] as? Data,
+            let event = try? JSONDecoder().decode(MuEvent.self, from: updateEvent) {
+
+            Actions.shared.doUpdateEvent(event, isSender: false)
+        }
+    }
+
+
+
     /**
      Main entry for updating events
      - via: Actions.doRefresh
@@ -29,7 +41,17 @@ class MuEvents {
     func updateEvents(_ completion: @escaping () -> Void) {
         
         // real events used for production
-        getRealEvents(Show.shared.showSet) { ekEvents, ekReminds, memos, routine in
+        
+        let getEvents    = TreeNodes.isOn("menu.events")
+        let getReminders = TreeNodes.isOn("menu.events.reminders")
+        let getMemos     = TreeNodes.isOn("menu.memos")
+        let getRoutine   = TreeNodes.isOn("menu.routine")
+        
+        getReal(getEvents:      getEvents,
+                getReminders:   getReminders,
+                getMemos:       getMemos,
+                getRoutine:     getRoutine)
+        { ekEvents, ekReminds, memos, routine in
             
             self.events.removeAll()
             self.events = ekEvents + ekReminds + memos + routine //+ self.getNearbyEvents()
@@ -53,23 +75,26 @@ class MuEvents {
         })
     }
     
-    /**
-     After Notification, mark any events that were added or changed
+    /** After Notification, mark any events that were added or changed
      - via: EkNotification
      */
     func markCalendarAdditions() {
         
-        getRealEvents([.calendar,.reminder]) { ekEvents, ekReminds, memos, routine in
+        getReal(getEvents: true,
+                getReminders: true,
+                getMemos: false,
+                getRoutine: false)
+        { ekEvents, ekReminds, memos, routine in
             
             for nowEvents in [ekEvents,ekReminds] {
                 for event in nowEvents {
                     // new event added
                     if self.idEvents[event.eventId] == nil {
-                        Marks.shared.updateAct(.markOn, event)
+                        Marks.shared.updateEvent(event, isOn:true)
                     }
                         // existing event's begin time changed
                     else if self.idEvents[event.eventId]?.bgnTime != event.bgnTime {
-                        Marks.shared.updateAct(.markOn, event)
+                         Marks.shared.updateEvent(event, isOn:true)
                     }
                 }
             }
@@ -77,10 +102,12 @@ class MuEvents {
         }
     }
     
-    /**
-     Get events from several data sources, each on its own thread
-     */
-    func getRealEvents(_ set:ShowSet, _ completion: @escaping (
+    /** Get events from several data sources, each on its own thread */
+    func getReal(getEvents:Bool,
+                 getReminders:Bool,
+                 getMemos:Bool,
+                 getRoutine:Bool,
+                 _ completion: @escaping (
         _ ekEvents      : [MuEvent],
         _ ekReminders   : [MuEvent],
         _ memos         : [MuEvent],
@@ -98,15 +125,17 @@ class MuEvents {
             var routine     = [MuEvent]()
             
             // ekevents
+            if getEvents {
                 group.enter()
                 self.getEkEvents() { result in
                     ekEvents = result
                     Log("⚡️ events")
                     group.leave()
             }
+            }
             
             // ekreminders
-            if Show.shared.canShow(.reminder) {
+            if getReminders {
                 group.enter()
                 self.getEkReminders() { result in
                     ekReminders = result
@@ -115,7 +144,7 @@ class MuEvents {
                 }
             }
             // memos
-            if Show.shared.canShow(.memo) {
+            if getMemos {
                 group.enter()
                 self.memos.unarchiveMemos() { result in
                     memos = result
@@ -124,13 +153,15 @@ class MuEvents {
                 }
             }
             // routine
-            group.enter()
-            Routine.shared.getRoutineEvents() { result in
-                routine = result
-                Log("⚡️ routine")
-                group.leave()
+            if getRoutine {
+                group.enter()
+                Routine.shared.getRoutineEvents() { result in
+                    routine = result
+                    Log("⚡️ routine")
+                    group.leave()
+                }
             }
-            
+
             // marks
             group.enter()
             self.marks.unarchiveMarks() {
@@ -190,7 +221,7 @@ class MuEvents {
                     cals.append(ekCal)
                 }
             }
-            if Show.shared.canShow(.calendar) {
+            if Show.shared.calendar {
                 if cals.count > 0 {
                     let pred = store.predicateForEvents(withStart: bgnTime!, end: endTime!, calendars:cals)
                     let ekEvents = store.events(matching: pred)

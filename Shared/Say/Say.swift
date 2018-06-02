@@ -16,27 +16,21 @@
     phraseSlider,     // status of user action on slider
     phraseMemo        // recorded audio memo
  }
- 
- struct SaySet: OptionSet {
-    let rawValue: Int
-    static let memo    = SaySet(rawValue: 1 << 0)
-    static let event   = SaySet(rawValue: 1 << 1)
-    static let time    = SaySet(rawValue: 1 << 2)
- }
 
- class Say : NSObject, AVSpeechSynthesizerDelegate {
+  class Say : NSObject, AVSpeechSynthesizerDelegate, DemoBackupDelegate {
     
     static let shared = Say()
 
-    var saySet = SaySet([.memo,.event, .time])
-    var sayVolume = Float(0.5)
+    // model
 
-    #if os(watchOS)
+    var memo = true
+    var event = true
+    var time = true
+    var volume = Float(0.5)
+
+    // runtime
+
     let itemDuration = TimeInterval(2) // duration when not speaking
-    #else
-    let itemDuration = TimeInterval(2) // duration when not speaking
-    #endif
-    
     var actions = Actions.shared
     var dayHour = DayHour.shared
     
@@ -44,7 +38,6 @@
     var audioPlayer: AVAudioPlayer!
     var audioSession = AVAudioSession.sharedInstance()
     var title = ""
-
 
     weak var sayTimer : Timer?
     weak var txtTimer : Timer?
@@ -60,34 +53,79 @@
         catch {  print("\(#function) Error:\(error)") }
     }
 
-    // speech to text volume
-    public func doSayAction(_ act: DoAction) {
+
+    // DemoBackupDelegate --------------------------
+
+    var backup: Say!
+
+    func setFrom(_ from:Any) {
+        if let from = from as? Say {
+            memo    = from.memo
+            event   = from.event
+            time    = from.time
+            volume  = from.volume
+        }
+    }
+
+    func setupBackup() {
+        backup = Say()
+        backup.setFrom(self)
+    }
+    func setupBeforeDemo() {
+        setupBackup()
+        memo    = false
+        event   = false
+        time    = false
+        volume  = 1.0
+    }
+    func restoreAfterDemo() {
+        if let backup = backup {
+            setFrom(backup)
+        }
+    }
+
+    // session messages -----------------
+
+    func parseMsg(_ msg: [String : Any])  {
+
+        if let _ = msg["get"] {
+        }
+        else {
+            if let on = msg["memo"]  as? Bool { memo = on  ; TreeNodes.shared.setValue(on, forKey: "say.memo") }
+            if let on = msg["time"]  as? Bool { time = on  ; TreeNodes.shared.setValue(on, forKey: "say.time") }
+            if let on = msg["event"] as? Bool { event = on ; TreeNodes.shared.setValue(on, forKey: "say.event") }
+
+            #if os(iOS)
+            PagesVC.shared.menuVC.tableView.reloadData()
+            #endif
+        }
+    }
+
+    //
+    public func doSayAction(_ act: DoAction, _ value: Float, _ isSender:Bool) {
+
+        let on = value > 0
+
+        func updateClass(_ className:String, _ path:String) {
+            TreeNodes.setOn(on,path)
+            Actions.shared.doRefresh(/*isSender*/false)
+            if isSender {
+                Session.shared.sendMsg(["class" : className, path : on])
+            }
+        }
 
         switch act {
-        case .sayMemo:    saySet.insert(.memo)
-        case .skipMemo:   saySet.remove(.memo)
+        case .sayMemo:  memo  = on ; updateClass("Say","menu.more.say.memo")
+        case .sayTime:  time  = on ; updateClass("Say","menu.more.say.time")
+        case .sayEvent: event = on ; updateClass("Say","menu.more.say.event")
 
-        case .sayTime:    saySet.insert(.time)
-        case .skipTime:   saySet.remove(.time)
-
-        case .sayEvent:    saySet.insert(.event)
-        case .skipEvent:   saySet.remove(.event)
-
-        case .speakLow:     sayVolume = 0.1
-        case .speakMedium:  sayVolume = 0.5
-        case .speakHigh:    sayVolume = 1.0
+        case .speakLow:     volume = 0.1
+        case .speakMedium:  volume = 0.5
+        case .speakHigh:    volume = 1.0
         default: break
         }
-         Settings.shared.updateSaySet(saySet)
-        
-        Session.shared.sendMsg(["class"  : "SaySet",
-                                "putSet" : saySet.rawValue])
     }
-    
-    func updateSetFromSession(_ saySet_:SaySet) {
-        saySet = saySet_
-        Settings.shared.updateSaySet(saySet_)
-    }
+
 
     func clearAll() {  Log("🗣 \(#function)")
         clearTimers()
@@ -105,7 +143,7 @@
         if sayItem.phrase == .phraseMemo {
             Audio.shared.finishPlaybackSession()
         }
-        else if saySet.rawValue > 0 {
+        else if memo || event || time {
             synth.stopSpeaking(at: .immediate)
         }
         else {
@@ -229,6 +267,8 @@
         clearTimers()
         actions.doSetTitle(item.title)
         sayItem = item
+        let say = Say.shared
+        let hear = Hear.shared
 
         func playMemo() -> Bool {
 
@@ -236,7 +276,7 @@
 
             Transcribe.shared.appleTranscribeEvent(sayItem.event) {} // transcribe item if no already
 
-            if Say.shared.saySet.contains(.memo) && Hear.shared.canPlay() { Log("🗣 \(#function) \(sayItem.title)")
+            if say.memo && hear.canPlay() { Log("🗣 \(#function) \(sayItem.title)")
                 //?? self.synth.stopSpeaking(at: .immediate) //?? remove?
                 let url = FileManager.documentUrlFile(sayItem.spoken)
                 Audio.shared.playUrl(url: url) { finished in
@@ -254,12 +294,12 @@
         }
         func playSay() -> Bool {
 
-            if saySet.intersection([.event,.time]).isEmpty { return false }
+            if !say.event,!say.time { return false }
 
-            if sayItem.spoken != "" && Hear.shared.canPlay() { Log("🗣 \(#function) \(sayItem.title)")
+            if sayItem.spoken != "" && hear.canPlay() { Log("🗣 \(#function) \(sayItem.title)")
 
                 self.clearTimers()
-                synth.speak(UtterItem(sayItem, sayVolume))
+                synth.speak(UtterItem(sayItem, volume))
                 return true
             }
             return false

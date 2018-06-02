@@ -95,7 +95,7 @@ class Record: NSObject, CLLocationManagerDelegate {
             }
         }
             // only allow recording if "show memo" is set
-        else if Show.shared.canShow(.memo) { Log("∿ \(#function) -> start")
+        else if Show.shared.memo { Log("∿ \(#function) -> start")
             Haptic.play(.start)
             startRecording() {}
         }

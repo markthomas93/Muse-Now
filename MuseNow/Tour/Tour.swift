@@ -60,8 +60,6 @@ class Tour {
         menuVC = pagesVC.menuVC!
         menuView = menuVC.view!
 
-        ///... TreeNodes.shared.initTree(menuVC)
-
         panelView = MainVC.shared!.panel
         mainVC = MainVC.shared!
         dialView = mainVC.skView
@@ -119,7 +117,7 @@ class Tour {
         if tourSet.contains([.detail]) { buildMenuTour(.detail,&sections) }
 
         Actions.shared.doAction(.gotoFuture)
-        Settings.shared.prepareDemoSettings()
+        TreeNodes.shared.prepareDemoSettings()
         tourBubbles(tourBubbles) {
             self.stopTour()
         }
@@ -133,7 +131,7 @@ class Tour {
         }
         tourBubbles.removeAll()
         TouchScreen.shared.endRedirecting()
-        Settings.shared.finishDemoSettings()
+        TreeNodes.shared.finishDemoSettings()
     }
 
     // parse content list ------------------------------------

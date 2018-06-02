@@ -20,7 +20,18 @@ class Cals: FileSync {
         super.init()
         fileName = "Calendars.json"
     }
-    
+
+    func parseMsg(_ msg: [String : Any]) {
+
+        if  let calId = msg["calId"] as? String,
+            let isOn  = msg["isOn"]  as? Bool {
+
+            //Log ("⧖ Cals::\(#function) calId:\(calId) isOn:\(isOn)")
+            updateMark(calId,isOn)
+        }
+    }
+
+
     // EKCalendar --------------------------------------------
 
     /// read selected calendars from file and filter from current set of eventKit Calendars
@@ -67,11 +78,8 @@ class Cals: FileSync {
                         memCal?.isOn = fileCal.isOn
                     }
                 }
-                done()
             }
-            else {
-                done()
-            }
+            done()
         }
     }
 
@@ -80,7 +88,10 @@ class Cals: FileSync {
     
     func archiveCals(done:@escaping CallVoid) {
 
-        if let data = try? JSONEncoder().encode(cals) {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
+
+        if let data = try? encoder.encode(cals) {
 
             let _ = saveData(data)
             Actions.shared.doRefresh(/*isSender*/false)

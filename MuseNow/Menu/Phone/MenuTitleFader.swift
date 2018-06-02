@@ -14,25 +14,13 @@ class MenuTitleFader: MenuTitle {
         self.init(coder: decoder)
     }
 
-    convenience init(_ treeNode_: TreeNode!) {
-        self.init()
+    override func buildViews() {
 
-        treeNode = treeNode_
+        super.buildViews()
 
-        let tableVC = TreeNodes.shared.vc as! UITableViewController
-         tableView = tableVC.tableView
-
-        let width = tableVC.view.frame.size.width
-        frame.size = CGSize(width:width, height:height)
         let str = treeNode.name
         titleW = str.width(withConstraintedHeight: height, font:  UILabel().font!)
-        buildViews(width)
-    }
 
-    override func buildViews(_ width:CGFloat) {
-
-        super.buildViews(width)
-        updateFrames(width)
         self.frame = cellFrame
 
         fader = Fader(frame:faderFrame)

@@ -40,6 +40,13 @@ class MenuCell: MuCell {
     convenience required init(coder decoder: NSCoder) {
         self.init(coder: decoder)
     }
+    convenience init(_ treeNode_: TreeNode!) {
+        self.init()
+        treeNode = treeNode_
+        tableView = PagesVC.shared.menuVC.tableView
+        buildViews()
+    }
+
     /**
      Adjust display (such as a check mark)
      based on ratio of children that are set on
@@ -49,7 +56,10 @@ class MenuCell: MuCell {
 
     /**
      */
-    func buildViews(_ width:CGFloat) {
+    func buildViews() { // overide will call
+        
+        let width = PagesVC.width
+        frame.size = CGSize(width:width, height:height)
 
         updateFrames(width)
         frame = cellFrame
@@ -325,10 +335,10 @@ class MenuCell: MuCell {
         let newShown = TreeNodes.shared.shownNodes
         Log ("*** oldShown: \(oldShown.count)   newShown: \(newShown.count) *** ")
 
-        if let tableVC = TreeNodes.shared.vc as? MenuTableVC {
-            tableVC.updateTouchNodes(oldShown,newShown)
+        if let menuVC = PagesVC.shared.menuVC {
+            menuVC.updateTouchNodes(oldShown,newShown)
+            menuVC.scrollToNearestTouch(self)
         }
-        (TreeNodes.shared.vc as? MenuTableVC)?.scrollToNearestTouch(self)
     }
 
     /**
@@ -338,8 +348,7 @@ class MenuCell: MuCell {
     override func touchCell(_ location: CGPoint, isExpandable:Bool = true) {
 
        //let wasHigh = [.high,.forceHigh].contains(highlighting) //{ return }  //????//
-
-        (TreeNodes.shared.vc as? MenuTableVC)?.setTouchedCell(self)
+        PagesVC.shared.menuVC?.setTouchedCell(self)
 
         maybeTouchInfoFirst(location) {
             self.afterTouchingInfo(isExpandable)

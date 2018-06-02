@@ -35,7 +35,6 @@ class MainVC: UIViewController {
     ? CGSize(width: 168, height: 168) // iphone x
     : CGSize(width: 154, height: 154) // everything else
 
-
     var pagesFrame = CGRect.zero
     var panelFrame = CGRect.zero
     var touchFrame = CGRect.zero
@@ -45,8 +44,6 @@ class MainVC: UIViewController {
     var observer: NSKeyValueObservation?
 
      var backgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
-
-
 
     func updateFrames(_ size:CGSize) {
 
@@ -104,8 +101,7 @@ class MainVC: UIViewController {
 
     func transitionFromOnboarding() {
 
-        Onboard.shared.state = .completed
-        settings.settings["boarding"] = Onboard.shared.state.rawValue
+        settings.onboarding = false
         settings.archiveSettings()
         
         makePages() {

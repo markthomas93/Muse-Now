@@ -19,8 +19,10 @@ class Routine: FileSync, Codable {
     }
 
     func archiveRoutine(done:@escaping CallVoid) {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
 
-        if let data = try? JSONEncoder().encode(self) {
+        if let data = try? encoder.encode(self) {
             let _ = saveData(data)
             done()
         }
@@ -41,15 +43,18 @@ class Routine: FileSync, Codable {
 
             if  let data = data,
                 let newRoutine = try? JSONDecoder().decode(Routine.self, from:data) {
+
                 for (key,value) in newRoutine.catalog {
                     self.catalog[key] = value
                 }
                 Log ("⧉ Routine::\(#function) catalog:\(self.catalog.count) memoryTime:\(self.memoryTime) ")
                 done()
             }
+                // first time startup so make demo routine for onboarding tour
             else {
 
                 self.makeDemoRoutine()
+                self.archiveRoutine { }
                 done()
             }
         }
@@ -98,7 +103,7 @@ class Routine: FileSync, Codable {
 
     func getRoutineEvents(completion: @escaping (_ result:[MuEvent]) -> Void)  {
 
-        if Show.shared.showSet.contains(.routDemo) {
+        if Show.shared.routDemo {
             makeDemoRoutine()
             completion(self.filteredEvents())
         }
