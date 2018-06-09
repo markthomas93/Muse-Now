@@ -301,6 +301,7 @@
 		8076B33C1FE6C783001EDD30 /* Tour.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076B33B1FE6C783001EDD30 /* Tour.swift */; };
 		8076B33E1FE6D151001EDD30 /* BubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8076B33D1FE6D151001EDD30 /* BubbleView.swift */; };
 		807A59F4201E542C007BCF46 /* MainVC+override.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807A59F3201E542C007BCF46 /* MainVC+override.swift */; };
+		8087C4E720C8493A00BE999F /* TreeNodes+Archive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8087C4E620C8493A00BE999F /* TreeNodes+Archive.swift */; };
 		8088149C200941A1008047DA /* FileSync+delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8088149B200941A1008047DA /* FileSync+delegate.swift */; };
 		808B3E1D20A6293E007FCAB8 /* Main.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80F337BE209D80B300F365D5 /* Main.xcassets */; };
 		80920B451FA4F6E4004E4D8B /* ComplicationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80920B441FA4F6E4004E4D8B /* ComplicationProvider.swift */; };
@@ -685,6 +686,7 @@
 		8083401A200FE4BA00AD5FF7 /* WatchCrown2.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = WatchCrown2.m4v; sourceTree = "<group>"; };
 		8083401B200FE4BA00AD5FF7 /* WatchMemo2.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = WatchMemo2.m4v; sourceTree = "<group>"; };
 		8083401C200FE4BA00AD5FF7 /* WatchSiri2.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = WatchSiri2.m4v; sourceTree = "<group>"; };
+		8087C4E620C8493A00BE999F /* TreeNodes+Archive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TreeNodes+Archive.swift"; sourceTree = "<group>"; };
 		8088149B200941A1008047DA /* FileSync+delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileSync+delegate.swift"; sourceTree = "<group>"; };
 		80920B441FA4F6E4004E4D8B /* ComplicationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationProvider.swift; sourceTree = "<group>"; };
 		809B0E8D209A87E90044FDEA /* Transcribe.Watch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transcribe.Watch.swift; sourceTree = "<group>"; };
@@ -1395,6 +1397,7 @@
 			isa = PBXGroup;
 			children = (
 				803D6FE620A4AC9A0098B134 /* TreeNodes.swift */,
+				8087C4E620C8493A00BE999F /* TreeNodes+Archive.swift */,
 				80F33758209C9EEF00F365D5 /* TreeNodes+Init.swift */,
 				80FAC52220B9FF0300A1B1FA /* TreeNodes+Session.swift */,
 				80F3376F209C9EEF00F365D5 /* TreeNode.swift */,
@@ -1830,6 +1833,7 @@
 				80FAC52A20BDAEEC00A1B1FA /* TreeNode+Goto.swift in Sources */,
 				8004F7711FA3EE2400F7ED94 /* Dots+Action.swift in Sources */,
 				804D5A271FA3FCAA0025B724 /* EventTable+Select.swift in Sources */,
+				8087C4E720C8493A00BE999F /* TreeNodes+Archive.swift in Sources */,
 				803C5B231FBF82E000BA9C6C /* Setting.swift in Sources */,
 				804D5A251FA3FCAA0025B724 /* EventTable+PhoneCrown.swift in Sources */,
 				8004F6F01FA3ED5E00F7ED94 /* Edge.swift in Sources */,

@@ -10,19 +10,33 @@ import Foundation
 
 extension Actions {
 
+    func parseGotoEventMsg(_ msg: [String : Any]) {
 
-    func sendAction(_ act:DoAction, _ event:MuEvent!, _ time: TimeInterval) {
+        if // invoke action on a specific event
+            let eventId = msg["eventId"] as? String,
+            let bgnTime = msg["bgnTime"] as? TimeInterval {
 
-        var msg : [String:Any] = [
-            "class"   : "Actions",
-            "action"  : "\(act)",
-            "dotTime" : time]
+            let (event,index) = Dots.shared.findEvent(eventId, bgnTime)
 
-        if event != nil {
-            msg["eventId"] = event.eventId
-            msg["bgnTime"] = event.bgnTime
+            if let event = event {
+
+                doAction(.gotoEvent, event, index)
+                if let tableDelegate = tableDelegate {
+                    tableDelegate.scrollSceneEvent(event)
+                    tableDelegate.updateCellMarks() // update visible marks for table
+                }
+            }
         }
-        Session.shared.sendMsg(msg)
+        else if // set position to a specific dot, by way of its time
+            let dotTime = msg["dotTime"] as? TimeInterval {
+            Dots.shared.gotoTime(dotTime)
+        }
+    }
+
+    func parseAction(_ act:DoAction, _ msg: [String : Any]) {
+        let value = msg["value"] as? Float ?? 0
+        let event = msg["event"] as? MuEvent ?? nil
+        doAction(act, value: value, event, 0, isSender: false)
     }
 
     /**
@@ -31,49 +45,15 @@ extension Actions {
      */
     func parseMsg(_ msg: [String : Any]) {
 
-        func parseAction(_ action:String) -> DoAction {
+        if let actStr = msg["Action"] as? String,
+            let action = DoAction(rawValue: actStr) {
 
             switch action {
-            case "\(DoAction.memoCopyAll)":  return .memoCopyAll
-            case "\(DoAction.memoClearAll)": return .memoClearAll
-            case "\(DoAction.refresh)":      return .refresh
-            case "\(DoAction.gotoEvent)":    return .gotoEvent
-            default:                         return .unknown
+            case .gotoEvent: parseGotoEventMsg(msg)
+            default:         parseAction(action,msg)
             }
-        }
-
-        if let action = msg["action"] as? String {
-
-            if // invoke action on a specific event
-                let eventId = msg["eventId"] as? String,
-                let bgnTime = msg["bgnTime"] as? TimeInterval {
-
-                let (event,index) = Dots.shared.findEvent(eventId, bgnTime)
-
-                if let event = event {
-
-                    let act = parseAction(action)
-                    doAction(act, event, index)
-                    if let tableDelegate = tableDelegate {
-                        tableDelegate.scrollSceneEvent(event)
-                        tableDelegate.updateCellMarks() // update visible marks for table
-                    }
-                }
-            }
-        }
-        else if // set position to a specific dot, by way of its time
-            let dotTime = msg["dotTime"] as? TimeInterval {
-            Dots.shared.gotoTime(dotTime)
-        }
-        else if // color slider has changed
-            let fade = msg["dialColor"] as? Float {
-
-            dialColor(fade, isSender: false)
         }
     }
-
-
-
 
 }
 

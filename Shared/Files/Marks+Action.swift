@@ -19,7 +19,7 @@ extension Marks {
 
             dot.setMark(isOn, event)
             dot.makeRgb()
-            Actions.shared.doUpdateEvent(event, isSender: true)
+            Actions.shared.doAction(.updateEvent, event, isSender: true)
             Haptic.play(.success)
             if gotoEvent {
                 Anim.shared.touchDialGotoTime(event.bgnTime)

@@ -35,10 +35,12 @@ func DebugLog(_ str: String) -> Bool {
 
     case
 
+    "⚡️", // MuEvents
+    "⌘", // doAction
     "←", // session receiving
     "↔︎", // session activation state
     "→", // session sending
-    "⧉",  // syncfile
+    "⧉", // syncfile
     "📅", // EkNotification
     "✏", // Transcribe
     "𝓡": // routine
@@ -69,8 +71,6 @@ func DebugLog(_ str: String) -> Bool {
     "💬", // bubble animation closure
     "⿴", // windows covers for speech bubble
 
-    "⚡️", // startup
-
     "🎧", // Hear Via
     "🔰", // onboarding pages (japanese beginnner symbol)
 
@@ -85,8 +85,6 @@ func DebugLog(_ str: String) -> Bool {
 
 
     "⎚", // scene animation
-
-    "⌘", // doAction
 
     "▣", // observe main window bounds
     "◰", // view layout

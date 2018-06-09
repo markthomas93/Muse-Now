@@ -15,28 +15,17 @@ extension TreeNodes {
      - onboarding bubble tour
      - swiping over to MenuTableVC from another page
      */
-    func initTree() {
+    func initTree(_ done: @escaping CallVoid) {
 
         if root != nil { return }
 
         root = TreeNode("menu", nil, .title)
 
-        var events  = TreeActNode("events",  root, Show.shared.calendar,  .showCalendar,  [.child])
-        var memos   = TreeActNode("memos",   root, Show.shared.memo,      .showMemo,      [])
-        var routine = TreeActNode("routine", root, Show.shared.routine,   .showRoutine,   [.parent,.child])
-        var more    = TreeNode   ("more",    root, .title)
-
-        func initEventChildren() { // next level Calendar list
-
-            let _ = TreeActNode("reminders", events, Show.shared.reminder,  .showReminder, [.parent])
-
-            for (key,cals) in Cals.shared.sourceCals {
-                if cals.count == 1     {  let _ = TreeCalendarNode(key,        events, cals.first, [.parent,.child]) }
-                else { for cal in cals {  let _ = TreeCalendarNode(cal!.title, events, cal,        [.parent,.child]) }
-                }
-            }
-        }
-
+        var events  = TreeEventsNode ("events",  root, Show.shared.calendar,  .showCalendar,  [.child])
+        var memos   = TreeActNode    ("memos",   root, Show.shared.memo,      .showMemo,      [])
+        var routine = TreeRoutineNode("routine", root, Show.shared.routine,   .showRoutine,   [.parent,.child])
+        var more    = TreeNode       ("more",    root, .title)
+  
         func initMemosChildren() {
             
             let _ = TreeActNode("nod to record", memos,  Show.shared.memo, .memoNod2Rec)
@@ -47,23 +36,6 @@ extension TreeNodes {
                 ])
         }
 
-        func initRoutineChildren() { //Log("▤ \(#function)")
-            
-            for routineCategory in Routine.shared.catalog.values {
-                let catNode = TreeRoutineCategoryNode(routineCategory!, routine)
-               
-                for routineItem in routineCategory!.items {
-                    let _ = TreeRoutineItemNode(.timeTitleDays, catNode, routineItem)
-                }
-            }
-            #if os(iOS)
-            // show on list
-            let more = TreeNode("more", routine, .title)
-            more.setting?.setFrom = [.ignore]
-            let showOnList = TreeActNode("show on timeline", more, Show.shared.routList, .showRoutList, [.ignore])
-            showOnList.setting?.setFrom = []
-            #endif
-        }
 
         func initMoreChildren() { //Log("▤ \(#function)")
 
@@ -107,10 +79,9 @@ extension TreeNodes {
 
         // begin -----------------------------
 
-        initEventChildren()
         initMemosChildren()
-        initRoutineChildren()
         initMoreChildren()
+        finishUp(done)
     }
 
 

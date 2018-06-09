@@ -4,9 +4,6 @@ import UIKit
 
 extension EventTableVC {
 
-    /// - via: actions.doAction
-    /// - via: actions.doUpdateEvent
-
     func updateTable(_ events: [MuEvent]) {
 
         updating  = true // don't allow user interaction while updating table

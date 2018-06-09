@@ -80,11 +80,11 @@ extension TreeNode {
 
             let isOn = setting.flipSet()
             onRatio = isOn ? 1.0 : 0.0
-            cell?.setMark(onRatio)
+            //\\cell?.setMark(onRatio)
             for child in children {
                 child.updateFromParent(isOn)
             }
-            callTreeNode?(self)
+            updateCell()
         }
     }
 
@@ -96,23 +96,23 @@ extension TreeNode {
         }
     }
 
-    /**
-     Call callTreeNode. Phone will call immediately, while
-     watch adds a closure since the dial is not showing.
-     - via: set(isOn:)
-     */
-    func doCallback() {
-        if let callTreeNode = callTreeNode {
-            #if os(watchOS)
-            Closures.shared.addClosure(title: name) {
-                callTreeNode(self)
-            }
-            #else
-            callTreeNode(self)
-            #endif
-        }
-    }
-
+//\\    /**
+//     Call callTreeNode. Phone will call immediately, while
+//     watch adds a closure since the dial is not showing.
+//     - via: set(isOn:)
+//     */
+//    func doCallback() {
+//        if let callTreeNode = callTreeNode {
+//            #if os(watchOS)
+//            Closures.shared.addClosure(title: name) {
+//                callTreeNode(self)
+//            }
+//            #else
+//            callTreeNode(self)
+//            #endif
+//        }
+//    }
+//
     func updateOn(_ isOn:Bool) {
 
         if let setting = setting {
@@ -123,13 +123,13 @@ extension TreeNode {
                 child.updateFromParent(setting.isOn)
             }
             cell?.setMark(onRatio)
-            doCallback()
+            updateCell() //\\
 
             // update parent
             if let parent = parent {
                 parent.updateOnRatioFromChildren()
                 parent.cell?.setMark(parent.onRatio)
-                parent.doCallback()
+                parent.updateCell()
             }
         }
     }

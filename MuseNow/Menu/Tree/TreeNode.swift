@@ -35,7 +35,6 @@ class TreeNode: Codable {
     var userInfo: [String:Any]? = nil
     var cell: MenuCell? = nil
     var any: Any! = nil // may contain Cal
-    var callTreeNode: CallBaseNode? = nil
 
     // runtime info
 
@@ -56,14 +55,17 @@ class TreeNode: Codable {
 
     /** values for TreeNode.type, which will dispatch subclass with same name */
     enum NodeType: String, Codable  { case
-        TreeNode                = "TreeNode",
-        TreeButtonNode          = "TreeButtonNode",
-        TreeCalendarNode        = "TreeCalendarNode",
-        TreeDialColorNode       = "TreeDialColorNode",
-        TreeActNode             = "TreeActNode",
-        TreeBoolNode            = "TreeBoolNode",
-        TreeRoutineCategoryNode = "TreeRoutineCategoryNode",
-        TreeRoutineItemNode     = "TreeRoutineItemNode"
+        TreeNode            = "TreeNode",
+        TreeButtonNode      = "TreeButtonNode",
+        TreeCalendarNode    = "TreeCalendarNode",
+        TreeDialColorNode   = "TreeDialColorNode",
+        TreeActNode         = "TreeActNode",
+        TreeBoolNode        = "TreeBoolNode",
+
+        TreeEventsNode      = "TreeEventsNode",
+        TreeRoutineNode     = "TreeRoutineNode",
+        TreeRoutineCatNode  = "TreeRoutineCatNode",
+        TreeRoutineItemNode = "TreeRoutineItemNode"
     }
 
     required init(from decoder: Decoder) throws {
@@ -96,14 +98,18 @@ class TreeNode: Codable {
                 let type = try nested.decode(NodeType.self, forKey: CodingKeys.nodeType)
 
                 switch type {
-                case .TreeNode:                 addChild(try childArray.decode(TreeNode.self))
-                case .TreeButtonNode:           addChild(try childArray.decode(TreeButtonNode.self))
-                case .TreeCalendarNode:         addChild(try childArray.decode(TreeCalendarNode.self))
-                case .TreeDialColorNode:        addChild(try childArray.decode(TreeActNode.self))
-                case .TreeActNode:              addChild(try childArray.decode(TreeBoolNode.self))
-                case .TreeBoolNode:             addChild(try childArray.decode(TreeButtonNode.self))
-                case .TreeRoutineCategoryNode:  addChild(try childArray.decode(TreeRoutineCategoryNode.self))
-                case .TreeRoutineItemNode:      addChild(try childArray.decode(TreeRoutineItemNode.self))
+                case .TreeNode:             addChild(try childArray.decode(TreeNode.self))
+                case .TreeButtonNode:       addChild(try childArray.decode(TreeButtonNode.self))
+                case .TreeCalendarNode:     addChild(try childArray.decode(TreeCalendarNode.self))
+                case .TreeDialColorNode:    addChild(try childArray.decode(TreeDialColorNode.self))
+
+                case .TreeActNode:          addChild(try childArray.decode(TreeActNode.self))
+                case .TreeBoolNode:         addChild(try childArray.decode(TreeBoolNode.self))
+
+                case .TreeEventsNode:       addChild(try childArray.decode(TreeEventsNode.self))
+                case .TreeRoutineNode:      addChild(try childArray.decode(TreeRoutineNode.self))
+                case .TreeRoutineCatNode:   addChild(try childArray.decode(TreeRoutineCatNode.self))
+                case .TreeRoutineItemNode:  addChild(try childArray.decode(TreeRoutineItemNode.self))
                 }
             }
         }
@@ -129,7 +135,11 @@ class TreeNode: Codable {
     /**
      Usually initialized from TreeNodes.shared.root
      */
-    init(_ name_: String, _ parent_:TreeNode!,_ nodeType_: NodeType = .TreeNode, _ cellType_: CellType,_ setting_: TreeSetting! = nil){
+    init(_ name_: String,
+         _ parent_:TreeNode!,
+         _ nodeType_: NodeType = .TreeNode,
+         _ cellType_: CellType,
+         _ setting_: TreeSetting! = nil) {
 
         name = name_
         parent = parent_
@@ -147,10 +157,31 @@ class TreeNode: Codable {
         }
     }
 
-    convenience init (_ name_: String, _ parent_:TreeNode!,_ cellType_: CellType,_ setting_: TreeSetting! = nil) {
+    convenience init (_ name_: String,
+                      _ parent_: TreeNode!,
+                      _ cellType_: CellType,
+                      _ setting_: TreeSetting! = nil) {
+
         self.init(name_, parent_, .TreeNode, cellType_, setting_)
     }
 
+    func isOn() -> Bool {
+        return setting?.isOn ?? false
+    }
+
+    func setOn(_ on:Bool,_ isSender:Bool) {
+        
+        if let setting = setting,
+           setting.isOn != on {
+
+            setting.isOn = on
+            updateCell()
+
+            if isSender {
+                TreeNodes.shared.syncNode(self)
+            }
+        }
+    }
     func initCell() {
 
         #if os(iOS) // iOS is early bound, watchOS is late bound

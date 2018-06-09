@@ -38,7 +38,11 @@ class TreeButtonNode: TreeNode {
         updateCell()
     }
 
-    override func updateCell() {
+
+    override func initCell() {
+
+        super.initCell()
+
         #if os(iOS)
         if let cell = cell as? MenuTitleButton {
             cell.butnAct = {  // block collapsing cell from cancelling tour
@@ -48,48 +52,7 @@ class TreeButtonNode: TreeNode {
         }
         #endif
     }
-}
-
-class TreeCalendarNode: TreeNode {
-
-    var color: UInt32 = 0   // from cal.color
-    var calendarId = ""     // from cal.calId
-
-    private enum TreeDialColorCodingKeys: String, CodingKey {
-        case color = "color"
-        case calendarId = "calendarId"
-    }
-    override func encode(to encoder: Encoder) throws {
-        try super.encode(to: encoder)
-        var container = encoder.container(keyedBy: TreeDialColorCodingKeys.self)
-        try container.encode(self.color, forKey: .color)
-        try container.encode(self.calendarId, forKey: .calendarId)
-    }
-    convenience init(_ title_:String, _ parent_:TreeNode!,_ cal:Cal!,_ setFrom_:SetFrom) {
-
-        self.init(title_, parent_, .colorTitleMark, TreeSetting(true, setFrom_))
-        color = cal.color
-        calendarId = cal.calId
-        initCell()
-        updateCell()
-    }
-    override func updateCell() {
-        if let cell = cell as? MenuColorTitleMark {
-            cell.setColor(color)
-        }
-        /// remove any /// any = cal.calId // any makes a copy of Cal, so use calID, instead
-        callTreeNode = { node in
-
-            if let calId = node.any as? String,
-                let cal = Cals.shared.idCal[calId],
-                let isOn = node.setting?.isOn {
-                Closures.shared.addClosure(title: "TreeCalendarNode") {
-                    cal?.updateMark(isOn)
-                }
-            }
-        }
-    }
-}
+ }
 
 class TreeDialColorNode: TreeNode {
 
@@ -110,6 +73,7 @@ class TreeDialColorNode: TreeNode {
         initCell()
         updateCell()
     }
+    
     override func updateCell() {
 
         if let cell = cell as? MenuTitleFader {
@@ -132,7 +96,7 @@ class TreeDialColorNode: TreeNode {
             #endif
             // callback to set dial color
             let updateFunc: CallFloat = { value in
-                Actions.shared.dialColor(value, isSender: true)
+                Actions.shared.doAction(.dialColor, value: value, isSender: true)
                 let phrase = String(format:"%.2f",value)
                 Say.shared.updateDialog(nil, .phraseSlider, spoken:phrase, title:phrase, via:#function)
             }
@@ -153,8 +117,8 @@ class TreeActNode: TreeNode {
         initCell()
         updateCell()
     }
-    
 }
+
 
 class TreeBoolNode: TreeNode {
     
@@ -165,28 +129,138 @@ class TreeBoolNode: TreeNode {
     }
 }
 
-class TreeRoutineCategoryNode: TreeNode {
+// calendar ---------------------
 
-    var routineCategory:RoutineCategory!
+class TreeEventsNode: TreeNode {
 
-    convenience init (_ routineCategory_: RoutineCategory,_ parent_: TreeNode!) {
-        self.init(routineCategory_.title, parent_,.TreeRoutineCategoryNode, .colorTitleMark,
-                  TreeSetting(routineCategory_.onRatio > 0))
-        routineCategory = routineCategory_ // before initCell
+    convenience init (_ title_:String, _ parent_:TreeNode!,_ isOn:Bool, _ act:DoAction,_ setFrom_:SetFrom = []) {
+        self.init(title_, parent_, .TreeEventsNode, .titleMark, TreeSetting(isOn, setFrom_, act:act))
+        initCell()
+        updateCell()
+        Cals.shared.unarchiveCals() {
+            self.initEventChildren()
+        }
+    }
+
+    func initEventChildren() { // next level Calendar list
+
+        let _ = TreeActNode("reminders", self, Show.shared.reminder,  .showReminder, [.parent])
+
+        for (key,cals) in Cals.shared.sourceCals {
+            if cals.count == 1     {  let _ = TreeCalendarNode(key,        self, cals.first, [.parent,.child]) }
+            else { for cal in cals {  let _ = TreeCalendarNode(cal!.title, self, cal,        [.parent,.child]) }
+            }
+        }
+    }
+}
+
+
+class TreeCalendarNode: TreeNode {
+
+    var color: UInt32 = 0   // from cal.color
+    var calendarId = ""     // from cal.calId
+
+    private enum TreeDialColorCodingKeys: String, CodingKey {
+        case color      = "color"
+        case calendarId = "calendarId"
+    }
+    override func encode(to encoder: Encoder) throws {
+        try super.encode(to: encoder)
+        var container = encoder.container(keyedBy: TreeDialColorCodingKeys.self)
+        try container.encode(self.color, forKey: .color)
+        try container.encode(self.calendarId, forKey: .calendarId)
+    }
+
+    convenience init(_ title_:String, _ parent_:TreeNode!,_ cal:Cal!,_ setFrom_:SetFrom) {
+
+        self.init(title_, parent_, .colorTitleMark, TreeSetting(true, setFrom_))
+        color = cal.color
+        calendarId = cal.calId
         initCell()
         updateCell()
     }
+
     override func updateCell() {
         if let cell = cell as? MenuColorTitleMark {
-            cell.setColor(routineCategory!.color)
+            cell.setColor(color)
         }
-        callTreeNode = { node in
-            self.routineCategory.setOnRatio(node.onRatio)
-            Closures.shared.addClosure(title: "TreeRoutine") {
-                Routine.shared.archiveRoutine() {
-                    Actions.shared.doAction(.refresh)
-                }
+        if  let cal = Cals.shared.idCal[calendarId],
+            let isOn = setting?.isOn {
+
+            cal.updateMark(isOn)
+            Actions.shared.doAction(.refresh)
+        }
+    }
+}
+
+
+
+// Routine ----------------------
+
+class TreeRoutineNode: TreeNode {
+
+    convenience init (_ title_:String, _ parent_:TreeNode!,_ isOn:Bool, _ act:DoAction,_ setFrom_:SetFrom = []) {
+        self.init(title_, parent_, .TreeRoutineNode, .titleMark, TreeSetting(isOn, setFrom_, act:act))
+        initCell()
+        updateCell()
+        Routine.shared.unarchiveRoutine() {
+            self.initRoutineChildren()
+            ///... Routine.shared.archiveRoutine() {}
+        }
+    }
+
+    override func updateCell() {
+        if let cell = cell as? MenuTitleMark {
+            cell.setMark(self.isOn() ? 1 : 0)
+        }
+        Actions.shared.doAction(.refresh)
+    }
+
+    func initRoutineChildren() { //Log("▤ \(#function)")
+
+        for category in Routine.shared.catalog.values {
+            let catNode = TreeRoutineCatNode(category!, self)
+            for routineItem in category!.items {
+                let _ = TreeRoutineItemNode(.timeTitleDays, catNode, routineItem)
             }
+        }
+        #if os(iOS)
+        // show on list
+        let more = TreeNode("more", self, .title)
+        more.setting?.setFrom = [.ignore]
+        let showOnList = TreeActNode("show on timeline", more, Show.shared.routList, .showRoutList, [.ignore])
+        showOnList.setting?.setFrom = []
+        #endif
+    }
+}
+
+class TreeRoutineCatNode: TreeNode {
+
+    var items: [RoutineItem]!
+    var color = UInt32(0x888888)
+
+    convenience init (_ cat: RoutineCategory,_ parent_: TreeNode!) {
+
+        self.init(cat.title, parent_,.TreeRoutineCatNode, .colorTitleMark, TreeSetting(cat.isOn))
+
+        items = cat.items
+        color = cat.color
+        onRatio = cat.isOn ? 1 : 0
+
+        initCell()
+        updateCell()
+    }
+
+    override func updateCell() {
+        
+        if let cell = cell as? MenuColorTitleMark {
+            let on = isOn()
+            cell.setMark(on ? 1 : 0)
+            cell.setColor(color)
+        }
+        if let cat = Routine.shared.catalog[name] {
+            cat?.isOn = isOn()
+            self.setting?.isOn = isOn()
         }
     }
 }
@@ -194,23 +268,11 @@ class TreeRoutineCategoryNode: TreeNode {
 class TreeRoutineItemNode: TreeNode {
 
     var routineItem: RoutineItem!
-
+    
     convenience init (_ type_: CellType,_ parent_:TreeNode!,_ item:RoutineItem!) {
         self.init(item.title, parent_, .TreeRoutineItemNode, type_, TreeSetting(false))
         routineItem = item // before initCell
         initCell()
         updateCell()
-    }
-    override func updateCell() {
-        callTreeNode = { node in
-            if let node = node as? TreeRoutineItemNode {
-                Log("𐂷 TreeRoutineItemNode self:\(self.routineItem.bgnMinutes) node:\(node.routineItem.bgnMinutes) ")
-            }
-            Closures.shared.addClosure(title: "TreeRoutine") {
-                Routine.shared.archiveRoutine() {
-                    Actions.shared.refreshEvents(/*isSender*/true)
-                }
-            }
-        }
     }
 }

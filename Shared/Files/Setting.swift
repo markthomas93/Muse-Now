@@ -16,24 +16,11 @@ struct SetFrom: OptionSet, Codable {
     static let child  = SetFrom(rawValue: 1 << 2) // 4
 }
 
-/**
- Optional info disclosure upon first expand
- - noInfo: do not show "i" icon
- - newInfo: white icon, auto show info on expand
- - oldInfo: gray icon, only show when touching icon
- */
-enum ShowInfo: Int, Codable { case
-
-    infoNone,       // no info attached to this celll
-    information,    // not yet touched, so play bubble before expanding
-    construction,
-    purchase
-}
-
 public class TreeSetting: Codable {
+
     var isOn = true
     var setFrom = SetFrom([])   // modifyable from { none,child,parent,both }
-    var showInfo = ShowInfo.infoNone
+
     var action = DoAction.unknown
 
     func flipSet() -> Bool {
@@ -46,12 +33,10 @@ public class TreeSetting: Codable {
 
     init(_ isOn_:Bool,
          _ setFrom_: SetFrom = [.parent,.child],
-         _ showInfo_: ShowInfo = .infoNone,
          act: DoAction = .unknown) {
 
         isOn     = isOn_
         setFrom  = setFrom_
-        showInfo = showInfo_
         action   = act
     }
 

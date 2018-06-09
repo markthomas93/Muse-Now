@@ -75,11 +75,7 @@ class Scene: SKScene  {
         dayHour.updateTime()
     }
 
-    /**
-     update dots and time for current texture
-     - via: Actions.refreshEvent
-     - via: Actions.doUpdateEvent
-     */
+    /** update dots and time for current texture */
     func updateSceneFinish() { Log("⎚ \(#function)")
         
         dayHour.updateTime() // set reference for current hour and day

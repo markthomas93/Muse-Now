@@ -24,7 +24,7 @@ class OnboardVC: UIPageViewController {
     @objc func speakerAction(_ sender: UIButton) {
 
         speakerBtn.isSelected = !speakerBtn.isSelected
-        Actions.shared.doAction(.hearSpeaker, value:speakerBtn.isSelected ? 1 : 0)
+        Actions.shared.doAction(.hearSpeaker, value: speakerBtn.isSelected ? 1 : 0)
         BubblesPlaying.shared.muteBubbles(on: !speakerBtn.isSelected)
     }
 
@@ -43,7 +43,7 @@ class OnboardVC: UIPageViewController {
         speakerBtn.setImage( UIImage(named:"icon-speaker-on.png"), for: .selected)
         speakerBtn.addTarget(self, action: #selector(self.speakerAction(_:)), for: .touchUpInside) //<- use `#selector(...)`
         speakerBtn.isSelected = true
-        Actions.shared.doAction(.hearSpeaker)
+        Actions.shared.doAction(.hearSpeaker, value: 1)
         view.addSubview(speakerBtn)
     }
 

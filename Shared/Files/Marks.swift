@@ -21,18 +21,21 @@ class Marks: FileSync, Codable {
         }
     }
 
-    func unarchiveMarks(_ done: @escaping () -> Void) {
+    override func mergeData(_ data:Data?,_ done: @escaping CallVoid) {
+        if let data = data,
+            let newIdMark = try? JSONDecoder().decode([String:Mark].self, from:data) {
+
+            idMark.removeAll()
+            idMark = newIdMark
+        }
+        done()
+    }
+    
+    func unarchiveMarks(_ done: @escaping CallVoid) {
         
         unarchiveData() { data in
-            if let data = data,
-                let newIdMark = try? JSONDecoder().decode([String:Mark].self, from:data) {
-
-                self.idMark.removeAll()
-                self.idMark = newIdMark
-            }
-            done()
+            self.mergeData(data,done)
         }
-
     }
 
 }

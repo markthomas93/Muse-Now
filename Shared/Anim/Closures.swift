@@ -22,7 +22,7 @@ class Closures {
     
     /**
      While animating, defer execution of closures that may stutter visuals.
-     - note: During multiple file updates, so eliminiate duplicate doRefresh requests.
+     - note: During multiple file updates, so eliminiate duplicate refresh requests.
      */
     func clearClosuresWith(_ with:String) {
 
@@ -35,7 +35,7 @@ class Closures {
     }
     /**
      While animating, defer execution of closures that may stutter visuals.
-     - note: During multiple file updates, so eliminiate duplicate doRefresh requests.
+     - note: During multiple file updates, so eliminiate duplicate refresh requests.
      */
     func addClosure(title:String, anytime:Bool = false, _ closure_:@escaping CallVoid) { Log("𐆄 addClosure(\(title))")
 

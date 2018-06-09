@@ -8,9 +8,7 @@
 
 import Foundation
 
-/**
- Archive of hierarchy of TreeNodes
- */
+/** Archive of hierarchy of TreeNodes */
 class TreeNodes: FileSync {
 
     static var shared = TreeNodes()
@@ -19,23 +17,32 @@ class TreeNodes: FileSync {
     var shownNodes = [TreeNode]() // currently displayed nodes
     var nextNodes  = [TreeNode]() // double buffer update
     var touchedNode: TreeNode! // which node was last touched
-    var idNode = [Int:TreeNode]()
-    private var pathNode = [String:TreeNode]()
-
+    var pathNode = [String:TreeNode]() // shortcut to node via its full path
+    
     override init() {
         super.init()
-         fileName = "Menu.json"
+        fileName = "Menu.json"
     }
 
     static func isOn(_ path:String) -> Bool {
         if let node = shared[path] {
-            return node.setting?.isOn ?? false
+            return node.isOn()
         }
         return false
     }
-    static func setOn(_ on: Bool, _ path:String) {
+
+
+    static func setOn(_ on: Bool, _ path:String,_ isSender:Bool) {
         if let node = shared[path] {
-            node.setting?.isOn = on
+            node.setOn(on, isSender)
+        }
+        if let node = TreeNodes.findPath(path) {
+
+            shared["path"] = node
+            node.setOn(on, isSender)
+        }
+        else {
+            print("!!! \(#function) could not find path:\(path)")
         }
     }
 
@@ -61,17 +68,6 @@ class TreeNodes: FileSync {
         }
     }
 
-    func parseMsg(_ msg: [String : Any]) {
-
-        if  let id   = msg["id"] as? Int,
-            let name = msg["name"] as? String,
-            let isOn = msg["is"] as? Bool {
-
-            updateNode(id,name,isOn)
-        }
-    }
-
-
     static func findPath(_ path:String)  -> TreeNode! {
         var node: TreeNode!
         if let root = shared.root {
@@ -84,7 +80,7 @@ class TreeNodes: FileSync {
             return node
         }
         else {
-            print ("!!! \(#function) \(path) not found !!!")
+            print ("!!! \(#function) \(path) not found")
             return nil
         }
     }
@@ -108,79 +104,58 @@ class TreeNodes: FileSync {
         #endif
     }
 
-    func archiveTree(done:@escaping CallVoid) {
+  
+    /** merge values from TreeNodes, if any and create a dictionary to find each node by its full path */
+    func mergeChildren(ancestors:String, _ treeNode:TreeNode) {
 
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = .prettyPrinted
-        if let data = try? encoder.encode(root) {
-            let _ = saveData(data)
+        for child in treeNode.children {
+
+            let childPath = ancestors + "." + treeNode.name
+
+            // found, so merge old cell
+            if let oldChild = pathNode[ancestors] {
+                oldChild.setting = child.setting
+                oldChild.updateCell()
+            }
+                // not found so add new cell
+            else {
+                pathNode[ancestors] = child
+                child.initCell() ///\\\???
+                child.updateCell()
+            }
+            // depth first add grand children children
+            mergeChildren(ancestors:childPath, child)
         }
+    }
+
+    func mergeTree(_ newRoot: TreeNode) {
+        if root == nil {
+            root = newRoot
+        }
+        mergeChildren(ancestors:"", newRoot)
+    }
+
+    func finishUp(_ done: @escaping CallVoid) {
+        root.refreshNodeCells()
+        TreeNodes.shared.renumber()
         done()
     }
 
+    override func mergeData(_ data:Data?,_ done: @escaping CallVoid) {
 
-    func unarchiveTree(_ done: @escaping CallVoid) {
-
-        func mergeChildren(_ parent:TreeNode) {
-
-            for newChild in parent.children {
-                // found, so merge old cell
-                if let oldChild = idNode[newChild.id] {
-                    oldChild.setting = newChild.setting
-                    oldChild.updateCell()
-                }
-                    // not found so add new cell
-                else {
-                    idNode[newChild.id] = newChild
-                    newChild.updateCell()
-                }
-                // depth first add grand children children
-                mergeChildren(newChild)
+        if  let data = data {
+            do {
+                let newRoot = try JSONDecoder().decode(TreeNode.self, from:data)
+                mergeTree(newRoot)
+                finishUp(done)
+                return
+            }
+            catch {
+                print("!!! TreeNodes::\(#function) error: \(error)")
             }
         }
-//        func addChildren(_ parent:TreeNode) {
-//            for child in parent.children {
-//                idNode[child.id] = child
-//                if child.cell == nil {
-//                    child.initCell()
-//                    child.updateCell()
-//                }
-//            }
-//        }
-
-        func mergeTree(_ newRoot: TreeNode) {
-            if root == nil {
-                root = newRoot
-                //addChildren(newRoot)
-            }
-            else {
-                mergeChildren(newRoot)
-            }
-        }
-
-        func finishUp() {
-            root.refreshNodeCells()
-            TreeNodes.shared.renumber()
-            done()
-        }
-
-        unarchiveData() { data in
-
-//            if  let data = data {
-//                do {
-//                    let newRoot = try JSONDecoder().decode(TreeNode.self, from:data)
-//                    mergeTree(newRoot)
-//                    return finishUp()
-//
-//                }
-//                catch {
-//                    print("!!! \(#function) error: \(error)")
-//                }
-//            }
-            self.initTree()
-            finishUp()
-            self.archiveTree {}
-        }
+        // this is the fallback to a new or missing Menu.json file.
+        initTree(done)
     }
 
 }

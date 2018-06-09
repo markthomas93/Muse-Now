@@ -5,6 +5,20 @@ import UIKit
 import EventKit
 import Dispatch
 
+/**
+ Optional info disclosure upon first expand
+ - noInfo: do not show "i" icon
+ - newInfo: white icon, auto show info on expand
+ - oldInfo: gray icon, only show when touching icon
+ */
+enum ShowInfo: Int, Codable { case
+
+    infoNone,       // no info attached to this celll
+    information,    // not yet touched, so play bubble before expanding
+    construction,
+    purchase
+}
+
 class MenuCell: MuCell {
 
     var treeNode: TreeNode!
@@ -33,6 +47,8 @@ class MenuCell: MuCell {
     let oldInfoAlpha = CGFloat(0.25)
     var touched = false         // last touched cell, updated durning renumber calling setParentChildOther
     var isTouring = false       // currently touring, prevent circular references
+
+    var showInfo = ShowInfo.infoNone
 
     var parentChild = ParentChildOther.other
     var lastLocationInTable = CGPoint.zero
@@ -112,27 +128,24 @@ class MenuCell: MuCell {
     /**
      */
     func addInfoBubble(_ infoSection_:TourSection) {
-
+        
         if let tourSet = infoSection_.tourSet {
             infoSection = infoSection_
-            if      tourSet.contains(.beta) { treeNode?.setting?.showInfo = .construction }
-            else if tourSet.contains(.buy)  { treeNode?.setting?.showInfo = .purchase }
-            else if tourSet.contains(.info) { treeNode?.setting?.showInfo = .information }
-            else                            { treeNode?.setting?.showInfo = .infoNone  }
-
-            if let showInfo = treeNode?.setting?.showInfo {
-
-                //infoAlpha = 0
-
-                switch showInfo {
-
-                case .construction: infoIcon = "icon-Beaker.png"
-                case .purchase:     infoIcon = "icon-Dollar.png" //  "icon-Cart.png"
-                case .information:  infoIcon = "icon-Information.png"
-                case .infoNone:     return
-                }
-                info.image = UIImage(named:infoIcon)
+            if      tourSet.contains(.beta) { showInfo = .construction }
+            else if tourSet.contains(.buy)  { showInfo = .purchase }
+            else if tourSet.contains(.info) { showInfo = .information }
+            else                            { showInfo = .infoNone  }
+            
+            //infoAlpha = 0
+            
+            switch showInfo {
+                
+            case .construction: infoIcon = "icon-Beaker.png"
+            case .purchase:     infoIcon = "icon-Dollar.png" //  "icon-Cart.png"
+            case .information:  infoIcon = "icon-Information.png"
+            case .infoNone:     return
             }
+            info.image = UIImage(named:infoIcon)
         }
     }
 
@@ -295,7 +308,7 @@ class MenuCell: MuCell {
             isTouring = false
 
             Tour.shared.tourSection(infoSection, done)
-            TreeNodes.shared.archiveTree {}
+            // TreeNodes.shared.archiveTree {}
         }
         else {
             done()

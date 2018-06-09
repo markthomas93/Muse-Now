@@ -24,12 +24,14 @@ extension MainVC {
         view.addSubview(pagesVC.view)
         
         Settings.shared.unarchiveSettings {
-            if  Settings.shared.onboarding {
-                self.makeOnboard()
-            }
-            else {
-                self.makePages {
-                    Timer.delay(4) {Tour.shared.buildInfoSet()}
+            TreeNodes.shared.initTree() {
+                if Settings.shared.onboarding {
+                    self.makeOnboard()
+                }
+                else {
+                    self.makePages {
+                        Timer.delay(4) {Tour.shared.buildInfoSet()}
+                    }
                 }
             }
         }

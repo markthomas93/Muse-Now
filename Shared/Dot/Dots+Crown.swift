@@ -96,7 +96,13 @@ extension Dots {
                     Anim.shared.fanOutToDotNow(duration:0.25)
                 }
                 Say.shared.sayDotEvent(event, isTouching: true)
-                Actions.shared.sendAction(.gotoEvent, event, event.bgnTime)
+
+                // Actions.shared.sendAction(.gotoEvent, event, event.bgnTime)
+                Session.shared.sendMsg([
+                    "Action"  : DoAction.gotoEvent.rawValue,
+                    "dotTime" : time,
+                    "eventId" : event.eventId,
+                    "bgnTime" : event.bgnTime])
             }
         }
 

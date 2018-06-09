@@ -24,68 +24,67 @@ class Memos: FileSync, Codable {
         }
         done()
     }
-    
-    func unarchiveMemos(_ done: @escaping (_ result:[MuEvent]) -> Void) -> Void {
+
+     override func mergeData(_ data:Data?,_ done: @escaping CallVoid) {
+
+        if let data = data,
+            let newItems = try? JSONDecoder().decode([MuEvent].self, from:data) {
+
+            items.removeAll()
+            let weekSecs: TimeInterval = (7*24+1)*60*60 // 168+1 hours as seconds
+            let lastWeekSecs = Date().timeIntervalSince1970 - weekSecs
+            items = newItems.filter { $0.bgnTime >= lastWeekSecs }
+            if items.count > 0 {
+                items.sort { "\($0.bgnTime)"+$0.eventId < "\($1.bgnTime)"+$1.eventId }
+            }
+        }
+    }
+    func unarchiveMemos(_ done: @escaping (_ result:[MuEvent]) -> Void) {
 
         unarchiveData() { data in
-
-            if let data = data,
-                let newItems = try? JSONDecoder().decode([MuEvent].self, from:data) {
-                
-                self.items.removeAll()
-                let weekSecs: TimeInterval = (7*24+1)*60*60 // 168+1 hours as seconds
-                let lastWeekSecs = Date().timeIntervalSince1970 - weekSecs
-                self.items = newItems.filter { $0.bgnTime >= lastWeekSecs }
-
-                self.items.sort { "\($0.bgnTime)"+$0.eventId < "\($1.bgnTime)"+$1.eventId }
-
-                Log ("⧉ Memos::\(#function) items:\(self.items.count)  memoryTime:\(self.memoryTime) ")
-                return done(self.items)
+            if let data = data {
+                self.mergeData(data) {
+                    done(self.items)
+                }
             }
             else {
-                done([])
+                done(self.items)
             }
         }
     }
 
-    func doMemoAction(_ act:DoAction,_ value:Float, _ isSender:Bool) {
+     func doMemoAction(_ act:DoAction,_ value:Float, _ isSender:Bool) {
 
-        let on = value > 0
-
-        func updateClass(_ className:String, _ path:String) {
-            TreeNodes.setOn(on,path)
-            Actions.shared.doRefresh(/*isSender*/false)
-            if isSender {
-                Session.shared.sendMsg(["class" : className, path : on])
-            }
-        }
-
-        switch act {
-        case .memoWhere:    saveWhere = on ; updateClass("Memos","menu.memo.saveWhere")
-        case .memoNod2Rec:  nod2Rec   = on ; updateClass("Memos","menu.memo.nod2Rec")
-
-        case .memoClearAll:
-            //!!!!=======Dots.shared.hideEventsWith(type:.mark)
+        func doMemoClearAll() {
             clearAllDocPrefix("Memo_") {
                 self.items.removeAll()
                 self.archiveMemos {
-                    Actions.shared.doRefresh(isSender)
+                    Actions.shared.doAction(.refresh, isSender:isSender)
                 }
             }
-        case .memoCopyAll:
+        }
 
+        func doMemoCopyAll () {
             Dots.shared.hideEvents(with:[.memoRecord,.memoTrans,.memoTrash])
             copyAllDocPrefix("Memo_") {
                 self.archiveMemos {
-                    Actions.shared.doRefresh(isSender)
+                    Actions.shared.doAction(.refresh, isSender:isSender)
                 }
             }
+        }
+
+        let on = value > 0
+        switch act {
+        case .memoWhere:    saveWhere = on ; TreeNodes.setOn(on,"menu.memo.saveWhere", false)
+        case .memoNod2Rec:  nod2Rec   = on ; TreeNodes.setOn(on,"menu.memo.nod2Rec", false)
+        case .memoClearAll: doMemoClearAll()
+        case .memoCopyAll:  doMemoCopyAll()
         default: return
         }
     }
 
     func purgeStale(_ staleItems:[MuEvent]) {
-        //TODO remove items that are older than 1 week
+        //TODO ///... remove items that are older than 1 week
     }
 
     /**

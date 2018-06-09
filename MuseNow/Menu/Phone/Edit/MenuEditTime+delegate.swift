@@ -80,7 +80,7 @@ extension MenuEditTime: UIPickerViewDelegate, UIPickerViewDataSource {
                 node.routineItem.durMinutes = endMin - bgnMin
                 node.routineItem.updateLabelStrings()
             }
-            node.callTreeNode?(node) // refresh dial
+            node.updateCell() // refresh dial
         }
     }
  }

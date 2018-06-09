@@ -4,18 +4,21 @@ import UIKit
 import WatchKit
 import MobileCoreServices
 
-
 class FileSync: NSObject, FileManagerDelegate {
     
     let session = Session.shared
     var fileName = "" // override name at init()
     internal var memoryTime = TimeInterval(0) // should always match local fileTime, =0 if no file yet
 
+
+    func mergeData(_ data:Data?,_ done: @escaping CallVoid) { // override
+    }
+    
     /**
      Save data into file. Explicitly set creation date to either local time or remote time.
      - via: local archiveArray
      - via: local archiveDictionary
-     - via: remote device, which then calls doRefresh
+     - via: remote device, which then calls refresh
      */
 
     func saveData(_ data: Data!,
@@ -57,7 +60,7 @@ class FileSync: NSObject, FileManagerDelegate {
     /**
      Read file into data
      */
-    func unarchiveData(completion: @escaping (_ data: Data?) -> Void) {
+    func unarchiveData(done: @escaping (_ data: Data?) -> Void) {
 
         let url = FileManager.documentUrlFile(self.fileName)
 
@@ -65,12 +68,12 @@ class FileSync: NSObject, FileManagerDelegate {
 
             memoryTime = getFileTime()
             FilesSync.shared.updateName(fileName,memoryTime)
-            Log("⧉ unarchiveData:\(fileName) memoryTime:\(memoryTime) count:\(data)")
-            completion(data)
+            Log("⧉ unarchiveData: \(fileName) memoryTime:\(memoryTime) count:\(data)")
+            done(data)
         }
         else {
-            Log("⧉ unarchiveData:\(fileName) count:0")
-            completion(nil)
+            Log("⧉ unarchiveData: \(fileName) count:0")
+            done(nil)
         }
     }
 

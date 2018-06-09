@@ -21,23 +21,18 @@ class MuEvents {
     
     var refreshTimer = Timer()
     
-
     func parseMsg(_ msg: [String : Any]) {
 
         if // event was modified
             let updateEvent = msg["updateEvent"] as? Data,
             let event = try? JSONDecoder().decode(MuEvent.self, from: updateEvent) {
 
-            Actions.shared.doUpdateEvent(event, isSender: false)
+            Actions.shared.doAction(.updateEvent, event, isSender: false)
         }
     }
 
-
-
-    /**
-     Main entry for updating events
-     - via: Actions.doRefresh
-     */
+    /** Main entry for updating events */
+    
     func updateEvents(_ completion: @escaping () -> Void) {
         
         // real events used for production
@@ -80,14 +75,14 @@ class MuEvents {
      */
     func markCalendarAdditions() {
         
-        getReal(getEvents: true,
-                getReminders: true,
-                getMemos: false,
-                getRoutine: false)
+        getReal(getEvents:      true,
+                getReminders:   true,
+                getMemos:       false,
+                getRoutine:     false)
         { ekEvents, ekReminds, memos, routine in
             
             for nowEvents in [ekEvents,ekReminds] {
-                for event in nowEvents {
+                for event in nowEvents { 
                     // new event added
                     if self.idEvents[event.eventId] == nil {
                         Marks.shared.updateEvent(event, isOn:true)
@@ -115,7 +110,7 @@ class MuEvents {
         ) -> Void) -> Void  {
 
         Log("⚡️ getRealEvents")
-        DispatchQueue.global(qos: .utility).async {
+        DispatchQueue.global(qos: .userInteractive).async {
             
             let group = DispatchGroup()
             
@@ -127,17 +122,17 @@ class MuEvents {
             // ekevents
             if getEvents {
                 group.enter()
-                self.getEkEvents() { result in
+                self.getEkEvents { result in
                     ekEvents = result
                     Log("⚡️ events")
                     group.leave()
-            }
+                }
             }
             
             // ekreminders
             if getReminders {
                 group.enter()
-                self.getEkReminders() { result in
+                self.getEkReminders { result in
                     ekReminders = result
                     Log("⚡️ reminders")
                     group.leave()
@@ -146,7 +141,7 @@ class MuEvents {
             // memos
             if getMemos {
                 group.enter()
-                self.memos.unarchiveMemos() { result in
+                self.memos.unarchiveMemos { result in
                     memos = result
                     Log("⚡️ memos")
                     group.leave()
@@ -155,7 +150,7 @@ class MuEvents {
             // routine
             if getRoutine {
                 group.enter()
-                Routine.shared.getRoutineEvents() { result in
+                Routine.shared.getRoutineEvents { result in
                     routine = result
                     Log("⚡️ routine")
                     group.leave()
@@ -204,11 +199,9 @@ class MuEvents {
         }
     }
     
-    func readEkEvents(_ store: EKEventStore, _ completion: @escaping (_ result:[MuEvent]) -> Void) {
+    func readEkEvents(_ store: EKEventStore, _ done: @escaping (_ result:[MuEvent]) -> Void) {
         
-        let store = EKEventStore()
-        
-        Cals.shared.unarchiveCals(store) {
+        Cals.shared.unarchiveCals() {
             
             let (bgnTime,endTime) = MuDate.prevNextWeek() // previous and next week date range
             var events = [MuEvent]() // events
@@ -230,9 +223,11 @@ class MuEvents {
                         events.append(MuEvent(ekEvent))
                     }
                 }
-                events.sort { "\($0.bgnTime)"+$0.eventId < "\($1.bgnTime)"+$1.eventId  }
+                if events.count > 0 {
+                    events.sort { "\($0.bgnTime)"+$0.eventId < "\($1.bgnTime)"+$1.eventId  }
+                }
             }
-            completion(events)
+            done(events)
         }
     }
     

@@ -102,22 +102,15 @@
     }
 
     //
-    public func doSayAction(_ act: DoAction, _ value: Float, _ isSender:Bool) {
+    public func doSayAction(_ act: DoAction, _ value: Float) {
 
         let on = value > 0
-
-        func updateClass(_ className:String, _ path:String) {
-            TreeNodes.setOn(on,path)
-            Actions.shared.doRefresh(/*isSender*/false)
-            if isSender {
-                Session.shared.sendMsg(["class" : className, path : on])
-            }
-        }
+        func updatePath(_ path:String) { TreeNodes.setOn(on, path, false) }
 
         switch act {
-        case .sayMemo:  memo  = on ; updateClass("Say","menu.more.say.memo")
-        case .sayTime:  time  = on ; updateClass("Say","menu.more.say.time")
-        case .sayEvent: event = on ; updateClass("Say","menu.more.say.event")
+        case .sayMemo:  memo  = on ; updatePath("menu.more.say.memo")
+        case .sayTime:  time  = on ; updatePath("menu.more.say.time")
+        case .sayEvent: event = on ; updatePath("menu.more.say.event")
 
         case .speakLow:     volume = 0.1
         case .speakMedium:  volume = 0.5

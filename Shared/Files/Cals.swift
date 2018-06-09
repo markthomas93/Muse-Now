@@ -14,7 +14,7 @@ class Cals: FileSync {
 
     /// WARNING, changing ! to ? is problematic, need shared pointer to same object, removing ! doesn't work!!!!
     var idCal = [String:Cal!]()         // retreive cal from its calendarID
-    var sourceCals = [String:[Cal!]]()  // each data source may have several calendars
+    var sourceCals = [String:[Cal!]]()  // each data source (or each email account) may have several calendars
 
     override init() {
         super.init()
@@ -23,8 +23,8 @@ class Cals: FileSync {
 
     func parseMsg(_ msg: [String : Any]) {
 
-        if  let calId = msg["calId"] as? String,
-            let isOn  = msg["isOn"]  as? Bool {
+        if  let calId = msg["Calendar"] as? String,
+            let isOn  = msg["value"]  as? Bool {
 
             //Log ("⧖ Cals::\(#function) calId:\(calId) isOn:\(isOn)")
             updateMark(calId,isOn)
@@ -35,8 +35,10 @@ class Cals: FileSync {
     // EKCalendar --------------------------------------------
 
     /// read selected calendars from file and filter from current set of eventKit Calendars
-    func unarchiveCals(_ store: EKEventStore, _ done: @escaping () ->Void) {
-        
+    func unarchiveCals(_ done: @escaping CallVoid) {
+
+        let store = EKEventStore()
+
         // clear everything
         ekCals.removeAll()
         sourceCals.removeAll()
@@ -79,6 +81,9 @@ class Cals: FileSync {
                     }
                 }
             }
+            else {
+                self.archiveCals {}
+            }
             done()
         }
     }
@@ -94,7 +99,6 @@ class Cals: FileSync {
         if let data = try? encoder.encode(cals) {
 
             let _ = saveData(data)
-            Actions.shared.doRefresh(/*isSender*/false)
             done()
         }
         else {

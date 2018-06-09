@@ -4,40 +4,66 @@ import EventKit
 import SpriteKit
 
 
-public enum DoAction : Int,Codable { case
+public enum DoAction : String, Codable { case
 
     unknown,
 
     // refresh view
-    refresh,
+    refresh = "refresh",
+
+    // update routine settings
+    updateRoutine = "updateRoutine",
+    updateEvent = "updateEvent",
 
     // page
-    gotoPageMain, gotoPageMenu, gotoPageOnboard,
+    gotoPageMain = "gotoPageMain",
+    gotoPageMenu = "gotoPageMenu",
+    gotoPageOnboard = "gotoPageOnboard",
 
     // event dial
-    gotoEvent, gotoFuture, gotoRecordOn,
+    gotoEvent = "gotoEvent",
+    gotoFuture = "gotoFuture",
+    gotoRecordOn = "gotoRecordOn",
 
     // say
-    saySpeech, sayMemo, sayTime, sayEvent,
-    speakLow, speakMedium, speakHigh,
+    saySpeech = "saySpeech",
+    sayMemo = "sayMemo",
+    sayTime = "sayTime",
+    sayEvent = "sayEvent",
+    speakLow = "speakLow",
+    speakMedium = "speakMedium",
+    speakHigh = "speakHigh",
 
     // hear
-    hearEarbuds, hearSpeaker,
+    hearEarbuds = "hearEarbuds",
+    hearSpeaker = "hearSpeaker",
 
     // tour
-    tourAll, tourMain, tourDetail, tourMenu, tourIntro, tourStop,
+    tourAll = "tourAll",
+    tourMain = "tourMain",
+    tourDetail = "tourDetail",
+    tourMenu = "tourMenu",
+    tourIntro = "tourIntro",
+    tourStop = "tourStop",
 
     // show
-    showCalendar,  showReminder, showRoutine, showRoutList, showMemo,
+    showCalendar = "showCalendar",
+    showReminder = "showReminder",
+    showRoutine = "showRoutine",
+    showRoutList = "showRoutList",
+    showMemo = "showMemo",
 
     // memoe
-    memoWhere, memoNod2Rec, memoCopyAll, memoClearAll,
+    memoWhere = "memoWhere",
+    memoNod2Rec = "memoNod2Rec",
+    memoCopyAll = "memoCopyAll",
+    memoClearAll = "memoClearAll",
 
     // dial
-    dialColor,
+    dialColor = "dialColor",
 
     // debug
-    debug
+    debug  = "debug"
 }
 
 class StrAct {
@@ -50,7 +76,6 @@ class StrAct {
     }
 }
 
-
 class Actions {
     
     static let shared = Actions()
@@ -58,17 +83,6 @@ class Actions {
     var scene         : Scene!
     var tableDelegate : MuseTableDelegate?
     var suggestions   = [String]()
-
-    func dialColor(_ fade:Float, isSender: Bool)  {
-        
-        scene?.uFade?.floatValue = fade
-        
-        if isSender {
-
-            Session.shared.sendMsg( ["class" : "Actions", "dialColor" : fade])
-            Settings.shared.dialColor = fade
-        }
-    }
 
     func doSetTitle(_ title_: String) {
         #if os(watchOS)
@@ -98,44 +112,47 @@ class Actions {
      - via: Cals.parseMsg
      - via: FileMsg.parseMsg
      */
-    func refreshEvents(_ isSender:Bool) {
+    func refreshEvents(_ isSender:Bool) {  Log("⌘ \(#function) begin")
 
-        TreeNodes.shared.unarchiveTree() {
+        MuEvents.shared.updateEvents() { Log("⌘ MuEvents done")
 
-            MuEvents.shared.updateEvents() {
+            self.scene?.updateSceneFinish()
 
-                self.scene?.updateSceneFinish()
+            Dots.shared.updateTime(event: MuEvents.shared.timeEvent)
 
-                Dots.shared.updateTime(event: MuEvents.shared.timeEvent)
+            if let table = self.tableDelegate {
 
-                if let table = self.tableDelegate {
-
-                    table.updateTable(MuEvents.shared.events)
-                    table.updateTimeEvent()
-                    if let timeEvent = MuEvents.shared.timeEvent {
-                        table.scrollSceneEvent(timeEvent)
-                    }
-                }
-                #if os(watchOS)
-                Crown.shared.updateCrown()
-                #endif
-                if isSender {
-                    Session.shared.sendMsg(["class"   : "Actions",
-                                            "refresh" : "yo"])
+                table.updateTable(MuEvents.shared.events)
+                table.updateTimeEvent()
+                if let timeEvent = MuEvents.shared.timeEvent {
+                    table.scrollSceneEvent(timeEvent)
                 }
             }
+            #if os(watchOS)
+            Crown.shared.updateCrown()
+            #endif
+
+            Log("⌘ \(#function) done")
+
         }
     }
 
     func doRefresh(_ isSender:Bool) {
 
-        Closures.shared.addClosure(title: "Actions.reset") {
+        Closures.shared.addClosure(title: "Actions.refresh") {
             Say.shared.cancelSpeech()
             self.refreshEvents(isSender)
         }
     }
+    
+    private func doUpdateRoutine() {
 
-    func doUpdateEvent(_ event:MuEvent, isSender: Bool) {
+        Closures.shared.addClosure(title: "Actions.updateRoutine") {
+            Routine.shared.archiveRoutine() {}
+        }
+    }
+
+    private func doUpdateEvent(_ event:MuEvent) {
         
         Say.shared.cancelSpeech()
         if !MuEvents.shared.updateEvent(event) {
@@ -146,65 +163,89 @@ class Actions {
         if [.memoRecord,.memoTrans,.memoTrash].contains(event.type) {
             Memos.shared.archiveMemos {}
         }
-        if isSender,
-            let data = try? JSONEncoder().encode(event) {
-            Session.shared.cacheMsg(["class"      : "MuseEvent",
-                                    "updateEvent" : data])
-        }
-        else {
-            doAction(.gotoEvent, event)
-        }
+        doAction(.gotoEvent, event) //\\ was only for isSender == false
     }
     
+    func doTourAction(_ act:DoAction) {
+        #if os(iOS)
+        Tour.shared.doTourAction(act)
+        #endif
+    }
 
+    func doDialColor(_ value:Float) {
+        Settings.shared.dialColor = value
+        scene?.uFade?.floatValue = value
+    }
     //-----------------------------------------
- 
-    /**
-     Dispatch commands to Show, Say, Hear, Dots, Anim
-     - via: Actions.[doUpdateEvent, doToggleMark]
-     - via: Session.parseMsg["Action":]
-     - via: EventCell.touchMark
-     */
+
+    /** Dispatch commands to Show, Say, Hear, Dots, Anim */
     func doAction(_ act: DoAction, value: Float = 0, _ event:MuEvent! = nil, _ index:Int = 0, isSender:Bool = false) {
-        
-        Log("⌘ \(#function):\(act) event:\(event?.title ?? "nil")")
-        
+
+        Log("⌘ doAction .\(act) \(event?.title ?? "")")
+
+        func syncMessage() {
+            if isSender {
+                var msg: [String : Any] = ["Action" : act, "value": value]
+                if let event = event,
+                    let data = try? JSONEncoder().encode(event) {
+                    msg["event"] = data
+                }
+
+                Session.shared.sendMsg(msg)
+            }
+        }
+
         switch act {
+
+        case .dialColor:        doDialColor(value)
+
+        case .refresh:          doRefresh(isSender)
+
+        case .updateRoutine:    doUpdateRoutine()
+
+        case .updateEvent:      doUpdateEvent(event) //\\ this was a cacheMsg
+
+        case .showCalendar,
+             .showReminder,
+             .showMemo,
+             .showRoutine,
+             .showRoutList:     Show.shared.doShowAction(act, value)
+
+        case .tourAll,
+             .tourMain,
+             .tourMenu,
+             .tourDetail,
+             .tourIntro,
+             .tourStop:         doTourAction(act) // nond
+
+        case .sayMemo,
+             .sayTime,
+             .sayEvent,
+             .speakLow,
+             .speakMedium,
+             .speakHigh:        Say.shared.doSayAction(act, value)
             
-        case .showCalendar, .showReminder, .showMemo, .showRoutine, .showRoutList:
-
-            Show.shared.doShowAction(act, value, isSender)
-
-        case .tourAll, .tourMain, .tourMenu, .tourDetail, .tourIntro, .tourStop:
-            #if os(iOS)
-                Tour.shared.doTourAction(act)
-            #endif
-        // speech to text volume
-        case .sayMemo, .sayTime, .sayEvent, .speakLow, .speakMedium, .speakHigh:
-
-            Say.shared.doSayAction(act, value, isSender)
-
-        case  .hearEarbuds, .hearSpeaker:
-
-            Hear.shared.doHearAction(act, value, isSender)
+        case  .hearEarbuds,
+              .hearSpeaker:     Hear.shared.doHearAction(act, value)
 
         case .gotoEvent,
              .gotoRecordOn,
-             .gotoFuture:
+             .gotoFuture:       Anim.shared.doAnimAction(act, value, event)
 
-            Anim.shared.doAnimAction(act,value, event, isSender)
-            
-        case .memoCopyAll, .memoClearAll, .memoWhere, .memoNod2Rec:
 
-            Memos.shared.doMemoAction(act, value, isSender)
-            
-        case .refresh: doRefresh(isSender)
-            
-        case .debug: scene.debugUpdate = value > 0 ? true : false
+        case .memoCopyAll,
+             .memoClearAll,
+             .memoWhere,
+             .memoNod2Rec:      Memos.shared.doMemoAction(act, value, isSender)
+
+        case .debug:            scene.debugUpdate = value > 0 ? true : false
     
         default: break
         }
+
+        syncMessage()
     }
+
       
 
 }

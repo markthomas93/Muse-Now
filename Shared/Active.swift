@@ -125,6 +125,7 @@ class Active {
                 actions.doMinuteTimerTick()
             }
             if lastHour != thisHour {  // Log("⟳ \(#function) lastHour:\(lastHour) thisHour:\(thisHour)")
+
                 lastHour = thisHour
                 actions.refreshEvents(/*isSender*/false)
                 // actions.doRefresh(/*isSender*/false) -- does not work for first time startup

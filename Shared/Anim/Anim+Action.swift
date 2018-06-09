@@ -55,7 +55,7 @@ extension Anim {
         //Log(String(format: "⎚ userDotAction dot Prev,Now: %g,%g  %@ ➛ %@  tense:%@", prev,now,"\(animPrev)","\(animNow)","\(flipTense)"))
     }
 
-    public func doAnimAction(_ act: DoAction, _ value:Float,_ event:MuEvent!, _ isSender:Bool) {
+    public func doAnimAction(_ act: DoAction, _ value:Float,_ event:MuEvent!) {
 
         switch act {
 

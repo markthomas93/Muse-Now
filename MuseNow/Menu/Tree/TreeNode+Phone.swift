@@ -39,7 +39,7 @@ extension TreeNode {
         
         for child in children {
             if child.cell == nil {
-                child.initCell()
+                //\\child.initCell()
                 child.updateCell()
             }
             child.refreshNodeCells()

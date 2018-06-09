@@ -10,6 +10,17 @@ import Foundation
 
 extension TreeNode {
 
+    func getPath() -> String {
+
+        if let parent = parent {
+            return parent.getPath() + "." + name
+        }
+        else {
+            return name
+        }
+    }
+
+
     func findNodeName(_ name_:String) -> TreeNode! {
 
         // first search childing, breadth first

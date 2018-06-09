@@ -342,11 +342,13 @@ extension Anim {
 
     func gotoStartupAnim() {
 
-        startupTime = 0
-        sceneFrame = Anidex.animEnd.rawValue
-        animNow = .startup
-        scene.isPaused = false
-        scene.sprite.isPaused = false
+        if let scene = scene {
+            startupTime = 0
+            sceneFrame = Anidex.animEnd.rawValue
+            animNow = .startup
+            scene.isPaused = false
+            scene.sprite.isPaused = false
+        }
     }
 
     func startupAnim() {   //Log(String(format:"⚆ %.1f",sceneFrame))

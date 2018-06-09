@@ -52,22 +52,25 @@ class Settings: FileSync, Codable, DemoBackupDelegate {
             let _ = saveData(data)
         }
     }
-    
+
+    override func mergeData(_ data:Data?,_ done: @escaping CallVoid) {
+
+        if  let data = data,
+            let newSettings = try? JSONDecoder().decode(Settings.self, from:data) {
+
+            dialColor = newSettings.dialColor ///... action update?
+            onboarding = newSettings.onboarding
+        }
+            // first time startup so save file
+        else {
+            self.archiveSettings()
+        }
+        done()
+    }
     func unarchiveSettings(_ done: @escaping CallVoid) { Log ("⧉ \(#function)")
         
         unarchiveData() { data in
-
-            if  let data = data,
-                let newSettings = try? JSONDecoder().decode(Settings.self, from:data) {
-
-                self.dialColor = newSettings.dialColor ///... action update?
-                self.onboarding = newSettings.onboarding
-            }
-                // first time startup so save file
-            else {
-                self.archiveSettings()
-            }
-            done()
+            self.mergeData(data,done)
         }
     }
 }

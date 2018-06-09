@@ -23,10 +23,10 @@ class WatchCon: WKInterfaceController {
     override func awake(withContext context: Any?) { Log("⟳ \(#function) context:\(context ?? "nil")")
         // Muse.shared.testScript()
         WKExtension.shared().isFrontmostTimeoutExtended = true
-
+        self.initScene()
         Settings.shared.unarchiveSettings {
-            TreeNodes.shared.unarchiveTree() {
-                self.initScene()
+            TreeNodes.shared.initTree() {
+                Actions.shared.doAction(.refresh)
             }
         }
         crown.updateCrown()

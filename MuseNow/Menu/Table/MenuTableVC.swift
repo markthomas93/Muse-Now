@@ -69,7 +69,7 @@ class MenuTableVC: UITableViewController {
         super.viewWillDisappear(true)
         lastDisappearTime = Date().timeIntervalSince1970
         NotificationCenter.default.removeObserver(self)
-        Actions.shared.doRefresh(true)
+        Actions.shared.doAction(.refresh, isSender:true)
     }
 
     /**
@@ -100,7 +100,6 @@ class MenuTableVC: UITableViewController {
     /**
      */
     func updateTouchNodes(_ oldNodes:[TreeNode], _ newNodes:[TreeNode]) {
-
 
         let delSet = oldNodes.filter { newNodes.contains($0) == false }
         let addSet = newNodes.filter { oldNodes.contains($0) == false }

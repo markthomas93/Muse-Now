@@ -26,11 +26,11 @@ class FilesSync {
             Closures.shared.addClosure(title: title_, closure_)
         }
         switch name { //TODO: fileMsg.parseMsg may be eliminated after test
-        case Memos.shared.fileName:     addClosure("FileMsg.sendFile.memos")    { Memos.shared.sendPostFile() }
-        case Marks.shared.fileName:     addClosure("FileMsg.sendFile.marks")    { Marks.shared.sendPostFile() }
-        case Cals.shared.fileName:      addClosure("FileMsg.sendFile.cals")     { Cals.shared.sendPostFile() }
-        case TreeNodes.shared.fileName: addClosure("FileMsg.sendFile.menu")     { TreeNodes.shared.sendPostFile() }
-        case Routine.shared.fileName:   addClosure("FileMsg.sendFile.routine")  { Routine.shared.sendPostFile() }
+        case Memos.shared.fileName:     Memos.shared.sendPostFile()
+        case Marks.shared.fileName:     Marks.shared.sendPostFile()
+        case Cals.shared.fileName:      Cals.shared.sendPostFile()
+        case TreeNodes.shared.fileName: TreeNodes.shared.sendPostFile()
+        case Routine.shared.fileName:   Routine.shared.sendPostFile()
         default: break
         }
     }
@@ -43,9 +43,9 @@ class FilesSync {
 
         func dispatch() {
             Session.shared.cacheMsg([
-                "class"     : "FileMsg",
-                "getFile"   : name,
-                "fileTime"  : time])
+                "File" : "get",
+                "name" : name,
+                "time" : time])
         }
         DispatchQueue.global(qos: .userInitiated).async { dispatch() }
     }
@@ -89,8 +89,8 @@ class FilesSync {
     func sendSyncRequest() {
         func dispatch() {
             Session.shared.cacheMsg([
-                "class"      : "FileMsg",
-                "nameTimes"  : nameTimes])
+                "File"      : "sync",
+                "nameTimes" : nameTimes])
         }
         DispatchQueue.global(qos: .userInitiated).async { dispatch() }
     }

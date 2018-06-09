@@ -24,14 +24,14 @@ extension FileSync {
                 if let data = NSData(contentsOf: url) {
 
                     self.session.cacheMsg([
-                        "class"    : "FileMsg",
-                        "postFile" : fileName,
-                        "fileTime" : fileTime,
-                        "data"     : data ])
+                        "File" : "post",
+                        "name" : fileName,
+                        "time" : fileTime,
+                        "data" : data ])
                 }
             }
         }
-        DispatchQueue.global(qos: .userInitiated).async { dispatch() }
+        DispatchQueue.global(qos: .utility).async { dispatch() }
     }
 
     /**
@@ -39,13 +39,20 @@ extension FileSync {
      - save data to file if newer
      - doRefresh to reload display from file
      */
-    func receiveFile(_ data:Data, _ updateTime: TimeInterval) {
+    func receiveFile(_ data:Data, _ updateTime: TimeInterval) { 
+        
         func dispatch() {
+            
             if saveData(data, fileName, updateTime) {
-                Actions.shared.doRefresh(false)
+                self.mergeData(data) {
+                    Actions.shared.doRefresh(false)
+                }
             }
         }
-        DispatchQueue.global(qos: .userInitiated).async { dispatch() }
+        
+        DispatchQueue.global(qos: .utility).async {
+            dispatch()
+        }
     }
 
     /**
@@ -56,9 +63,9 @@ extension FileSync {
     func sendGetFile() { Log ("⧉ \(#function) fileName:\(fileName) memoryTime:\(memoryTime)")
         func dispatch() {
             session.cacheMsg([
-                "class"     : "FileMsg",
-                "getFile"   : fileName,
-                "fileTime"  : memoryTime])
+                "File" : "get",
+                "name" : fileName,
+                "time" : memoryTime])
         }
         // begin -------------
         DispatchQueue.global(qos: .userInitiated).async { dispatch() }

@@ -33,7 +33,9 @@ public class Cal: Codable {
     /// find and update event Marker
     func updateMark(_ isOn_:Bool) {
         isOn = isOn_
-        Cals.shared.archiveCals {}
+        Closures.shared.addClosure(title: "Cals.shared.archiveCals") {
+            Cals.shared.archiveCals {}
+        }
     }
 
 }

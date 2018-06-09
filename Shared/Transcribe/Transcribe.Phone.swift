@@ -94,7 +94,7 @@ class Transcribe {
             }
             else {
                 Log ("✏ \(#function) timedOut for file: \(event.eventId)")
-                // Actions.shared.doUpdateEvent(event, isSender:true)
+                // Actions.shared.do UpdateEvent(event, isSender:true)
                 done()
             }
         }

@@ -31,7 +31,7 @@ extension Transcribe {
 
         appleSttUrl(url) { found in
 
-            if  let str = found.str, str != "" {
+            if let str = found.str, str != "" {
 
                 event.type     = .memoTrans
                 event.sttApple = found.str
@@ -43,8 +43,9 @@ extension Transcribe {
                 Log("✏ iPhone::\(#function) \(found.str)")
             }
             done()
+
             DispatchQueue.main.async {
-                Actions.shared.doUpdateEvent(event, isSender: true)
+                Actions.shared.doAction(.updateEvent, event, isSender: true)
             }
         }
     }

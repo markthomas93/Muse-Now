@@ -23,9 +23,9 @@ class Transcribe {
 
     func waitTranscribe(_ event:MuEvent,_ done: @escaping CallVoid) { Log("✏ Watch::\(#function)")
 
-        Actions.shared.doUpdateEvent(event, isSender:false)
+        Actions.shared.doAction(.updateEvent, event, isSender:false)
         Session.shared.transferMemoEvent(event)
-        Session.shared.sendMsg(["class": "WakeUp"])
+        //\\ Session.shared.send Msg(["class": "WakeUp"])
         done()
     }
 }

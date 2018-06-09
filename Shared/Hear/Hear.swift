@@ -30,24 +30,6 @@ class Hear {
         Log("🎧 route earbuds:\(routeEarbuds) speaker:\(routeSpeaker)")
     }
 
-    func parseMsg(_ msg: [String : Any])  {
-
-        if let _ = msg["put"] {
-            if let on = msg["earbuds"] as? Bool { earbuds = on ; TreeNodes.shared.setValue(on, forKey: "hear.earbuds")}
-            if let on = msg["speaker"] as? Bool { speaker = on ; TreeNodes.shared.setValue(on, forKey: "hear.spearker")}
-            #if os(iOS)
-            PagesVC.shared.menuVC.tableView.reloadData()
-            #endif
-        }
-
-        if let _ = msg["get"] { // TODO: Not called, updated via TreeNodes file?
-            Session.shared.sendMsg(["class" : "Hear",
-                                    "put" : "yo",
-                                    "earbuds" : earbuds,
-                                    "speaker" : speaker])
-        }
-    }
-
     func listenForNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleRouteChange(_:)), name: NSNotification.Name.AVAudioSessionRouteChange, object: nil)
     }
@@ -116,24 +98,16 @@ class Hear {
     func canPlay() -> Bool {
         return (earbuds && localEarbuds) || (speaker && localSpeaker)
     }
-    
-    
-    public func doHearAction(_ act: DoAction, _ value:Float,_ isSender:Bool) {
+
+    public func doHearAction(_ act: DoAction, _ value:Float) {
 
         let on = value > 0
+        func updatePath(_ path:String) { TreeNodes.setOn(on, path, false) }
 
-        func updateClass(_ className:String, _ path:String) {
-            TreeNodes.setOn(on,path)
-            Actions.shared.doRefresh(/*isSender*/false)
-            if isSender {
-                Session.shared.sendMsg(["class" : className, path : on])
-            }
-        }
-        
         switch act {
-        case .hearSpeaker:  speaker = on ; updateClass("Hear","menu.more.hear.speaker")
-        case .hearEarbuds:  earbuds = on ; updateClass("Hear","menu.more.hear.earbuds")
-        default: break
+        case .hearSpeaker:  speaker = on ; updatePath("menu.more.hear.speaker")
+        case .hearEarbuds:  earbuds = on ; updatePath("menu.more.hear.earbuds")
+        default: return
         }
     }
 
