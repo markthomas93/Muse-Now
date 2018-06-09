@@ -19,22 +19,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MuseNow/Menu/Tree/TreeNode+Subclass.swift"
-            timestampString = "550179431.080281"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "216"
-            endingLineNumber = "216"
-            landmarkName = "updateCell()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Shared/Anim/Closures.swift"
             timestampString = "550179431.080719"
             startingColumnNumber = "9223372036854775807"
@@ -83,13 +67,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MuseNow/Menu/Tree/TreeNodes.swift"
-            timestampString = "550179554.383234"
+            filePath = "MuseNow/Menu/Tree/TreeNode+Level.swift"
+            timestampString = "550269968.858621"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "36"
-            endingLineNumber = "36"
-            landmarkName = "setOn(_:_:_:)"
+            startingLineNumber = "49"
+            endingLineNumber = "49"
+            landmarkName = "updateOnRatioFromChildren()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -99,13 +83,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MuseNow/Menu/Tree/TreeNode+Subclass.swift"
-            timestampString = "550179646.155911"
+            filePath = "MuseNow/Menu/Tree/TreeNode+Level.swift"
+            timestampString = "550269968.8586839"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "256"
-            endingLineNumber = "256"
-            landmarkName = "updateCell()"
+            startingLineNumber = "71"
+            endingLineNumber = "71"
+            landmarkName = "updateOnRatioFromChildren()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -115,13 +99,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Shared/Files/FileMsg.swift"
-            timestampString = "550180114.113924"
+            filePath = "MuseNow/Table/ToggleDot.swift"
+            timestampString = "550259183.372895"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "59"
-            endingLineNumber = "59"
-            landmarkName = "parseMsg(_:)"
+            startingLineNumber = "81"
+            endingLineNumber = "81"
+            landmarkName = "setMark(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MuseNow/Table/ToggleDot.swift"
+            timestampString = "550259183.372938"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "95"
+            endingLineNumber = "95"
+            landmarkName = "toggle()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

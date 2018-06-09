@@ -6,9 +6,9 @@ class MenuEditColor: MenuEdit {
     var color: UIView!
     var colorFrame = CGRect.zero
 
-    convenience required init(coder decoder: NSCoder) {
-        self.init(coder: decoder)
-    }
+//    convenience required init(coder decoder: NSCoder) {
+//        self.init(coder: decoder)
+//    }
 
     override func buildViews() {
         

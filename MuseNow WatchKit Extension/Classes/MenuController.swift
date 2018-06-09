@@ -24,7 +24,7 @@ class MenuController: WKInterfaceController {
 
         super.awake(withContext: context)
 
-        parent = context as! TreeNode
+        parent = context as? TreeNode
         setTitle(parent.name)
 
         let children = parent.children
@@ -33,13 +33,13 @@ class MenuController: WKInterfaceController {
         for child in parent.children {
             switch child.cellType {
 
-            case .title:            rowTypes.append("MenuTitle")
-            case .titleButton:      rowTypes.append("MenuTitleButton")
-            case .titleFader:       rowTypes.append("MenuTitleFader")
-            case .titleMark:        rowTypes.append("MenuTitleMark")
-            case .colorTitle:       rowTypes.append("MenuColorTitle")
-            case .colorTitleMark:   rowTypes.append("MenuColorTitleMark")
-            default:                rowTypes.append("MenuTitle")
+            case .title?:            rowTypes.append("MenuTitle")
+            case .titleButton?:      rowTypes.append("MenuTitleButton")
+            case .titleFader?:       rowTypes.append("MenuTitleFader")
+            case .titleMark?:        rowTypes.append("MenuTitleMark")
+            case .colorTitle?:       rowTypes.append("MenuColorTitle")
+            case .colorTitleMark?:   rowTypes.append("MenuColorTitleMark")
+            default:                 rowTypes.append("MenuTitle")
             }
         }
 

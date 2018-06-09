@@ -67,14 +67,14 @@ class PagesVC: UIViewController, UIPageViewControllerDataSource {
         // find scrollview so that it can be disabled later
         for view in pageVC.view.subviews {
             if view is UIScrollView {
-                scrollView = view as! UIScrollView
+                scrollView = (view as? UIScrollView)!
                 break
             }
         }
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        eventVC = storyboard.instantiateViewController(withIdentifier: "EventTable") as! EventTableVC
-        menuVC  = storyboard.instantiateViewController(withIdentifier: "TreeTable")  as! MenuTableVC
+        eventVC = (storyboard.instantiateViewController(withIdentifier: "EventTable") as! EventTableVC)
+        menuVC  = (storyboard.instantiateViewController(withIdentifier: "TreeTable")  as! MenuTableVC)
 
         setBorder(menuVC,  radius:  8, width: 0)
         setBorder(eventVC, radius: 16, width: 0)

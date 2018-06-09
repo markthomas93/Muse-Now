@@ -147,8 +147,8 @@ class TreeEventsNode: TreeNode {
         let _ = TreeActNode("reminders", self, Show.shared.reminder,  .showReminder, [.parent])
 
         for (key,cals) in Cals.shared.sourceCals {
-            if cals.count == 1     {  let _ = TreeCalendarNode(key,        self, cals.first, [.parent,.child]) }
-            else { for cal in cals {  let _ = TreeCalendarNode(cal!.title, self, cal,        [.parent,.child]) }
+            if cals.count == 1     {  let _ = TreeCalendarNode(key,       self, cals.first!, SetFrom([.parent,.child])) }
+            else { for cal in cals {  let _ = TreeCalendarNode(cal.title, self, cal,        SetFrom([.parent,.child])) }
             }
         }
     }
@@ -171,7 +171,7 @@ class TreeCalendarNode: TreeNode {
         try container.encode(self.calendarId, forKey: .calendarId)
     }
 
-    convenience init(_ title_:String, _ parent_:TreeNode!,_ cal:Cal!,_ setFrom_:SetFrom) {
+    convenience init(_ title_:String, _ parent_:TreeNode!,_ cal:Cal,_ setFrom_:SetFrom) {
 
         self.init(title_, parent_, .colorTitleMark, TreeSetting(true, setFrom_))
         color = cal.color
@@ -205,14 +205,10 @@ class TreeRoutineNode: TreeNode {
         updateCell()
         Routine.shared.unarchiveRoutine() {
             self.initRoutineChildren()
-            ///... Routine.shared.archiveRoutine() {}
         }
     }
 
     override func updateCell() {
-        if let cell = cell as? MenuTitleMark {
-            cell.setMark(self.isOn() ? 1 : 0)
-        }
         Actions.shared.doAction(.refresh)
     }
 
@@ -260,7 +256,6 @@ class TreeRoutineCatNode: TreeNode {
         }
         if let cat = Routine.shared.catalog[name] {
             cat?.isOn = isOn()
-            self.setting?.isOn = isOn()
         }
     }
 }

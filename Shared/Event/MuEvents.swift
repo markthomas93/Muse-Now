@@ -210,7 +210,7 @@ class MuEvents {
             let idCal = Cals.shared.idCal
             var cals = [EKCalendar]()
             for ekCal in ekCals {
-                if let cali = idCal[ekCal.calendarIdentifier], (cali?.isOn)! {
+                if let cali = idCal[ekCal.calendarIdentifier], cali.isOn {
                     cals.append(ekCal)
                 }
             }

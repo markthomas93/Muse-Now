@@ -34,7 +34,12 @@ class Marks: FileSync, Codable {
     func unarchiveMarks(_ done: @escaping CallVoid) {
         
         unarchiveData() { data in
-            self.mergeData(data,done)
+            if  let data = data {
+                self.mergeData(data,done)
+            }
+            else {
+                done()
+            }
         }
     }
 

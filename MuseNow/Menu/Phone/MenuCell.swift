@@ -53,9 +53,9 @@ class MenuCell: MuCell {
     var parentChild = ParentChildOther.other
     var lastLocationInTable = CGPoint.zero
 
-    convenience required init(coder decoder: NSCoder) {
-        self.init(coder: decoder)
-    }
+//    convenience required init(coder decoder: NSCoder) {
+//        self.init(coder: decoder)
+//    }
     convenience init(_ treeNode_: TreeNode!) {
         self.init()
         treeNode = treeNode_
@@ -173,23 +173,22 @@ class MenuCell: MuCell {
 
             switch treeNode.cellType {
 
-            case .unknown,
-                 .title,
-                 .titleMark,
-                 .colorTitle,
-                 .colorTitleMark:    expandable = treeNode.children.count > 0
+            case .unknown?,
+                 .title?,
+                 .titleMark?,
+                 .colorTitle?,
+                 .colorTitleMark?:  expandable = treeNode.children.count > 0
 
-            case .timeTitleDays:     expandable = true
+            case .timeTitleDays?:   expandable = true
 
-            case .titleFader,
-                 .titleButton,
-                 .editTime,
-                 .editTitle,
-                 .editWeekday,
-                 .editColor:         expandable = false
+            case .titleFader?,
+                 .titleButton?,
+                 .editTime?,
+                 .editTitle?,
+                 .editWeekday?,
+                 .editColor?:       expandable = false
                 
-            case .none,
-                 .some(_):          expandable = false
+            default:                expandable = false
             }
             if expandable {
 

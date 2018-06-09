@@ -9,9 +9,9 @@ class MenuTitle: MenuCell {
     var title: UILabel!
     var titleFrame = CGRect.zero
 
-    convenience required init(coder decoder: NSCoder) {
-        self.init(coder: decoder)
-    }
+//    convenience required init(coder decoder: NSCoder) {
+//        self.init(coder: decoder)
+//    }
 
   
     override func buildViews() {

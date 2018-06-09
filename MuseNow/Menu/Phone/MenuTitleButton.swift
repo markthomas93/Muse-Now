@@ -15,9 +15,9 @@ class MenuTitleButton: MenuTitle {
     var butnFrame = CGRect.zero
     var butnAct: CallVoid!
 
-    convenience required init(coder decoder: NSCoder) {
-        self.init(coder: decoder)
-    }
+//    convenience required init(coder decoder: NSCoder) {
+//        self.init(coder: decoder)
+//    }
 
 
     override func buildViews() {

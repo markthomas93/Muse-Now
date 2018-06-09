@@ -13,8 +13,8 @@ class Cals: FileSync {
     var cals = [Cal]()                  // muse translated version of EKCalendar
 
     /// WARNING, changing ! to ? is problematic, need shared pointer to same object, removing ! doesn't work!!!!
-    var idCal = [String:Cal!]()         // retreive cal from its calendarID
-    var sourceCals = [String:[Cal!]]()  // each data source (or each email account) may have several calendars
+    var idCal = [String:Cal]()         // retreive cal from its calendarID
+    var sourceCals = [String:[Cal]]()  // each data source (or each email account) may have several calendars
 
     override init() {
         super.init()
@@ -77,7 +77,7 @@ class Cals: FileSync {
 
                 for fileCal in fileCals {
                     if let memCal = self.idCal[fileCal.calId] {
-                        memCal?.isOn = fileCal.isOn
+                        memCal.isOn = fileCal.isOn
                     }
                 }
             }

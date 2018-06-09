@@ -7,9 +7,9 @@ class MenuEditWeekday: MenuEdit {
     var weekFrames = [CGRect]()
     var dayLabels = ["Sun","Mon","Tue","Wed","Thr","Fri","Sat"]
 
-    convenience required init(coder decoder: NSCoder) {
-        self.init(coder: decoder)
-    }
+//    convenience required init(coder decoder: NSCoder) {
+//        self.init(coder: decoder)
+//    }
 
     override func buildViews() {
 

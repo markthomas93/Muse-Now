@@ -53,8 +53,8 @@ extension TreeNode {
                     }
                     if childSetting.setFrom.contains(.parent) {
                         switch child.cellType {
-                        case .titleMark,
-                             .colorTitleMark:
+                        case .titleMark?,
+                             .colorTitleMark?:
                             markCount += 1.0
                             isOnCount += childSetting.isOn ? 1 : 0
                         default: break // ignore non marked child
@@ -96,23 +96,6 @@ extension TreeNode {
         }
     }
 
-//\\    /**
-//     Call callTreeNode. Phone will call immediately, while
-//     watch adds a closure since the dial is not showing.
-//     - via: set(isOn:)
-//     */
-//    func doCallback() {
-//        if let callTreeNode = callTreeNode {
-//            #if os(watchOS)
-//            Closures.shared.addClosure(title: name) {
-//                callTreeNode(self)
-//            }
-//            #else
-//            callTreeNode(self)
-//            #endif
-//        }
-//    }
-//
     func updateOn(_ isOn:Bool) {
 
         if let setting = setting {

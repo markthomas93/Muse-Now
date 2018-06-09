@@ -190,7 +190,6 @@ class Actions {
                     let data = try? JSONEncoder().encode(event) {
                     msg["event"] = data
                 }
-
                 Session.shared.sendMsg(msg)
             }
         }
@@ -245,7 +244,4 @@ class Actions {
 
         syncMessage()
     }
-
-      
-
 }

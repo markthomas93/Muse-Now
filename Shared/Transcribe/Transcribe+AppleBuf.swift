@@ -59,7 +59,7 @@ extension Transcribe {
                 let museFound = self.matchMuseFound(result)
                 if museFound.str != nil {
                     Session.shared.sendMsg( ["Transcribe" : museFound.str])
-                    Log("✏ muse: \(museFound.str)")
+                    Log("✏ muse: \(museFound.str!)")
                 }
                     // does not match a muse template, so send unmatched result
                 else {

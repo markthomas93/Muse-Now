@@ -35,7 +35,7 @@ func DebugLog(_ str: String) -> Bool {
 
     case
 
-    "⚡️", // MuEvents
+    "𐂷", // tree cell
     "⌘", // doAction
     "←", // session receiving
     "↔︎", // session activation state
@@ -49,7 +49,7 @@ func DebugLog(_ str: String) -> Bool {
 
     case
     
-     "𐂷", // tree cell
+    "⚡️", // MuEvents
 
     "👆", // tap action
     "⊛", // crown

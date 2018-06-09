@@ -38,6 +38,7 @@ class Memos: FileSync, Codable {
                 items.sort { "\($0.bgnTime)"+$0.eventId < "\($1.bgnTime)"+$1.eventId }
             }
         }
+        done()
     }
     func unarchiveMemos(_ done: @escaping (_ result:[MuEvent]) -> Void) {
 

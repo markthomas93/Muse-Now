@@ -36,11 +36,11 @@ extension Transcribe {
                 event.type     = .memoTrans
                 event.sttApple = found.str
                 event.title    = found.str
-                Log("✏ iPhone::\(#function) \(found.str)")
+                Log("✏ iPhone::\(#function) \(str)")
             }
             else {
                 event.type = .memoBlank
-                Log("✏ iPhone::\(#function) \(found.str)")
+                Log("✏ iPhone::\(#function)")
             }
             done()
 

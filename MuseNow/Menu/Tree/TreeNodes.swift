@@ -49,7 +49,6 @@ class TreeNodes: FileSync {
     /** shortcut to TreeNode based on path string.
      So, only need to search for path once.
      */
-
     subscript(path:String) -> TreeNode! {
         get {
             if let node = pathNode[path] {

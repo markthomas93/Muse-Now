@@ -10,9 +10,9 @@ class MenuTitleFader: MenuTitle {
     var faderFrame = CGRect.zero
     var titleW = CGFloat(64) // chanaged by b
 
-    convenience required init(coder decoder: NSCoder) {
-        self.init(coder: decoder)
-    }
+//    convenience required init(coder decoder: NSCoder) {
+//        self.init(coder: decoder)
+//    }
 
     override func buildViews() {
 

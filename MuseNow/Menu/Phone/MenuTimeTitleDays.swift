@@ -16,9 +16,9 @@ class MenuTimeTitleDays: MenuTitle {
 
     var child: TreeRoutineItemNode!
 
-    convenience required init(coder decoder: NSCoder) {
-        self.init(coder: decoder)
-    }
+//    convenience required init(coder decoder: NSCoder) {
+//        self.init(coder: decoder)
+//    }
 
     override func buildViews()  {
 

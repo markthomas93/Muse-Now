@@ -155,7 +155,7 @@ class ValDirs {
     static var timeSpan = TimeInterval(1.0)
 
     var title: String
-    var valDirs = [ValDir!]()
+    var valDirs = [ValDir]()
     var deltaVal = Double(0)
     var filteredVal = Double(0)
     var filterFactor = Double(0.62) // add portion of deltaNew to filteredVal

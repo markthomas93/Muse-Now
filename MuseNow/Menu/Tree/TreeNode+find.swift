@@ -38,6 +38,7 @@ extension TreeNode {
         return nil
     }
     func findPaths(_ paths:[String],_ index:Int) -> TreeNode! {
+
         if index >= paths.count {
             return nil
         }
@@ -49,5 +50,4 @@ extension TreeNode {
         return nil
     }
 
-   
 }

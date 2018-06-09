@@ -32,9 +32,9 @@ class TreeNode: Codable {
     // treeNode runtime
 
     var parent: TreeNode!
-    var userInfo: [String:Any]? = nil
-    var cell: MenuCell? = nil
-    var any: Any! = nil // may contain Cal
+    var userInfo: [String:Any]?
+    var cell: MenuCell?
+    var any: Any! // may contain Cal
 
     // runtime info
 
@@ -170,38 +170,35 @@ class TreeNode: Codable {
     }
 
     func setOn(_ on:Bool,_ isSender:Bool) {
-        
-        if let setting = setting,
-           setting.isOn != on {
 
-            setting.isOn = on
-            updateCell()
+        updateOn(on)
+        updateCell()
 
-            if isSender {
-                TreeNodes.shared.syncNode(self)
-            }
+        if isSender {
+            TreeNodes.shared.syncNode(self)
         }
     }
+
     func initCell() {
 
         #if os(iOS) // iOS is early bound, watchOS is late bound
         
         switch cellType {
 
-        case .title:            cell = MenuTitle(self)
-        case .titleButton:      cell = MenuTitleButton(self)
-        case .titleFader:       cell = MenuTitleFader(self)
-        case .titleMark:        cell = MenuTitleMark(self)
-        case .colorTitle:       cell = MenuColorTitle(self)
-        case .colorTitleMark:   cell = MenuColorTitleMark(self)
+        case .title?:          cell = MenuTitle(self)
+        case .titleButton?:    cell = MenuTitleButton(self)
+        case .titleFader?:     cell = MenuTitleFader(self)
+        case .titleMark?:      cell = MenuTitleMark(self)
+        case .colorTitle?:     cell = MenuColorTitle(self)
+        case .colorTitleMark?: cell = MenuColorTitleMark(self)
 
-        case .timeTitleDays:    cell = MenuTimeTitleDays(self)
-        case .editTime:         cell = MenuEditTime(self)
-        case .editTitle:        cell = MenuEditTitle(self)
-        case .editWeekday:      cell = MenuEditWeekday(self)
-        case .editColor:        cell = MenuEditColor(self)
-        case .unknown:          cell = MenuEditColor(self)
-        case .none,.some(_):    cell = nil
+        case .timeTitleDays?:  cell = MenuTimeTitleDays(self)
+        case .editTime?:       cell = MenuEditTime(self)
+        case .editTitle?:      cell = MenuEditTitle(self)
+        case .editWeekday?:    cell = MenuEditWeekday(self)
+        case .editColor?:      cell = MenuEditColor(self)
+        case .unknown?:        cell = MenuEditColor(self)
+        default:               cell = nil
         }
         #endif
     }

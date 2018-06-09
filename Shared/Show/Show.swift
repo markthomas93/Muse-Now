@@ -54,28 +54,6 @@ class Show: NSObject, DemoBackupDelegate {
 
     // Session 
 
-
-//\\    func parseMsg(_ msg: [String : Any])  {
-//
-//        if let _ = msg["get"] {
-//        }
-//        else  {
-//
-//            if let on = msg["calendar"] as? Bool { calendar = on ; TreeNodes.shared.setValue(on, forKey: "show.calendar")}
-//            if let on = msg["reminder"] as? Bool { reminder = on ; TreeNodes.shared.setValue(on, forKey: "show.reminder")}
-//            if let on = msg["memo"]     as? Bool { memo     = on ; TreeNodes.shared.setValue(on, forKey: "show.memo")}
-//            if let on = msg["routine"]  as? Bool { routine  = on ; TreeNodes.shared.setValue(on, forKey: "show.routine")}
-//            if let on = msg["routList"] as? Bool { routList = on ; TreeNodes.shared.setValue(on, forKey: "show.routList")}
-//            if let on = msg["routDemo"] as? Bool { routDemo = on ; TreeNodes.shared.setValue(on, forKey: "show.routDemo")}
-//
-//            Actions.shared.doAction(.refresh, isSender:false)
-//            #if os(iOS)
-//            PagesVC.shared.menuVC.tableView.reloadData()
-//            #endif
-//        }
-//    }
-
-
     public func doShowAction(_ act: DoAction, _ value:Float) {
 
         let on = value > 0
