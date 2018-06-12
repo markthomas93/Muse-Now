@@ -166,8 +166,14 @@ class EventTableVC: UITableViewController, MuseTableDelegate {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "EventCell")! as! EventCell
             // if prevCell is offscreen and recycled, then set it nil
-            if prevCell != nil && prevCell == cell { prevCell = nil }
-            cell.setCell(event:event,tableView)
+            if prevCell?.event.eventId == event?.eventId {
+                prevCell = cell
+            }
+            else if prevCell == cell {
+                prevCell = nil
+            }
+            let highlight = prevCell == cell ? Highlighting.high : Highlighting.low
+            cell.setCell(event:event, tableView, highlight)
             cell.frame.size.width = view.frame.size.width
             return roundCorners(cell, indexPath)
           }

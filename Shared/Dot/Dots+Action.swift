@@ -4,6 +4,20 @@ extension Dots {
     
 
     /**
+     User toggled Mark
+     */
+    func markDot(_ dot:Dot,_ event:MuEvent, _ isOn:Bool, gotoEvent: Bool = false) {
+
+        dot.setMark(isOn, event)
+        dot.makeRgb()
+        Actions.shared.doAction(.updateEvent, event, isSender: true)
+        Haptic.play(.success)
+        if gotoEvent {
+            Anim.shared.touchDialGotoTime(event.bgnTime)
+        }
+    }
+
+    /**
      User twiddling face of screen dial, fast or slow
      - via: Scene.touchDialPan
      */

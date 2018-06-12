@@ -15,16 +15,6 @@ extension Marks {
         Active.shared.startMenuTime()
         let dots = Dots.shared
 
-        func updateDot(_ dot:Dot,_ event:MuEvent, _ isOn:Bool, gotoEvent: Bool = false) {
-
-            dot.setMark(isOn, event)
-            dot.makeRgb()
-            Actions.shared.doAction(.updateEvent, event, isSender: true)
-            Haptic.play(.success)
-            if gotoEvent {
-                Anim.shared.touchDialGotoTime(event.bgnTime)
-            }
-        }
 
         // via phoneCrown
         if let table = Actions.shared.tableDelegate {
@@ -34,14 +24,14 @@ extension Marks {
             if let event = event {
                 
                 let index = dots.gotoEvent(event)
-                updateDot(dots.getDot(index), event, isOn)
+                dots.markDot(dots.getDot(index), event, isOn)
 
             }
             else {
                 let index = 0
                 let dot = dots.getDot(index)
                 if let event = dot.getCurrentEvent() {
-                    updateDot(dot, event, isOn, gotoEvent:true)
+                    dots.markDot(dot, event, isOn, gotoEvent:true)
                 }
             }
         }
@@ -53,7 +43,7 @@ extension Marks {
 
                 let index = Int(dots.dotNow) + delta
                 let isOn = !event.mark  // toggle opposite of event.mark
-                updateDot(dots.getDot(index), event, isOn, gotoEvent:true)
+                dots.markDot(dots.getDot(index), event, isOn, gotoEvent:true)
             }
             else {
                 print("\(#function) no event found")

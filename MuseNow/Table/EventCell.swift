@@ -12,7 +12,7 @@ class EventCell: MuCell {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var mark:  ToggleDot!
     
-    func setCell(event event_: MuEvent!, _ tableView: UITableView!) {
+    func setCell(event event_: MuEvent!, _ tableView: UITableView!, _ highlight:Highlighting ) {
         
         event = event_
         mark.setMark(event.mark ? 1 : 0)
@@ -41,7 +41,7 @@ class EventCell: MuCell {
         bezel.layer.borderWidth = 1
         bezel.layer.masksToBounds = true
         
-        setHighlight(.low, animated:false)
+        setHighlight(highlight, animated:false)
     }
 
     override func setHighlight(_ highlighting_:Highlighting, animated:Bool = true) {
@@ -52,13 +52,21 @@ class EventCell: MuCell {
                       alpha:        1.0,
                       animated:     animated)
      }
-    
+
+
     override func touchCell(_ location: CGPoint, isExpandable:Bool = true) {
 
         let toggleX = frame.size.width - frame.size.height*1.618
-        if location.x > toggleX {
-            Marks.shared.doToggleMark()
+
+        if location.x > toggleX,
+            let event = event,
+            let mark = mark {
+
+            event.mark = !(event.mark)
+            mark.setMark(event.mark ? 1 : 0)
+            let _ = Dots.shared.gotoEvent(event)
         }
+        Anim.shared.touchDialGotoTime(event.bgnTime)
     }
 
 }

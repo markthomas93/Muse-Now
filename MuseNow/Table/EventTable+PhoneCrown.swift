@@ -17,7 +17,7 @@ extension EventTableVC: PhoneCrownDelegate {
         
             // prevCell is still showing
         if prevCell != nil && tableView.bounds.contains(prevCell.frame) {
-            print("??B \(#function)  event:\(prevCell.event.title)")
+            Log ("⊛ \(#function)  event: \"\(prevCell.event.title) \"")
             return // contine from where you left off
         }
         

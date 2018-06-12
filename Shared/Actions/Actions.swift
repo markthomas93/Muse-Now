@@ -26,7 +26,6 @@ public enum DoAction : String, Codable { case
     gotoRecordOn = "gotoRecordOn",
 
     // say
-    saySpeech = "saySpeech",
     sayMemo = "sayMemo",
     sayTime = "sayTime",
     sayEvent = "sayEvent",
@@ -152,7 +151,7 @@ class Actions {
         }
     }
 
-    private func doUpdateEvent(_ event:MuEvent) {
+    private func doUpdateEvent(_ event:MuEvent,_ isSender:Bool) {
         
         Say.shared.cancelSpeech()
         if !MuEvents.shared.updateEvent(event) {
@@ -163,7 +162,9 @@ class Actions {
         if [.memoRecord,.memoTrans,.memoTrash].contains(event.type) {
             Memos.shared.archiveMemos {}
         }
-        doAction(.gotoEvent, event) //\\ was only for isSender == false
+        if !isSender {
+            doAction(.gotoEvent, event)
+        }
     }
     
     func doTourAction(_ act:DoAction) {
@@ -183,32 +184,38 @@ class Actions {
 
         Log("⌘ doAction .\(act) \(event?.title ?? "")")
 
-        func syncMessage() {
+        func syncMessage(isCache:Bool) {
             if isSender {
                 var msg: [String : Any] = ["Action" : act, "value": value]
-                if let event = event,
-                    let data = try? JSONEncoder().encode(event) {
-                    msg["event"] = data
+                if let event = event {
+                    do {
+                        let data = try JSONEncoder().encode(event)
+                        msg["event"] = data
+                    }
+                    catch {
+                        print("!!! \(#function) \(error)")
+                    }
                 }
-                Session.shared.sendMsg(msg)
+                if isCache  { Session.shared.cacheMsg(msg) }
+                else        { Session.shared.sendMsg(msg) }
             }
         }
 
         switch act {
 
-        case .dialColor:        doDialColor(value)
+        case .dialColor:        doDialColor(value)  ; syncMessage(isCache:true)
 
-        case .refresh:          doRefresh(isSender)
+        case .refresh:          doRefresh(isSender)  ; syncMessage(isCache:false)
 
-        case .updateRoutine:    doUpdateRoutine()
+        case .updateRoutine:    doUpdateRoutine()  ; syncMessage(isCache:true)
 
-        case .updateEvent:      doUpdateEvent(event) //\\ this was a cacheMsg
+        case .updateEvent:      doUpdateEvent(event, isSender)  ; syncMessage(isCache:true)
 
         case .showCalendar,
              .showReminder,
              .showMemo,
              .showRoutine,
-             .showRoutList:     Show.shared.doShowAction(act, value)
+             .showRoutList:     Show.shared.doShowAction(act, value) ; syncMessage(isCache:true)
 
         case .tourAll,
              .tourMain,
@@ -222,26 +229,29 @@ class Actions {
              .sayEvent,
              .speakLow,
              .speakMedium,
-             .speakHigh:        Say.shared.doSayAction(act, value)
+             .speakHigh:        Say.shared.doSayAction(act, value) ; syncMessage(isCache:true)
             
         case  .hearEarbuds,
-              .hearSpeaker:     Hear.shared.doHearAction(act, value)
+              .hearSpeaker:     Hear.shared.doHearAction(act, value)  ; syncMessage(isCache:true)
 
         case .gotoEvent,
              .gotoRecordOn,
-             .gotoFuture:       Anim.shared.doAnimAction(act, value, event)
+             .gotoFuture:       Anim.shared.doAnimAction(act, value, event)  ; syncMessage(isCache:false)
 
 
         case .memoCopyAll,
              .memoClearAll,
              .memoWhere,
-             .memoNod2Rec:      Memos.shared.doMemoAction(act, value, isSender)
+             .memoNod2Rec:      Memos.shared.doMemoAction(act, value, isSender) ; syncMessage(isCache:true)
 
         case .debug:            scene.debugUpdate = value > 0 ? true : false
-    
-        default: break
-        }
 
-        syncMessage()
+        case .unknown: break
+
+        case .gotoPageMain,
+             .gotoPageMenu,
+             .gotoPageOnboard: break
+        }
     }
+
 }

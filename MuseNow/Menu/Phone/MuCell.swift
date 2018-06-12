@@ -3,10 +3,12 @@
 
 import UIKit
 
+public enum Highlighting { case unknown, high, low, forceHigh, forceLow, refresh }
+
 class MuCell: UITableViewCell {
     
     var event : MuEvent!
-    enum Highlighting { case unknown, high, low, forceHigh, forceLow, refresh }
+
     var highlighting = Highlighting.unknown
     var tableView : UITableView!
     var height = CGFloat(44)
