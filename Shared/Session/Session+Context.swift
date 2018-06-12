@@ -17,7 +17,9 @@ extension Session {
     func cacheMsg(_ msg: [String : Any]) { Log("→ \(#function) " + dumpDict(msg))
         if let session = validSession {
             do { try session.updateApplicationContext(msg) }
-            catch let error { Log("→ \(#function) error:\(error)") }
+            catch let error {
+                Log("→ \(#function) error:\(error.localizedDescription)\n" + dumpDict(msg) + "\n")
+            }
         }
     }
 

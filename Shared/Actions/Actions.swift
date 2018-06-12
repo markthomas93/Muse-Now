@@ -186,9 +186,12 @@ class Actions {
 
         func syncMessage(isCache:Bool) {
             if isSender {
-                var msg: [String : Any] = ["Action" : act, "value": value]
+                var msg: [String : Any] = ["Action" : act.rawValue as String,
+                                           "value"  : value]
                 if let event = event {
                     do {
+                        let encoder = JSONEncoder()
+                        encoder.outputFormatting = .prettyPrinted
                         let data = try JSONEncoder().encode(event)
                         msg["event"] = data
                     }
@@ -196,8 +199,9 @@ class Actions {
                         print("!!! \(#function) \(error)")
                     }
                 }
-                if isCache  { Session.shared.cacheMsg(msg) }
-                else        { Session.shared.sendMsg(msg) }
+//\\                if isCache  { Session.shared.cacheMsg(msg) }
+//\\                else        { Session.shared.sendMsg(msg) }
+                Session.shared.sendMsg(msg)
             }
         }
 
@@ -252,6 +256,19 @@ class Actions {
              .gotoPageMenu,
              .gotoPageOnboard: break
         }
+    }
+
+    func sendAction(_ act:DoAction, _ event:MuEvent!, _ time: TimeInterval) {
+
+        var msg : [String:Any] = [
+            "Action"  : act.rawValue as String,
+            "dotTime" : time]
+
+        if let event = event {
+            msg["eventId"] = event.eventId
+            msg["bgnTime"] = event.bgnTime
+        }
+        Session.shared.sendMsg(msg)
     }
 
 }

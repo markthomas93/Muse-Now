@@ -35,8 +35,11 @@ extension Actions {
 
     func parseAction(_ act:DoAction, _ msg: [String : Any]) {
         let value = msg["value"] as? Float ?? 0
-        let event = msg["event"] as? MuEvent ?? nil
-        doAction(act, value: value, event, 0, isSender: false)
+        if let data = msg["event"] as? Data,
+            let event = try? JSONDecoder().decode(MuEvent.self, from: data) {
+
+            doAction(act, value: value, event, 0, isSender: false)
+        }
     }
 
     /**

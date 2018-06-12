@@ -12,9 +12,9 @@ extension Dots {
         dot.makeRgb()
         Actions.shared.doAction(.updateEvent, event, isSender: true)
         Haptic.play(.success)
-        if gotoEvent {
-            Anim.shared.touchDialGotoTime(event.bgnTime)
-        }
+
+       //     Actions.shared.sendAction(.gotoEvent, event, dot.timeHour) //\\
+
     }
 
     /**
