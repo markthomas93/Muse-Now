@@ -96,7 +96,7 @@ class Actions {
 
     func doMinuteTimerTick() {
         if MuEvents.shared.timeEvent != nil {
-            MuEvents.shared.minuteTimerTick()
+            MuEvents.shared.updateTimeEvent()
             Dots.shared.updateTime(event: MuEvents.shared.timeEvent)
             if let table = tableDelegate {
                 table.updateTimeEvent()
@@ -158,7 +158,9 @@ class Actions {
              MuEvents.shared.addEvent(event)
         }
         tableDelegate?.updateTable(MuEvents.shared.events)
+
         scene.updateSceneFinish()
+
         if [.memoRecord,.memoTrans,.memoTrash].contains(event.type) {
             Memos.shared.archiveMemos {}
         }
@@ -182,9 +184,9 @@ class Actions {
     /** Dispatch commands to Show, Say, Hear, Dots, Anim */
     func doAction(_ act: DoAction, value: Float = 0, _ event:MuEvent! = nil, _ index:Int = 0, isSender:Bool = false) {
 
-        Log("⌘ doAction .\(act) \(event?.title ?? "")")
+        Log("⌘ doAction .\(act) \"\(event?.title ?? "")\"")
 
-        func syncMessage(isCache:Bool) {
+        func syncMessage(isCacheable:Bool) {
             if isSender {
                 var msg: [String : Any] = ["Action" : act.rawValue as String,
                                            "value"  : value]
@@ -199,27 +201,25 @@ class Actions {
                         print("!!! \(#function) \(error)")
                     }
                 }
-//\\                if isCache  { Session.shared.cacheMsg(msg) }
-//\\                else        { Session.shared.sendMsg(msg) }
-                Session.shared.sendMsg(msg)
+                Session.shared.sendMsg(msg, isCacheable: isCacheable)
             }
         }
 
         switch act {
 
-        case .dialColor:        doDialColor(value)  ; syncMessage(isCache:true)
+        case .dialColor:        doDialColor(value)  ; syncMessage(isCacheable:true)
 
-        case .refresh:          doRefresh(isSender)  ; syncMessage(isCache:false)
+        case .refresh:          doRefresh(isSender)  ; syncMessage(isCacheable:false)
 
-        case .updateRoutine:    doUpdateRoutine()  ; syncMessage(isCache:true)
+        case .updateRoutine:    doUpdateRoutine()  ; syncMessage(isCacheable:true)
 
-        case .updateEvent:      doUpdateEvent(event, isSender)  ; syncMessage(isCache:true)
+        case .updateEvent:      doUpdateEvent(event, isSender)  ; syncMessage(isCacheable:true)
 
         case .showCalendar,
              .showReminder,
              .showMemo,
              .showRoutine,
-             .showRoutList:     Show.shared.doShowAction(act, value) ; syncMessage(isCache:true)
+             .showRoutList:     Show.shared.doShowAction(act, value) ; syncMessage(isCacheable:true)
 
         case .tourAll,
              .tourMain,
@@ -233,20 +233,20 @@ class Actions {
              .sayEvent,
              .speakLow,
              .speakMedium,
-             .speakHigh:        Say.shared.doSayAction(act, value) ; syncMessage(isCache:true)
+             .speakHigh:        Say.shared.doSayAction(act, value) ; syncMessage(isCacheable:true)
             
         case  .hearEarbuds,
-              .hearSpeaker:     Hear.shared.doHearAction(act, value)  ; syncMessage(isCache:true)
+              .hearSpeaker:     Hear.shared.doHearAction(act, value)  ; syncMessage(isCacheable:true)
 
         case .gotoEvent,
              .gotoRecordOn,
-             .gotoFuture:       Anim.shared.doAnimAction(act, value, event)  ; syncMessage(isCache:false)
+             .gotoFuture:       Anim.shared.doAnimAction(act, value, event)  ; syncMessage(isCacheable:false)
 
 
         case .memoCopyAll,
              .memoClearAll,
              .memoWhere,
-             .memoNod2Rec:      Memos.shared.doMemoAction(act, value, isSender) ; syncMessage(isCache:true)
+             .memoNod2Rec:      Memos.shared.doMemoAction(act, value, isSender) ; syncMessage(isCacheable:true)
 
         case .debug:            scene.debugUpdate = value > 0 ? true : false
 
@@ -268,7 +268,7 @@ class Actions {
             msg["eventId"] = event.eventId
             msg["bgnTime"] = event.bgnTime
         }
-        Session.shared.sendMsg(msg)
+        Session.shared.sendMsg(msg, isCacheable: false )
     }
 
 }

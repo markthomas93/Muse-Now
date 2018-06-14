@@ -35,7 +35,6 @@ func DebugLog(_ str: String) -> Bool {
 
     case
 
-    "⊛", // crown
     "𐂷", // tree cell
     "⌘", // doAction
     "←", // session receiving
@@ -49,9 +48,9 @@ func DebugLog(_ str: String) -> Bool {
         print(MuDate.getHourMinSecMsec() + ": " + str)
 
     case
-    
-    "⚡️", // MuEvents
 
+    "⊛", // crown
+    "⚡️", // MuEvents
     "👆", // tap action
     "⚇", // dot
 

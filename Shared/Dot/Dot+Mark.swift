@@ -41,7 +41,7 @@ extension Dot {
             if events.count == 1 {
                 return events.first
             }
-
+            // only sorting events for this hour, so trival performance hit
             events.sort { "\($0.bgnTime)"+$0.eventId < "\($1.bgnTime)"+$1.eventId }
             for event in events {
                 if event.type == .time {

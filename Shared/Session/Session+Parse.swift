@@ -4,17 +4,20 @@ import Foundation
 
 extension Session {
     
-    /**
-     Send message to other devices
-     */
-    func sendMsg(_ msg: [String : Any]) { Log("→ \(#function) " + dumpDict(msg))
+    /** Send message to other devices */
+    func sendMsg(_ msg: [String : Any], isCacheable:Bool) { Log("→ \(#function) " + dumpDict(msg))
         sendMessage(
             msg,
             replyHandler: { _ in },
-            errorHandler: { error in self.cacheMsg(msg) } // Log("→ \(#function) error:\(error.localizedDescription)")
+            errorHandler: { error in
+                if isCacheable {  Log("→ \(#function) cacheMsg " + self.dumpDict(msg))
+                    self.cacheMsg(msg)
+                }
+        }
         )
     }
-    
+
+
 
     func parseMsg(_ msg: [String : Any]) {
 

@@ -10,11 +10,8 @@ extension Dots {
 
         dot.setMark(isOn, event)
         dot.makeRgb()
-        Actions.shared.doAction(.updateEvent, event, isSender: true)
+        Actions.shared.doAction(.updateEvent, value: isOn ? 1 : 0, event, isSender: true)
         Haptic.play(.success)
-
-       //     Actions.shared.sendAction(.gotoEvent, event, dot.timeHour) //\\
-
     }
 
     /**

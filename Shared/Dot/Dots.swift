@@ -85,11 +85,12 @@ class Dots {
     }
     
     func findEvent(_ eventId:String, _ bgnTime:TimeInterval) -> (MuEvent?, Int) {
-        
-        if let event = gotoTime(bgnTime),
-            event.eventId == eventId,
-            event.bgnTime == bgnTime {
-
+        let events = MuEvents.shared.events
+        let index = events.search(isLess: {$0.bgnTime < bgnTime})
+        if let event = events.searchAdjacent(
+            index,
+            isDupli:  {$0.bgnTime == bgnTime},
+            isUnique: {$0.eventId == eventId}) as? MuEvent {
             return (event,Int(dotNow))
         }
         else { //TODO: slow?

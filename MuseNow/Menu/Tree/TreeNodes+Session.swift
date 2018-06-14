@@ -14,7 +14,8 @@ extension TreeNodes {
 
         if let isOn = node.setting?.isOn {
             Session.shared.sendMsg(["TreeNode" : node.getPath(),
-                                    "value"  : isOn])
+                                    "value"    : isOn],
+                                   isCacheable: true)
         }
     }
 

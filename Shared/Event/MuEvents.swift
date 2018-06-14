@@ -1,3 +1,4 @@
+import Foundation
 import EventKit
 import UIKit
 
@@ -6,7 +7,7 @@ import UIKit
  including a special timeEvent that changes every minute
  */
 class MuEvents {
-    
+
     static let shared = MuEvents()
     static var eventsChangedTime = TimeInterval(0)
     let session = Session.shared
@@ -15,9 +16,9 @@ class MuEvents {
     
     var calendars = [EKCalendar]()
     var events = [MuEvent]()
-    var idEvents = [String:MuEvent]() // find event based on eventId
-    var timeEvent: MuEvent!         // unique event for displaying time
-    var timeEventIndex : Int = -1   // index of timeEvent in muEvents
+    var idEvents = [String:MuEvent]()   // find event based on eventId
+    var timeEvent: MuEvent!             // unique event for displaying time
+    var timeEventi = -1                 // index of timeEvent in events array
     
     var refreshTimer = Timer()
     
@@ -285,22 +286,27 @@ class MuEvents {
     
     @discardableResult
     func updateEvent(_ updateEvent:MuEvent) -> Bool {
-        
-        var index = events.binarySearch({$0.bgnTime < updateEvent.bgnTime})
-        
-        while index < events.count {
-            let event = events[index]
-            if events[index].bgnTime != updateEvent.bgnTime {
-                return false
-            }
-            if event.eventId == updateEvent.eventId {
-                
-                event.title     = updateEvent.title
-                event.sttApple  = updateEvent.sttApple
-                event.sttSwm    = updateEvent.sttSwm
-                return true
-            }
-            index += 1
+
+        updateTimeEvent()
+        if updateEvent.type == .time { return true}
+        let timeNow = Date().timeIntervalSince1970
+
+        let updateTime = updateEvent.bgnTime
+        let updateId = updateEvent.eventId
+
+        let index = updateEvent.bgnTime > timeNow
+            ? events.searchAfter (timeEventi, isLess: {$0.bgnTime < updateTime} )
+            : events.searchBefore(timeEventi, isLess: {$0.bgnTime < updateTime} )
+
+        if let event = events.searchAdjacent(
+            index,
+            isDupli:  {$0.bgnTime == updateTime},
+            isUnique: {$0.eventId == updateId}) as? MuEvent {
+
+            event.title     = updateEvent.title
+            event.sttApple  = updateEvent.sttApple
+            event.sttSwm    = updateEvent.sttSwm
+            return true
         }
         return false
     }
@@ -317,16 +323,6 @@ class MuEvents {
         events.sort { lhs, rhs in
             return "\(lhs.bgnTime)"+lhs.eventId < "\(rhs.bgnTime)"+rhs.eventId 
         }
-    }
-    
-    /**
-     Find nearest time index
-     - calls: Collection+Search binarySearch
-     */
-    
-    func getTimeIndex(_ insertTime: TimeInterval) -> Int {
-        let result = events.binarySearch({$0.bgnTime < insertTime})
-        return result
     }
     
     /**
@@ -359,32 +355,40 @@ class MuEvents {
         }
         return (lastEvent, nextEvent)
     }
-    
-    func minuteTimerTick() {
-        
+
+
+    /**
+     Update time event's position within sequential `events` list.
+     Update for every minute and for every event update.
+     */
+    func updateTimeEvent() {
+
         if timeEvent == nil { return }
-        if timeEventIndex < 0 {
-            timeEventIndex = getTimeIndex(timeEvent.bgnTime-1)
+
+        let timeNow = Date().timeIntervalSince1970
+
+        if timeEventi < 0 {
+            timeEventi = events.search(isLess: {$0.bgnTime < timeNow})
         }
-        if timeEventIndex >= events.count-1 { return }
-        
-        timeEvent.bgnTime = trunc(Date().timeIntervalSince1970/60)*60
-        timeEvent.endTime = timeEvent.bgnTime
-        
-        if events[timeEventIndex+1].bgnTime < timeEvent.bgnTime {
-            
-            events.remove(at: timeEventIndex)
-            
-            for index in timeEventIndex ..< events.count {
+        if timeEventi >= events.count-1 { return }
+
+        timeEvent.bgnTime = timeNow
+        timeEvent.endTime = timeNow
+
+        if events[timeEventi+1].bgnTime < timeEvent.bgnTime {
+
+            events.remove(at: timeEventi)
+
+            for index in timeEventi ..< events.count {
                 if events[index].bgnTime > timeEvent.bgnTime-1 {
                     events.insert(timeEvent, at: index)
-                    timeEventIndex = index
+                    timeEventi = index
                     break
                 }
             }
         }
     }
-    
+
 }
 
 
