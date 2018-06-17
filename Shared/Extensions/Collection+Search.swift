@@ -37,7 +37,7 @@ extension Collection {
             let mid = index(low, offsetBy: distance(from: low, to: high)/2)
 
             if isLess(self[mid]) { low = index(after: mid) }
-            else                  { high = mid }
+            else                 { high = mid }
         }
         return low
     }
@@ -58,21 +58,23 @@ extension Collection {
         return low
     }
 
-    func searchAdjacent(_ index_:Index, isDupli:Comparator, isUnique:Comparator) -> Any? {
+    func searchAdjacent(_ idx:Int, isDuplic:Comparator, isUnique:Comparator) -> Any? {
 
-        if isUnique(self[index_]) {  return self[index_] } // found unique id on first try
-
-        var ii = index_
+        var ii = index(startIndex, offsetBy: idx)
+        if isUnique(self[ii]) {  // found unique id on first try
+            return self[ii]
+        }
         while ii != startIndex {
             ii = index(ii, offsetBy: -1) // search before
-            if !isDupli(self[ii]) { break }  // no more prior duplicate search keys
-            if isUnique(self[ii]) { return self[ii] } // found unique id
+            if !isDuplic(self[ii]) { break }  // no more prior duplicate search keys
+            if  isUnique(self[ii]) { return self[ii] } // found unique id
         }
-        ii = index_
+
+        ii = index(startIndex, offsetBy: idx)
         while ii != endIndex {
             ii = index(after:ii) // search after
-            if !isDupli(self[ii]) { return nil } // no more duplicate search keys
-            if isUnique(self[ii]) { return self[ii] } // found unique id
+            if !isDuplic(self[ii]) { return nil } // no more duplicate search keys
+            if  isUnique(self[ii]) { return self[ii] } // found unique id
         }
         return nil
     }

@@ -10,10 +10,6 @@ class MenuTitleFader: MenuTitle {
     var faderFrame = CGRect.zero
     var titleW = CGFloat(64) // chanaged by b
 
-//    convenience required init(coder decoder: NSCoder) {
-//        self.init(coder: decoder)
-//    }
-
     override func buildViews() {
 
         super.buildViews()
@@ -24,7 +20,7 @@ class MenuTitleFader: MenuTitle {
         self.frame = cellFrame
 
         fader = Fader(frame:faderFrame)
-        let fadeValue = Anim.shared.scene?.uFade?.floatValue ?? 1.0
+        let fadeValue = Anim.shared.scene?.uDialFade?.floatValue ?? 1.0
         fader.setValue(fadeValue)
 
         fader.clipsToBounds = false

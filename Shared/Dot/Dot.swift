@@ -10,27 +10,26 @@ class Dot {
     var timeHour = TimeInterval(0)
     
     /**
-     get event closest to top of hour, with pref to events starting this hour
-     via makeRgb, to choose the most relevant color for the dot
+     Get event closest to top of hour to choose the most relevant color for this dot.
+     Routine events are always overriden by non-routine events. Empty dots are gray.
      */
-    func mostRecentEvent() -> MuEvent! {
+    func makeMostRelevantColor() {
         
         // no events so return nil
         if events.isEmpty {
-            return nil
+           rgb = Dot.rgbDefault
         }
         // only event is time, so return nil
-        if events.count == 1 && events[0].type == .time {
-            return nil
+        if  events.count == 1, events[0].type == .time {
+            rgb = Dot.rgbDefault
         }
         
-        // find nearest future event to top of hour or past event with least elapsed time
+        // find nearest futr event to top of hour or past event with least elapsed time
         
-        var recentFuture: MuEvent!
-        var recentPast: MuEvent!
-        let yearSecs = TimeInterval(365*24*60*60)
-        var elapseFuture =  yearSecs
-        var elapsePast   = -yearSecs
+        var futrEvent : MuEvent! // starts this hour
+        var pastEvent : MuEvent! // starts prev hour
+        var futrDelta =  Infi
+        var pastDelta = -Infi
         
         for event in events {
             
@@ -41,28 +40,32 @@ class Dot {
             
             // new event that starts this hour
             if  deltaTime >= 0 {
-                if elapseFuture  > deltaTime {
-                    elapseFuture = deltaTime
-                    recentFuture = event
+                if  futrDelta > deltaTime {
+                    futrDelta = deltaTime
+                    futrEvent = event
+                }
+                     // override conflicting .routine event
+                else if futrDelta == deltaTime,
+                    futrEvent.type == .routine {
+                    futrEvent = event
                 }
             }
                 // past event with duration that overlaps
             else {
-                if elapsePast < deltaTime {
-                    elapsePast = deltaTime
-                    recentPast = event
+                if  pastDelta < deltaTime {
+                    pastDelta = deltaTime
+                    pastEvent = event
+                }
+                    // override conflicting .routine event
+                else if pastDelta == deltaTime,
+                    pastEvent.type == .routine {
+                    pastEvent = event
                 }
             }
         }
-        if recentFuture != nil {
-            return recentFuture
-        }
-        else if recentPast != nil {
-            return recentPast
-        }
-        else  {
-            return events[0]
-        }
+        if      futrEvent != nil { rgb = futrEvent.rgb }
+        else if pastEvent != nil { rgb = pastEvent.rgb }
+        else                     { rgb = Dot.rgbDefault }
     }
     @discardableResult
     func gotoEvent(_ findEvent:MuEvent) -> Bool {
@@ -96,20 +99,6 @@ class Dot {
         }
         eventi = nearestIndex
         return nearestEvent
-    }
-    
-    /**
-     make a color dot
-     - via: Dots.makeSelectFade
-     */
-    func makeRgb() {
-
-        if let event = mostRecentEvent() {
-            rgb = event.rgb
-        }
-        else {
-            rgb = Dot.rgbDefault
-        }
     }
 
     // crown events

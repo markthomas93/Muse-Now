@@ -9,7 +9,7 @@ extension Dots {
     func markDot(_ dot:Dot,_ event:MuEvent, _ isOn:Bool, gotoEvent: Bool = false) {
 
         dot.setMark(isOn, event)
-        dot.makeRgb()
+        dot.makeMostRelevantColor()
         Actions.shared.doAction(.updateEvent, value: isOn ? 1 : 0, event, isSender: true)
         Haptic.play(.success)
     }

@@ -309,6 +309,7 @@ class Texture {
      - Parameter dots:  (-168...168) for past and future week dots
      - Parameter recHub:  true if coloring hub red for recording
      */
+
     static func makePal(_ width: Int,_ height:Int, _ dots: [Dot], recHub:Bool = false ) -> Data {
 
         let rgbaSize = 4 // for rgba values 0...255
@@ -318,10 +319,11 @@ class Texture {
             
             var ii = Int(0)
             
-            // rainbow palette
+            // rainbow palette ----------------------------------
+
             for i in 0 ..< width-2 {
                 
-                let hue = CGFloat(i)/400
+                let hue = CGFloat(i)/400 // royg - not roygbiv
                 let color = SKColor(hue: hue, saturation: 1.0, brightness: 1.0, alpha: 1.0)
                 let comp = color.cgColor.components
                 
@@ -332,15 +334,16 @@ class Texture {
                 bytes[ii+0] = r; bytes[ii+1] = g; bytes[ii+2] = b; bytes[ii+3] = 255; ii += 4
             }
             
-            // last color index i white
+            // last 2 color index i white
             bytes[ii+0] = 255; bytes[ii+1] = 255; bytes[ii+2] = 255; bytes[ii+3] = 255; ii += 4
             bytes[ii+0] = 255; bytes[ii+1] = 255; bytes[ii+2] = 255; bytes[ii+3] = 255; ii += 4
             
-            // create second row of all white for monochrome
+            // monochrome palette -----------------------------------
+
             for _ in 0 ..< width-2 {
                 bytes[ii+0] = 255; bytes[ii+1] = 255; bytes[ii+2] = 255; bytes[ii+3] = 255; ii += 4
             }
-            // create hub and rim, red for recording texture, white for normal textures
+            // last 2 create hub and rim, red for recording texture, white for normal textures
             if recHub {
                 for _ in width-2 ..< width {
                     bytes[ii+0] = 255; bytes[ii+1] = 0; bytes[ii+2] = 0; bytes[ii+3] = 255; ii += 4
@@ -351,7 +354,8 @@ class Texture {
                     bytes[ii+0] = 255; bytes[ii+1] = 255; bytes[ii+2] = 255; bytes[ii+3] = 255; ii += 4
                 }
             }
-            // create third row of all what for event colors
+            // event color palette -----------------------------------
+
             for jj in 0 ..< 24*7 {
 
                 let rgb = dots[jj].rgb
@@ -372,6 +376,20 @@ class Texture {
         }
         return data
     }
+
+    
+    static func pokePal(data:inout Data, _ width: Int,_ height:Int, hour:Int, _ rgb: UInt32) {
+
+        data.withUnsafeMutableBytes { (bytes: UnsafeMutablePointer<UInt8>) -> Void in
+            var ii = width * 4 * 2 // skip first two rows times size of each column
+            ii += hour * 4
+            bytes[ii+0] = UInt8(rgb >> 16 & 0xFF)
+            bytes[ii+1] = UInt8(rgb >>  8 & 0xFF)
+            bytes[ii+2] = UInt8(rgb       & 0xFF)
+            bytes[ii+3] = UInt8(0xFF)
+        }
+    }
+
     /**
      Create a series of dots that spiral inward
      - Parameter days:       number of full rotations
@@ -384,11 +402,11 @@ class Texture {
      - dialTex: each dot is a pure color used as an index
      - maskTex: mask for dialTex to allow for antialised border
      */
-    static func makeDialMask(_ days:Int, hour:Int, _ size:CGSize, margin:CGFloat, lineWidth: CGFloat, dotFactor: CGFloat, maskFactor: CGFloat) -> [SKTexture?] {
+    static func makeTextures(_ days:Int, hour:Int, _ size:CGSize, margin:CGFloat, lineWidth: CGFloat, dotFactor: CGFloat, maskFactor: CGFloat) -> [SKTexture?] {
         
         let center = CGPoint(x: size.width / 2, y: size.height / 2)
         let radius =  min(size.width, size.height)/2 - margin
-        var dialMask : [SKTexture] = []
+        var textures : [SKTexture] = []
         
         var minRad = CGFloat(999)
         
@@ -442,7 +460,13 @@ class Texture {
         var rimRadi = 1 - Phi⁻² // inner radius for rim
         var hubRad  = 1 - Phi⁻² // outer radius for hub
 
-        let dialImg = UIImage.ImageContext(size, completion: { (image,context) in
+        // for a separate hub texture that is inset inside of dial
+        var rimMaskRado : CGFloat!
+        var rimMaskRadi : CGFloat!
+        var hubMaskRad  : CGFloat!
+
+
+        let dialMainImg = UIImage.ImageContext(size, completion: { (image,context) in
             
             context.setShouldAntialias(false)
             var hourIndex = CGFloat(0)
@@ -462,10 +486,10 @@ class Texture {
             makeRim(context, rimRado, rimRadi, rimIndex)
             makeHub(context, hubRad,           hubIndex)
         })
-        dialMask.append(SKTexture(image:dialImg))
+        textures.append(SKTexture(image:dialMainImg))
         
-        // maskImg is a mask for antialiased border
-        let maskImg = UIImage.ImageContext(size, completion: { (image,context) in
+        // dialMaskImg is a mask for antialiased border
+        let dialMaskImg = UIImage.ImageContext(size, completion: { (image,context) in
             
             context.setShouldAntialias(true)
             let whiteIndex = CGFloat(255.0)
@@ -475,15 +499,31 @@ class Texture {
                 makeDot(context, fr˚, maskFactor, whiteIndex, .fillStroke)
             }
 
-            rimRado -= lineWidth
-            rimRadi += lineWidth
-            hubRad  -= lineWidth
+            rimMaskRado = rimRado - lineWidth
+            rimMaskRadi = rimRadi + lineWidth
+            hubMaskRad  = hubRad  - lineWidth
+
+            makeRim(context, rimMaskRado, rimMaskRadi, rimIndex)
+            makeHub(context, hubMaskRad,               hubIndex)
+        })
+        textures.append(SKTexture(image:dialMaskImg))
+
+        // make hub textures to inset within dial
+        let hubSize = CGSize(width: trunc(rimRado+1), height: trunc(rimRado+1))
+        let hubMainImg = UIImage.ImageContext(hubSize, completion: { (image,context) in
 
             makeRim(context, rimRado, rimRadi, rimIndex)
             makeHub(context, hubRad,           hubIndex)
         })
-        dialMask.append(SKTexture(image:maskImg))
-        return dialMask
+        textures.append(SKTexture(image:hubMainImg))
+
+        let hubMaskImg = UIImage.ImageContext(hubSize, completion: { (image,context) in
+            makeRim(context, rimMaskRado, rimMaskRadi, rimIndex)
+            makeHub(context, hubMaskRad,               hubIndex)
+        })
+        textures.append(SKTexture(image:hubMaskImg))
+
+        return textures
     }
 
     /**

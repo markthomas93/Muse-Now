@@ -22,7 +22,7 @@ class ComplicationProvider {
         let hourOfs = CGFloat(hour + hourDelta + 12) / 24
         radians = CGFloat.pi * 2 * hourOfs
 
-        let dot = Dots.shared.future[hourDelta]
+        let dot = Dots.shared.futr[hourDelta]
         let rgb = dot.rgb
         tint = MuColor.getUIColor(rgb)
 
@@ -64,7 +64,7 @@ class ComplicationProvider {
         let testRadians = CGFloat.pi * 2 * hourOfs
         if radians != testRadians { return true }
 
-        let rgb = Dots.shared.future[hourDelta].rgb
+        let rgb = Dots.shared.futr[hourDelta].rgb
         let testTint = MuColor.getUIColor(rgb)
         if tint != testTint { return true }
         return false

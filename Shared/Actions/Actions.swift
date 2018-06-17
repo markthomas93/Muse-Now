@@ -177,7 +177,7 @@ class Actions {
 
     func doDialColor(_ value:Float) {
         Settings.shared.dialColor = value
-        scene?.uFade?.floatValue = value
+        scene?.uDialFade?.floatValue = value
     }
     //-----------------------------------------
 

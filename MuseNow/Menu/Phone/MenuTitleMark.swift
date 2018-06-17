@@ -9,10 +9,6 @@ class MenuTitleMark: MenuTitle {
     var mark: ToggleCheck!
     var markFrame = CGRect.zero
 
-//    convenience required init(coder decoder: NSCoder) {
-//        self.init(coder: decoder)
-//    }
-
     override func buildViews() {
 
         super.buildViews()

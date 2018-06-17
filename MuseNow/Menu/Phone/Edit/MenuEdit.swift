@@ -3,10 +3,6 @@ import EventKit
 
 class MenuEdit: MenuTitle {
 
-//    convenience required init(coder decoder: NSCoder) {
-//        self.init(coder: decoder)
-//    }
-
      override func setHighlight(_ high:Highlighting, animated:Bool = true) {
         setHighlights(high,
                      views:         [bezel],

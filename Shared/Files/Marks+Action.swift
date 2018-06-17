@@ -10,11 +10,10 @@ import Foundation
 
 extension Marks {
 
-    func doToggleMark() { //Log("✓ \(#function)")
+    func doToggleMark() { Log("✓ \(#function)")
 
         Active.shared.startMenuTime()
         let dots = Dots.shared
-
 
         // via phoneCrown
         if let table = Actions.shared.tableDelegate {

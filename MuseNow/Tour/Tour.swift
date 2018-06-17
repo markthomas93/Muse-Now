@@ -70,7 +70,7 @@ class Tour {
     // callbacks
 
     let nextEvent   = { PhoneCrown.shared.delegate.phoneCrownDeltaRow(1,true) }
-    let toggleEvent = { PhoneCrown.shared.delegate.phoneCrownToggle(true) }
+    let toggleEvent = { PhoneCrown.shared.delegate.phoneCrownToggle(/*isRight*/true) }
     let scanEvents  = { Anim.shared.scanFuture() }
 
     /// goto menu page

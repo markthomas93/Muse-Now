@@ -6,8 +6,8 @@ class Dots {
     let dayHour = DayHour.shared
     
     let maxDots = Int(24*7) // 168
-    var future  : [Dot] = []
-    var past    : [Dot] = []
+    var futr : [Dot] = []
+    var past : [Dot] = []
     var dotNow  = Float(0) // (-168...168)
     var dotPrev = Float(0) // previous dotNow; compare Int(dotNow)!=Int(dotPrev)
     var dotNext = Float(0) // animate to next dot, result of crown movement
@@ -32,18 +32,18 @@ class Dots {
     
     func initPastFuture() {
         
-        future.removeAll()
+        futr.removeAll()
         past.removeAll()
         
-        future  = [Dot] (count: 24*7, instancesOf:Dot())
-        past    = [Dot] (count: 24*7, instancesOf:Dot())
+        futr = [Dot] (count: 24*7, instancesOf:Dot())
+        past = [Dot] (count: 24*7, instancesOf:Dot())
         
         for i in 1-maxDots ..< maxDots {
             
             getDot(i).timeHour = MuDate.relativeHour(i).timeIntervalSince1970
         }
         // TODO: discard redundant past[0]
-        /// past[0] = future[0]
+        /// past[0] = futr[0]
     }
     
     /**
@@ -81,15 +81,15 @@ class Dots {
     func getDot(_ index: Int) -> Dot {
         
         let ii = min(maxDots-1,abs(index))
-        return index >= 0 ? future[ii] : past[ii]
+        return index >= 0 ? futr[ii] : past[ii]
     }
     
     func findEvent(_ eventId:String, _ bgnTime:TimeInterval) -> (MuEvent?, Int) {
         let events = MuEvents.shared.events
         let index = events.search(isLess: {$0.bgnTime < bgnTime})
         if let event = events.searchAdjacent(
-            index,
-            isDupli:  {$0.bgnTime == bgnTime},
+            Int(index),
+            isDuplic: {$0.bgnTime == bgnTime},
             isUnique: {$0.eventId == eventId}) as? MuEvent {
             return (event,Int(dotNow))
         }
@@ -104,18 +104,18 @@ class Dots {
         return (nil,0)
     }
     /**
-    choose the best color for dot for all hours of the past and future week
+    choose the best color for dot for all hours of the past and futr week
  */
     func makeSelectFade() {
     
-        for i in 0 ..< future.count { future[i].makeRgb() }
-        for i in 0 ..< past.count   { past[i].makeRgb() }
+        for i in 0 ..< futr.count { futr[i].makeMostRelevantColor() }
+        for i in 0 ..< past.count { past[i].makeMostRelevantColor() }
     }
     
     func hideEvents(with hideTypes:[EventType]) {
         
-        for dot in future { dot.hideEvents(with: hideTypes) }
-        for dot in past   { dot.hideEvents(with: hideTypes) }
+        for dot in futr { dot.hideEvents(with: hideTypes) }
+        for dot in past { dot.hideEvents(with: hideTypes) }
     }
     
     // Events ------------------------------------------------
@@ -152,6 +152,7 @@ class Dots {
         initPastFuture()
         
         for event in events {
+            
             var (bgnIndex, endIndex, elapseMin) = getBgnEndElapsed(event)
             if event.type == .time {
                 Log("⚇ \(#function) timeEvent bgnIndex:\(bgnIndex) endIndex:\(endIndex) elapseMin:\(elapseMin)")

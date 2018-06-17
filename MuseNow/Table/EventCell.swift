@@ -45,6 +45,7 @@ class EventCell: MuCell {
     }
 
     override func setHighlight(_ highlighting_:Highlighting, animated:Bool = true) {
+        
         setHighlights(highlighting_,
                       views:        [bezel,mark],
                       borders:      [cellColor,.white],
@@ -59,12 +60,17 @@ class EventCell: MuCell {
         let toggleX = frame.size.width - frame.size.height*1.618
 
         if location.x > toggleX,
-            let event = event,
-            let mark = mark {
+            let event = event {
 
-            event.mark = !(event.mark)
-            mark.setMark(event.mark ? 1 : 0)
-            let _ = Dots.shared.gotoEvent(event)
+            let dots = Dots.shared
+
+            //\\mark.setMark(event.mark ? 1 : 0)
+            let index = dots.gotoEvent(event)
+            let dot = dots.getDot(index)
+            let isOn = !event.mark // toggle
+            dots.markDot(dot, event, isOn, gotoEvent:true)
+            dots.gotoEvent(event)
+            PagesVC.shared.eventVC.nextMuCell(self)
         }
         Anim.shared.touchDialGotoTime(event.bgnTime)
     }

@@ -53,9 +53,6 @@ class MenuCell: MuCell {
     var parentChild = ParentChildOther.other
     var lastLocationInTable = CGPoint.zero
 
-//    convenience required init(coder decoder: NSCoder) {
-//        self.init(coder: decoder)
-//    }
     convenience init(_ treeNode_: TreeNode!) {
         self.init()
         treeNode = treeNode_

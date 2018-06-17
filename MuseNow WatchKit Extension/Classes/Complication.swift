@@ -90,7 +90,7 @@ class Complication: NSObject, CLKComplicationDataSource {
      */
     func getImageProvider(_ hourDelta:Int) -> CLKImageProvider? {
 
-        let rgb = Dots.shared.future[hourDelta].rgb
+        let rgb = Dots.shared.futr[hourDelta].rgb
         let tint = MuColor.getUIColor(rgb)
 
         // get next hour

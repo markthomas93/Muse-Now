@@ -9,10 +9,6 @@ class MenuTitleFader: MenuTitle {
 
     var fader: Fader!
 
-//    convenience required init(coder decoder: NSCoder) {
-//        self.init(coder: decoder)
-//    }
-
     override func setTreeNode(_ treeNode_:TreeNode) {
         super.setTreeNode(treeNode_)
         fader = Fader()

@@ -152,7 +152,7 @@ extension Anim {
         if finishTime == 0 {
             finishTime = Date.timeIntervalSinceReferenceDate
             finishFrame = sceneFrame
-            scene.uPal?.textureValue = scene.recPalTex
+            scene.uDialPal?.textureValue = scene.recPalTex
         }
 
         let elapsedTime = Date.timeIntervalSinceReferenceDate - finishTime
@@ -169,12 +169,12 @@ extension Anim {
 
             let deltaFade = recSpokeFade - 0.5
             let fade = invertRatio * deltaFade + 0.5
-            scene.uFade?.floatValue = fade
+            scene.uDialFade?.floatValue = fade
             Log("⚆ fade:\(fade)")
         }
         else {
             if elapsedTime < 2.0 {
-                scene.uFade?.floatValue = 0.5
+                scene.uDialFade?.floatValue = 0.5
             }
             var mod = 2.0
             let halfTime = (elapsedTime-recSpokeDur)/2
@@ -328,11 +328,11 @@ extension Anim {
 
             //let deltaFade = recSpokeFade - 0.5
             //let fade = elapseRatio * deltaFade + 0.5
-            //... scene.uFade?.floatValue = fade
+            //... scene.uDialFade?.floatValue = fade
             //Log("⚆. fade:\(fade)")
         }
         else {
-            //scene.uFade?.floatValue = recSpokeFade
+            //scene.uDialFade?.floatValue = recSpokeFade
             gotoStartupAnim()
         }
     }
@@ -347,7 +347,7 @@ extension Anim {
             sceneFrame = Anidex.animEnd.rawValue
             animNow = .startup
             scene.isPaused = false
-            scene.sprite.isPaused = false
+            scene.dial.isPaused = false
         }
     }
 

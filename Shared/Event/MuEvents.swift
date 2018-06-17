@@ -294,18 +294,20 @@ class MuEvents {
         let updateTime = updateEvent.bgnTime
         let updateId = updateEvent.eventId
 
-        let index = updateEvent.bgnTime > timeNow
+        let idx = updateEvent.bgnTime > timeNow
             ? events.searchAfter (timeEventi, isLess: {$0.bgnTime < updateTime} )
             : events.searchBefore(timeEventi, isLess: {$0.bgnTime < updateTime} )
 
         if let event = events.searchAdjacent(
-            index,
-            isDupli:  {$0.bgnTime == updateTime},
-            isUnique: {$0.eventId == updateId}) as? MuEvent {
+            Int(idx),
+            isDuplic: { $0.bgnTime == updateTime },
+            isUnique: { $0.eventId == updateId   } ) as? MuEvent {
 
             event.title     = updateEvent.title
             event.sttApple  = updateEvent.sttApple
             event.sttSwm    = updateEvent.sttSwm
+            event.mark      = updateEvent.mark
+            event.type      = updateEvent.type
             return true
         }
         return false

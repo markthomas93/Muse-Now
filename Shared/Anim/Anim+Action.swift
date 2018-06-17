@@ -185,7 +185,7 @@ extension Anim {
         dots.dotNow = 0.1
         animNow = .futrPause
         sceneFrame = 0 
-        scene.uFrame?.floatValue = (abs(sceneFrame)+0.5)/Float(Anidex.animEnd.rawValue)
+        scene.uDialFrame?.floatValue = (abs(sceneFrame)+0.5)/Float(Anidex.animEnd.rawValue)
         scene.updatePastFutr()
 
      }
@@ -198,12 +198,12 @@ extension Anim {
         if on {
             dots.selectTime(Date().timeIntervalSince1970)
             animNow = .recSpoke
-            recSpokeFade = scene.uFade?.floatValue ?? 1.0
+            recSpokeFade = scene.uDialFade?.floatValue ?? 1.0
             userDotAction()
         }
         else {
-            scene.uPal?.textureValue = scene.futrPalTex
-            scene.uFade?.floatValue = recSpokeFade
+            scene.uDialPal?.textureValue = scene.futrPalTex
+            scene.uDialFade?.floatValue = recSpokeFade
             finishTime = 0
             finishFrame = Anidex.animEnd.rawValue
             animNow = .recFinish

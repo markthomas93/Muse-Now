@@ -35,7 +35,7 @@ extension Session {
         let keys = dict.keys
         for key in keys {
             let lead = firstTime ? "[" : ", " ; firstTime = false
-            let datakeys : Set<String> = ["data","updateEvent", "recEvent"]
+            let datakeys : Set<String> = ["data","event", "recEvent"]
             let val = datakeys.contains(key) ? "<data>" : "\(dict[key] ?? "")"
             result += lead + key + ":" + val
         }

@@ -64,7 +64,7 @@ extension Tour {
             menuDial("menu.memos", [.highlight, .circular], [ {Actions.shared.doAction(.gotoRecordOn)},
                                                          "triple-tap on the dial \n to record memos","v_092.aif",
                                                          { Actions.shared.doAction(.gotoFuture)},
-                                                         { Timer.delay(0.5) {Anim.shared.scene?.uFade?.floatValue = 1 }},
+                                                         { Timer.delay(0.5) {Anim.shared.scene?.uDialFade?.floatValue = 1 }},
                                                          ]),
             menuMark("menu.memos.nod", [.overlay,.nowait],
 
@@ -76,7 +76,7 @@ extension Tour {
 
             menuButn("menu.memos.files",[],[gotoPath("menu.memos.files"),
                                  { Actions.shared.doAction(.gotoFuture)},
-                                 { Timer.delay(0.5) { Anim.shared.scene?.uFade?.floatValue = 1 }},
+                                 { Timer.delay(0.5) { Anim.shared.scene?.uDialFade?.floatValue = 1 }},
                                  "Save memos to iCloud Drive \n as standard JSON files","v_097.aif",///
                 "allowing anyone to experiment \n with personal machine learning","v_098.aif"
                 ])
@@ -197,7 +197,7 @@ extension Tour {
                 let frac = count / 30 // half second duration
                 let next = start + delta * frac
                 fader.setValue(next)
-                Anim.shared.scene?.uFade?.floatValue = next
+                Anim.shared.scene?.uDialFade?.floatValue = next
                 if count == 30 {
                     timer.invalidate()
                 }

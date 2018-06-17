@@ -6,10 +6,6 @@ class MenuEditColor: MenuEdit {
     var color: UIView!
     var colorFrame = CGRect.zero
 
-//    convenience required init(coder decoder: NSCoder) {
-//        self.init(coder: decoder)
-//    }
-
     override func buildViews() {
         
         super.buildViews()
@@ -18,7 +14,6 @@ class MenuEditColor: MenuEdit {
         bezel.addSubview(color)
     }
 
-  
     override func updateFrames(_ width:CGFloat) {
 
         let leftX = CGFloat(treeNode.level-1) * 2 * marginW

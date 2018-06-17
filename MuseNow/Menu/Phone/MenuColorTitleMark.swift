@@ -10,10 +10,6 @@ class MenuColorTitleMark: MenuTitleMark {
     var colorFrame = CGRect.zero
     let colorW  = CGFloat(8)
 
-//    convenience required init(coder decoder: NSCoder) {
-//        self.init(coder: decoder)
-//    }
-
     override func buildViews() {
 
         super.buildViews()

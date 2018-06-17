@@ -31,23 +31,23 @@ class Scene: SKScene  {
     let anim     = Anim.shared
     let dots     = Dots.shared
 
-    var sprite: SKSpriteNode!
+    var dial: SKSpriteNode!
     var dialShader: SKShader!
     var center = CGPoint(x:0, y:0)
     var radius = CGFloat(0)
     var fade   = Float(0)
  
     var debugUpdate = false
-    var dialMask   : [SKTexture] = [] // main dial with mask
+    var textures      : [SKTexture] = [] // main dial with mask
 
     var complications : [SKTexture] = []  // complication full image, background, foreground
 
-    var uFrame     : SKUniform!
-    var uFade      : SKUniform! 
-    var uCount     : SKUniform! 
-    var uAnim      : SKUniform! 
-    var uMask      : SKUniform! 
-    var uPal       : SKUniform! 
+    var uDialFrame     : SKUniform!
+    var uDialFade      : SKUniform! 
+    var uDialCount     : SKUniform! 
+    var uDialAnim      : SKUniform! 
+    var uDialMask      : SKUniform! 
+    var uDialPal       : SKUniform! 
     
     var futrAniTex : SKTexture! 
     var pastAniTex : SKTexture! 
@@ -61,10 +61,11 @@ class Scene: SKScene  {
         super.init(coder: aDecoder)
     }
     override init(size:CGSize) {
+
         super.init(size:size)
         backgroundColor = .black
         scaleMode = .aspectFill
-        initSprite()
+        initSprites()
     }
     override func sceneDidLoad() {
         
@@ -82,7 +83,7 @@ class Scene: SKScene  {
         dots.updateDotEvents(muEvents.events)  //??? attempted
         dots.makeSelectFade()
         updateTextures()
-        sprite.zRotation = CGFloat(Double(36-dayHour.hour0) / 24.0 * (2*Double.pi))
+        dial.zRotation = CGFloat(Double(36-dayHour.hour0) / 24.0 * (2*Double.pi))
     }
 
     /**
@@ -108,7 +109,7 @@ class Scene: SKScene  {
 
         if anim.updateScene(currentTime) {
 
-            uFrame?.floatValue = (abs(anim.sceneFrame)+0.5)/Float(Anidex.animEnd.rawValue)
+            uDialFrame?.floatValue = (abs(anim.sceneFrame)+0.5)/Float(Anidex.animEnd.rawValue)
             updatePastFutr()
         }
         #if os(watchOS)
