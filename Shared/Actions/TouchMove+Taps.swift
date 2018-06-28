@@ -36,7 +36,9 @@ extension TouchMove { // tapping
         tapCount = 0
     }
     
-    @objc func finishTaps() {// Log("👆 \(#function) tapCount:\(tapCount)")
+    @objc func finishTaps() {
+
+        Log("👆 \(#function) tapCount:\(tapCount)")
         
         switch tapCount {
         case 1: endedTap1Action?(self)

@@ -27,11 +27,6 @@
                                     </connections>
                                 </tapGestureRecognizer>
                             </gestureRecognizers>
-                            <variation key="default">
-                                <mask key="gestureRecognizers">
-                                    <exclude reference="lEn-zk-kSe"/>
-                                </mask>
-                            </variation>
                             <variation key="device=watch38mm" height="136" width="136"/>
                             <variation key="device=watch42mm" height="156" width="156"/>
                         </spriteKitScene>

@@ -16,12 +16,9 @@ class TouchMove {
 
     var touchBeganTime  = TimeInterval(0)
     var touchMovedTime  = TimeInterval(0)
-    var touchEndedTime  = TimeInterval(0)
-    var lastTouchTime   = TimeInterval(0)
 
     var touchBeganPos   = CGPoint(x:0, y:0)
     var touchMovedPos   = CGPoint(x:0, y:0)
-    var touchEndedPos   = CGPoint(x:0, y:0)
 
     let touchMoveDist   = CGFloat(10) // must move finger 5 points before starting
     let doubleTapTime   = TimeInterval(0.5) // seconds for double tap
@@ -29,8 +26,8 @@ class TouchMove {
     var touchBegan: CallTouchMove!
     var touchMoved: CallTouchMove!
 
-    let swipeTime       = TimeInterval(0.50) // time window for swipe
-    let swipeDistance   = CGFloat(66)      // minimum distance for swipe
+    let maxSwipeTime    = TimeInterval(0.50) // time window for swipe
+    let swipeDistance   = CGFloat(60)      // minimum distance for swipe
     var swipeLeftAction  : CallTouchMove!
     var swipeRightAction : CallTouchMove!
     var swipeUpAction    : CallTouchMove!
@@ -56,8 +53,12 @@ class TouchMove {
         center = CGPoint(x: size.width/2, y: size.height/2)
     }
 
-
-    func testSwipe(_ pos: CGPoint) {
+ /** Test if user has moved finger past theshold testMoveDist.
+     - note: On the watch, it is more effect to touch the dial and
+     then move finger. So, reset touchBeganTime to not include the wait time.
+     Otherwise, the wait+swipe time max exceed the maxSwipeTime
+ */
+    func testMoving(_ pos: CGPoint, _ timestamp:TimeInterval) {
 
         let deltaX = pos.x - touchBeganPos.x
         let deltaY = pos.y - touchBeganPos.y
@@ -66,6 +67,7 @@ class TouchMove {
         if !isMoving {
             isMoving = distance > touchMoveDist
             if !isMoving { return }
+            touchBeganTime = timestamp
         }
 
         if distance > swipeDistance {
@@ -112,7 +114,8 @@ class TouchMove {
         }
 
         let deltaTime = timeStamp - touchBeganTime
-        if deltaTime > swipeTime {
+
+        if deltaTime > maxSwipeTime {
             swipeState = .cancelled
             Log("👆\(#function) delta: \(Int(deltaTime)) state:\(swipeState)")
             return false
@@ -143,21 +146,18 @@ class TouchMove {
         tapping(timestamp)
         touchBegan?(self)
     }
-
+    /**
+     User has moved finger.
+ */
     func moved (_ pos: CGPoint, _ timestamp: TimeInterval) {
 
         if !isTouching {
             began(pos, timestamp)
         }
         else {
-            let deltaPos = CGPoint(x:touchBeganPos.x-pos.x, y: touchBeganPos.y-pos.y)
-            let deltaTime = (timestamp - lastTouchTime)
-            lastTouchTime = timestamp
-            let distance = sqrt(deltaPos.x*deltaPos.x + deltaPos.y*deltaPos.y)
-            let speed  = distance / CGFloat(deltaTime)
-            testSwipe(pos)
+            testMoving(pos, timestamp)
 
-            Log("👆\(#function) pos:\(Int(pos.x)),\(Int(pos.y)) isMoving:\(isMoving)) dist:\(Int(distance)) speed:\(Int(speed))")
+            Log("👆\(#function) pos:\(Int(pos.x)),\(Int(pos.y)) isMoving:\(isMoving))")
 
             if isMoving {
 
@@ -175,19 +175,13 @@ class TouchMove {
 
             Log("👆\(#function) pos:\(Int(pos.x)),\(Int(pos.y)) isMoving:\(isMoving))")
 
-            let wasMoving = isMoving
-            testSwipe(pos)
+            moved(pos,timestamp)
+
             if finishSwipe(timestamp) {
                 stopTaps()
             }
-            else if wasMoving {
-                touchMoved?(self)
-            }
-
             isMoving = false
             isTouching = false
-            touchEndedPos  = pos
-            touchEndedTime = timestamp
         }
     }
 }
