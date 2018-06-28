@@ -43,7 +43,7 @@ class MainVC: UIViewController {
     var crownRightFrame = CGRect.zero
     var observer: NSKeyValueObservation?
 
-     var backgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
+    var backgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
 
     func updateFrames(_ size:CGSize) {
 
@@ -72,6 +72,8 @@ class MainVC: UIViewController {
     func updateViews(_ size:CGSize) {
 
         updateFrames(size)
+
+        actions.registerBackgroundTask = registerBackgroundTask
 
         touchForce.frame      = touchFrame
         panel.frame           = panelFrame

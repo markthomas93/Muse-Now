@@ -56,6 +56,7 @@ class MenuCell: MuCell {
     convenience init(_ treeNode_: TreeNode!) {
         self.init()
         treeNode = treeNode_
+        treeNode.cell = self
         tableView = PagesVC.shared.menuVC.tableView
         buildViews()
     }
@@ -155,7 +156,6 @@ class MenuCell: MuCell {
         bezel.frame = bezelFrame
         info?.frame = infoFrame
     }
-
 
     /**
      */

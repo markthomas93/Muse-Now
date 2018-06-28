@@ -3,6 +3,8 @@
 //  Copyright © 2017 Muse. All rights reserved.
 
 import Foundation
+
+#if os(iOS)
 import Speech
 
 extension Transcribe {
@@ -82,3 +84,4 @@ extension Transcribe {
     }
 
  }
+#endif

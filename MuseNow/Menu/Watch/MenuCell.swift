@@ -1,7 +1,6 @@
 //  CalCell.swift
 
 import Foundation
-
 import WatchKit
 
 class MenuCell: NSObject {
@@ -10,12 +9,18 @@ class MenuCell: NSObject {
 
     var treeNode: TreeNode!
 
-    func setTreeNode(_ treeNode_:TreeNode) {
-         treeNode = treeNode_
-         treeNode.cell = self
-         treeNode.updateCell()
+    convenience init(_ treeNode_: TreeNode!) {
+        self.init()
+        treeNode = treeNode_
+        treeNode.cell = self
     }
 
+    
+    func setTreeNode(_ treeNode_:TreeNode) {
+        treeNode = treeNode_
+        treeNode.cell = self
+        treeNode.updateCell()
+    }
 
     /**
      Adjust display (such as a check mark)

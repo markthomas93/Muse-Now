@@ -10,7 +10,6 @@ import WatchKit
 
 class MenuController: WKInterfaceController {
 
-
     @IBOutlet var interfaceTable: WKInterfaceTable!
     
     var parent: TreeNode!

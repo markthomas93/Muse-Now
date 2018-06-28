@@ -7,6 +7,7 @@
 //
 
 import Foundation
+
 import WatchKit
 
 extension TreeNode {
@@ -26,4 +27,3 @@ extension TreeNode {
         updateOnRatioFromChildren() //\\
     }
 }
-

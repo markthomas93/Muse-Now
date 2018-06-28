@@ -3,7 +3,6 @@ import WatchKit
 import EventKit
 import SpriteKit
 
-
 public enum DoAction : String, Codable { case
 
     unknown,
@@ -54,7 +53,6 @@ public enum DoAction : String, Codable { case
 
     // memoe
     memoWhere = "memoWhere",
-    memoNod2Rec = "memoNod2Rec",
     memoCopyAll = "memoCopyAll",
     memoClearAll = "memoClearAll",
 
@@ -82,6 +80,8 @@ class Actions {
     var scene         : Scene!
     var tableDelegate : MuseTableDelegate?
     var suggestions   = [String]()
+
+    var registerBackgroundTask: CallVoid? // prolong file transfer in background on iPhone
 
     func doSetTitle(_ title_: String) {
         #if os(watchOS)
@@ -169,12 +169,6 @@ class Actions {
         }
     }
     
-    func doTourAction(_ act:DoAction) {
-        #if os(iOS)
-        Tour.shared.doTourAction(act)
-        #endif
-    }
-
     func doDialColor(_ value:Float) {
         Settings.shared.dialColor = value
         scene?.uDialFade?.floatValue = value
@@ -226,7 +220,7 @@ class Actions {
              .tourMenu,
              .tourDetail,
              .tourIntro,
-             .tourStop:         doTourAction(act) // nond
+             .tourStop:         Tour.shared.doTourAction(act)
 
         case .sayMemo,
              .sayTime,
@@ -245,8 +239,7 @@ class Actions {
 
         case .memoCopyAll,
              .memoClearAll,
-             .memoWhere,
-             .memoNod2Rec:      Memos.shared.doMemoAction(act, value, isSender) ; syncMessage(isCacheable:true)
+             .memoWhere:      Memos.shared.doMemoAction(act, value, isSender) ; syncMessage(isCacheable:true)
 
         case .debug:            scene.debugUpdate = value > 0 ? true : false
 

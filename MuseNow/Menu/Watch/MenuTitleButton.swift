@@ -6,6 +6,8 @@
 //  Copyright © 2018 Muse. All rights reserved.
 //
 
+#if os(watchOS)
+
 import WatchKit
 import EventKit
 
@@ -26,5 +28,6 @@ class MenuTitleButton: MenuTitle {
     }
 
 }
+#endif
 
 

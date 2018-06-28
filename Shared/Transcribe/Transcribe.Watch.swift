@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+#if os(watchOS)
 class Transcribe {
         static var shared = Transcribe()
 
@@ -29,3 +29,5 @@ class Transcribe {
         done()
     }
 }
+
+#endif

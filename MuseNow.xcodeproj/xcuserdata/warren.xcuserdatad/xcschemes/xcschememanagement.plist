@@ -4,22 +4,27 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>MuseNow WatchKit App (Complication).xcscheme</key>
+		<key>MuseKit.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>2</integer>
+			<integer>3</integer>
 		</dict>
 		<key>MuseNow WatchKit App (Notification).xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>2</integer>
 		</dict>
-		<key>MuseNow WatchKit App.xcscheme</key>
+		<key>muse • Complication.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
+		<key>muse • Watch.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
-		<key>MuseNow.xcscheme</key>
+		<key>muse •.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>

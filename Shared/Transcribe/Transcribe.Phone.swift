@@ -5,6 +5,8 @@
 //  Copyright © 2018 Muse. All rights reserved.
 
 import Foundation
+
+#if os(iOS)
 import Speech
 
 class Transcribe {
@@ -42,12 +44,7 @@ class Transcribe {
         //                Transcribe.shared.appleBufferResult(result)
         //            }
         #endif
-
     }
-
-
-
-
 
     /**
      When app become active, process pending memo events while app was inactive
@@ -100,4 +97,5 @@ class Transcribe {
         }
     }
 }
+#endif
 

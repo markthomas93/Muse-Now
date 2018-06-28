@@ -178,8 +178,7 @@ class Dot {
     /**
     Events are presorted by bgnTime before insertion.
     so, can simply insert at index 0
-    reset say index
- */
+    */
     func insertEvent(_ event: MuEvent, _ elapse: TimeInterval) {
         
         if elapse0 > elapse {
@@ -198,7 +197,7 @@ class Dot {
     /**
     move event's position within same dot, such as a timeCell.event that changes every minute
      - via: Dots.updateTime(event:)
- */
+    */
     func moveEvent(_ event: MuEvent) {
         for i in 0 ..< events.count {
             if events[i].eventId == event.eventId {
@@ -226,7 +225,7 @@ class Dot {
             if events[i].bgnTime >= event.bgnTime {
                 events.insert(event, at: i)
                 recalcElapsedTime()
-                eventi = -1
+                eventi = i //\\ -1
                 return
             }
         }

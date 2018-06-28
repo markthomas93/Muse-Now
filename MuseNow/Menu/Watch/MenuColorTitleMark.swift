@@ -1,4 +1,4 @@
-
+#if os(watchOS)
 import WatchKit
 
 class MenuColorTitleMark: MenuTitleMark {
@@ -14,4 +14,4 @@ class MenuColorTitleMark: MenuTitleMark {
         color?.setBackgroundColor(MuColor.getUIColor(rgb))
     }
  }
-
+#endif

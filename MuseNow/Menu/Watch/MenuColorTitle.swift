@@ -1,5 +1,5 @@
 //  CalCell.swift
-
+#if os(watchOS)
 import WatchKit
 
 class MenuColorTitle: MenuTitle {
@@ -11,4 +11,4 @@ class MenuColorTitle: MenuTitle {
         color?.setBackgroundColor(MuColor.getUIColor(rgb))
     }
 }
-
+#endif

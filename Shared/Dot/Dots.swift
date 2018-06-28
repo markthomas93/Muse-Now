@@ -43,7 +43,7 @@ class Dots {
             getDot(i).timeHour = MuDate.relativeHour(i).timeIntervalSince1970
         }
         // TODO: discard redundant past[0]
-        /// past[0] = futr[0]
+        past[0] = futr[0] //\\
     }
     
     /**
@@ -125,6 +125,7 @@ class Dots {
         let minHour = 1-dayHour.maxIndex
         let maxHour = dayHour.maxIndex-1
         let hourSecs = TimeInterval(60*60)
+        //let hourMins = TimeInterval(60*60*60)
         
         let bgnDelta = event.bgnTime - dayHour.time0
         var endDelta = event.endTime - dayHour.time0
@@ -136,7 +137,7 @@ class Dots {
         
         let bgnHour  = floor(bgnDelta / hourSecs)
         let endHour  = floor(endDelta / hourSecs)
-        var elapseMin = bgnDelta.truncatingRemainder(dividingBy:hourSecs)/60.0
+        var elapseMin = bgnDelta.truncatingRemainder(dividingBy: hourSecs) / 60.0
         
         if elapseMin < 0 {
             elapseMin += 60

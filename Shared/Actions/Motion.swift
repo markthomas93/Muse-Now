@@ -48,7 +48,7 @@ class Motion: NSObject {
             lastGesture = gesture
             gestureTime = Date().timeIntervalSince1970
             if lastGesture == .nodding {
-                Record.shared.recordAfterWaitingPeriod()
+                /// Record.shared.recordAfterWaitingPeriod()
                 return
             }
         }
@@ -57,7 +57,7 @@ class Motion: NSObject {
 
             lastGesture = .shake2
             gestureTime = Date().timeIntervalSince1970
-            Record.shared.deleteRecording()
+            /// Record.shared.deleteRecording()
         }
         //  if valMotion.testRoll(motion) == .rollBoth { }
         //  if valMotion.testYaw(motion) == .nodding { }

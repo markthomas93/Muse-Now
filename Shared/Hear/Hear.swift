@@ -31,7 +31,7 @@ class Hear {
     }
 
     func listenForNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(handleRouteChange(_:)), name: NSNotification.Name.AVAudioSessionRouteChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleRouteChange(_:)), name: .AVAudioSessionRouteChange, object: nil)
     }
 
     @objc func handleRouteChange(_ notification: Notification) {
@@ -46,7 +46,7 @@ class Hear {
         guard
             let userInfo = notification.userInfo,
             let reasonNum = userInfo[AVAudioSessionRouteChangeReasonKey] as? NSNumber,
-            let reasonUint = AVAudioSessionRouteChangeReason(rawValue: reasonNum.uintValue)
+            let reasonUint = AVAudioSession.RouteChangeReason(rawValue: reasonNum.uintValue)
             else { Log("🎧 unknown updateReason notification:\(notification)") ; return }
         
         switch reasonUint {

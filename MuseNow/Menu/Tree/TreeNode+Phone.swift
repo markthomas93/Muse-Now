@@ -4,13 +4,12 @@
 //
 //  Created by warren on 5/6/18.
 //  Copyright © 2018 Muse. All rights reserved.
-//
+
 
 import Foundation
 import UIKit
-
 extension TreeNode {
-
+    
     func updateViews(_ width:CGFloat) {
         cell?.updateViews(width)
         for child in children {
@@ -47,5 +46,4 @@ extension TreeNode {
         updateOnRatioFromChildren()
         cell?.updateLeft(animate: false)
     }
-
 }

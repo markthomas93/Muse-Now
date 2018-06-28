@@ -5,7 +5,7 @@
 import Foundation
 import AVFoundation
 
-class Show: NSObject, DemoBackupDelegate {
+class Show: NSObject {
 
     static let shared = Show()
 

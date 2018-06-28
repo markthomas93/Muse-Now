@@ -34,6 +34,14 @@ func DebugLog(_ str: String) -> Bool {
     switch str.substring(to: 1) {
 
     case
+    "👆": // tap action
+
+        print(MuDate.getHourMinSecMsec() + ": " + str)
+
+    case
+    "✏", // Transcribe
+    "⟳", // life cycle
+    "𝓡", // routine
 
     "𐂷", // tree cell
     "⌘", // doAction
@@ -42,22 +50,13 @@ func DebugLog(_ str: String) -> Bool {
     "→", // session sending
     "⧉", // syncfile
     "📅", // EkNotification
-    "✏", // Transcribe
-    "𝓡": // routine
-
-        print(MuDate.getHourMinSecMsec() + ": " + str)
-
-    case
-
     "⊛", // crown
     "⚡️", // MuEvents
-    "👆", // tap action
     "⚇", // dot
 
     "🗣", // Say TTS
     "🔈", // Audio
     "𐆄", // execute closure during animation pause
-    "⟳", // life cycle
     "▤", // TreeTableView
 
     "⌚︎", // watch application state

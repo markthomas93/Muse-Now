@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:MuseNow.xcodeproj">
+      location = "self:/Users/warren/iOS/Muse/Now/MuseNow.xcodeproj">
    </FileRef>
 </Workspace>

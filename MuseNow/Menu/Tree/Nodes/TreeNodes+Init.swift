@@ -19,16 +19,15 @@ extension TreeNodes {
 
         if root != nil { return }
 
-        root = TreeNode("menu", nil, .title)
+        root = TreeTitleNode("menu", nil)
 
         var events  = TreeEventsNode ("events",  root, Show.shared.calendar,  .showCalendar,  [.child])
         var memos   = TreeActNode    ("memos",   root, Show.shared.memo,      .showMemo,      [])
-        var routine = TreeRoutineNode("routine", root, Show.shared.routine,   .showRoutine,   [.parent,.child])
-        var more    = TreeNode       ("more",    root, .title)
+        var routine = TreeRoutineNode("routine", root, Show.shared.routine,   .showRoutine,   [.child])
+        var more    = TreeTitleNode  ("more",    root)
   
         func initMemosChildren() {
             
-            let _ = TreeActNode("nod to record", memos,  Show.shared.memo, .memoNod2Rec)
             let _ = TreeButtonNode("files ", memos, "Memos", "", [
                 "Copy to iCloud Drive", { Actions.shared.doAction(.memoCopyAll) },
                 "Remove from Device",   { Actions.shared.doAction(.memoClearAll) },
@@ -40,25 +39,25 @@ extension TreeNodes {
         func initMoreChildren() { //Log("▤ \(#function)")
 
             // say
-            let say = TreeNode("say", more, .title)
+            let say = TreeTitleNode("say", more)
             let _  = TreeActNode("event", say, Say.shared.event, .sayEvent)
             let _  = TreeActNode("time",  say, Say.shared.time,  .sayTime)
             let _  = TreeActNode("memos", say, Say.shared.memo,  .sayMemo)
 
             // hear
-            let hear = TreeNode("hear", more, .title)
+            let hear = TreeTitleNode("hear", more)
             let _  = TreeActNode("speaker", hear, Hear.shared.speaker, .hearSpeaker)
             let _  = TreeActNode("earbuds", hear, Hear.shared.earbuds, .hearEarbuds)
             
             // Dial
-            let dial = TreeNode("dial", more, .title)
+            let dial = TreeTitleNode("dial", more)
             let _ =  TreeDialColorNode("color", dial)
 
             // about
             #if os(iOS)
-            let about = TreeNode("about",   more,  .title)
-            let _     = TreeNode("support", about, .title)
-            let _     = TreeNode("blog",    about, .title)
+            let about = TreeTitleNode("about",   more)
+            let _     = TreeTitleNode("support", about)
+            let _     = TreeTitleNode("blog",    about)
             let _     = TreeButtonNode("tour", about, "Play Tour", "",[])
             attachTour()
             #endif

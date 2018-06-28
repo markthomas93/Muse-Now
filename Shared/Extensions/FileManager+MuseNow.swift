@@ -51,7 +51,7 @@ import Foundation
 
     // shared container for muse apps
     static func museGroupURL() -> URL! {
-        let groupName = "group.com.muse.MuseNow"
+        let groupName = "group.com.muse.dot"
         let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier:groupName)
         return url
     }

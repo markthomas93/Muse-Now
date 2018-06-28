@@ -17,7 +17,7 @@
     phraseMemo        // recorded audio memo
  }
 
-  class Say : NSObject, AVSpeechSynthesizerDelegate, DemoBackupDelegate {
+  class Say : NSObject, AVSpeechSynthesizerDelegate {
     
     static let shared = Say()
 
@@ -206,13 +206,13 @@
 
         Log("🗣 updateDialog via:\(via) \"\((event?.title ?? "").trunc(length:20))\" .\(phrase)")
 
-        switch phrase {
+        switch phrase { //              delay, decay, [clear]
         case .phraseBlank:      newItem(0.00,  0.05, [.phraseBlank], immediate: true)
         case .phraseMemo:       newItem(0.00,  0.50, [.phraseBlank])
         case .phraseDayOfWeek:  newItem(0.01,  Infi, [.phraseDirection])
         case .phraseTimeNow:    newItem(0.00,  Infi, [.phraseDotTime, .phraseEventTime, .phraseDirection])
-        case .phraseEventTime:  newItem(0.02,  4.00, [.phraseDotTime])
-        case .phraseEventTitle: newItem(0.01,  2.00, [.phraseEventTime])
+        case .phraseEventTime:  newItem(0.02,  8.00, [.phraseDotTime])
+        case .phraseEventTitle: newItem(0.01,  1.00, [.phraseEventTime])
         case .phraseDotTime:    newItem(2.00,  4.00, [.phraseTimeNow, .phraseEventTime])
         case .phraseDirection:  newItem(0.05,  Infi, [])
         case .phraseSlider:     newItem(0.10,  0.20, [])

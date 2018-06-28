@@ -1,11 +1,8 @@
 import UIKit
 
 extension Dots {
-    
 
-    /**
-     User toggled Mark
-     */
+    /** User toggled Mark */
     func markDot(_ dot:Dot,_ event:MuEvent, _ isOn:Bool, gotoEvent: Bool = false) {
 
         dot.setMark(isOn, event)

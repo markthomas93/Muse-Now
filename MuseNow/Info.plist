@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Muse Now</string>
+	<string>muse •</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -59,7 +59,7 @@
 	<string>Access to Speech</string>
 	<key>NSUbiquitousContainers</key>
 	<dict>
-		<key>iCloud.com.muse.MuseNow</key>
+		<key>iCloud.com.muse.dot</key>
 		<dict>
 			<key>NSUbiquitousContainerIsDocumentScopePublic</key>
 			<true/>
@@ -97,6 +97,6 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
 	<key>WKCompanionAppBundleIdentifier</key>
-	<string>com.muse.MuseNow</string>
+	<string>com.muse.dot</string>
 </dict>
 </plist>

@@ -1,6 +1,6 @@
 //  CalCell.swift
 
-
+#if os(iOS)
 import UIKit
 import EventKit
 
@@ -73,4 +73,4 @@ class MenuColorTitle: MenuTitle {
 
 
  }
-
+#endif

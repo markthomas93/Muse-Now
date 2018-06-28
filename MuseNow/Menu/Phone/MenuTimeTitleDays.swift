@@ -1,6 +1,6 @@
 //  CalCell.swift
 
-
+#if os(iOS)
 import UIKit
 import EventKit
 
@@ -103,13 +103,7 @@ class MenuTimeTitleDays: MenuTitle {
     }
 
 }
-
-
-
-
-
-
-
+#endif
 
 
 

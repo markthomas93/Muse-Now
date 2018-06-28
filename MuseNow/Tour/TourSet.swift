@@ -17,5 +17,5 @@ struct TourSet: OptionSet {
     static let detail   = TourSet(rawValue: 1 << 4) // 16
     static let buy      = TourSet(rawValue: 1 << 5) // 32
     static let beta     = TourSet(rawValue: 1 << 6) // 64
-    static let size = 7
+    //static let size = 7
 }

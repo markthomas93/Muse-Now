@@ -95,12 +95,9 @@ extension Session { // Transfer File -----------------------
 
         // begin --------------------
 
-        #if os(iOS)
-            if !Active.shared.isOn {
-                 MainVC.shared?.registerBackgroundTask()
-            }
-        #endif
-
+        // on iPhone, allow file transfer in backgourn
+        
+        Actions.shared.registerBackgroundTask?()
         moveSessionFile(file) { event in
             Transcribe.shared.waitTranscribe(event) {}
         }

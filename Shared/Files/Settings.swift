@@ -2,7 +2,7 @@
 
 import Foundation
 
-class Settings: FileSync, Codable, DemoBackupDelegate {
+class Settings: FileSync, Codable {
     
     static let shared = Settings()
 

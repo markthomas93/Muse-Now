@@ -1,6 +1,5 @@
 //  CalCell.swift
 
-
 import UIKit
 import EventKit
 

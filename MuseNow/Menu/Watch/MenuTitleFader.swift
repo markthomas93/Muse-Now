@@ -1,7 +1,7 @@
 //  CalCell.swift
 
+#if os(watchOS)
 
-import UIKit
 import EventKit
 import WatchKit
 
@@ -14,6 +14,6 @@ class MenuTitleFader: MenuTitle {
         fader = Fader()
         
     }
-
 }
 
+#endif

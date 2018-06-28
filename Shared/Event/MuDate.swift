@@ -1,5 +1,6 @@
 
 import Foundation
+import EventKit
 
 
 open class MuDate {
@@ -26,12 +27,9 @@ open class MuDate {
     class func relativeHour(_ index: Int) -> Date {
 
         let cal = Calendar.current as NSCalendar
-        //let nsdate = Date(timeIntervalSince1970:TimeInterval(timesec))
-
         let comps = (cal as NSCalendar).components([.year, .month, .day, .hour, .timeZone], from: Date())
         let hourNow = cal.date(from: comps) // trimmed off minutes no minutes
         let newDate = cal.date(byAdding: [.hour], value:index, to:hourNow!, options: NSCalendar.Options.matchNextTime)
-        //let newTime = (newDate?.timeIntervalSince1970)!
         return newDate!
     }
 

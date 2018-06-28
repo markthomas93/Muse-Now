@@ -70,7 +70,7 @@ extension MenuTableVC: PhoneCrownDelegate {
             let shownNodes = TreeNodes.shared.shownNodes
 
             if let touchNode = TreeNodes.shared.touchedNode,            // there is a touched node
-                let touchIdex = shownNodes.index(of: touchNode),        // where it's position in shown
+                let touchIdex = shownNodes.firstIndex(of: touchNode),        // where it's position in shown
                 touchIdex+1 < shownNodes.count-1 {                      // is not the last position
 
                 // for expanded node, choose next sibling as bottom

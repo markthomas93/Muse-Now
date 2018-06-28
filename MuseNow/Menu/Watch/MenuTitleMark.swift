@@ -1,6 +1,6 @@
 //  CalCell.swift
 
-
+#if os(watchOS)
 import WatchKit
 import EventKit
 
@@ -29,3 +29,4 @@ class MenuTitleMark: MenuTitle {
     }
 }
 
+#endif

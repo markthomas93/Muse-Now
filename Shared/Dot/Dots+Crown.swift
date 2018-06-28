@@ -99,8 +99,7 @@ extension Dots {
 
                 Actions.shared.sendAction(.gotoEvent, event, event.bgnTime) //\\
             }
-        }
-
+        }  
 
         // --------------------
 

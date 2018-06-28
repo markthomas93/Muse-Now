@@ -7,8 +7,9 @@
 //
 
 import Foundation
-import Speech
 
+#if os(iOS)
+import Speech
 extension Transcribe {
 
     func matchMuseFound(_ result: SFSpeechRecognitionResult) -> MuseFound {
@@ -39,3 +40,4 @@ extension Transcribe {
     }
 
 }
+#endif

@@ -125,7 +125,5 @@ class MenuTitleButton: MenuTitle {
             }
         }
     }
-
 }
-
 

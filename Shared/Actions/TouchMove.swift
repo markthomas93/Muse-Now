@@ -63,6 +63,10 @@ class TouchMove {
         let deltaY = pos.y - touchBeganPos.y
 
         let distance = sqrt(deltaX * deltaX + deltaY * deltaY)
+        if !isMoving {
+            isMoving = (distance > touchMoveDist)
+        }
+        if !isMoving { return }
 
         if distance > swipeDistance {
 
@@ -98,14 +102,17 @@ class TouchMove {
      */
     func finishSwipe(_ timeStamp: TimeInterval) -> Bool {
 
-        Log("👆\(#function) swipeState:\(swipeState)")
-
         let finalSwipeState = swipeState
         swipeState = .begin
 
         let deltaTime = timeStamp - touchBeganTime
         if deltaTime > swipeTime {
+            swipeState = .cancelled
+            Log("👆\(#function) delta: \(deltaTime) state:\(finalSwipeState)")
             return false
+        }
+        else {
+            Log("👆\(#function) delta: \(deltaTime) state:\(finalSwipeState)")
         }
 
         switch finalSwipeState {
@@ -159,16 +166,14 @@ class TouchMove {
             lastTouchTime = timestamp
             let distance = sqrt(deltaPos.x*deltaPos.x + deltaPos.y*deltaPos.y)
             let speed  = distance / CGFloat(deltaTime)
-            if !isMoving {
-                isMoving = (distance > touchMoveDist)
-            }
+            testSwipe(pos)
+
             Log("👆\(#function) d:\(Int(distance)) s:\(Int(speed)) isMoving:\(isMoving))")
 
             if isMoving {
 
                 touchMovedTime = timestamp
                 touchMovedPos = pos
-                testSwipe(pos)
                 touchMoved?(self)
             }
         }
@@ -181,19 +186,19 @@ class TouchMove {
             began(pos, timestamp)
         }
         else {
-
             let wasMoving = isMoving
-            isMoving = false
-            isTouching = false
-            touchEndedPos  = pos
-            touchEndedTime = timestamp
-
+            testSwipe(pos)
             if finishSwipe(timestamp) {
                 stopTaps()
             }
             else if wasMoving {
                 touchMoved?(self)
             }
+
+            isMoving = false
+            isTouching = false
+            touchEndedPos  = pos
+            touchEndedTime = timestamp
         }
     }
 }

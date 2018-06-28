@@ -15,6 +15,7 @@ public enum ParentChildOther { case parent, child, other }
  Ultimately, this can replace class Settings
  as the values in TreeSetting are redundant.
  */
+
 class TreeNode: Codable {
 
     static var nextId = 0
@@ -33,13 +34,13 @@ class TreeNode: Codable {
 
     var parent: TreeNode!
     var userInfo: [String:Any]?
-    var cell: MenuCell?
+    var cell: MenuCell? // was MenuCell? which as different base classes for iOS and WatchOS
     var any: Any! // may contain Cal
 
     // runtime info
 
     var depth    = 0 // how deep do children go
-    var level    = 0
+    var level    = -1
     var expanded = false
     var row      = -1
     var onRatio  = Float(1.0)
@@ -61,6 +62,7 @@ class TreeNode: Codable {
         TreeDialColorNode   = "TreeDialColorNode",
         TreeActNode         = "TreeActNode",
         TreeBoolNode        = "TreeBoolNode",
+        TreeTitleNode       = "TreeTitleNode",
 
         TreeEventsNode      = "TreeEventsNode",
         TreeRoutineNode     = "TreeRoutineNode",
@@ -99,6 +101,7 @@ class TreeNode: Codable {
 
                 switch type {
                 case .TreeNode:             addChild(try childArray.decode(TreeNode.self))
+                case .TreeTitleNode:        addChild(try childArray.decode(TreeTitleNode.self))
                 case .TreeButtonNode:       addChild(try childArray.decode(TreeButtonNode.self))
                 case .TreeCalendarNode:     addChild(try childArray.decode(TreeCalendarNode.self))
                 case .TreeDialColorNode:    addChild(try childArray.decode(TreeDialColorNode.self))
@@ -151,19 +154,9 @@ class TreeNode: Codable {
         if let parent = parent {
             parent.children.append(self)
         }
-        level = (parent?.level ?? 0) + 1
-        if setting == nil {
-            initCell()
-        }
+        level = (parent?.level ?? -1) + 1
     }
 
-    convenience init (_ name_: String,
-                      _ parent_: TreeNode!,
-                      _ cellType_: CellType,
-                      _ setting_: TreeSetting! = nil) {
-
-        self.init(name_, parent_, .TreeNode, cellType_, setting_)
-    }
 
     func isOn() -> Bool {
         return setting?.isOn ?? false
@@ -179,33 +172,39 @@ class TreeNode: Codable {
         }
     }
 
-    func initCell() {
+//    func initCell() {
+//
+//        #if os(iOS) // iOS is early bound, watchOS is late bound
+//        
+//        switch cellType {
+//
+//        case .title?:          //cell = MenuTitle(self)
+//        case .titleButton?:    //cell = MenuTitleButton(self)
+//        case .titleFader?:     //cell = MenuTitleFader(self)
+//        case .titleMark?:      //cell = MenuTitleMark(self)
+//        case .colorTitle?:     //cell = MenuColorTitle(self)
+//        case .colorTitleMark?: //cell = MenuColorTitleMark(self)
+//
+//        case .timeTitleDays?:  //cell = MenuTimeTitleDays(self)
+//        case .editTime?:       //?? cell = MenuEditTime(self)
+//        case .editTitle?:      //?? cell = MenuEditTitle(self)
+//        case .editWeekday?:    //?? cell = MenuEditWeekday(self)
+//        case .editColor?:      //?? cell = MenuEditColor(self)
+//        case .unknown?:         cell = nil
+//        default:                cell = nil
+//        }
+//        #endif
+//    }
 
-        #if os(iOS) // iOS is early bound, watchOS is late bound
-        
-        switch cellType {
+    func initCell() {  // usually override
+        cell = MenuCell(self)
+    }
 
-        case .title?:          cell = MenuTitle(self)
-        case .titleButton?:    cell = MenuTitleButton(self)
-        case .titleFader?:     cell = MenuTitleFader(self)
-        case .titleMark?:      cell = MenuTitleMark(self)
-        case .colorTitle?:     cell = MenuColorTitle(self)
-        case .colorTitleMark?: cell = MenuColorTitleMark(self)
-
-        case .timeTitleDays?:  cell = MenuTimeTitleDays(self)
-        case .editTime?:       cell = MenuEditTime(self)
-        case .editTitle?:      cell = MenuEditTitle(self)
-        case .editWeekday?:    cell = MenuEditWeekday(self)
-        case .editColor?:      cell = MenuEditColor(self)
-        case .unknown?:        cell = MenuEditColor(self)
-        default:               cell = nil
+    func updateCell() { // usually called by subclass
+        if cell == nil {
+            initCell()
         }
-        #endif
     }
-    
-    func updateCell() { // override
-    }
-
  }
 
 extension TreeNode: Hashable {

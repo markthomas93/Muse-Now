@@ -1,5 +1,4 @@
 //  CalCell.swift
-
 import WatchKit
 
 class MenuTitle: MenuCell {

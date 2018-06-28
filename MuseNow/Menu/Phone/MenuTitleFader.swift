@@ -1,6 +1,6 @@
 //  CalCell.swift
 
-
+#if os(iOS)
 import UIKit
 import EventKit
 
@@ -77,4 +77,4 @@ class MenuTitleFader: MenuTitle {
 
     }
 }
-
+#endif

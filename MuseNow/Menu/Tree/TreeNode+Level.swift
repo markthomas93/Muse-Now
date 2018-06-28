@@ -105,7 +105,7 @@ extension TreeNode {
             for child in children {
                 child.updateFromParent(setting.isOn)
             }
-            cell?.setMark(onRatio)
+             cell?.setMark(onRatio)
             updateCell() //\\
 
             // update parent

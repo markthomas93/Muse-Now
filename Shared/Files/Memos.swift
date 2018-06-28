@@ -7,7 +7,6 @@ class Memos: FileSync, Codable {
     static let shared = Memos()
 
     var items = [MuEvent]()
-    var nod2Rec = true
     var saveWhere = true
     
     override init() {
@@ -34,7 +33,7 @@ class Memos: FileSync, Codable {
             let weekSecs: TimeInterval = (7*24+1)*60*60 // 168+1 hours as seconds
             let lastWeekSecs = Date().timeIntervalSince1970 - weekSecs
             items = newItems.filter { $0.bgnTime >= lastWeekSecs }
-            if items.count > 0 {
+            if items.count > 1 {
                 items.sort { "\($0.bgnTime)"+$0.eventId < "\($1.bgnTime)"+$1.eventId }
             }
         }
@@ -77,7 +76,6 @@ class Memos: FileSync, Codable {
         let on = value > 0
         switch act {
         case .memoWhere:    saveWhere = on ; TreeNodes.setOn(on,"menu.memo.saveWhere", false)
-        case .memoNod2Rec:  nod2Rec   = on ; TreeNodes.setOn(on,"menu.memo.nod2Rec", false)
         case .memoClearAll: doMemoClearAll()
         case .memoCopyAll:  doMemoCopyAll()
         default: return

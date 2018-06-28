@@ -1,6 +1,5 @@
 //  CalCell.swift
 
-
 import UIKit
 import EventKit
 
@@ -82,4 +81,3 @@ class MenuColorTitleMark: MenuTitleMark {
     }
 
  }
-

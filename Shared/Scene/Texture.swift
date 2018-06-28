@@ -287,15 +287,10 @@ class Texture {
                     for _ in 0 ..< hours {
                         
                         let rgb = bytes[jj + offset]
-                        
                         jj += 4
                         
-                        if (rgb==0) {
-                            print(".", terminator: "")
-                        }
-                        else {
-                            print("\(rgb/26)", terminator: "")
-                        }
+                        if (rgb==0) { print(".", terminator: "") }
+                        else        { print("\(rgb/26)", terminator: "") }
                     }
                 }
             }

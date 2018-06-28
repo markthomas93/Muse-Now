@@ -9,8 +9,6 @@
 import WatchKit
 import ClockKit
 
-
-
 class ExtensionDelegate: NSObject, WKExtensionDelegate {
 
 static let WillResignActive = Notification.Name("WillResignActive")

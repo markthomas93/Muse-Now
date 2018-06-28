@@ -63,8 +63,6 @@ class EventCell: MuCell {
             let event = event {
 
             let dots = Dots.shared
-
-            //\\mark.setMark(event.mark ? 1 : 0)
             let index = dots.gotoEvent(event)
             let dot = dots.getDot(index)
             let isOn = !event.mark // toggle
