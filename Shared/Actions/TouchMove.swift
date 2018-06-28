@@ -2,7 +2,7 @@
 import UIKit
 
 public enum TouchGesture : Int { case none, swipeLeft, swipeRight }
-public enum SwipeState { case begin, swipeLeft, swipeRight, swipeUp, swipeDown, cancelled }
+public enum SwipeState { case swipeBegin, swipeLeft, swipeRight, swipeUp, swipeDown, cancelled, completed }
 
 typealias CallTouchMove = ((TouchMove)->())
 
@@ -35,7 +35,7 @@ class TouchMove {
     var swipeRightAction : CallTouchMove!
     var swipeUpAction    : CallTouchMove!
     var swipeDownAction  : CallTouchMove!
-    var swipeState      = SwipeState.begin
+    var swipeState      = SwipeState.swipeBegin
 
     // tapping
 
@@ -64,9 +64,9 @@ class TouchMove {
 
         let distance = sqrt(deltaX * deltaX + deltaY * deltaY)
         if !isMoving {
-            isMoving = (distance > touchMoveDist)
+            isMoving = distance > touchMoveDist
+            if !isMoving { return }
         }
-        if !isMoving { return }
 
         if distance > swipeDistance {
 
@@ -79,7 +79,7 @@ class TouchMove {
                 switch swipeState {
                 case .swipeRight:   swipeState = deltaX > 0 ? .swipeRight : .cancelled
                 case .swipeLeft:    swipeState = deltaX < 0 ? .swipeLeft  : .cancelled
-                case .begin:        swipeState = deltaX < 0 ? .swipeLeft  : .swipeRight
+                case .swipeBegin:   swipeState = deltaX < 0 ? .swipeLeft  : .swipeRight
                 default:            swipeState = .cancelled
                 }
             }
@@ -88,7 +88,7 @@ class TouchMove {
                 switch swipeState {
                 case .swipeDown:    swipeState = deltaY > 0 ? .swipeDown : .cancelled
                 case .swipeUp:      swipeState = deltaY < 0 ? .swipeUp   : .cancelled
-                case .begin:        swipeState = deltaY < 0 ? .swipeUp   : .swipeDown
+                case .swipeBegin:   swipeState = deltaY < 0 ? .swipeUp   : .swipeDown
                 default:            swipeState = .cancelled
                 }
             }
@@ -102,55 +102,44 @@ class TouchMove {
      */
     func finishSwipe(_ timeStamp: TimeInterval) -> Bool {
 
-        let finalSwipeState = swipeState
-        swipeState = .begin
+        func onAct(_ act:CallTouchMove!) -> Bool {
+            if let act = act {
+                act(self)
+                swipeState = .completed
+                return true
+            }
+            return false
+        }
 
         let deltaTime = timeStamp - touchBeganTime
         if deltaTime > swipeTime {
             swipeState = .cancelled
-            Log("👆\(#function) delta: \(deltaTime) state:\(finalSwipeState)")
+            Log("👆\(#function) delta: \(Int(deltaTime)) state:\(swipeState)")
             return false
         }
         else {
-            Log("👆\(#function) delta: \(deltaTime) state:\(finalSwipeState)")
+            Log("👆\(#function) delta: \(Int(deltaTime))  state:\(swipeState)")
         }
 
-        switch finalSwipeState {
-            
-        case .swipeRight: 
-            if let swipeRightAction = swipeRightAction {
-                swipeRightAction(self)
-                return true
-            }
-
-        case .swipeLeft:
-            if let swipeLeftAction = swipeLeftAction {
-                swipeLeftAction(self)
-                return true
-            }
-        case .swipeUp:
-            if let swipeUpAction = swipeUpAction {
-                swipeUpAction(self)
-                return true
-            }
-        case .swipeDown:
-            if let swipeDownAction = swipeDownAction {
-                swipeDownAction(self)
-                return true
-            }
-        default: break
+        switch swipeState {
+        case .swipeRight: return onAct(swipeRightAction)
+        case .swipeLeft:  return onAct(swipeLeftAction)
+        case .swipeUp:    return onAct(swipeUpAction)
+        case .swipeDown:  return onAct(swipeDownAction)
+        default:          return false
         }
-        return false
     }
 
     // bottom slider for 38 is 15px, 42 is 18 px
-    func began(_ pos: CGPoint, _ timestamp: TimeInterval) { Log("👆\(#function)")
+    func began(_ pos: CGPoint, _ timestamp: TimeInterval) {
 
+        Log("👆\(#function) pos:\(Int(pos.x)),\(Int(pos.y)) ")
+        swipeState = .swipeBegin
         touchBeganTime = timestamp
         touchBeganPos = pos
         isTouching = true
         isMoving = false
-        swipeState = .begin
+
         tapping(timestamp)
         touchBegan?(self)
     }
@@ -168,7 +157,7 @@ class TouchMove {
             let speed  = distance / CGFloat(deltaTime)
             testSwipe(pos)
 
-            Log("👆\(#function) d:\(Int(distance)) s:\(Int(speed)) isMoving:\(isMoving))")
+            Log("👆\(#function) pos:\(Int(pos.x)),\(Int(pos.y)) isMoving:\(isMoving)) dist:\(Int(distance)) speed:\(Int(speed))")
 
             if isMoving {
 
@@ -180,12 +169,12 @@ class TouchMove {
     }
 
     /// shared by touchesEnded and touchesCancelled
-    func ended (_ pos: CGPoint, _ timestamp: TimeInterval)  { Log("👆\(#function)")
+    func ended (_ pos: CGPoint, _ timestamp: TimeInterval)  {
 
-        if !isTouching {
-            began(pos, timestamp)
-        }
-        else {
+        if isTouching {
+
+            Log("👆\(#function) pos:\(Int(pos.x)),\(Int(pos.y)) isMoving:\(isMoving))")
+
             let wasMoving = isMoving
             testSwipe(pos)
             if finishSwipe(timestamp) {

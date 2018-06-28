@@ -34,14 +34,14 @@ func DebugLog(_ str: String) -> Bool {
     switch str.substring(to: 1) {
 
     case
-    "👆": // tap action
 
+    "𝓡": // routine
         print(MuDate.getHourMinSecMsec() + ": " + str)
 
     case
+     "👆", // tap action
     "✏", // Transcribe
     "⟳", // life cycle
-    "𝓡", // routine
 
     "𐂷", // tree cell
     "⌘", // doAction

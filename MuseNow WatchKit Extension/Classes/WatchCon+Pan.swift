@@ -18,7 +18,7 @@ extension WatchCon {
             let pos1 = pan.locationInObject()
             let pos2 = CGPoint(x:pos1.x*2, y:pos1.y*2 )
 
-            Log("👆\(#function) (\(pos2.x),\(pos2.y)) \(pan.state.rawValue)")
+            Log("👆\(#function) \(Int(pos2.x)),\(Int(pos2.y)) \(pan.state.rawValue)")
             let timestamp = Date().timeIntervalSince1970
             switch pan.state {
             case .began:     touchDial.began(pos2, timestamp)
@@ -32,8 +32,14 @@ extension WatchCon {
 
     // Tap  -------------------------------------
     
-    @IBAction func tapAction(_ sender: Any) { Log("👆\(#function)")
-
+    @IBAction func tapAction(_ sender: Any) {
+        if let pan = sender as? WKPanGestureRecognizer {
+            
+            let pos1 = pan.locationInObject()
+            let pos2 = CGPoint(x:pos1.x*2, y:pos1.y*2 )
+            
+            Log("👆\(#function) \(Int(pos2.x)),\(Int(pos2.y)) \(pan.state.rawValue)")
+        }
         let timeStamp = Date().timeIntervalSince1970
         touchDial?.tapping(timeStamp)
     }

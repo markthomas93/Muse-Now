@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="14269.12" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="E5x-Cp-nxC">
+    <device id="watch38" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
+        <deployment identifier="watchOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14252.5"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="14224.3"/>
     </dependencies>
@@ -23,6 +27,11 @@
                                     </connections>
                                 </tapGestureRecognizer>
                             </gestureRecognizers>
+                            <variation key="default">
+                                <mask key="gestureRecognizers">
+                                    <exclude reference="lEn-zk-kSe"/>
+                                </mask>
+                            </variation>
                             <variation key="device=watch38mm" height="136" width="136"/>
                             <variation key="device=watch42mm" height="156" width="156"/>
                         </spriteKitScene>
