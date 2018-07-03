@@ -1,6 +1,6 @@
 //
 //  TreeNode+Watch.swift
-//  MuseNow WatchKit Extension
+// muse • WatchKit Extension
 //
 //  Created by warren on 5/9/18.
 //  Copyright © 2018 Muse. All rights reserved.

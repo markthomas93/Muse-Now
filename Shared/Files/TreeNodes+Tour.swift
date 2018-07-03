@@ -1,6 +1,6 @@
 //
 //  Settings+Tour.swift
-//  MuseNow
+// muse •
 //
 //  Created by warren on 3/29/18.
 //  Copyright © 2018 Muse. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  BubbleItem.swift
-//  MuseNow
+// muse •
 //
 //  Created by warren on 12/30/17.
 //  Copyright © 2017 Muse. All rights reserved.

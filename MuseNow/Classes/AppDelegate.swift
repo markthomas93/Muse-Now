@@ -22,6 +22,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var didStopActive = false // prevent multiple calls to startActive()
+    
+    internal func application(_ application: UIApplication,
+                             continue userActivity: NSUserActivity,
+                             restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+        if let intent = userActivity.interaction?.intent as? DotIntent {
+
+            print("\(#function) A DotIntent: " + MuseIntents.shared.intentStr(intent) )
+            return true
+        }
+        else if userActivity.activityType == "DotIntent",
+            let intent = userActivity.interaction?.intent as? DotIntent {
+
+            print("\(#function) B DotIntent: " + MuseIntents.shared.intentStr(intent) )
+            return true
+        }
+        else {
+            print("\(#function) C")
+            return false
+        }
+
+    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         if let window = self.window {

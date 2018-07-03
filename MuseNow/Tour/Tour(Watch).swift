@@ -1,6 +1,6 @@
 //
 //  Tour(Watch).swift
-//  MuseNow
+// muse •
 //
 //  Created by warren on 6/26/18.
 //  Copyright © 2018 Muse. All rights reserved.

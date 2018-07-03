@@ -1,6 +1,6 @@
 //
 //  Routine.swift
-//  MuseNow
+// muse •
 //
 //  Created by warren on 11/13/17.
 //  Copyright © 2017 Muse. All rights reserved.

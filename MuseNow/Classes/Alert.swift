@@ -1,6 +1,6 @@
 //
 //  Alert.swift
-//  MuseNow
+// muse •
 //
 //  Created by warren on 3/30/18.
 //  Copyright © 2018 Muse. All rights reserved.

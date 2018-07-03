@@ -1,6 +1,6 @@
 //
 //  TreeRoutineNode.swift
-//  MuseNow
+// muse •
 //
 //  Created by warren on 6/27/18.
 //  Copyright © 2018 Muse. All rights reserved.
@@ -34,7 +34,7 @@ class TreeRoutineNode: TreeNode {
         }
         #if os(iOS)
         // show on list
-        let more = TreeNode("more", self, .TreeNode, .title)
+        let more = TreeTitleNode("more", self, .TreeNode, .title)
         more.setting?.setFrom = [.ignore]
         let showOnList = TreeActNode("show on timeline", more, Show.shared.routList, .showRoutList, [.ignore])
         showOnList.setting?.setFrom = []

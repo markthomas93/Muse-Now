@@ -378,6 +378,15 @@
 		80A33E2020A3674D000D203E /* Fader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A33E1F20A3674D000D203E /* Fader.swift */; };
 		80A3E36C1FC0CABC00195BD3 /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004F70E1FA3EE2400F7ED94 /* Actions.swift */; };
 		80BD52361FEB695E00EB4F92 /* BubbleCovers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BD52351FEB695E00EB4F92 /* BubbleCovers.swift */; };
+		80BD848A20EAA00500C5931E /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 80BD848920EAA00500C5931E /* Intents.intentdefinition */; };
+		80BD848B20EAA00500C5931E /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 80BD848920EAA00500C5931E /* Intents.intentdefinition */; };
+		80BD849320EAA29200C5931E /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BD849220EAA29200C5931E /* IntentHandler.swift */; };
+		80BD849720EAA29200C5931E /* Muse Intent.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 80BD849020EAA29200C5931E /* Muse Intent.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		80BD849C20EAA2C100C5931E /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 80BD848920EAA00500C5931E /* Intents.intentdefinition */; };
+		80BD849F20EAC6AC00C5931E /* MuseIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BD849E20EAC6AC00C5931E /* MuseIntents.swift */; };
+		80BD84A020EAC6AC00C5931E /* MuseIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BD849E20EAC6AC00C5931E /* MuseIntents.swift */; };
+		80BD84A120EACD1400C5931E /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BD849220EAA29200C5931E /* IntentHandler.swift */; };
+		80BD84A220EACD1500C5931E /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80BD849220EAA29200C5931E /* IntentHandler.swift */; };
 		80C78C821FE37708002E3A95 /* FileSync+Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C78C811FE37708002E3A95 /* FileSync+Session.swift */; };
 		80C78C831FE37708002E3A95 /* FileSync+Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C78C811FE37708002E3A95 /* FileSync+Session.swift */; };
 		80CDB71A2076A04A0037B181 /* Motion+Print.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80CDB7192076A04A0037B181 /* Motion+Print.swift */; };
@@ -461,6 +470,13 @@
 			remoteGlobalIDString = 803C5F6B1FA3DFBE002A1C11;
 			remoteInfo = "MuseNow WatchKit Extension";
 		};
+		80BD849520EAA29200C5931E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 803C5F431FA3DFBD002A1C11 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 80BD848F20EAA29200C5931E;
+			remoteInfo = "Muse Intent";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -494,6 +510,17 @@
 			files = (
 			);
 			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		80BD849B20EAA29200C5931E /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				80BD849720EAA29200C5931E /* Muse Intent.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -726,8 +753,6 @@
 		8076B3361FE6C69A001EDD30 /* BubbleVideo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BubbleVideo.swift; path = MuseNow/Classes/Info/BubbleVideo.swift; sourceTree = SOURCE_ROOT; };
 		8076B33B1FE6C783001EDD30 /* Tour.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tour.swift; sourceTree = "<group>"; };
 		8076B33D1FE6D151001EDD30 /* BubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleView.swift; sourceTree = "<group>"; };
-		807973B320E00CB400742FDE /* MuseKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MuseKit.h; sourceTree = "<group>"; };
-		807973B420E00CB400742FDE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		807A59F3201E542C007BCF46 /* MainVC+override.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainVC+override.swift"; sourceTree = "<group>"; };
 		80834017200FE4BA00AD5FF7 /* icon-Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-Logo.png"; sourceTree = "<group>"; };
 		80834018200FE4BA00AD5FF7 /* PhoneMemo2.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; path = PhoneMemo2.m4v; sourceTree = "<group>"; };
@@ -753,6 +778,12 @@
 		80A33E2320A36C6C000D203E /* TreeNode+Watch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TreeNode+Watch.swift"; sourceTree = "<group>"; };
 		80AB3FA71FF9B96100BDD99B /* scratch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = scratch.h; sourceTree = "<group>"; };
 		80BD52351FEB695E00EB4F92 /* BubbleCovers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleCovers.swift; sourceTree = "<group>"; };
+		80BD848920EAA00500C5931E /* Intents.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = Intents.intentdefinition; sourceTree = "<group>"; };
+		80BD849020EAA29200C5931E /* Muse Intent.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Muse Intent.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		80BD849220EAA29200C5931E /* IntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentHandler.swift; sourceTree = "<group>"; };
+		80BD849420EAA29200C5931E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		80BD849D20EAA4CA00C5931E /* Muse Intent.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Muse Intent.entitlements"; sourceTree = "<group>"; };
+		80BD849E20EAC6AC00C5931E /* MuseIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MuseIntents.swift; path = Shared/MuseIntents.swift; sourceTree = SOURCE_ROOT; };
 		80C78C811FE37708002E3A95 /* FileSync+Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileSync+Session.swift"; sourceTree = "<group>"; };
 		80CDB7192076A04A0037B181 /* Motion+Print.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Motion+Print.swift"; sourceTree = "<group>"; };
 		80CDB71B2076A0970037B181 /* Motion+Gesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Motion+Gesture.swift"; sourceTree = "<group>"; };
@@ -843,6 +874,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		803C5F691FA3DFBE002A1C11 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		80BD848D20EAA29200C5931E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1224,7 +1262,7 @@
 				803C5F611FA3DFBE002A1C11 /* MuseNow WatchKit App */,
 				803C5F701FA3DFBE002A1C11 /* MuseNow WatchKit Extension */,
 				8004F6C21FA3ED5E00F7ED94 /* ParGraph */,
-				807973B220E00CB400742FDE /* MuseKit */,
+				80BD849120EAA29200C5931E /* Muse Intent */,
 				803C5F4C1FA3DFBD002A1C11 /* Products */,
 				8088BFBF20548A64009A5533 /* Frameworks */,
 			);
@@ -1236,6 +1274,7 @@
 				803C5F4B1FA3DFBD002A1C11 /* MuseNow.app */,
 				803C5F5D1FA3DFBE002A1C11 /* MuseNow WatchKit App.app */,
 				803C5F6C1FA3DFBE002A1C11 /* MuseNow WatchKit Extension.appex */,
+				80BD849020EAA29200C5931E /* Muse Intent.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1404,15 +1443,6 @@
 			path = Info;
 			sourceTree = "<group>";
 		};
-		807973B220E00CB400742FDE /* MuseKit */ = {
-			isa = PBXGroup;
-			children = (
-				807973B320E00CB400742FDE /* MuseKit.h */,
-				807973B420E00CB400742FDE /* Info.plist */,
-			);
-			path = MuseKit;
-			sourceTree = "<group>";
-		};
 		80834013200FE4BA00AD5FF7 /* Video */ = {
 			isa = PBXGroup;
 			children = (
@@ -1455,6 +1485,18 @@
 				80A33E1F20A3674D000D203E /* Fader.swift */,
 			);
 			path = Watch;
+			sourceTree = "<group>";
+		};
+		80BD849120EAA29200C5931E /* Muse Intent */ = {
+			isa = PBXGroup;
+			children = (
+				80BD849D20EAA4CA00C5931E /* Muse Intent.entitlements */,
+				80BD848920EAA00500C5931E /* Intents.intentdefinition */,
+				80BD849E20EAC6AC00C5931E /* MuseIntents.swift */,
+				80BD849220EAA29200C5931E /* IntentHandler.swift */,
+				80BD849420EAA29200C5931E /* Info.plist */,
+			);
+			path = "Muse Intent";
 			sourceTree = "<group>";
 		};
 		80E2B18520A9FDF3009ECA92 /* Tour */ = {
@@ -1581,11 +1623,13 @@
 				803C5F491FA3DFBD002A1C11 /* Resources */,
 				803C5F861FA3DFBE002A1C11 /* Embed Watch Content */,
 				807973BD20E00CB400742FDE /* Embed Frameworks */,
+				80BD849B20EAA29200C5931E /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				803C5F601FA3DFBE002A1C11 /* PBXTargetDependency */,
+				80BD849620EAA29200C5931E /* PBXTargetDependency */,
 			);
 			name = MuseNow;
 			productName = MuseNow;
@@ -1626,13 +1670,30 @@
 			productReference = 803C5F6C1FA3DFBE002A1C11 /* MuseNow WatchKit Extension.appex */;
 			productType = "com.apple.product-type.watchkit2-extension";
 		};
+		80BD848F20EAA29200C5931E /* Muse Intent */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 80BD849820EAA29200C5931E /* Build configuration list for PBXNativeTarget "Muse Intent" */;
+			buildPhases = (
+				80BD848C20EAA29200C5931E /* Sources */,
+				80BD848D20EAA29200C5931E /* Frameworks */,
+				80BD848E20EAA29200C5931E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Muse Intent";
+			productName = "Muse Intent";
+			productReference = 80BD849020EAA29200C5931E /* Muse Intent.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		803C5F431FA3DFBD002A1C11 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0910;
+				LastSwiftUpdateCheck = 1000;
 				LastUpgradeCheck = 0910;
 				ORGANIZATIONNAME = Muse;
 				TargetAttributes = {
@@ -1648,6 +1709,9 @@
 							};
 							com.apple.GameCenter = {
 								enabled = 0;
+							};
+							com.apple.Siri = {
+								enabled = 1;
 							};
 							com.apple.iCloud = {
 								enabled = 1;
@@ -1673,7 +1737,19 @@
 							com.apple.BackgroundModes.watchos.extension = {
 								enabled = 1;
 							};
+							com.apple.Siri = {
+								enabled = 1;
+							};
 							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
+					};
+					80BD848F20EAA29200C5931E = {
+						CreatedOnToolsVersion = 10.0;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
 							};
 						};
@@ -1696,6 +1772,7 @@
 				803C5F4A1FA3DFBD002A1C11 /* MuseNow */,
 				803C5F5C1FA3DFBE002A1C11 /* MuseNow WatchKit App */,
 				803C5F6B1FA3DFBE002A1C11 /* MuseNow WatchKit Extension */,
+				80BD848F20EAA29200C5931E /* Muse Intent */,
 			);
 		};
 /* End PBXProject section */
@@ -1821,6 +1898,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		80BD848E20EAA29200C5931E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1861,6 +1945,7 @@
 				809B0E9F209A8F9D0044FDEA /* Sesssion+Message.swift in Sources */,
 				80E4435B207BD77400348FBE /* BubbleView+Make.swift in Sources */,
 				8088149C200941A1008047DA /* FileSync+delegate.swift in Sources */,
+				80BD849F20EAC6AC00C5931E /* MuseIntents.swift in Sources */,
 				8004F7BD1FA3EE2400F7ED94 /* DayHour.swift in Sources */,
 				804D5A261FA3FCAA0025B724 /* EventTable+Scroll.swift in Sources */,
 				8004F7B31FA3EE2400F7ED94 /* Say+Event.swift in Sources */,
@@ -1891,6 +1976,7 @@
 				8004F7B91FA3EE2400F7ED94 /* SayItem.swift in Sources */,
 				806FCCBA20E40F7B005FD349 /* MenuTitleButton.swift in Sources */,
 				806FCCFF20E41351005FD349 /* MuColor.swift in Sources */,
+				80BD84A220EACD1500C5931E /* IntentHandler.swift in Sources */,
 				806FCD2120E41DAD005FD349 /* TreeButtonNode.swift in Sources */,
 				801A78881FFD3CBE00A11845 /* TouchScreen.swift in Sources */,
 				80C78C821FE37708002E3A95 /* FileSync+Session.swift in Sources */,
@@ -1982,6 +2068,7 @@
 				8004F7751FA3EE2400F7ED94 /* Dots+Say.swift in Sources */,
 				8004F7061FA3ED5E00F7ED94 /* ParStr+Compare.swift in Sources */,
 				8004F78D1FA3EE2400F7ED94 /* Dictionary+FileManager.swift in Sources */,
+				80BD848A20EAA00500C5931E /* Intents.intentdefinition in Sources */,
 				806FCCE820E411CF005FD349 /* TreeNode+Level.swift in Sources */,
 				80F33788209C9EEF00F365D5 /* MenuTableVC.swift in Sources */,
 				8004F7991FA3EE2400F7ED94 /* Cal.swift in Sources */,
@@ -2104,6 +2191,7 @@
 				809B0EA0209A8F9D0044FDEA /* Sesssion+Message.swift in Sources */,
 				8004F7031FA3ED5E00F7ED94 /* ParLem.swift in Sources */,
 				8004F79A1FA3EE2400F7ED94 /* Cal.swift in Sources */,
+				80BD848B20EAA00500C5931E /* Intents.intentdefinition in Sources */,
 				806FCC8C20E3F7BB005FD349 /* Transcribe+AppleBuf.swift in Sources */,
 				8004F7B81FA3EE2400F7ED94 /* SayCache.swift in Sources */,
 				8054B44B20E4449100638BB6 /* TreeTitleNode.swift in Sources */,
@@ -2126,6 +2214,7 @@
 				8044728220C2D8C500BAEC30 /* Marks+Action.swift in Sources */,
 				8004F79C1FA3EE2400F7ED94 /* Cals.swift in Sources */,
 				8004F7091FA3ED5E00F7ED94 /* ParStr.swift in Sources */,
+				80BD84A120EACD1400C5931E /* IntentHandler.swift in Sources */,
 				807643611FACDBF7001733C6 /* Setting.swift in Sources */,
 				8004F7A61FA3EE2400F7ED94 /* Memos.swift in Sources */,
 				80E2B18820A9FE13009ECA92 /* TourSet.swift in Sources */,
@@ -2174,6 +2263,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		80BD848C20EAA29200C5931E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				80BD849C20EAA2C100C5931E /* Intents.intentdefinition in Sources */,
+				80BD84A020EAC6AC00C5931E /* MuseIntents.swift in Sources */,
+				80BD849320EAA29200C5931E /* IntentHandler.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -2186,6 +2285,11 @@
 			isa = PBXTargetDependency;
 			target = 803C5F6B1FA3DFBE002A1C11 /* MuseNow WatchKit Extension */;
 			targetProxy = 803C5F6E1FA3DFBE002A1C11 /* PBXContainerItemProxy */;
+		};
+		80BD849620EAA29200C5931E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 80BD848F20EAA29200C5931E /* Muse Intent */;
+			targetProxy = 80BD849520EAA29200C5931E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -2339,7 +2443,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 4.3;
+				WATCHOS_DEPLOYMENT_TARGET = 5.0;
 			};
 			name = Debug;
 		};
@@ -2358,7 +2462,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 4.3;
+				WATCHOS_DEPLOYMENT_TARGET = 5.0;
 			};
 			name = Release;
 		};
@@ -2380,7 +2484,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 4.3;
+				WATCHOS_DEPLOYMENT_TARGET = 5.0;
 			};
 			name = Debug;
 		};
@@ -2402,20 +2506,21 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 4.3;
+				WATCHOS_DEPLOYMENT_TARGET = 5.0;
 			};
 			name = Release;
 		};
 		803C5F881FA3DFBE002A1C11 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = MuseNow/MuseNow.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9AVP5GX45R;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = MuseNow/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.muse.dot;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2427,16 +2532,58 @@
 		803C5F891FA3DFBE002A1C11 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = MuseNow/MuseNow.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9AVP5GX45R;
 				INFOPLIST_FILE = MuseNow/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.muse.dot;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		80BD849920EAA29200C5931E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CODE_SIGN_ENTITLEMENTS = "Muse Intent/Muse Intent.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9AVP5GX45R;
+				INFOPLIST_FILE = "Muse Intent/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.muse.dot.Muse-Intent";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		80BD849A20EAA29200C5931E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CODE_SIGN_ENTITLEMENTS = "Muse Intent/Muse Intent.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9AVP5GX45R;
+				INFOPLIST_FILE = "Muse Intent/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.muse.dot.Muse-Intent";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -2476,6 +2623,15 @@
 			buildConfigurations = (
 				803C5F881FA3DFBE002A1C11 /* Debug */,
 				803C5F891FA3DFBE002A1C11 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		80BD849820EAA29200C5931E /* Build configuration list for PBXNativeTarget "Muse Intent" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				80BD849920EAA29200C5931E /* Debug */,
+				80BD849A20EAA29200C5931E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

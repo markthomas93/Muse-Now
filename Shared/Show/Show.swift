@@ -64,7 +64,7 @@ class Show: NSObject {
         case .showReminder:  reminder = on ; updatePath("menu.events.reminders")
         case .showMemo:      memo     = on ; updatePath("menu.memos")
         case .showRoutine:   routine  = on ; updatePath("menu.routine")
-        case .showRoutList:  routList = on ; updatePath("menu.routine.routList")
+        case .showRoutList:  routList = on ; updatePath("menu.routine.more.show")
         default: return
         }
         Actions.shared.doAction(.refresh)

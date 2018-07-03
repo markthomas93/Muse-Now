@@ -63,7 +63,7 @@ extension Say {
             // announce curren time
             dateFormatter.dateFormat = "h:mm a"
             let spoken = "Now " + dateFormatter.string(from:Date())
-            let title = isTouching ? "" : "Muse Now"
+            let title = isTouching ? "" : "muse •"
             updateDialog(event, .phraseTimeNow, spoken:spoken, title:title, via:#function)
         }
         else {

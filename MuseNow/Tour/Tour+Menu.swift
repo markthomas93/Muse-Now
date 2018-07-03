@@ -1,6 +1,6 @@
 //
 //  Tour+Settings.swift
-//  MuseNow
+// muse •
 //
 //  Created by warren on 12/22/17.
 //  Copyright © 2017 Muse. All rights reserved.
@@ -66,10 +66,10 @@ extension Tour {
                                                          { Actions.shared.doAction(.gotoFuture)},
                                                          { Timer.delay(0.5) {Anim.shared.scene?.uDialFade?.floatValue = 1 }},
                                                          ]),
-            menuMark("menu.memos.nod", [.overlay,.nowait],
-
-                     [gotoPath("menu.memos.nod"),
-                      "record a memo by nodding your wrist", "v_211.aif",13]), ///
+//            menuMark("menu.memos.nod", [.overlay,.nowait],
+//
+//                     [gotoPath("menu.memos.nod"),
+//                      "record a memo by nodding your wrist", "v_211.aif",13]), ///
 
             menuVid1("memos", .diptych12, [.snugAbove,.nowait], ["WatchMemo2.m4v", 12]),
             menuVid1("memos", .diptych22, [.snugAbove],         ["PhoneMemo2.m4v", 12]),

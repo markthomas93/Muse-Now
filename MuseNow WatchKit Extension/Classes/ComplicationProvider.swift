@@ -1,6 +1,6 @@
 //
 //  ComplicationProvider.swift
-//  MuseNow WatchKit Extension
+// muse • WatchKit Extension
 //
 //  Created by warren on 10/28/17.
 //  Copyright © 2017 Muse. All rights reserved.

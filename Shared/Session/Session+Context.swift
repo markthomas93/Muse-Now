@@ -1,6 +1,6 @@
 //
 //  Session+Context.swift
-//  MuseNow
+// muse •
 //
 //  Created by warren on 5/2/18.
 //  Copyright © 2018 Muse. All rights reserved.

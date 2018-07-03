@@ -122,6 +122,8 @@ class MainVC: UIViewController {
 
         // some views not yet initialized, so only update frames
 
+        MuseIntents.shared.donateStartupIntent()
+
         panel.frame = panelFrame
         panel.backgroundColor = .black
         scene = Scene(size: dialSize)

@@ -1,6 +1,6 @@
 //
 //  TreeEventsNode.swift
-//  MuseNow
+// muse •
 //
 //  Created by warren on 6/27/18.
 //  Copyright © 2018 Muse. All rights reserved.
@@ -12,9 +12,6 @@ class TreeEventsNode:TreeNode {
 
     convenience init (_ title_:String, _ parent_:TreeNode!,_ isOn:Bool, _ act:DoAction,_ setFrom_:SetFrom = []) {
         self.init(title_, parent_, .TreeEventsNode, .titleMark, TreeSetting(isOn, setFrom_, act:act))
-        Cals.shared.unarchiveCals() {
-            self.initEventChildren()
-        }
     }
 
     override func initCell() {

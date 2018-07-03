@@ -1,5 +1,5 @@
 //  BubbleView.swift
-//  MuseNow
+// muse •
 //
 //  Created by warren on 12/17/17.
 //  Copyright © 2017 Muse. All rights reserved.

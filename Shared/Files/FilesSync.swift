@@ -1,6 +1,6 @@
 //
 //  FilesSync.swift
-//  MuseNow
+// muse •
 //
 //  Created by warren on 4/26/18.
 //  Copyright © 2018 Muse. All rights reserved.

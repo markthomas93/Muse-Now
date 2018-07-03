@@ -1,5 +1,5 @@
 //  Motion+Values.swift
-//  MuseNow
+// muse •
 //
 //  Created by warren on 4/5/18.
 //  Copyright © 2018 Muse. All rights reserved.⇄

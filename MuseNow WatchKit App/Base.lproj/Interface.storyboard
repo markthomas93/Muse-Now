@@ -9,10 +9,10 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="14224.3"/>
     </dependencies>
     <scenes>
-        <!--MuseNow-->
+        <!--muse •-->
         <scene sceneID="0sG-u5-oho">
             <objects>
-                <controller title="MuseNow" spacing="0.0" id="E5x-Cp-nxC" customClass="WatchCon" customModule="MuseNow_WatchKit_App" customModuleProvider="target">
+                <controller title="muse •" spacing="0.0" id="E5x-Cp-nxC" customClass="WatchCon" customModule="MuseNow_WatchKit_App" customModuleProvider="target">
                     <items>
                         <spriteKitScene width="136" height="136" alignment="center" preferredFramesPerSecond="60" scene="Dial" id="na6-Wm-W5t">
                             <gestureRecognizers>

@@ -1,6 +1,6 @@
 //
 //  TreeNode+Session.swift
-//  MuseNow
+// muse •
 //
 //  Created by warren on 5/26/18.
 //  Copyright © 2018 Muse. All rights reserved.

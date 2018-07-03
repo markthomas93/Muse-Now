@@ -1,6 +1,6 @@
 //
 //  Transcribe+Pargraph.swift
-//  MuseNow
+// muse •
 //
 //  Created by warren on 5/3/18.
 //  Copyright © 2018 Muse. All rights reserved.

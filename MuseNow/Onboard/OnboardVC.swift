@@ -136,14 +136,14 @@ class OnboardVC: UIPageViewController {
         onboardPages = [
             OnboardPage("A clock that collects your thoughts", [
                 
-                "Muse Now is little clock that collects your thoughts.",
+                "muse • is a clock that collects your thoughts.",
                 "v_301.aif",
                 
-                "Just raise your wrist to see what's next and " +
-                "nod your wrist to record what you're thinking.",
+                "just raise your wrist and say muse • now " +
+                "to see what's next and record what's on your mind",
                 "v_302.aif",
                 
-                "Over time, your collection of thoughts " +
+                "over time, your collection of thoughts " +
                 "grows into a private history",
                 "v_303.aif",
 
@@ -153,7 +153,7 @@ class OnboardVC: UIPageViewController {
                 "v_304.aif",
                 
                 "This history of yours will help you " +
-                    "obtain nearly perfect recall. Just ask " +
+                "obtain nearly perfect recall. Just ask " +
                 "about any person, place or thing.",
                 "v_305.aif",
                 
