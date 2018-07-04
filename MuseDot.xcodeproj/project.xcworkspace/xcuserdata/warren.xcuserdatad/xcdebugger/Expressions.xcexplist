@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "Show.canShow(_:):Show.swift">
+      </ContextState>
+      <ContextState
+         contextName = "Show.doShowAction(_:isSender:):Show.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "showSet">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "TreeTableVC.tableView(_:cellForRowAt:):TreeTableVC.swift">
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

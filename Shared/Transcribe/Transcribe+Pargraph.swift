@@ -10,6 +10,7 @@ import Foundation
 
 #if os(iOS)
 import Speech
+import ParGraph
 extension Transcribe {
 
     func matchMuseFound(_ result: SFSpeechRecognitionResult) -> MuseFound {

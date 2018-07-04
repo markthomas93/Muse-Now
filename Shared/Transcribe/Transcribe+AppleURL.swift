@@ -3,6 +3,7 @@
 //  Copyright © 2017 Muse. All rights reserved.
 
 import Foundation
+import ParGraph
 
 #if os(iOS)
 import Speech

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "container:/Users/warren/iOS/Muse/Now/MuseDot.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../ParGraph/ParGraph.xcodeproj">
+   </FileRef>
+</Workspace>

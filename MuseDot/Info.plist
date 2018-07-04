@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>muse •</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>0.1</string>
+	<key>CFBundleVersion</key>
+	<string>12</string>
+	<key>CLKComplicationPrincipalClass</key>
+	<string>$(PRODUCT_MODULE_NAME).Complication</string>
+	<key>CLKComplicationSupportedFamilies</key>
+	<array>
+		<string>CLKComplicationFamilyModularSmall</string>
+		<string>CLKComplicationFamilyModularLarge</string>
+		<string>CLKComplicationFamilyUtilitarianSmall</string>
+		<string>CLKComplicationFamilyUtilitarianSmallFlat</string>
+		<string>CLKComplicationFamilyUtilitarianLarge</string>
+		<string>CLKComplicationFamilyCircularSmall</string>
+		<string>CLKComplicationFamilyExtraLarge</string>
+	</array>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Access to Calendar</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Access to Contacts</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Access to Location</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Access to Microphone</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Access to Photos</string>
+	<key>NSPrincipalClass</key>
+	<string>MyApplication</string>
+	<key>NSRemindersUsageDescription</key>
+	<string>Access to Reminders</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Access to Speech</string>
+	<key>NSSpeechRecognitionUsageDescription - 2</key>
+	<string>Access to Speech</string>
+	<key>NSUbiquitousContainers</key>
+	<dict>
+		<key>iCloud.com.muse.dot</key>
+		<dict>
+			<key>NSUbiquitousContainerIsDocumentScopePublic</key>
+			<true/>
+			<key>NSUbiquitousContainerName</key>
+			<string>MuseNow</string>
+			<key>NSUbiquitousContainerSupportedFolderLevels</key>
+			<string>Any</string>
+		</dict>
+	</dict>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>DotIntent</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array/>
+	<key>UIFileSharingEnabled</key>
+	<true/>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>UIMainStoryboardFile</key>
+	<string>Main</string>
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+		<string>armv7</string>
+	</array>
+	<key>UIRequiresFullScreen</key>
+	<false/>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<true/>
+	<key>WKCompanionAppBundleIdentifier</key>
+	<string>com.muse.dot</string>
+</dict>
+</plist>
